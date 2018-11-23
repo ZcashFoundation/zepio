@@ -21,4 +21,4 @@ class ScrollTop extends PureComponent<Props> {
   }
 }
 
-export default withRouter(ScrollTop);
+export const ScrollTopComponent = withRouter(ScrollTop);
