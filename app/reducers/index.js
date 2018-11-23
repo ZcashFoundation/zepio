@@ -1,10 +1,10 @@
 // @flow
 
 import { combineReducers } from 'redux';
+import { connectRouter } from 'connected-react-router';
 import todoReducer from './todo';
 
-const rootReducer = combineReducers({
+export const createRootReducer = (history: Object) => combineReducers({
   todos: todoReducer,
+  router: connectRouter(history),
 });
-
-export default rootReducer;

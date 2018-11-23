@@ -2,6 +2,8 @@
 
 import React from 'react';
 
-export default () => (
-  <div>Not Found | 404</div>
+export const NotFoundView = () => (
+  <div className='not found'>
+    not found
+  </div>
 );

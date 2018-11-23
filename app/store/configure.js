@@ -1,12 +1,19 @@
 // @flow
 
 import { createStore, applyMiddleware, compose } from 'redux';
+import { routerMiddleware } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
 import thunk from 'redux-thunk';
-import rootReducer from '../reducers';
+import { createRootReducer } from '../reducers';
 
-export default function configureStore(initialState: Object) {
-  const middleware = applyMiddleware(thunk);
+export const history = createBrowserHistory();
+
+export const configureStore = (initialState: Object) => {
   let enhancer;
+  const middleware = applyMiddleware(
+    thunk,
+    routerMiddleware(history),
+  );
 
   if (
     process.env.NODE_ENV !== 'production'
@@ -20,5 +27,9 @@ export default function configureStore(initialState: Object) {
     enhancer = compose(middleware);
   }
 
-  return createStore(rootReducer, initialState, enhancer);
-}
+  return createStore(
+    createRootReducer(history),
+    initialState,
+    enhancer,
+  );
+};
