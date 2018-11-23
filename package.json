@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "autoprefixer": "^9.3.1",
+    "flow-coverage-report": "^0.6.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-redux": "^5.0.7",
