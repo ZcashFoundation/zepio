@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Zcash Reference Wallet",
   "main": "index.js",
+  "license": "MIT",
   "scripts": {
     "start": "yarn dev",
     "dev": "webpack-dev-server --config config/webpack-dev.config.js --mode development --open --hot",
