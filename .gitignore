@@ -1,0 +1,5 @@
+node_modules
+.vscode
+dist
+webpack-stats/*
+.DS_Store
