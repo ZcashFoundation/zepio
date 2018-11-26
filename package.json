@@ -5,13 +5,19 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "yarn dev",
+    "start": "concurrently \"cross-env BROWSER=none yarn dev\" \"wait-on http://0.0.0.0:8080 && yarn electron:dev\"",
     "dev": "webpack-dev-server --config config/webpack-dev.config.js --mode development --open --hot",
-    "build": "rm -rf dist && webpack --config config/webpack-prod.config.js --mode production --env.NODE_ENV=production",
+    "build": "rm -rf build && webpack --config config/webpack-prod.config.js --mode production --env.NODE_ENV=production",
     "lint:precommit": "eslint ./app/",
     "flow:precommit": "glow",
     "flow:coverage": "flow-coverage-report -t html -i 'app/**/*.js' -x 'dist/*.js' --threshold 70",
-    "flow:report": "yarn flow:coverage && cd ./flow-coverage && open index.html"
+    "flow:report": "yarn flow:coverage && cd ./flow-coverage && open index.html",
+    "electron:dev": "electron -r @babel/register .",
+    "electron:prepare": "yarn icon:build && rm -rf dist && mkdir dist",
+    "electron:pack": "yarn electron:prepare && electron-builder --dir",
+    "electron:dist": "yarn electron:prepare && electron-builder",
+    "preelectron:prepare": "yarn build",
+    "icon:build": "./node_modules/.bin/electron-icon-maker --input=build-assets/icon.png --output=./build"
   },
   "author": {
     "name": "André Neves",
@@ -29,7 +35,16 @@
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
+    "concurrently": "^4.1.0",
+    "cross-env": "^5.2.0",
     "css-loader": "^1.0.1",
+    "electron": "^3.0.10",
+    "electron-builder": "^20.36.2",
+    "electron-icon-maker": "^0.0.4",
+    "electron-is-dev": "^1.0.1",
+    "electron-log": "^2.2.17",
+    "electron-positioner": "^4.1.0",
+    "electron-updater": "^4.0.4",
     "eslint": "^5.8.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-flowtype": "^3.2.0",
@@ -47,12 +62,14 @@
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "uglifyjs-webpack-plugin": "^2.0.1",
+    "wait-on": "^3.2.0",
     "webpack": "^4.4.1",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.1"
   },
   "dependencies": {
+    "@babel/register": "^7.0.0",
     "autoprefixer": "^9.3.1",
     "connected-react-router": "^5.0.1",
     "flow-coverage-report": "^0.6.0",
@@ -69,5 +86,30 @@
   "pre-commit": [
     "lint:precommit",
     "flow:precommit"
-  ]
+  ],
+  "build": {
+    "appId": "com.zcash",
+    "productName": "ZCash",
+    "asar": true,
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "files": [
+      "./index.js",
+      "./build/**/*",
+      "./node_modules/**/*"
+    ],
+    "linux": {
+      "icon": "./build/icons/png"
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "type": "distribution",
+      "target": [
+        "pkg",
+        "dmg"
+      ]
+    }
+  }
 }
