@@ -27,7 +27,7 @@ const showStatus = (text) => {
   });
 };
 
-function createWindow() {
+const createWindow = () => {
   autoUpdater.checkForUpdatesAndNotify();
 
   autoUpdater.on('checking-for-update', () => showStatus('Checking for update'));
@@ -96,7 +96,7 @@ function createWindow() {
 
   exports.app = app;
   exports.tray = tray;
-}
+};
 
 app.on('ready', createWindow);
 app.on('activate', () => {
