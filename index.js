@@ -1,2 +1,2 @@
-require('@babel/register')
-require('./config/electron')
+require('@babel/register');
+require('./config/electron');

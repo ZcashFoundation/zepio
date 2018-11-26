@@ -7,7 +7,7 @@
   "scripts": {
     "start": "concurrently \"cross-env BROWSER=none yarn dev\" \"wait-on http://0.0.0.0:8080 && yarn electron:dev\"",
     "dev": "webpack-dev-server --config config/webpack-dev.config.js --mode development --open --hot",
-    "build": "rm -rf dist && webpack --config config/webpack-prod.config.js --mode production --env.NODE_ENV=production",
+    "build": "rm -rf build && webpack --config config/webpack-prod.config.js --mode production --env.NODE_ENV=production",
     "lint:precommit": "eslint ./app/",
     "flow:precommit": "glow",
     "flow:coverage": "flow-coverage-report -t html -i 'app/**/*.js' -x 'dist/*.js' --threshold 70",
@@ -40,6 +40,7 @@
     "css-loader": "^1.0.1",
     "electron": "^3.0.10",
     "electron-builder": "^20.36.2",
+    "electron-icon-maker": "^0.0.4",
     "electron-is-dev": "^1.0.1",
     "electron-log": "^2.2.17",
     "electron-positioner": "^4.1.0",
@@ -91,13 +92,17 @@
     "productName": "ZCash",
     "asar": true,
     "directories": {
-      "buildResources": "dist",
-      "output": "build"
+      "buildResources": "build",
+      "output": "dist"
     },
     "files": [
-      "dist/**/*",
-      "node_modules/**/*"
+      "./index.js",
+      "./build/**/*",
+      "./node_modules/**/*"
     ],
+    "linux": {
+      "icon": "./build/icons/png"
+    },
     "mac": {
       "category": "public.app-category.productivity",
       "type": "distribution",
