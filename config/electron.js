@@ -66,7 +66,7 @@ function createWindow() {
   registerDebugShortcut(app, mainWindow);
 
   tray.setToolTip('ZCash');
-  mainWindow.loadURL(isDev ? 'http://0.0.0.0:8080/' : `file://${path.join(__dirname, '../dist/index.html')}`);
+  mainWindow.loadURL(isDev ? 'http://0.0.0.0:8080/' : `file://${path.join(__dirname, '../build/index.html')}`);
 
   const positioner = new Positioner(mainWindow);
   let bounds = tray.getBounds();
