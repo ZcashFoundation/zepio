@@ -10,13 +10,15 @@ import Positioner from 'electron-positioner';
 import isDev from 'electron-is-dev';
 /* eslint-enable import/no-extraneous-dependencies */
 
-import type { BrowserWindow as BrowserWindowType, Tray as TrayType } from 'electron';
-
-import { registerDebugShortcut } from '../utils/debugShortcut';
+import type {
+  BrowserWindow as BrowserWindowType,
+  Tray as TrayType,
+} from 'electron';
+import { registerDebugShortcut } from '../utils/debug-shortcut';
 
 let mainWindow: BrowserWindowType;
 let tray: TrayType;
-let updateAvailable = false;
+let updateAvailable: boolean = false;
 
 const showStatus = (text) => {
   if (text === 'Update downloaded') updateAvailable = true;
@@ -49,8 +51,8 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    transparent: true,
-    frame: false,
+    transparent: false,
+    frame: true,
     resizable: true,
     webPreferences: {
       devTools: true,
