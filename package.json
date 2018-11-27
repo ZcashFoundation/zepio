@@ -1,7 +1,7 @@
 {
-  "name": "zcash-reference-wallet",
-  "version": "0.1.0",
-  "description": "Zcash Reference Wallet",
+  "name": "zec-react-wallet",
+  "version": "0.1.1",
+  "description": "Zcash Reference Wallet built in Electron & React",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
