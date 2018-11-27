@@ -2,22 +2,14 @@
 import path from 'path';
 
 /* eslint-disable import/no-extraneous-dependencies */
-import {
-  app, BrowserWindow, powerMonitor, Tray,
-} from 'electron';
+import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
-import Positioner from 'electron-positioner';
 import isDev from 'electron-is-dev';
 /* eslint-enable import/no-extraneous-dependencies */
-
-import type {
-  BrowserWindow as BrowserWindowType,
-  Tray as TrayType,
-} from 'electron';
+import type { BrowserWindow as BrowserWindowType } from 'electron';
 import { registerDebugShortcut } from '../utils/debug-shortcut';
 
 let mainWindow: BrowserWindowType;
-let tray: TrayType;
 let updateAvailable: boolean = false;
 
 const showStatus = (text) => {
@@ -61,43 +53,13 @@ const createWindow = () => {
   });
 
   mainWindow.setVisibleOnAllWorkspaces(true);
-
-  // TODO: Update to right icon location
-  tray = new Tray(path.join(__dirname, '../public/images', 'zcash-icon.png'));
-
   registerDebugShortcut(app, mainWindow);
 
-  tray.setToolTip('ZCash');
-  mainWindow.loadURL(isDev ? 'http://0.0.0.0:8080/' : `file://${path.join(__dirname, '../build/index.html')}`);
-
-  const positioner = new Positioner(mainWindow);
-  let bounds = tray.getBounds();
-  positioner.move('trayCenter', bounds);
-
-  powerMonitor.on('suspend', () => mainWindow.webContents.send('suspend', 'suspended'));
-  powerMonitor.on('resume', () => mainWindow.webContents.send('resume', 'resumed'));
-
-  mainWindow.once('ready-to-show', () => mainWindow.show());
-  mainWindow.on('blur', () => mainWindow.hide());
-  mainWindow.on('show', () => tray.setHighlightMode('always'));
-  mainWindow.on('hide', () => tray.setHighlightMode('never'));
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
-
-  tray.on('click', () => {
-    bounds = tray.getBounds();
-    positioner.move('trayCenter', bounds);
-
-    if (mainWindow.isVisible()) {
-      mainWindow.hide();
-    } else {
-      mainWindow.show();
-    }
-  });
+  mainWindow.loadURL(isDev
+    ? 'http://0.0.0.0:8080/'
+    : `file://${path.join(__dirname, '../build/index.html')}`);
 
   exports.app = app;
-  exports.tray = tray;
 };
 
 app.on('ready', createWindow);
