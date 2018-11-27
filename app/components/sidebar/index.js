@@ -8,17 +8,26 @@ import { styles } from './styles';
 
 // TODO: Not sure this is the best approach to styling
 // in a StyledComponents-powered application
-const Wrapper = styled.div`${styles.wrapper}`;
+const Wrapper = styled.div`
+  ${styles.wrapper}
+`;
 
-export const SidebarComponent = () => (
+type MenuItem = { route: string, label: string };
+
+type Props = {
+  options?: MenuItem[],
+};
+
+export const SidebarComponent = ({ options }: Props) => (
   <Wrapper>
-    {MENU_OPTIONS.map(item => (
-      <Link
-        key={item.route}
-        to={item.route}
-      >
+    {(options || []).map(item => (
+      <Link key={item.route} to={item.route}>
         {item.label}
       </Link>
     ))}
   </Wrapper>
 );
+
+SidebarComponent.defaultProps = {
+  options: MENU_OPTIONS,
+};
