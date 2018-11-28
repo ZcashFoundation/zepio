@@ -26,30 +26,22 @@ export default class TodoInput extends Component<Props, State> {
       addTodo(trimValue);
       this.setState({ value: '' });
     }
-  }
+  };
 
   handleInputChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
-    const { target: { value } } = event;
+    const {
+      target: { value },
+    } = event;
     this.setState({ value });
-  }
+  };
 
   render() {
     const { value } = this.state;
 
     return (
-      <form
-        className='todo__input'
-        onSubmit={this.handleSubmit}
-      >
-        <input
-          value={value}
-          onChange={this.handleInputChange}
-          className='todo__input-field'
-        />
-        <button
-          type='submit'
-          className='todo__input-button'
-        >
+      <form className='todo__input' onSubmit={this.handleSubmit}>
+        <input value={value} onChange={this.handleInputChange} className='todo__input-field' />
+        <button type='submit' className='todo__input-button'>
           Submit
         </button>
       </form>
