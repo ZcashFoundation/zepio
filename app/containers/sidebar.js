@@ -1,7 +1,7 @@
 // @flow
 
 import { connect } from 'react-redux';
-import { SidebarComponent } from '../components/sidebar';
+import { SidebarComponent } from '../components/Sidebar';
 
 const mapStateToProps = (state: Object) => ({
   todos: state.todos,
