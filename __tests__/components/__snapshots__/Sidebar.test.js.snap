@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Sidebar /> render() should render correctly 1`] = `
+<StyledComponent
+  forwardedClass={
+    Object {
+      "$$typeof": Symbol(react.forward_ref),
+      "attrs": Array [],
+      "componentStyle": ComponentStyle {
+        "componentId": "sc-bdVaJa",
+        "isStatic": true,
+        "rules": Array [
+          "
+  ",
+          "
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    background: #ccc;
+  ",
+          "
+",
+        ],
+      },
+      "displayName": "styled.div",
+      "render": [Function],
+      "styledComponentId": "sc-bdVaJa",
+      "target": "div",
+      "toString": [Function],
+      "warnTooManyClasses": [Function],
+      "withComponent": [Function],
+    }
+  }
+  forwardedRef={null}
+>
+  <Link
+    key="/"
+    replace={false}
+    to="/"
+  >
+    Dashboard
+  </Link>
+  <Link
+    key="/send"
+    replace={false}
+    to="/send"
+  >
+    Send
+  </Link>
+  <Link
+    key="/receive"
+    replace={false}
+    to="/receive"
+  >
+    Receive
+  </Link>
+  <Link
+    key="/settings"
+    replace={false}
+    to="/settings"
+  >
+    Settings
+  </Link>
+</StyledComponent>
+`;
