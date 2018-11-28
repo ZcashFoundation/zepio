@@ -2,11 +2,10 @@
 
 import { connect } from 'react-redux';
 import TodoView from '../views/todo';
-import { addTodo } from '../actions/add-todo';
-import { deleteTodo } from '../actions/delete-todo';
-import { toggleEdit } from '../actions/toggle-edit-todo';
-import { updateTodo } from '../actions/update-todo';
-import { cancelUpdateTodo } from '../actions/cancel-update-todo';
+import {
+  addTodo, deleteTodo, toggleEdit, updateTodo, cancelUpdateTodo,
+} from '../redux/modules/todo';
+
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
 
