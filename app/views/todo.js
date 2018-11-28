@@ -1,8 +1,8 @@
 // @flow
 
 import React from 'react';
-import TodoInput from '../components/todo/todo-input';
-import TodoList from '../components/todo/todo-list';
+import TodoInput from '../components/TodoInput';
+import TodoList from '../components/TodoList';
 import type { TodoType } from '../types/todo';
 import checklist from '../assets/images/checklist.svg';
 
@@ -17,12 +17,7 @@ type Props = {
 
 export default (props: Props) => {
   const {
-    addTodo,
-    todos,
-    deleteTodo,
-    toggleEdit,
-    updateTodo,
-    cancelUpdateTodo,
+    addTodo, todos, deleteTodo, toggleEdit, updateTodo, cancelUpdateTodo,
   } = props;
 
   return (
