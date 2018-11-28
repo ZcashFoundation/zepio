@@ -1,15 +1,13 @@
 {
   "parser": "babel-eslint",
-  "extends": [
-    "airbnb",
-    "plugin:flowtype/recommended"
-  ],
+  "extends": ["airbnb", "plugin:flowtype/recommended"],
   "env": {
     "browser": true,
     "node": true,
-    "mocha": true
+    "mocha": true,
+    "jest/globals": true
   },
-  "plugins": ["flowtype"],
+  "plugins": ["flowtype", "jest"],
   "settings": {
     "flowtype": {
       "onlyFilesWithFlowAnnotation": true
@@ -17,39 +15,30 @@
   },
   "rules": {
     "jsx-quotes": ["error", "prefer-single"],
-    "import/prefer-default-export": [
-      "off"
-    ],
-    "react/jsx-filename-extension": [
-      1,
-      { "extensions": [".js"] }
-    ],
+    "import/prefer-default-export": ["off"],
+    "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
     "jsx-a11y/anchor-is-valid": [
       "error",
       {
-        "components": [
-          "Link"
-        ],
-        "specialLink": [
-          "to",
-          "hrefLeft",
-          "hrefRight"
-        ],
-        "aspects": [
-          "noHref",
-          "invalidHref",
-          "preferButton"
-        ]
+        "components": ["Link"],
+        "specialLink": ["to", "hrefLeft", "hrefRight"],
+        "aspects": ["noHref", "invalidHref", "preferButton"]
       }
     ],
-    "jsx-a11y/no-autofocus": [ 0, {
-      "ignoreNonDOM": true
-    }],
-    "max-len": ["error", {
-      "ignoreUrls": true,
-      "ignoreComments": true,
-      "ignoreStrings": true,
-      "ignorePattern": "<p[^>]*>.*?</p>"
-    }]
+    "jsx-a11y/no-autofocus": [
+      0,
+      {
+        "ignoreNonDOM": true
+      }
+    ],
+    "max-len": [
+      "error",
+      {
+        "ignoreUrls": true,
+        "ignoreComments": true,
+        "ignoreStrings": true,
+        "ignorePattern": "<p[^>]*>.*?</p>"
+      }
+    ]
   }
 }
