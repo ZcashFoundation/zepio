@@ -52,37 +52,23 @@ export const updateTodo = (id: string, text: string) => ({
 const initialState = [];
 
 // Reducers
-export default (state: Array<TodoType> = initialState, action: Action) => {
+export default (state: Array<TodoType> = initialState, action: Action): Array<TodoType> => {
   switch (action.type) {
     case ADD_TODO:
       return [...state, action.payload];
     case DELETE_TODO:
-      // $FlowFixMe
-      return state.filter((todo: Object) => todo.id !== action.payload.id);
+      return state.filter((todo: TodoType) => todo.id !== action.payload.id);
     case TOGGLE_EDIT_TODO: {
       const { id } = action.payload;
-      const todos = [...state];
-      const index = todos.map(todo => todo.id).indexOf(id);
-      todos[index].editing = true;
-
-      return todos;
+      return state.map(todo => (todo.id === id ? { ...todo, editing: true } : todo));
     }
     case UPDATE_TODO: {
       const { id, text } = action.payload;
-      const todos = [...state];
-      const index = todos.map(todo => todo.id).indexOf(id);
-      todos[index].text = text;
-      todos[index].editing = false;
-
-      return todos;
+      return state.map(todo => (todo.id === id ? { ...todo, editing: false, text } : todo));
     }
     case CANCEL_UPDATE_TODO: {
       const { id } = action.payload;
-      const todos = [...state];
-      const index = todos.map(todo => todo.id).indexOf(id);
-      todos[index].editing = false;
-
-      return todos;
+      return state.map(todo => (todo.id === id ? { ...todo, editing: false } : todo));
     }
     default:
       return state;
