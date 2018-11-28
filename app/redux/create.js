@@ -8,18 +8,15 @@ import { createRootReducer } from './modules/reducer';
 
 export const history = createBrowserHistory();
 
+const shouldEnableDevTools = (process.env.NODE_ENV !== 'production' || process.env.NODE_ENV !== 'staging') && window.devToolsExtension;
+
 export const configureStore = (initialState: Object) => {
-  let enhancer;
   const middleware = applyMiddleware(thunk, routerMiddleware(history));
 
-  if (process.env.NODE_ENV !== 'production' || process.env.NODE_ENV !== 'staging') {
-    enhancer = compose(
-      middleware,
-      window.devToolsExtension ? window.devToolsExtension() : f => f,
-    );
-  } else {
-    enhancer = compose(middleware);
-  }
+  const enhancer = compose(
+    middleware,
+    shouldEnableDevTools ? window.devToolsExtension() : f => f,
+  );
 
   return createStore(createRootReducer(history), initialState, enhancer);
 };
