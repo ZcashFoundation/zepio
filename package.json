@@ -19,7 +19,9 @@
     "preelectron:prepare": "yarn build",
     "icon:build": "./node_modules/.bin/electron-icon-maker --input=build-assets/icon.png --output=./build",
     "docz:dev": "docz dev",
-    "docz:build": "docz build"
+    "docz:build": "docz build",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": {
     "name": "André Neves",
@@ -53,17 +55,23 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-flowtype": "^3.2.0",
     "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^22.1.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "file-loader": "^2.0.0",
     "flow-bin": "^0.87.0",
     "glow": "^1.2.2",
     "html-webpack-plugin": "^3.1.0",
+    "jest": "^23.6.0",
+    "jest-dom": "^2.1.1",
     "node-sass": "^4.8.3",
     "postcss-loader": "^3.0.0",
     "pre-commit": "^1.2.2",
+    "react-testing-library": "^5.3.1",
     "redux-logger": "^3.0.6",
+    "redux-mock-store": "^1.5.3",
     "sass-loader": "^7.1.0",
+    "spectron": "^5.0.0",
     "style-loader": "^0.23.1",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "wait-on": "^3.2.0",
@@ -106,7 +114,10 @@
       "./node_modules/**/*"
     ],
     "linux": {
-      "icon": "./build/icons/png"
+      "icon": "./build/icons/png",
+      "target": [
+        "deb"
+      ]
     },
     "mac": {
       "category": "public.app-category.productivity",
@@ -116,5 +127,14 @@
         "dmg"
       ]
     }
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/__tests__/setup/jest.js",
+    "testPathIgnorePatterns": [
+      "<rootDir>/__tests__/setup/"
+    ]
+  },
+  "resolutions": {
+    "babel-core": "7.0.0-bridge.0"
   }
 }

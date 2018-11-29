@@ -4,9 +4,10 @@
   "env": {
     "browser": true,
     "node": true,
-    "mocha": true
+    "mocha": true,
+    "jest/globals": true
   },
-  "plugins": ["flowtype"],
+  "plugins": ["flowtype", "jest"],
   "settings": {
     "flowtype": {
       "onlyFilesWithFlowAnnotation": true
@@ -34,10 +35,12 @@
       "error",
       {
         "code": 120,
+        "tabWidth": 2,
         "ignoreUrls": true,
         "ignoreComments": true,
         "ignoreStrings": true,
-        "ignorePattern": "<p[^>]*>.*?</p>"
+        "ignorePattern": "<p[^>]*>.*?</p>",
+        "ignoreTrailingComments": true
       }
     ]
   }

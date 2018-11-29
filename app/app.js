@@ -5,18 +5,18 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { ThemeProvider } from 'styled-components';
 
-import { configureStore, history } from './store/configure';
+import { configureStore, history } from './redux/create';
 import { Router } from './router/container';
 import theme from './theme';
 
 const store = configureStore({});
 
 export default () => (
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <ThemeProvider theme={theme}>
+  <ThemeProvider theme={theme}>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
         <Router />
-      </ThemeProvider>
-    </ConnectedRouter>
-  </Provider>
+      </ConnectedRouter>
+    </Provider>
+  </ThemeProvider>
 );

@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   left: 0;
   top: 0;
   height: 100vh;
-  background: #ccc;
+  background-color: ${props => props.theme.colors.secondary};
 `;
 
 const StyledLink = styled(Link)`
