@@ -10,14 +10,14 @@ export const log = (...message: Array<*>) => console.log('[ZCash Daemon]', ...me
 /* eslint-enable no-console */
 
 export const runDaemon: () => Promise<?ChildProcess> = () => new Promise((resolve, reject) => {
-  const process = getProcessName();
+  const processName = getProcessName();
 
-  processExists(process).then((isRunning) => {
+  processExists(processName).then((isRunning) => {
     if (isRunning) {
       log('Already is running!');
       resolve();
     } else {
-      const childProcess = cp.spawn(process, ['-daemon']);
+      const childProcess = cp.spawn(processName, ['-daemon']);
 
       childProcess.stdout.on('data', (data) => {
         log(data.toString());
