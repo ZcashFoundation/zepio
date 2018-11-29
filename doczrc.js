@@ -2,7 +2,7 @@
 import { css } from 'docz-plugin-css';
 
 export default {
-  title: 'ZCash',
-  description: 'ZCash UI Documentation',
+  title: 'Zcash Foundation',
+  description: 'Zcash Foundation User Interface Styleguide',
   plugins: [css()],
 };
