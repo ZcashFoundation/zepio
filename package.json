@@ -85,8 +85,8 @@
     "autoprefixer": "^9.3.1",
     "connected-react-router": "^5.0.1",
     "flow-coverage-report": "^0.6.0",
+    "flow-typed": "^2.5.1",
     "history": "^4.7.2",
-    "polished": "^2.3.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-redux": "^5.0.7",
@@ -102,8 +102,8 @@
     "flow:precommit"
   ],
   "build": {
-    "appId": "com.zcash",
-    "productName": "ZCash",
+    "appId": "com.zcashfoundation",
+    "productName": "ZEC Wallet",
     "asar": true,
     "directories": {
       "buildResources": "build",

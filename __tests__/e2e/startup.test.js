@@ -1,3 +1,5 @@
+// @flow
+
 import { getApp } from '../setup/utils';
 
 describe('ZCash', () => {
@@ -9,8 +11,7 @@ describe('ZCash', () => {
   });
 
   test('should open the window', () => {
-    app.client.getWindowCount().then((count) => {
-      expect(count).equal(1);
-    });
+    app.client.getWindowCount()
+      .then((count: number) => expect(count).toEqual(1));
   });
 });

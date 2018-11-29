@@ -1,9 +1,14 @@
+// @flow
+
 import todoReducer, { ADD_TODO } from '../../app/redux/modules/todo';
 
 describe('Todo Reducer', () => {
   test('should return the valid initial state', () => {
-    const action = { type: 'UNKNOWN_ACTION' };
     const initialState = [];
+    const action = {
+      type: 'UNKNOWN_ACTION',
+      payload: {},
+    };
 
     expect(todoReducer(undefined, action)).toEqual(initialState);
   });

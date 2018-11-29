@@ -1,3 +1,5 @@
+// @flow
+
 import electron from 'electron';
 import { Application } from 'spectron';
 

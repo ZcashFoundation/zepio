@@ -1,3 +1,5 @@
+// @flow
+
 import configureStore from 'redux-mock-store';
 
 import { ADD_TODO, addTodo } from '../../app/redux/modules/todo';
@@ -11,6 +13,7 @@ describe('Todo Actions', () => {
     const text = 'Hello World!';
 
     store.dispatch(addTodo(text));
+
     expect(store.getActions()[0]).toEqual(
       expect.objectContaining({
         type: ADD_TODO,
