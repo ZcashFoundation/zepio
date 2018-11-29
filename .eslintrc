@@ -4,9 +4,10 @@
   "env": {
     "browser": true,
     "node": true,
-    "mocha": true
+    "mocha": true,
+    "jest/globals": true
   },
-  "plugins": ["flowtype"],
+  "plugins": ["flowtype", "jest"],
   "settings": {
     "flowtype": {
       "onlyFilesWithFlowAnnotation": true

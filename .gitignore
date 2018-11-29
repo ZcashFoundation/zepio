@@ -5,3 +5,5 @@ dist
 flow-coverage
 build
 .docz
+coverage
+flow-typed

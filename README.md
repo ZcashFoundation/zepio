@@ -24,7 +24,7 @@ yarn install
 To run the application on port 8080
 
 ```bash
-yarn dev
+yarn start
 ```
 
 ## License
