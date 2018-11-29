@@ -7,7 +7,7 @@ import { ThemeProvider } from 'styled-components';
 
 import { configureStore, history } from './redux/create';
 import { Router } from './router/container';
-import theme from './theme';
+import theme, { GlobalStyle } from './theme';
 
 const store = configureStore({});
 
@@ -15,7 +15,10 @@ export default () => (
   <ThemeProvider theme={theme}>
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <Router />
+        <div>
+          <GlobalStyle />
+          <Router />
+        </div>
       </ConnectedRouter>
     </Provider>
   </ThemeProvider>

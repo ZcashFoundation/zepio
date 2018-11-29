@@ -1,6 +1,8 @@
 // @flow
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider, createGlobalStyle } from 'styled-components';
+// $FlowFixMe
+import { normalize } from 'polished';
 import theme from 'styled-theming';
 
 import { DARK } from './constants/themes';
@@ -24,8 +26,10 @@ const appTheme = {
   },
 };
 
-export default appTheme;
-
 /* eslint-disable react/prop-types */
 // $FlowFixMe
 export const DoczWrapper = ({ children }) => <ThemeProvider theme={appTheme}>{children()}</ThemeProvider>;
+
+export const GlobalStyle = createGlobalStyle`${normalize()}`;
+
+export default appTheme;
