@@ -105,7 +105,10 @@
       "./node_modules/**/*"
     ],
     "linux": {
-      "icon": "./build/icons/png"
+      "icon": "./build/icons/png",
+      "target": [
+        "deb"
+      ]
     },
     "mac": {
       "category": "public.app-category.productivity",
