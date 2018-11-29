@@ -8,9 +8,11 @@ import isDev from 'electron-is-dev';
 /* eslint-enable import/no-extraneous-dependencies */
 import type { BrowserWindow as BrowserWindowType } from 'electron';
 import { registerDebugShortcut } from '../utils/debug-shortcut';
+import { runDaemon, log as zcashLog } from './zcashd-child-process';
 
 let mainWindow: BrowserWindowType;
 let updateAvailable: boolean = false;
+let zcashDaemon;
 
 const showStatus = (text) => {
   if (text === 'Update downloaded') updateAvailable = true;
@@ -55,17 +57,29 @@ const createWindow = () => {
   mainWindow.setVisibleOnAllWorkspaces(true);
   registerDebugShortcut(app, mainWindow);
 
-  mainWindow.loadURL(isDev
-    ? 'http://0.0.0.0:8080/'
-    : `file://${path.join(__dirname, '../build/index.html')}`);
+  mainWindow.loadURL(isDev ? 'http://0.0.0.0:8080/' : `file://${path.join(__dirname, '../build/index.html')}`);
 
   exports.app = app;
 };
 
-app.on('ready', createWindow);
+app.on('ready', () => {
+  createWindow();
+  runDaemon()
+    .then((proc) => {
+      if (proc) {
+        zcashDaemon = proc;
+      }
+    })
+    .catch(zcashLog);
+});
 app.on('activate', () => {
   if (mainWindow === null) createWindow();
 });
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
+});
+app.on('quit', () => {
+  if (zcashDaemon) {
+    zcashDaemon.kill('SIGINT');
+  }
 });
