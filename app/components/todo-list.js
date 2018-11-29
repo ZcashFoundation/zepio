@@ -1,8 +1,8 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import TodoEditInput from './TodoEditInput';
-import TodoListItem from './TodoListItem';
+import TodoEditInput from './todo-edit-input';
+import TodoListItem from './todo-list-item';
 import type { TodoType } from '../types/todo';
 
 type Props = {

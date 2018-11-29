@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { ThemeProvider } from 'styled-components';
@@ -15,10 +15,10 @@ export default () => (
   <ThemeProvider theme={theme}>
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <div>
+        <Fragment>
           <GlobalStyle />
           <Router />
-        </div>
+        </Fragment>
       </ConnectedRouter>
     </Provider>
   </ThemeProvider>

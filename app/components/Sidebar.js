@@ -20,7 +20,10 @@ const StyledLink = styled(Link)`
   color: ${props => props.theme.colors.primary};
 `;
 
-type MenuItem = { route: string, label: string };
+type MenuItem = {
+  route: string,
+  label: string,
+};
 
 type Props = {
   options?: MenuItem[],
