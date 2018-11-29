@@ -2,21 +2,26 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { styles } from './styles';
+
+const Layout = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  position: absolute;
+  width: calc(100vh - 200px);
+  left: 0;
+  top: 0;
+  height: 100vh;
+  background: #ccc;
+`;
 
 type Props = {
   chidren: any, // eslint-disable-line
 };
 
-const Layout = styled.div`${styles.layout}`;
-
 export const LayoutComponent = (props: Props) => {
   // $FlowFixMe
   const { children } = props; // eslint-disable-line
 
-  return (
-    <Layout>
-      {children}
-    </Layout>
-  );
+  return <Layout>{children}</Layout>;
 };

@@ -3,7 +3,8 @@ name: Sidebar
 ---
 
 import { Playground, PropsTable } from 'docz'
-import { SidebarComponent } from './index.js'
+import { SidebarComponent } from './Sidebar.js'
+import { DoczWrapper } from '../theme.js'
 
 # Sidebar
 
@@ -12,5 +13,7 @@ import { SidebarComponent } from './index.js'
 ## Basic usage
 
 <Playground>
-  <SidebarComponent />
+  <DoczWrapper>
+    {() => <SidebarComponent />}
+  </DoczWrapper>
 </Playground>

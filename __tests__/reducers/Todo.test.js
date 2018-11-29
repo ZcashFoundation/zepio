@@ -1,5 +1,4 @@
-import todoReducer from '../../app/reducers/todo';
-import { ADD_TODO } from '../../app/constants/actions';
+import todoReducer, { ADD_TODO } from '../../app/redux/modules/todo';
 
 describe('Todo Reducer', () => {
   test('should return the valid initial state', () => {

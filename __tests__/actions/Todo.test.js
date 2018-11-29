@@ -1,8 +1,6 @@
 import configureStore from 'redux-mock-store';
 
-import { ADD_TODO } from '../../app/constants/actions';
-
-import { addTodo } from '../../app/actions/add-todo';
+import { ADD_TODO, addTodo } from '../../app/redux/modules/todo';
 
 const store = configureStore()();
 

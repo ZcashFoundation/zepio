@@ -3,7 +3,7 @@ import { render } from 'react-testing-library';
 import { MemoryRouter } from 'react-router-dom';
 import 'jest-dom/extend-expect';
 
-import { SidebarComponent } from '../../app/components/sidebar/index';
+import { SidebarComponent } from '../../app/components/Sidebar';
 
 describe('<Sidebar />', () => {
   describe('render()', () => {
