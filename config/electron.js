@@ -8,7 +8,8 @@ import isDev from 'electron-is-dev';
 /* eslint-enable import/no-extraneous-dependencies */
 import type { BrowserWindow as BrowserWindowType } from 'electron';
 import { registerDebugShortcut } from '../utils/debug-shortcut';
-import { runDaemon, log as zcashLog } from './zcashd-child-process';
+import runDaemon from './daemon/zcashd-child-process';
+import zcashLog from './daemon/logger';
 
 let mainWindow: BrowserWindowType;
 let updateAvailable: boolean = false;
