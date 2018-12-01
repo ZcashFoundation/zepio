@@ -2,9 +2,7 @@
 import os from 'os';
 
 export default () => {
-  const platform = os.platform();
-
-  if (platform === 'darwin') {
+  if (os.platform() === 'darwin') {
     return 'mac';
   }
 
