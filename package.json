@@ -86,6 +86,7 @@
     "@babel/register": "^7.0.0",
     "autoprefixer": "^9.3.1",
     "connected-react-router": "^5.0.1",
+    "got": "^9.3.2",
     "history": "^4.7.2",
     "process-exists": "^3.1.0",
     "react": "^16.6.0",
