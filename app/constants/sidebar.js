@@ -1,10 +1,7 @@
 // @flow
 
 import {
-  DASHBOARD_ROUTE,
-  SEND_ROUTE,
-  RECEIVE_ROUTE,
-  SETTINGS_ROUTE,
+  DASHBOARD_ROUTE, SEND_ROUTE, RECEIVE_ROUTE, SETTINGS_ROUTE,
 } from './routes';
 
 export const MENU_OPTIONS = [

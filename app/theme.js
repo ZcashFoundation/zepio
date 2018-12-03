@@ -28,11 +28,7 @@ const appTheme = {
 
 /* eslint-disable react/prop-types */
 // $FlowFixMe
-export const DoczWrapper = ({ children }) => (
-  <ThemeProvider theme={appTheme}>
-    {children()}
-  </ThemeProvider>
-);
+export const DoczWrapper = ({ children }) => <ThemeProvider theme={appTheme}>{children()}</ThemeProvider>;
 
 export const GlobalStyle = createGlobalStyle`${normalize()}`;
 

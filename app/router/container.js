@@ -9,7 +9,9 @@ const mapStateToProps = (state: AppState) => ({
   todos: state.todos,
 });
 
-export const Router = withRouter(connect(
-  mapStateToProps,
-  null,
-)(RouterComponent));
+export const Router = withRouter(
+  connect(
+    mapStateToProps,
+    null,
+  )(RouterComponent),
+);
