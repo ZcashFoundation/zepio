@@ -6,5 +6,9 @@ export default () => {
     return 'mac';
   }
 
+  if (os.platform() === 'win32') {
+    return 'win';
+  }
+
   return 'linux';
 };
