@@ -6,7 +6,9 @@ import fs from 'fs';
 import path from 'path';
 import cp from 'child_process';
 import crypto from 'crypto';
+import util from 'util';
 
+import eres from 'eres';
 import got from 'got';
 import Queue from 'p-queue';
 
@@ -56,20 +58,25 @@ const downloadFile = ({ file, pathToSave }): Promise<*> => new Promise((resolve,
     .pipe(fs.createWriteStream(pathToSave));
 });
 
+let missingDownloadParam = false;
+
 export default (): Promise<*> => new Promise((resolve, reject) => {
   const firstRunProcess = cp.spawn(path.join(getBinariesPath(), 'win', 'first-run.bat'));
   firstRunProcess.stdout.on('data', data => log(data.toString()));
   firstRunProcess.stderr.on('data', data => reject(data.toString()));
 
-  firstRunProcess.on('exit', (code, err) => {
+  firstRunProcess.on('exit', async (code, err) => {
     if (code !== 0 || err) return reject(new Error(err));
 
-    FILES.forEach((file) => {
-      // TODO: Log download progress
-      const pathToSave = path.join(app.getPath('userData'), '..', 'ZcashParams', file.name);
+    await Promise.all(
+      FILES.map(async (file) => {
+        // TODO: Log download progress
+        const pathToSave = path.join(app.getPath('userData'), '..', 'ZcashParams', file.name);
 
-      fs.access(pathToSave, fs.constants.F_OK, (isEmpty) => {
-        if (isEmpty) {
+        const [cannotAccess] = await eres(util.promisify(fs.access)(pathToSave, fs.constants.F_OK));
+
+        if (cannotAccess) {
+          missingDownloadParam = true;
           queue.add(() => downloadFile({ file, pathToSave }).then(() => {
             log(`Download ${file.name} finished!`);
           }));
@@ -77,8 +84,10 @@ export default (): Promise<*> => new Promise((resolve, reject) => {
           // TODO: Check file sha256
           log(`${file.name} already is in ${pathToSave}...`);
         }
-      });
-    });
+      }),
+    );
+
+    if (!missingDownloadParam) return resolve();
 
     queue.onEmpty(resolve);
     queue.start();

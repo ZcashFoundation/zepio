@@ -1,6 +1,7 @@
 // @flow
 import cp from 'child_process';
 import path from 'path';
+import os from 'os';
 import processExists from 'process-exists';
 /* eslint-disable-next-line import/no-extraneous-dependencies */
 import isDev from 'electron-is-dev';
@@ -66,6 +67,11 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   });
 
   childProcess.on('error', reject);
+
+  if (os.platform() === 'win32') {
+    resolved = true;
+    resolve(childProcess);
+  }
 });
 
 export default runDaemon;
