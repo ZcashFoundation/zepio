@@ -12,6 +12,7 @@ Reference Wallet for the Zcash Network
 - [Babel](http://babeljs.io/): ES7/JSX transpilling
 - [ESLint](http://eslint.org/): code rules and linting
 - [React Router](https://github.com/reactjs/react-router): routing solution for react
+- [Styled Components](https://www.styled-components.com/): visual primitives for theming applications
 
 ## Installation
 
@@ -21,11 +22,17 @@ yarn install
 
 ## Development
 
-To run the application on port 8080
+To run the application you simply need to run
 
 ```bash
 yarn start
 ```
+
+This will kickstart the webpack development server and serve the app on port 8080, as well as launch the Electron wrapper for the application, which houses the `zcashd` daemon process.
+
+## Buiding & Distribution
+
+TBD
 
 ## License
 
