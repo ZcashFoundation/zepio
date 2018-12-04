@@ -13,7 +13,21 @@ import getDaemonName from './get-daemon-name';
 import fetchParams from './run-fetch-params';
 import log from './logger';
 
-const getDaemonOptions = () => (isDev ? ['-daemon', '-testnet'] : ['-daemon']);
+const getDaemonOptions = () => {
+  /*
+    -showmetrics
+        Show metrics on stdout
+    -metricsui
+        Set to 1 for a persistent metrics screen, 0 for sequential metrics
+        output
+    -metricsrefreshtime
+        Number of seconds between metrics refreshes
+  */
+  const defaultOptions = ['-showmetrics', '--metricsui=0', '-metricsrefreshtime=3'];
+  return isDev ? defaultOptions.concat('-testnet') : defaultOptions;
+};
+
+let resolved = false;
 
 const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve, reject) => {
   const processName = path.join(getBinariesPath(), getOsFolder(), getDaemonName());
@@ -34,11 +48,16 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     return resolve();
   }
 
-  const childProcess = cp.spawn(processName, getDaemonOptions());
+  const childProcess = cp.spawn(processName, getDaemonOptions(), {
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
 
-  childProcess.stdout.on('data', (data) => {
-    log(data.toString());
-    resolve(childProcess);
+  childProcess.stdout.on('data', () => {
+    // TODO: Send logs to app
+    if (!resolved) {
+      resolve(childProcess);
+      resolved = true;
+    }
   });
 
   childProcess.stderr.on('data', (data) => {
