@@ -2,10 +2,4 @@
 
 import os from 'os';
 
-export default () => {
-  if (os.platform() === 'win32') {
-    return 'zcashd.exe';
-  }
-
-  return 'zcashd';
-};
+export default () => (os.platform() === 'win32' ? 'zcashd.exe' : 'zcashd');

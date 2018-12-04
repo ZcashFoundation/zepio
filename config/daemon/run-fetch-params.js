@@ -8,9 +8,5 @@ import runUnixFetchParams from './fetch-unix-params';
 export default (): Promise<*> => {
   log('Fetching params');
 
-  if (os.platform() === 'win32') {
-    return fetchWindowsParams();
-  }
-
-  return runUnixFetchParams();
+  return os.platform() === 'win32' ? fetchWindowsParams() : runUnixFetchParams();
 };
