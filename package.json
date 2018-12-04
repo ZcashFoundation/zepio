@@ -34,6 +34,7 @@
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-transform-regenerator": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
@@ -83,9 +84,11 @@
     "webpack-dev-server": "^3.1.1"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
     "@babel/register": "^7.0.0",
     "autoprefixer": "^9.3.1",
     "connected-react-router": "^5.0.1",
+    "eres": "^1.0.1",
     "got": "^9.3.2",
     "history": "^4.7.2",
     "p-queue": "^3.0.0",

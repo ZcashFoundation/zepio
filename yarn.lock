@@ -694,7 +694,7 @@
     "@babel/helper-regex" "^7.0.0"
     regexpu-core "^4.1.3"
 
-"@babel/polyfill@7.0.0":
+"@babel/polyfill@7.0.0", "@babel/polyfill@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.0.0.tgz#c8ff65c9ec3be6a1ba10113ebd40e8750fb90bff"
   integrity sha512-dnrMRkyyr74CRelJwvgnnSUDh2ge2NCTyHVwpOdvRMHtJUyxLtMAfhBN3s64pY41zdw0kgiLPh6S20eb1NcX6Q==
@@ -5052,6 +5052,11 @@ env-paths@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/env-paths/-/env-paths-1.0.0.tgz#4168133b42bb05c38a35b1ae4397c8298ab369e0"
   integrity sha1-QWgTO0K7BcOKNbGuQ5fIKYqzaeA=
+
+eres@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/eres/-/eres-1.0.1.tgz#6e533359532f78fb8aa00d910df0279431b9f3a4"
+  integrity sha512-y+Ku9iH8Mk5tq4YQOBo/A/XYmvy57itDGq+lRRm8RU7uy9iNT8h3Xh3dpr9Qo9Z+4D6WdskIDbJVwVZJ3wjpyQ==
 
 errno@^0.1.1, errno@^0.1.3, errno@~0.1.7:
   version "0.1.7"

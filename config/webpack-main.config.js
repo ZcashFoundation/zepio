@@ -4,7 +4,7 @@ const autoprefixer = require('autoprefixer');
 
 module.exports = {
   entry: {
-    index: './app/index.js',
+    index: ['@babel/polyfill', './app/index.js'],
   },
   optimization: {
     minimizer: [new UglifyJSPlugin({ sourceMap: true })],
