@@ -1,4 +1,6 @@
 // @flow
+import '@babel/polyfill';
+
 import path from 'path';
 
 /* eslint-disable import/no-extraneous-dependencies */
@@ -7,6 +9,7 @@ import { autoUpdater } from 'electron-updater';
 import isDev from 'electron-is-dev';
 /* eslint-enable import/no-extraneous-dependencies */
 import type { BrowserWindow as BrowserWindowType } from 'electron';
+import eres from 'eres';
 import { registerDebugShortcut } from '../utils/debug-shortcut';
 import runDaemon from './daemon/zcashd-child-process';
 import zcashLog from './daemon/logger';
@@ -63,15 +66,14 @@ const createWindow = () => {
   exports.app = app;
 };
 
-app.on('ready', () => {
+/* eslint-disable-next-line consistent-return */
+app.on('ready', async () => {
   createWindow();
-  runDaemon()
-    .then((proc) => {
-      if (proc) {
-        zcashDaemon = proc;
-      }
-    })
-    .catch(zcashLog);
+  const [err, proc] = await eres(runDaemon());
+
+  if (err || !proc) return zcashLog(err);
+
+  zcashDaemon = proc;
 });
 app.on('activate', () => {
   if (mainWindow === null) createWindow();
@@ -80,7 +82,5 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 app.on('before-quit', () => {
-  if (zcashDaemon) {
-    zcashDaemon.kill('SIGINT');
-  }
+  if (zcashDaemon) zcashDaemon.kill('SIGINT');
 });

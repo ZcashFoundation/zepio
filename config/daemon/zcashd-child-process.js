@@ -5,6 +5,7 @@ import processExists from 'process-exists';
 /* eslint-disable-next-line import/no-extraneous-dependencies */
 import isDev from 'electron-is-dev';
 import type { ChildProcess } from 'child_process';
+import eres from 'eres';
 
 import getBinariesPath from './get-binaries-path';
 import getOsFolder from './get-os-folder';
@@ -14,36 +15,38 @@ import log from './logger';
 
 const getDaemonOptions = () => (isDev ? ['-daemon', '-testnet'] : ['-daemon']);
 
-const runDaemon: () => Promise<?ChildProcess> = () => new Promise((resolve, reject) => {
+const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve, reject) => {
   const processName = path.join(getBinariesPath(), getOsFolder(), getDaemonName());
 
-  fetchParams()
-    .then(() => {
-      log('Fetch Params finished!');
-      processExists(processName).then((isRunning) => {
-        if (isRunning) {
-          log('Already is running!');
-          resolve();
-        } else {
-          const childProcess = cp.spawn(processName, getDaemonOptions());
+  const [err] = await eres(fetchParams());
 
-          childProcess.stdout.on('data', (data) => {
-            log(data.toString());
-            resolve(childProcess);
-          });
+  if (err) {
+    log('Something went wrong fetching params: ', err);
+    return reject(new Error(err));
+  }
 
-          childProcess.stderr.on('data', (data) => {
-            log(data.toString());
-            reject(new Error(data.toString()));
-          });
+  log('Fetch Params finished!');
 
-          childProcess.on('error', reject);
-        }
-      });
-    })
-    .catch((err) => {
-      log('Something went wrong fetching params: ', err);
-    });
+  const [, isRunning] = await eres(processExists(processName));
+
+  if (isRunning) {
+    log('Already is running!');
+    return resolve();
+  }
+
+  const childProcess = cp.spawn(processName, getDaemonOptions());
+
+  childProcess.stdout.on('data', (data) => {
+    log(data.toString());
+    resolve(childProcess);
+  });
+
+  childProcess.stderr.on('data', (data) => {
+    log(data.toString());
+    reject(new Error(data.toString()));
+  });
+
+  childProcess.on('error', reject);
 });
 
 export default runDaemon;
