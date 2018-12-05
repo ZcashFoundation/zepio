@@ -43,6 +43,7 @@
         "ignoreTrailingComments": true
       }
     ],
-    "consistent-return": 0
+    "consistent-return": 0,
+    "react/destructuring-assignment": 0
   }
 }
