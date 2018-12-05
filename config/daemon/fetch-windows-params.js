@@ -70,19 +70,23 @@ export default (): Promise<*> => new Promise((resolve, reject) => {
 
     await Promise.all(
       FILES.map(async (file) => {
-        // TODO: Log download progress
         const pathToSave = path.join(app.getPath('userData'), '..', 'ZcashParams', file.name);
 
         const [cannotAccess] = await eres(util.promisify(fs.access)(pathToSave, fs.constants.F_OK));
 
         if (cannotAccess) {
           missingDownloadParam = true;
-          queue.add(() => downloadFile({ file, pathToSave }).then(() => {
-            log(`Download ${file.name} finished!`);
-          }));
+          queue.add(() => downloadFile({ file, pathToSave }).then(() => log(`Download ${file.name} finished!`)));
         } else {
-          // TODO: Check file sha256
-          log(`${file.name} already is in ${pathToSave}...`);
+          const isValid = await checkSha256(pathToSave, file.hash);
+          if (isValid) {
+            log(`${file.name} already is in ${pathToSave}...`);
+          } else {
+            log(`File: ${file.name} failed in the SHASUM validation, downloading again...`);
+            queue.add(() => {
+              downloadFile({ file, pathToSave }).then(() => log(`Download ${file.name} finished!`));
+            });
+          }
         }
       }),
     );
