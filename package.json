@@ -88,6 +88,7 @@
     "@babel/register": "^7.0.0",
     "autoprefixer": "^9.3.1",
     "connected-react-router": "^5.0.1",
+    "electron-store": "^2.0.0",
     "eres": "^1.0.1",
     "got": "^9.3.2",
     "history": "^4.7.2",
