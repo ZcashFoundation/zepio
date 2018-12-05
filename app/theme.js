@@ -7,7 +7,7 @@ import { normalize } from 'polished'; // eslint-disable-line
 
 import { DARK } from './constants/themes';
 
-const darkOne = '#212124';
+const darkOne = '#7B00DD';
 const lightOne = '#ffffff';
 const brandOne = '#624cda';
 const brandTwo = '#a6ede2';
@@ -17,12 +17,12 @@ const appTheme = {
   fontFamily: 'PT Sans',
   colors: {
     primary: theme('mode', {
-      light: darkOne,
-      dark: lightOne,
-    }),
-    secondary: theme('mode', {
       light: lightOne,
       dark: darkOne,
+    }),
+    secondary: theme('mode', {
+      light: darkOne,
+      dark: lightOne,
     }),
     sidebarBg: brandOne,
     sidebarItem: brandTwo,
@@ -36,11 +36,7 @@ const appTheme = {
 
 /* eslint-disable react/prop-types */
 // $FlowFixMe
-export const DoczWrapper = ({ children }) => (
-  <ThemeProvider theme={appTheme}>
-    {children()}
-  </ThemeProvider>
-);
+export const DoczWrapper = ({ children }) => <ThemeProvider theme={appTheme}>{children()}</ThemeProvider>;
 
 export const GlobalStyle = createGlobalStyle`${normalize()}`;
 
