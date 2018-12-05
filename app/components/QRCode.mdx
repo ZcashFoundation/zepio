@@ -1,0 +1,23 @@
+---
+name: QRCode
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import { QRCode } from './qrcode.js'
+
+# QRCode
+
+<PropsTable of={QRCode} />
+
+## Basic usage
+
+<Playground>
+  <QRCode value="https://astrocoders.com" />
+</Playground>
+
+## Custom size
+
+<Playground>
+  <QRCode value="https://astrocoders.com" size={500} />
+</Playground>
