@@ -13,8 +13,10 @@ import getOsFolder from './get-os-folder';
 import getDaemonName from './get-daemon-name';
 import fetchParams from './run-fetch-params';
 import log from './logger';
+import store from '../electron-store';
+import generateRandomString from './generate-random-string';
 
-const getDaemonOptions = () => {
+const getDaemonOptions = ({ username, password }) => {
   /*
     -showmetrics
         Show metrics on stdout
@@ -24,7 +26,13 @@ const getDaemonOptions = () => {
     -metricsrefreshtime
         Number of seconds between metrics refreshes
   */
-  const defaultOptions = ['-showmetrics', '--metricsui=0', '-metricsrefreshtime=3'];
+  const defaultOptions = [
+    '-showmetrics',
+    '--metricsui=0',
+    '-metricsrefreshtime=3',
+    `-rpcuser=${username}`,
+    `-rpcpassword=${password}`,
+  ];
   return isDev ? defaultOptions.concat('-testnet') : defaultOptions;
 };
 
@@ -49,7 +57,24 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     return resolve();
   }
 
-  const childProcess = cp.spawn(processName, getDaemonOptions(), {
+  const hasCredentials = store.has('rpcuser') && store.has('rpcpassword');
+
+  const rpcCredentials = hasCredentials
+    ? {
+      username: store.get('rpcuser'),
+      password: store.get('rpcpassword'),
+    }
+    : {
+      username: generateRandomString(),
+      password: generateRandomString(),
+    };
+
+  if (!hasCredentials) {
+    store.set('rpcuser', rpcCredentials.username);
+    store.set('rpcpassword', rpcCredentials.password);
+  }
+
+  const childProcess = cp.spawn(processName, getDaemonOptions(rpcCredentials), {
     stdio: ['ignore', 'pipe', 'pipe'],
   });
 
