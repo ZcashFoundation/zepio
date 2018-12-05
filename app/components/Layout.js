@@ -11,7 +11,7 @@ const Layout = styled.div`
   left: 200px;
   top: 0;
   height: 100vh;
-  background: #ccc;
+  background: ${props => props.theme.colors.secondary};
 `;
 
 type Props = {

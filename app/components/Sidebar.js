@@ -13,11 +13,17 @@ const Wrapper = styled.div`
   left: 0;
   top: 0;
   height: 100vh;
-  background-color: ${props => props.theme.colors.secondary};
+  font-family: ${props => props.theme.fontFamily}
+  background-color: ${props => props.theme.colors.sidebarBg};
+  padding: 20px;
 `;
 
 const StyledLink = styled(Link)`
-  color: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.sidebarItem};
+  font-size: 16px;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 5px 0;
 `;
 
 type MenuItem = {
