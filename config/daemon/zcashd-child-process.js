@@ -3,10 +3,12 @@ import cp from 'child_process';
 import path from 'path';
 import os from 'os';
 import processExists from 'process-exists';
-/* eslint-disable-next-line import/no-extraneous-dependencies */
+/* eslint-disable import/no-extraneous-dependencies */
 import isDev from 'electron-is-dev';
 import type { ChildProcess } from 'child_process';
 import eres from 'eres';
+/* eslint-disable-next-line import/named */
+import { mainWindow } from '../electron';
 
 import getBinariesPath from './get-binaries-path';
 import getOsFolder from './get-os-folder';
@@ -53,8 +55,8 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     stdio: ['ignore', 'pipe', 'pipe'],
   });
 
-  childProcess.stdout.on('data', () => {
-    // TODO: Send logs to app
+  childProcess.stdout.on('data', (data) => {
+    if (mainWindow) mainWindow.webContents.send('zcashd-log', data.toString());
     if (!resolved) {
       resolve(childProcess);
       resolved = true;
