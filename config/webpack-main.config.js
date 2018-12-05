@@ -10,6 +10,7 @@ module.exports = {
     minimizer: [new UglifyJSPlugin({ sourceMap: true })],
   },
   devtool: 'cheap-module-source-map',
+  target: 'electron-renderer',
   module: {
     rules: [
       {
