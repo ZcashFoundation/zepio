@@ -87,6 +87,7 @@
     "autoprefixer": "^9.3.1",
     "connected-react-router": "^5.0.1",
     "history": "^4.7.2",
+    "qrcode.react": "^0.8.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-redux": "^5.0.7",
