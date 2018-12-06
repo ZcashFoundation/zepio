@@ -8,6 +8,8 @@ import styled from 'styled-components';
 const defaultStyles = `
   padding: 10px;
   width: 100%;
+  outline: none;
+  font-family: ${props => props.theme.fontFamily}
 `;
 
 const Input = styled.input.attrs({
@@ -30,16 +32,17 @@ type Props = {
 };
 
 export const InputComponent = ({ inputType, onChange, ...props }: Props) => {
-  if (inputType === 'input') {
-    return <Input onChange={evt => onChange(evt.target.value)} {...props} />;
+  const inputTypes = {
+    input: () => <Input onChange={evt => onChange(evt.target.value)} {...props} />,
+    textarea: () => <Textarea onChange={evt => onChange(evt.target.value)} {...props} />,
+    dropdown: () => null,
+  };
+
+  if (!Object.keys(inputTypes).find(key => key === inputType)) {
+    throw new Error(`Invalid input type: ${inputType}`);
   }
 
-  if (inputType === 'textarea') {
-    return <Textarea onChange={evt => onChange(evt.target.value)} {...props} />;
-  }
-
-  // TODO: Dropdown component
-  return null;
+  return inputTypes[inputType]();
 };
 
 InputComponent.defaultProps = {
