@@ -17,9 +17,9 @@ export class ConsoleView extends Component<Props, State> {
 
   componentDidMount() {
     ipcRenderer.on('zcashd-log', (event, message) => {
-      this.setState({
+      this.setState(() => ({
         log: message,
-      });
+      }));
     });
   }
 
