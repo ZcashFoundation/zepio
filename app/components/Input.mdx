@@ -14,11 +14,13 @@ import { DoczWrapper } from '../theme.js'
 ## Text Input
 
 <Playground>
-  <DoczWrapper>{() => <InputComponent inputType="input" value="" onChange={console.log} />}</DoczWrapper>
+  <DoczWrapper>{() => <InputComponent inputType="input" value="Hello World!" onChange={console.log} />}</DoczWrapper>
 </Playground>
 
 ## Textarea
 
 <Playground>
-  <DoczWrapper>{() => <InputComponent inputType="textarea" value="" onChange={console.log} rows={10} />}</DoczWrapper>
+  <DoczWrapper>
+    {() => <InputComponent inputType="textarea" value="I'm ZCash Electron Wallet" onChange={console.log} rows={10} />}
+  </DoczWrapper>
 </Playground>
