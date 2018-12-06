@@ -3,6 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+/* eslint-disable import/no-extraneous-dependencies */
 // $FlowFixMe
 import { darken } from 'polished';
 
@@ -62,17 +63,15 @@ const Secondary = styled.button`
 type Props = {
   label: string,
   onClick?: () => void,
-  isLink?: boolean,
   to?: string,
   variant?: 'primary' | 'secondary',
   disabled?: boolean,
 };
 
 export const Button = ({
-  onClick, label, isLink, to, variant, disabled,
+  onClick, label, to, variant, disabled,
 }: Props) => {
-  if (isLink && !to) throw new Error('Missing "to" prop in Button Link');
-  if (isLink && onClick) throw new Error("Can't bind a onClick to a Link Button");
+  if (to && onClick) throw new Error('Should define either "to" or "onClick"');
 
   const component = variant === 'primary' ? (
     <Primary onClick={onClick} disabled={disabled}>
@@ -84,12 +83,11 @@ export const Button = ({
     </Secondary>
   );
 
-  return isLink ? <Link to={String(to)}>{component}</Link> : component;
+  return to ? <Link to={String(to)}>{component}</Link> : component;
 };
 
 Button.defaultProps = {
   to: null,
-  isLink: false,
   variant: 'primary',
   onClick: null,
   disabled: false,
