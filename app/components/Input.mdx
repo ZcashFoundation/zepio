@@ -1,0 +1,24 @@
+---
+name: Input
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import { InputComponent } from './input.js'
+import { DoczWrapper } from '../theme.js'
+
+# Input
+
+<PropsTable of={InputComponent} />
+
+## Text Input
+
+<Playground>
+  <DoczWrapper>{() => <InputComponent inputType="input" value="" onChange={console.log} />}</DoczWrapper>
+</Playground>
+
+## Textarea
+
+<Playground>
+  <DoczWrapper>{() => <InputComponent inputType="textarea" value="" onChange={console.log} rows={10} />}</DoczWrapper>
+</Playground>
