@@ -35,7 +35,7 @@ const getDaemonOptions = ({ username, password }) => {
     `-rpcuser=${username}`,
     `-rpcpassword=${password}`,
   ];
-  return isDev ? defaultOptions.concat('-testnet') : defaultOptions;
+  return isDev ? defaultOptions.concat(['-testnet', '-addnode=testnet.z.cash']) : defaultOptions;
 };
 
 let resolved = false;
