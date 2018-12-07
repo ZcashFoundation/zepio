@@ -64,6 +64,7 @@ const createWindow = () => {
   mainWindow.loadURL(isDev ? 'http://0.0.0.0:8080/' : `file://${path.join(__dirname, '../build/index.html')}`);
 
   exports.app = app;
+  exports.mainWindow = mainWindow;
 };
 
 /* eslint-disable-next-line consistent-return */
