@@ -7,18 +7,26 @@ import { normalize } from 'polished'; // eslint-disable-line
 
 import { DARK } from './constants/themes';
 
+const darkOne = '#7B00DD';
+const lightOne = '#ffffff';
+const brandOne = '#624cda';
+const brandTwo = '#a6ede2';
+
 const appTheme = {
   mode: DARK,
-  fontFamily: 'Open Sans',
+  fontFamily: 'PT Sans',
   colors: {
     primary: theme('mode', {
-      light: '#000',
-      dark: '#fff',
+      light: lightOne,
+      dark: darkOne,
     }),
     secondary: theme('mode', {
-      light: '#fff',
-      dark: '#000',
+      light: darkOne,
+      dark: lightOne,
     }),
+    sidebarBg: brandOne,
+    sidebarItem: brandTwo,
+    sidebarItemActive: lightOne,
   },
   size: {
     title: 18,

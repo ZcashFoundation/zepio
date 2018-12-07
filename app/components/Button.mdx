@@ -1,0 +1,54 @@
+---
+name: Button
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import { Button } from './button.js'
+import { DoczWrapper } from '../theme.js'
+
+# Button
+
+<PropsTable of={Button} />
+
+## Primary
+
+<Playground>
+  <div style={{ backgroundColor: '#000', padding: '20px' }}>
+    <DoczWrapper>{() => <Button label="Click me!" />}</DoczWrapper>
+  </div>
+</Playground>
+
+## Secondary
+
+<Playground>
+  <div style={{ backgroundColor: '#000', padding: '20px' }}>
+    <DoczWrapper>{() => <Button label="Click me!" onClick={() => alert('Clicked')} variant="secondary" />}</DoczWrapper>
+  </div>
+</Playground>
+
+## Primary Disabled
+
+<Playground>
+  <div style={{ backgroundColor: '#000', padding: '20px' }}>
+    <DoczWrapper>{() => <Button label="Click me!" onClick={() => alert('Clicked')} disabled />}</DoczWrapper>
+  </div>
+</Playground>
+
+## Secondary Disabled
+
+<Playground>
+  <div style={{ backgroundColor: '#000', padding: '20px' }}>
+    <DoczWrapper>
+      {() => <Button label="Click me!" onClick={() => alert('Clicked')} disabled variant="secondary" />}
+    </DoczWrapper>
+  </div>
+</Playground>
+
+## Link Button
+
+<Playground>
+  <div style={{ backgroundColor: '#000', padding: '20px' }}>
+    <DoczWrapper>{() => <Button label="Click me!" isLink to="/my-route" />}</DoczWrapper>
+  </div>
+</Playground>
