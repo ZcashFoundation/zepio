@@ -42,6 +42,8 @@
         "ignorePattern": "<p[^>]*>.*?</p>",
         "ignoreTrailingComments": true
       }
-    ]
+    ],
+    "consistent-return": 0,
+    "react/destructuring-assignment": 0
   }
 }

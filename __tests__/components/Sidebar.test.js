@@ -10,6 +10,7 @@ import { SidebarComponent } from '../../app/components/sidebar';
 describe('<Sidebar />', () => {
   describe('render()', () => {
     test('should render correctly', () => {
+      // $FlowFixMe
       const { asFragment } = render(
         <MemoryRouter>
           <SidebarComponent />

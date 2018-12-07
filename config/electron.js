@@ -1,4 +1,6 @@
 // @flow
+import '@babel/polyfill';
+
 import path from 'path';
 
 /* eslint-disable import/no-extraneous-dependencies */
@@ -7,10 +9,14 @@ import { autoUpdater } from 'electron-updater';
 import isDev from 'electron-is-dev';
 /* eslint-enable import/no-extraneous-dependencies */
 import type { BrowserWindow as BrowserWindowType } from 'electron';
+import eres from 'eres';
 import { registerDebugShortcut } from '../utils/debug-shortcut';
+import runDaemon from './daemon/zcashd-child-process';
+import zcashLog from './daemon/logger';
 
 let mainWindow: BrowserWindowType;
 let updateAvailable: boolean = false;
+let zcashDaemon;
 
 const showStatus = (text) => {
   if (text === 'Update downloaded') updateAvailable = true;
@@ -55,17 +61,33 @@ const createWindow = () => {
   mainWindow.setVisibleOnAllWorkspaces(true);
   registerDebugShortcut(app, mainWindow);
 
-  mainWindow.loadURL(isDev
-    ? 'http://0.0.0.0:8080/'
-    : `file://${path.join(__dirname, '../build/index.html')}`);
+  mainWindow.loadURL(isDev ? 'http://0.0.0.0:8080/' : `file://${path.join(__dirname, '../build/index.html')}`);
 
   exports.app = app;
+  exports.mainWindow = mainWindow;
 };
 
-app.on('ready', createWindow);
+/* eslint-disable-next-line consistent-return */
+app.on('ready', async () => {
+  createWindow();
+  const [err, proc] = await eres(runDaemon());
+
+  if (err || !proc) return zcashLog(err);
+
+  /* eslint-disable-next-line */
+  zcashLog(`ZCash Daemon running. PID: ${proc.pid}`);
+
+  zcashDaemon = proc;
+});
 app.on('activate', () => {
   if (mainWindow === null) createWindow();
 });
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
+});
+app.on('before-quit', () => {
+  if (zcashDaemon) {
+    zcashLog('Graceful shutdown ZCash Daemon, this may take a few seconds.');
+    zcashDaemon.kill('SIGINT');
+  }
 });

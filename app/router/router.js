@@ -10,12 +10,11 @@ import { SendView } from '../views/send';
 import { ReceiveView } from '../views/receive';
 import { SettingsView } from '../views/settings';
 import { NotFoundView } from '../views/not-found';
+import { ConsoleView } from '../views/console';
 import { LayoutComponent } from '../components/layout';
+
 import {
-  DASHBOARD_ROUTE,
-  SEND_ROUTE,
-  RECEIVE_ROUTE,
-  SETTINGS_ROUTE,
+  DASHBOARD_ROUTE, SEND_ROUTE, RECEIVE_ROUTE, SETTINGS_ROUTE, CONSOLE_ROUTE,
 } from '../constants/routes';
 
 export const RouterComponent = () => (
@@ -25,23 +24,11 @@ export const RouterComponent = () => (
       {/* $FlowFixMe */}
       <LayoutComponent>
         <Switch>
-          <Route
-            exact
-            path={DASHBOARD_ROUTE}
-            component={DashboardView}
-          />
-          <Route
-            path={SEND_ROUTE}
-            component={SendView}
-          />
-          <Route
-            path={RECEIVE_ROUTE}
-            component={ReceiveView}
-          />
-          <Route
-            path={SETTINGS_ROUTE}
-            component={SettingsView}
-          />
+          <Route exact path={DASHBOARD_ROUTE} component={DashboardView} />
+          <Route path={SEND_ROUTE} component={SendView} />
+          <Route path={RECEIVE_ROUTE} component={ReceiveView} />
+          <Route path={SETTINGS_ROUTE} component={SettingsView} />
+          <Route path={CONSOLE_ROUTE} component={ConsoleView} />
           <Route component={NotFoundView} />
         </Switch>
       </LayoutComponent>

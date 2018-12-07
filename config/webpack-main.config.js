@@ -4,14 +4,13 @@ const autoprefixer = require('autoprefixer');
 
 module.exports = {
   entry: {
-    index: './app/index.js',
+    index: ['@babel/polyfill', './app/index.js'],
   },
   optimization: {
-    minimizer: [
-      new UglifyJSPlugin({ sourceMap: true }),
-    ],
+    minimizer: [new UglifyJSPlugin({ sourceMap: true })],
   },
   devtool: 'cheap-module-source-map',
+  target: 'electron-renderer',
   module: {
     rules: [
       {
@@ -23,21 +22,28 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: [{
-          loader: 'style-loader',
-        }, {
-          loader: 'css-loader',
-        }, {
-          loader: 'postcss-loader',
-          ident: 'postcss',
-          options: {
-            plugins: () => [autoprefixer({
-              browsers: ['> 1%', 'not ie 11'],
-            })],
+        use: [
+          {
+            loader: 'style-loader',
           },
-        }, {
-          loader: 'sass-loader',
-        }],
+          {
+            loader: 'css-loader',
+          },
+          {
+            loader: 'postcss-loader',
+            ident: 'postcss',
+            options: {
+              plugins: () => [
+                autoprefixer({
+                  browsers: ['> 1%', 'not ie 11'],
+                }),
+              ],
+            },
+          },
+          {
+            loader: 'sass-loader',
+          },
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/,
@@ -53,13 +59,15 @@ module.exports = {
       },
       {
         test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [{
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-            outputPath: 'assets/fonts/',
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'assets/fonts/',
+            },
           },
-        }],
+        ],
       },
     ],
   },
