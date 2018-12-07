@@ -4,9 +4,9 @@ import { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 
 type Props = {
-  location: Object;
+  location: Object,
   children: any,
-}
+};
 
 class ScrollTop extends PureComponent<Props> {
   componentDidUpdate(prevProps: Props) {

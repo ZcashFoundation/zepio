@@ -2,8 +2,4 @@
 
 import React from 'react';
 
-export const ReceiveView = () => (
-  <div className='send'>
-    receive
-  </div>
-);
+export const ReceiveView = () => <div className='send'>receive</div>;

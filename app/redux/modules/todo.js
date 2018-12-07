@@ -52,10 +52,7 @@ export const updateTodo = (id: string, text: string) => ({
 const initialState = [];
 
 // Reducers
-export default (
-  state: Array<TodoType> = initialState,
-  action: Action,
-): Array<TodoType> => {
+export default (state: Array<TodoType> = initialState, action: Action): Array<TodoType> => {
   switch (action.type) {
     case ADD_TODO:
       return [...state, action.payload];

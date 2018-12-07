@@ -20,25 +20,14 @@ type Props = {
 
 export default (props: Props) => {
   const {
-    addTodo,
-    todos,
-    deleteTodo,
-    toggleEdit,
-    updateTodo,
-    cancelUpdateTodo,
+    addTodo, todos, deleteTodo, toggleEdit, updateTodo, cancelUpdateTodo,
   } = props;
 
   return (
     <div className='todo'>
       <div className='todo__heading'>
-        <img
-          src={checklist}
-          alt='Testing File Loader'
-          className='todo__image'
-        />
-        <h1 className='todo__header'>
-          Todo List App
-        </h1>
+        <img src={checklist} alt='Testing File Loader' className='todo__image' />
+        <h1 className='todo__header'>Todo List App</h1>
       </div>
       <TodoInput addTodo={addTodo} />
       <TodoList
