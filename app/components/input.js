@@ -9,7 +9,10 @@ const defaultStyles = `
   padding: 10px;
   width: 100%;
   outline: none;
-  font-family: ${props => props.theme.fontFamily}
+  font-family: ${
+  // $FlowFixMe
+  props => props.theme.fontFamily
+}
 `;
 
 const Input = styled.input.attrs({
@@ -39,10 +42,10 @@ export const InputComponent = ({ inputType, onChange, ...props }: Props) => {
   };
 
   if (!Object.keys(inputTypes).find(key => key === inputType)) {
-    throw new Error(`Invalid input type: ${inputType}`);
+    throw new Error(`Invalid input type: ${String(inputType)}`);
   }
 
-  return inputTypes[inputType]();
+  return inputTypes[inputType || 'input']();
 };
 
 InputComponent.defaultProps = {
