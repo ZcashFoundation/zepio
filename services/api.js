@@ -1,14 +1,16 @@
 // @flow
 import got from 'got';
+/* eslint-disable-next-line */
+import isDev from 'electron-is-dev';
 
 import { METHODS, type APIMethods } from './utils';
+import store from '../config/electron-store';
 
-// TODO: Fix RPC connect params
 const RPC = {
-  host: 'localhost',
-  port: 8232,
-  user: 'george',
-  password: '123456',
+  host: '127.0.0.1',
+  port: isDev ? 18232 : 8232,
+  user: store.get('rpcuser'),
+  password: store.get('rpcpassword'),
 };
 
 const client = got.extend({
