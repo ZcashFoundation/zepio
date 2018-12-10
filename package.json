@@ -98,6 +98,7 @@
     "react": "^16.6.0",
     "react-click-outside": "tj/react-click-outside",
     "react-dom": "^16.6.0",
+    "react-icons": "^3.2.2",
     "react-popover": "^0.5.10",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
