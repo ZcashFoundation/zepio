@@ -11,6 +11,7 @@ const darkOne = '#7B00DD';
 const lightOne = '#ffffff';
 const brandOne = '#624cda';
 const brandTwo = '#a6ede2';
+const activeItem = '#F5CB00';
 
 const appTheme = {
   mode: DARK,
@@ -27,6 +28,9 @@ const appTheme = {
     sidebarBg: brandOne,
     sidebarItem: brandTwo,
     sidebarItemActive: lightOne,
+    cardBackgroundColor: '#000',
+    text: '#FFF',
+    activeItem,
   },
   size: {
     title: 18,
@@ -38,6 +42,6 @@ const appTheme = {
 // $FlowFixMe
 export const DoczWrapper = ({ children }) => <ThemeProvider theme={appTheme}>{children()}</ThemeProvider>;
 
-export const GlobalStyle = createGlobalStyle`${normalize()}`;
+export const GlobalStyle = createGlobalStyle`${[normalize()]}`;
 
 export default appTheme;
