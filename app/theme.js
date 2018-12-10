@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
 import theme from 'styled-theming';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 // $FlowFixMe
@@ -40,10 +40,17 @@ const appTheme = {
   },
 };
 
+export const GlobalStyle = createGlobalStyle`${[normalize()]}`;
+
 /* eslint-disable react/prop-types */
 // $FlowFixMe
-export const DoczWrapper = ({ children }) => <ThemeProvider theme={appTheme}>{children()}</ThemeProvider>;
-
-export const GlobalStyle = createGlobalStyle`${[normalize()]}`;
+export const DoczWrapper = ({ children }) => (
+  <ThemeProvider theme={appTheme}>
+    <Fragment>
+      <GlobalStyle />
+      {children()}
+    </Fragment>
+  </ThemeProvider>
+);
 
 export default appTheme;
