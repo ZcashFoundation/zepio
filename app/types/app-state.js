@@ -1,7 +1,7 @@
 // @flow
 
-import type { TodoType } from './todo';
+import type { State as WalletSummaryState } from '../redux/modules/wallet';
 
 export type AppState = {
-  todos: Array<TodoType>,
+  walletSummary: WalletSummaryState,
 };
