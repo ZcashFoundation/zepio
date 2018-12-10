@@ -4,12 +4,12 @@ name: DropDown
 
 import { Playground, PropsTable } from 'docz'
 
-import { Dropdown } from './dropdown.js'
+import { DropdownComponent } from './dropdown.js'
 import { DoczWrapper } from '../theme.js'
 
 # DropDown
 
-<PropsTable of={Dropdown} />
+<PropsTable of={DropdownComponent} />
 
 ## Basic usage
 
@@ -17,7 +17,7 @@ import { DoczWrapper } from '../theme.js'
   <DoczWrapper>
     {() => (
       <div style={{ height: '500px' }}>
-        <Dropdown
+        <DropdownComponent
           options={[
             { label: 'asbh1yeasbdh23848asdasd', onClick: console.log },
             { label: 'urtyruhjr374hbfdjdhuh', onClick: console.log },

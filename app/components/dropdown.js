@@ -16,6 +16,7 @@ const MenuWrapper = styled.div`
   border-radius: 10px;
   position: absolute;
   margin-left: -10px;
+  min-width: 200px;
 `;
 
 const MenuItem = styled.button`
@@ -41,7 +42,7 @@ const PopoverWithStyle = styled(Popover)`
 `;
 
 type Props = {
-  renderTrigger: (() => void) => Node,
+  renderTrigger: (toggleVisibility: () => void, isOpen: boolean) => Node,
   options: Array<{ label: string, onClick: () => void }>,
 };
 
@@ -49,14 +50,10 @@ type State = {
   isOpen: boolean,
 };
 
-export class Dropdown extends Component<Props, State> {
+export class DropdownComponent extends Component<Props, State> {
   state = {
     isOpen: false,
   };
-
-  toggleVisibility() {
-    this.setState(state => ({ isOpen: !state.isOpen }));
-  }
 
   render() {
     return (
@@ -77,7 +74,7 @@ export class Dropdown extends Component<Props, State> {
         ]}
         tipSize={10}
       >
-        {this.props.renderTrigger(() => this.toggleVisibility())}
+        {this.props.renderTrigger(() => this.setState(state => ({ isOpen: !state.isOpen })), this.state.isOpen)}
       </PopoverWithStyle>
     );
   }
