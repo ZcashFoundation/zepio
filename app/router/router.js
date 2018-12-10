@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { ScrollTopComponent } from './scroll-top';
 import { SidebarContainer } from '../containers/sidebar';
-import { DashboardView } from '../views/dashboard';
+import { DashboardContainer } from '../containers/dashboard';
 import { SendView } from '../views/send';
 import { ReceiveView } from '../views/receive';
 import { SettingsView } from '../views/settings';
@@ -24,7 +24,7 @@ export const RouterComponent = () => (
       {/* $FlowFixMe */}
       <LayoutComponent>
         <Switch>
-          <Route exact path={DASHBOARD_ROUTE} component={DashboardView} />
+          <Route exact path={DASHBOARD_ROUTE} component={DashboardContainer} />
           <Route path={SEND_ROUTE} component={SendView} />
           <Route path={RECEIVE_ROUTE} component={ReceiveView} />
           <Route path={SETTINGS_ROUTE} component={SettingsView} />
