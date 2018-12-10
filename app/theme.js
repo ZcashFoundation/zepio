@@ -12,6 +12,8 @@ const lightOne = '#ffffff';
 const brandOne = '#624cda';
 const brandTwo = '#a6ede2';
 const activeItem = '#F5CB00';
+const text = '#FFF';
+const cardBackgroundColor = '#000';
 
 const appTheme = {
   mode: DARK,
@@ -28,8 +30,8 @@ const appTheme = {
     sidebarBg: brandOne,
     sidebarItem: brandTwo,
     sidebarItemActive: lightOne,
-    cardBackgroundColor: '#000',
-    text: '#FFF',
+    cardBackgroundColor,
+    text,
     activeItem,
   },
   size: {
