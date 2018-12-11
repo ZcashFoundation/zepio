@@ -14,13 +14,14 @@ const Wrapper = styled.div`
   flex-direction: column;
   background-color: ${props => props.theme.colors.cardBackgroundColor};
   border-radius: 5px;
-  padding: 45px;
+  padding: 37px 45px;
   margin: 20px;
   position: relative;
 `;
 
 const AllAddresses = styled(TextComponent)`
   margin-bottom: 2.5px;
+  font-size: 0.625em;
 `;
 
 const ValueBox = styled.div`
@@ -29,12 +30,13 @@ const ValueBox = styled.div`
 `;
 
 const Label = styled(TextComponent)`
-  margin: 10px 0;
-  margin-left: -15px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  margin-left: -7.5px;
 `;
 
 const USDValue = styled(TextComponent)`
-  opacity: 0.7;
+  opacity: 0.5;
 `;
 
 const ShieldedValue = styled(Label)`
@@ -79,26 +81,26 @@ export const WalletSummaryComponent = ({
       label='All Addresses'
       renderTrigger={(toggleVisibility, isOpen) => (
         <SeeMoreButton onClick={toggleVisibility} isOpen={isOpen}>
-          <IoIosMore color={theme.colors.text} size={35} />
+          <IoIosMore color={theme.colors.text} size={15} />
         </SeeMoreButton>
       )}
       options={addresses.map(addr => ({ label: addr, onClick: x => x }))}
     />
     <AllAddresses value='ALL ADDRESSES' isBold />
     <ValueBox>
-      <TextComponent size='3em' value={`ZEC ${formatNumber(total)}`} isBold />
-      <USDValue value={`USD $${formatNumber(total * dollarValue)}`} size='2em' />
+      <TextComponent size='2.625em' value={`ZEC ${formatNumber(total)}`} isBold />
+      <USDValue value={`USD $${formatNumber(total * dollarValue)}`} size='1.750em' />
     </ValueBox>
     <RowComponent>
       <ValueBox>
-        <ShieldedValue value='&#9679; SHIELDED' isBold />
-        <TextComponent value={`ZEC ${formatNumber(shielded)}`} isBold size='1.3em' />
-        <USDValue value={`USD $${formatNumber(shielded * dollarValue)}`} size='1.3em' />
+        <ShieldedValue value='&#9679; SHIELDED' isBold size='0.625em' />
+        <TextComponent value={`ZEC ${formatNumber(shielded)}`} isBold size='1.125em' />
+        <USDValue value={`USD $${formatNumber(shielded * dollarValue)}`} size='0.750em' />
       </ValueBox>
       <ValueBox>
-        <Label value='&#9679; TRANSPARENT' isBold />
-        <TextComponent value={`ZEC ${formatNumber(transparent)}`} isBold size='1.3em' />
-        <USDValue value={`USD $${formatNumber(transparent * dollarValue)}`} size='1.3em' />
+        <Label value='&#9679; TRANSPARENT' isBold size='0.625em' />
+        <TextComponent value={`ZEC ${formatNumber(transparent)}`} isBold size='1.125em' />
+        <USDValue value={`USD $${formatNumber(transparent * dollarValue)}`} size='0.750em' />
       </ValueBox>
     </RowComponent>
   </Wrapper>
