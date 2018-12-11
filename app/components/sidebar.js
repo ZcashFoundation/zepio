@@ -1,9 +1,10 @@
 // @flow
 
-import React from 'react';
+import React, { type Element } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, withRouter, type Match } from 'react-router-dom';
 import { MENU_OPTIONS } from '../constants/sidebar';
+import { ZCashLogo } from './zcash-logo';
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,36 +13,63 @@ const Wrapper = styled.div`
   height: 100vh;
   font-family: ${props => props.theme.fontFamily}
   background-color: ${props => props.theme.colors.sidebarBg};
-  padding: 20px;
+`;
+
+const LogoWrapper = styled.div`
+  height: 60px;
+  width: 200px;
+  margin-bottom: 20px;
+  background-image: linear-gradient(
+    to right,
+    ${props => props.theme.colors.sidebarLogoGradientBegin},
+    ${props => props.theme.colors.sidebarLogoGradientEnd}
+  );
 `;
 
 const StyledLink = styled(Link)`
-  color: ${props => props.theme.colors.sidebarItem};
-  font-size: 16px;
+  color: ${props => (props.isActive ? props.theme.colors.sidebarItemActive : props.theme.colors.sidebarItem)};
+  font-size: 0.9em;
   text-decoration: none;
-  font-weight: 700;
-  padding: 5px 0;
+  font-weight: ${props => (props.isActive ? 700 : 400)};
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    color: ${props => props.theme.colors.sidebarItemActive};
+  }
 `;
 
 type MenuItem = {
   route: string,
   label: string,
+  icon: Element<*>,
 };
 
 type Props = {
   options?: MenuItem[],
+  match: Match,
 };
 
-export const SidebarComponent = ({ options }: Props) => (
+const Sidebar = ({ options, match }: Props) => (
   <Wrapper>
+    <LogoWrapper>
+      <ZCashLogo />
+    </LogoWrapper>
     {(options || []).map(item => (
-      <StyledLink key={item.route} to={item.route}>
+      <StyledLink isActive={match.path === item.route} key={item.route} to={item.route}>
+        {React.cloneElement(item.icon, {
+          style: { marginRight: '15px' },
+          size: 20,
+        })}
         {item.label}
       </StyledLink>
     ))}
   </Wrapper>
 );
 
-SidebarComponent.defaultProps = {
+export const SidebarComponent = withRouter(Sidebar);
+
+Sidebar.defaultProps = {
   options: MENU_OPTIONS,
 };
