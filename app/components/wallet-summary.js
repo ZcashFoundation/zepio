@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   background-color: ${props => props.theme.colors.cardBackgroundColor};
   border-radius: 5px;
-  padding: 30px;
+  padding: 45px;
   margin: 20px;
   position: relative;
 `;
