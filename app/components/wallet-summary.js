@@ -50,12 +50,15 @@ const SeeMoreButton = styled.button`
   border-width: 1px;
   border-color: ${props => (props.isOpen ? props.theme.colors.activeItem : props.theme.colors.text)};
   background-color: transparent;
-  width: 35px;
-  height: 35px;
+  padding: 5px;
   cursor: pointer;
   position: absolute;
   right: 10px;
   top: 10px;
+
+  &:hover {
+    border-color: ${props => props.theme.colors.activeItem};
+  }
 `;
 
 type Props = {
