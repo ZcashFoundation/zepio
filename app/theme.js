@@ -40,7 +40,13 @@ const appTheme = {
   },
 };
 
-export const GlobalStyle = createGlobalStyle`${[normalize()]}`;
+export const GlobalStyle = createGlobalStyle`
+  ${normalize()}
+
+  * {
+    box-sizing: border-box;
+  }
+`;
 
 /* eslint-disable react/prop-types */
 // $FlowFixMe
