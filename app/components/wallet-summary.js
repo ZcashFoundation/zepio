@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${props => props.theme.colors.cardBackgroundColor};
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 30px;
   margin: 20px;
   position: relative;
@@ -42,13 +42,16 @@ const ShieldedValue = styled(Label)`
 `;
 
 const SeeMoreButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   outline: none;
   border-radius: 100%;
   border-width: 1px;
   border-color: ${props => (props.isOpen ? props.theme.colors.activeItem : props.theme.colors.text)};
   background-color: transparent;
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   cursor: pointer;
   position: absolute;
   right: 10px;
