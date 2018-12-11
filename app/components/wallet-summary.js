@@ -10,10 +10,12 @@ import { DropdownComponent } from './dropdown';
 import theme from '../theme';
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   background-color: ${props => props.theme.colors.cardBackgroundColor};
   border-radius: 10px;
-  width: 100%;
   padding: 30px;
+  margin: 20px;
   position: relative;
 `;
 
@@ -58,12 +60,13 @@ type Props = {
   shielded: number,
   transparent: number,
   dollarValue: number,
+  addresses: string[],
 };
 
 const formatNumber = number => number.toLocaleString('de-DE');
 
 export const WalletSummaryComponent = ({
-  total, shielded, transparent, dollarValue,
+  total, shielded, transparent, dollarValue, addresses,
 }: Props) => (
   <Wrapper>
     <DropdownComponent
@@ -72,7 +75,7 @@ export const WalletSummaryComponent = ({
           <IoIosMore color={theme.colors.text} size={35} />
         </SeeMoreButton>
       )}
-      options={[]}
+      options={addresses.map(addr => ({ label: addr, onClick: x => x }))}
     />
     <AllAddresses value='ALL ADDRESSES' isBold />
     <ValueBox>

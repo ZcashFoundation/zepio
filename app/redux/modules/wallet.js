@@ -16,13 +16,20 @@ export const loadWalletSummarySuccess = ({
   total,
   shielded,
   transparent,
+  addresses,
 }: {
   total: number,
   shielded: number,
   transparent: number,
+  addresses: string[],
 }) => ({
   type: LOAD_WALLET_SUMMARY_SUCCESS,
-  payload: { total, shielded, transparent },
+  payload: {
+    total,
+    shielded,
+    transparent,
+    addresses,
+  },
 });
 
 export const loadWalletSummaryError = ({ error }: { error: string }) => ({
@@ -37,6 +44,7 @@ export type State = {
   error: string | null,
   isLoading: boolean,
   dollarValue: number,
+  addresses: [],
 };
 
 const initialState = {
@@ -46,6 +54,7 @@ const initialState = {
   error: null,
   isLoading: false,
   dollarValue: 0,
+  addresses: [],
 };
 
 export default (state: State = initialState, action: Action) => {

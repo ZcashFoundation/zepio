@@ -12,6 +12,7 @@ type Props = {
   error: string | null,
   isLoading: boolean,
   dollarValue: number,
+  addresses: string[],
 };
 
 export class DashboardView extends React.Component<Props> {
@@ -34,6 +35,7 @@ export class DashboardView extends React.Component<Props> {
             shielded={this.props.shielded}
             transparent={this.props.transparent}
             dollarValue={this.props.dollarValue}
+            addresses={this.props.addresses}
           />
         )}
       </div>

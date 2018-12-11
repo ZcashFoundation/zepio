@@ -16,6 +16,7 @@ const mapStateToProps = ({ walletSummary }: AppState) => ({
   error: walletSummary.error,
   isLoading: walletSummary.isLoading,
   dollarValue: walletSummary.dollarValue,
+  addresses: walletSummary.addresses,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -26,11 +27,16 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
     if (err) return dispatch(loadWalletSummaryError({ error: err.message }));
 
+    const [addressesErr, addresses] = await eres(rpc.z_listaddresses());
+
+    if (addressesErr) return dispatch(loadWalletSummaryError({ error: addressesErr.message }));
+
     dispatch(
       loadWalletSummarySuccess({
         transparent: walletSummary.transparent,
         total: walletSummary.total,
         shielded: walletSummary.private,
+        addresses,
       }),
     );
   },
