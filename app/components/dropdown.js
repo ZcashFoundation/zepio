@@ -11,11 +11,10 @@ import { TextComponent } from './text';
 
 /* eslint-disable max-len  */
 const MenuWrapper = styled.div`
-  background-image: ${props => `linear-gradient(to right, ${darken(0.005, props.theme.colors.activeItem)}, ${props.theme.colors.activeItem})`};
-  padding: 10px;
+  background-image: ${props => `linear-gradient(to right, ${darken(0.05, props.theme.colors.activeItem)}, ${props.theme.colors.activeItem})`};
+  padding: 10px 20px;
   border-radius: 10px;
   margin-left: -10px;
-  min-width: 400px;
 `;
 
 const MenuItem = styled.button`
@@ -28,9 +27,18 @@ const MenuItem = styled.button`
   padding: 15px 0;
   cursor: pointer;
   width: 100%;
+  text-align: left;
 
   &:hover {
     opacity: 0.9;
+  }
+
+  &:disabled {
+    cursor: default;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 `;
 
@@ -43,6 +51,7 @@ const PopoverWithStyle = styled(Popover)`
 type Props = {
   renderTrigger: (toggleVisibility: () => void, isOpen: boolean) => Node,
   options: Array<{ label: string, onClick: () => void }>,
+  label?: string | null,
 };
 
 type State = {
@@ -54,16 +63,23 @@ export class DropdownComponent extends Component<Props, State> {
     isOpen: false,
   };
 
+  static defaultProps = {
+    label: null,
+  };
+
   render() {
     return (
       <PopoverWithStyle
         isOpen={this.state.isOpen}
-        place={null}
         preferPlace='below'
         body={[
           <ClickOutside onClickOutside={() => this.setState(() => ({ isOpen: false }))}>
             <MenuWrapper>
-              <TextComponent value='All Addresses' isBold />
+              {this.props.label && (
+                <MenuItem disabled>
+                  <TextComponent value={this.props.label} isBold />
+                </MenuItem>
+              )}
               {this.props.options.map(({ label, onClick }) => (
                 <MenuItem onClick={onClick}>
                   <TextComponent value={label} />
@@ -72,7 +88,7 @@ export class DropdownComponent extends Component<Props, State> {
             </MenuWrapper>
           </ClickOutside>,
         ]}
-        tipSize={10}
+        tipSize={7}
       >
         {this.props.renderTrigger(() => this.setState(state => ({ isOpen: !state.isOpen })), this.state.isOpen)}
       </PopoverWithStyle>

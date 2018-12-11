@@ -73,6 +73,7 @@ export const WalletSummaryComponent = ({
 }: Props) => (
   <Wrapper>
     <DropdownComponent
+      label='All Addresses'
       renderTrigger={(toggleVisibility, isOpen) => (
         <SeeMoreButton onClick={toggleVisibility} isOpen={isOpen}>
           <IoIosMore color={theme.colors.text} size={35} />
