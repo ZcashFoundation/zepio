@@ -72,6 +72,7 @@ export class DropdownComponent extends Component<Props, State> {
       <PopoverWithStyle
         isOpen={this.state.isOpen}
         preferPlace='below'
+        enterExitTransitionDurationMs={0}
         body={[
           <ClickOutside onClickOutside={() => this.setState(() => ({ isOpen: false }))}>
             <MenuWrapper>
