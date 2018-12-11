@@ -14,9 +14,8 @@ const MenuWrapper = styled.div`
   background-image: ${props => `linear-gradient(to right, ${darken(0.005, props.theme.colors.activeItem)}, ${props.theme.colors.activeItem})`};
   padding: 10px;
   border-radius: 10px;
-  position: absolute;
   margin-left: -10px;
-  min-width: 200px;
+  min-width: 400px;
 `;
 
 const MenuItem = styled.button`
@@ -59,6 +58,7 @@ export class DropdownComponent extends Component<Props, State> {
     return (
       <PopoverWithStyle
         isOpen={this.state.isOpen}
+        place={null}
         preferPlace='below'
         body={[
           <ClickOutside onClickOutside={() => this.setState(() => ({ isOpen: false }))}>
