@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { WalletSummaryComponent } from '../components/wallet-summary';
+import { withDaemonStatusCheck } from '../components/with-daemon-status-check';
 
 type Props = {
   getSummary: () => void,
@@ -15,7 +16,7 @@ type Props = {
   addresses: string[],
 };
 
-export class DashboardView extends React.Component<Props> {
+export class Dashboard extends React.Component<Props> {
   componentDidMount() {
     this.props.getSummary();
   }
@@ -42,3 +43,5 @@ export class DashboardView extends React.Component<Props> {
     );
   }
 }
+
+export const DashboardView = withDaemonStatusCheck(Dashboard);
