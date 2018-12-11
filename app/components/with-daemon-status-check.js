@@ -21,14 +21,7 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
     componentDidMount() {
       this.runTest();
 
-      this.timer = setInterval(() => this.runTest(), 3000);
-    }
-
-    componentDidUpdate(prevProps: Props, prevState: State) {
-      if (!prevState.isRunning && this.state.isRunning && this.timer) {
-        clearInterval(this.timer);
-        this.timer = null;
-      }
+      this.timer = setInterval(this.runTest, 2000);
     }
 
     componentWillUnmount() {
@@ -38,11 +31,17 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
       }
     }
 
-    runTest() {
+    runTest = () => {
       rpc.getinfo().then((response) => {
-        if (response) this.setState(() => ({ isRunning: true }));
+        if (response) {
+          this.setState(() => ({ isRunning: true }));
+          if (this.timer) {
+            clearInterval(this.timer);
+            this.timer = null;
+          }
+        }
       });
-    }
+    };
 
     render() {
       if (this.state.isRunning) {
