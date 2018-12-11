@@ -9,9 +9,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 200px;
-  position: absolute;
-  left: 0;
-  top: 0;
   height: 100vh;
   font-family: ${props => props.theme.fontFamily}
   background-color: ${props => props.theme.colors.sidebarBg};

@@ -1,7 +1,8 @@
 // @flow
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { ScrollTopComponent } from './scroll-top';
 import { SidebarContainer } from '../containers/sidebar';
@@ -17,8 +18,14 @@ import {
   DASHBOARD_ROUTE, SEND_ROUTE, RECEIVE_ROUTE, SETTINGS_ROUTE, CONSOLE_ROUTE,
 } from '../constants/routes';
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+`;
+
 export const RouterComponent = () => (
-  <Fragment>
+  <Wrapper>
     <SidebarContainer />
     <ScrollTopComponent>
       {/* $FlowFixMe */}
@@ -33,5 +40,5 @@ export const RouterComponent = () => (
         </Switch>
       </LayoutComponent>
     </ScrollTopComponent>
-  </Fragment>
+  </Wrapper>
 );
