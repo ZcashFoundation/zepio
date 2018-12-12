@@ -34,6 +34,7 @@ const StyledLink = styled(Link)`
   padding: 15px 20px;
   display: flex;
   align-items: center;
+  outline: none;
 
   &:hover {
     color: ${props => props.theme.colors.sidebarItemActive};
