@@ -44,7 +44,9 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
     };
 
     render() {
-      if (this.state.isRunning) {
+      const { isRunning } = this.state;
+
+      if (isRunning) {
         return <WrappedComponent {...this.props} {...this.state} />;
       }
 

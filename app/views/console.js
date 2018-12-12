@@ -24,10 +24,12 @@ export class ConsoleView extends Component<Props, State> {
   }
 
   render() {
+    const { log } = this.state;
+
     return (
       <div className='dashboard'>
-        {this.state.log
-          && this.state.log.split('\n').map(item => (
+        {log
+          && log.split('\n').map(item => (
             <Fragment key={`${item.slice(0, 10)}`}>
               {item}
               <br />
