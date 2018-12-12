@@ -7,6 +7,8 @@ import { RowComponent } from './row';
 import { DropdownComponent } from './dropdown';
 import MenuIcon from '../assets/images/menu_icon.svg';
 
+import formatNumber from '../utils/formatNumber';
+
 import theme from '../theme';
 
 const Wrapper = styled.div`
@@ -77,8 +79,6 @@ type Props = {
   addresses: string[],
 };
 
-const formatNumber = number => number.toLocaleString('de-DE');
-
 export const WalletSummaryComponent = ({
   total, shielded, transparent, dollarValue, addresses,
 }: Props) => (
@@ -99,12 +99,12 @@ export const WalletSummaryComponent = ({
     </ValueBox>
     <RowComponent>
       <ValueBox>
-        <ShieldedValue value='&#9679; SHIELDED' isBold />
+        <ShieldedValue value='&#9679; SHIELDED' isBold size={theme.fontSize.text * 0.8} />
         <TextComponent value={`ZEC ${formatNumber(shielded)}`} isBold size={theme.fontSize.zecValueBase} />
         <USDValue value={`USD $${formatNumber(shielded * dollarValue)}`} />
       </ValueBox>
       <ValueBox>
-        <Label value='&#9679; TRANSPARENT' isBold />
+        <Label value='&#9679; TRANSPARENT' isBold size={theme.fontSize.text * 0.8} />
         <TextComponent value={`ZEC ${formatNumber(transparent)}`} isBold size={theme.fontSize.zecValueBase} />
         <USDValue value={`USD $${formatNumber(transparent * dollarValue)}`} />
       </ValueBox>
