@@ -1,11 +1,11 @@
 // @flow
 import React from 'react';
 import styled from 'styled-components';
-import { IoIosMore } from 'react-icons/io';
 
 import { TextComponent } from './text';
 import { RowComponent } from './row';
 import { DropdownComponent } from './dropdown';
+import MenuIcon from '../assets/images/menu_icon.svg';
 
 import theme from '../theme';
 
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 
 const AllAddresses = styled(TextComponent)`
   margin-bottom: 2.5px;
-  font-size: 0.625em;
+  font-size: ${props => `${props.theme.fontSize.text}em`};
 `;
 
 const ValueBox = styled.div`
@@ -48,9 +48,10 @@ const SeeMoreButton = styled.button`
   align-items: center;
   justify-content: center;
   outline: none;
+  border-style: solid;
   border-radius: 100%;
   border-width: 1px;
-  border-color: ${props => (props.isOpen ? props.theme.colors.activeItem : props.theme.colors.text)};
+  border-color: ${props => (props.isOpen ? props.theme.colors.activeItem : props.theme.colors.inactiveItem)};
   background-color: transparent;
   padding: 5px;
   cursor: pointer;
@@ -61,6 +62,11 @@ const SeeMoreButton = styled.button`
   &:hover {
     border-color: ${props => props.theme.colors.activeItem};
   }
+`;
+
+const SeeMoreIcon = styled.img`
+  width: 25px;
+  height: 25px;
 `;
 
 type Props = {
@@ -81,26 +87,26 @@ export const WalletSummaryComponent = ({
       label='All Addresses'
       renderTrigger={(toggleVisibility, isOpen) => (
         <SeeMoreButton onClick={toggleVisibility} isOpen={isOpen}>
-          <IoIosMore color={theme.colors.text} size={15} />
+          <SeeMoreIcon src={MenuIcon} alt='Menu Icon' />
         </SeeMoreButton>
       )}
       options={addresses.map(addr => ({ label: addr, onClick: x => x }))}
     />
     <AllAddresses value='ALL ADDRESSES' isBold />
     <ValueBox>
-      <TextComponent size='2.625em' value={`ZEC ${formatNumber(total)}`} isBold />
-      <USDValue value={`USD $${formatNumber(total * dollarValue)}`} size='1.750em' />
+      <TextComponent size={theme.fontSize.zecValueBase * 2.5} value={`ZEC ${formatNumber(total)}`} isBold />
+      <USDValue value={`USD $${formatNumber(total * dollarValue)}`} size={theme.fontSize.zecValueBase * 2} />
     </ValueBox>
     <RowComponent>
       <ValueBox>
-        <ShieldedValue value='&#9679; SHIELDED' isBold size='0.625em' />
-        <TextComponent value={`ZEC ${formatNumber(shielded)}`} isBold size='1.125em' />
-        <USDValue value={`USD $${formatNumber(shielded * dollarValue)}`} size='0.750em' />
+        <ShieldedValue value='&#9679; SHIELDED' isBold />
+        <TextComponent value={`ZEC ${formatNumber(shielded)}`} isBold size={theme.fontSize.zecValueBase} />
+        <USDValue value={`USD $${formatNumber(shielded * dollarValue)}`} />
       </ValueBox>
       <ValueBox>
-        <Label value='&#9679; TRANSPARENT' isBold size='0.625em' />
-        <TextComponent value={`ZEC ${formatNumber(transparent)}`} isBold size='1.125em' />
-        <USDValue value={`USD $${formatNumber(transparent * dollarValue)}`} size='0.750em' />
+        <Label value='&#9679; TRANSPARENT' isBold />
+        <TextComponent value={`ZEC ${formatNumber(transparent)}`} isBold size={theme.fontSize.zecValueBase} />
+        <USDValue value={`USD $${formatNumber(transparent * dollarValue)}`} />
       </ValueBox>
     </RowComponent>
   </Wrapper>
