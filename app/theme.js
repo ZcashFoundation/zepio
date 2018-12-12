@@ -19,6 +19,8 @@ const sidebarLogoGradientEnd = '#FFE240';
 const sidebarHoveredItem = '#1C1C1C';
 const sidebarHoveredItemLabel = '#969696';
 const background = '#212124';
+const transactionSent = '#FF6C6C';
+const transactionReceived = '#6AEAC0';
 
 const appTheme = {
   mode: DARK,
@@ -29,7 +31,7 @@ const appTheme = {
   },
   fontSize: {
     title: 1.25,
-    text: 0.9375,
+    text: 0.84375,
     zecValueBase: 1.125,
   },
   colors: {
@@ -53,6 +55,8 @@ const appTheme = {
     sidebarLogoGradientBegin,
     sidebarLogoGradientEnd,
     background,
+    transactionSent,
+    transactionReceived,
   },
   sidebarWidth: '200px',
   headerHeight: '60px',
