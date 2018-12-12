@@ -13,8 +13,14 @@ const defaultStyles = `
   // $FlowFixMe
   props => props.theme.fontFamily
 };
-  font-weight: bold;
-  font-size: 0.9em;
+  font-weight: ${
+  // $FlowFixMe
+  props => props.theme.fontWeight.bold
+};
+  font-size: ${
+  // $FlowFixMe
+  props => `${props.theme.fontSize.text}em`
+};
   cursor: pointer;
   outline: none;
   min-width: 100px;

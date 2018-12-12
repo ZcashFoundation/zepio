@@ -10,7 +10,7 @@ const Text = styled.p`
   color: ${props => props.color || props.theme.colors.text};
   margin: 0;
   padding: 0;
-  font-weight: ${props => (props.isBold ? 'bold' : '400')};
+  font-weight: ${props => (props.isBold ? props.theme.fontWeight.bold : props.theme.fontWeight.default)};
 `;
 
 type Props = {
@@ -18,13 +18,13 @@ type Props = {
   isBold?: boolean,
   color?: string,
   className?: string,
-  size?: string,
+  size?: string | number,
 };
 
 export const TextComponent = ({
   value, isBold, color, className, size,
 }: Props) => (
-  <Text className={className} isBold={isBold} color={color} size={size}>
+  <Text className={className} isBold={isBold} color={color} size={`${String(size)}em`}>
     {value}
   </Text>
 );
@@ -33,5 +33,5 @@ TextComponent.defaultProps = {
   className: '',
   isBold: false,
   color: theme.colors.text,
-  size: '1em',
+  size: `${theme.fontSize.text}em`,
 };
