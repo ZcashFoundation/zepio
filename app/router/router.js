@@ -13,32 +13,42 @@ import { SettingsView } from '../views/settings';
 import { NotFoundView } from '../views/not-found';
 import { ConsoleView } from '../views/console';
 import { LayoutComponent } from '../components/layout';
+import { HeaderComponent } from '../components/header';
 
 import {
   DASHBOARD_ROUTE, SEND_ROUTE, RECEIVE_ROUTE, SETTINGS_ROUTE, CONSOLE_ROUTE,
 } from '../constants/routes';
 
-const Wrapper = styled.div`
+const FullWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const ContentWrapper = styled.div`
   display: flex;
   flex-direction: row;
   width: 100vw;
 `;
 
 export const RouterComponent = ({ location }: { location: Location }) => (
-  <Wrapper>
-    <SidebarContainer location={location} />
-    <ScrollTopComponent>
-      {/* $FlowFixMe */}
-      <LayoutComponent>
-        <Switch>
-          <Route exact path={DASHBOARD_ROUTE} component={DashboardContainer} />
-          <Route path={SEND_ROUTE} component={SendView} />
-          <Route path={RECEIVE_ROUTE} component={ReceiveView} />
-          <Route path={SETTINGS_ROUTE} component={SettingsView} />
-          <Route path={CONSOLE_ROUTE} component={ConsoleView} />
-          <Route component={NotFoundView} />
-        </Switch>
-      </LayoutComponent>
-    </ScrollTopComponent>
-  </Wrapper>
+  <FullWrapper>
+    <HeaderComponent title='Dashboard' />
+    <ContentWrapper>
+      <SidebarContainer location={location} />
+      <ScrollTopComponent>
+        {/* $FlowFixMe */}
+        <LayoutComponent>
+          <Switch>
+            <Route exact path={DASHBOARD_ROUTE} component={DashboardContainer} />
+            <Route path={SEND_ROUTE} component={SendView} />
+            <Route path={RECEIVE_ROUTE} component={ReceiveView} />
+            <Route path={SETTINGS_ROUTE} component={SettingsView} />
+            <Route path={CONSOLE_ROUTE} component={ConsoleView} />
+            <Route component={NotFoundView} />
+          </Switch>
+        </LayoutComponent>
+      </ScrollTopComponent>
+    </ContentWrapper>
+  </FullWrapper>
 );
