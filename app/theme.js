@@ -52,7 +52,7 @@ const appTheme = {
   },
   sidebarWidth: '200px',
   headerHeight: '60px',
-  layoutPaddingLeft: '35px',
+  layoutPaddingLeft: '50px',
   layoutPaddingRight: '45px',
 };
 
