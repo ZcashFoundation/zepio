@@ -41,6 +41,7 @@ const Title = styled(TextComponent)`
   font-size: ${props => `${props.theme.fontSize.title}em`};
   margin-top: 10px;
   margin-bottom: 10px;
+  text-transform: capitalize;
 `;
 
 const Divider = styled.div`

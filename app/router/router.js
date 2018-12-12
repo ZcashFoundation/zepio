@@ -31,9 +31,15 @@ const ContentWrapper = styled.div`
   width: 100vw;
 `;
 
+const getTitle = (path: string) => {
+  if (path === '/') return 'Dashboard';
+
+  return path.replace('/', '');
+};
+
 export const RouterComponent = ({ location }: { location: Location }) => (
   <FullWrapper>
-    <HeaderComponent title='Dashboard' />
+    <HeaderComponent title={getTitle(location.pathname)} />
     <ContentWrapper>
       <SidebarContainer location={location} />
       <ScrollTopComponent>
