@@ -34,8 +34,9 @@ const TransactionTime = styled(TextComponent)`
   color: ${props => props.theme.colors.inactiveItem};
 `;
 
-const Column = styled(ColumnComponent)`
+const TransactionColumn = styled(ColumnComponent)`
   margin-left: 10px;
+  margin-right: 80px;
 `;
 
 type Props = {
@@ -54,14 +55,16 @@ export const TransactionItemComponent = ({
   const isReceived = type === 'received';
   return (
     <Wrapper alignItems='center' justifyContent='space-between'>
-      <RowComponent alignItems='center'>
-        <Icon src={isReceived ? ReceivedIcon : SentIcon} alt='Transaction Type Icon' />
-        <Column>
-          <TransactionTypeLabel isReceived={isReceived} value={type} />
-          <TransactionTime value={dateFns.format(new Date(date), 'HH:mm')} />
-        </Column>
+      <RowComponent>
+        <RowComponent alignItems='center'>
+          <Icon src={isReceived ? ReceivedIcon : SentIcon} alt='Transaction Type Icon' />
+          <TransactionColumn>
+            <TransactionTypeLabel isReceived={isReceived} value={type} />
+            <TransactionTime value={dateFns.format(new Date(date), 'HH:mm')} />
+          </TransactionColumn>
+        </RowComponent>
+        <TextComponent value={truncateAddress(address)} align='left' />
       </RowComponent>
-      <TextComponent value={truncateAddress(address)} align='center' />
       <ColumnComponent>
         <TextComponent
           value={formatNumber(amount, `${isReceived ? '+' : '-'}ZEC `)}
