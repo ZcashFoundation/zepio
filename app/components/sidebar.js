@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Link, type Location } from 'react-router-dom';
 import { MENU_OPTIONS } from '../constants/sidebar';
@@ -20,18 +20,19 @@ const StyledLink = styled(Link)`
   font-size: ${props => `${props.theme.fontSize.text}em`};
   text-decoration: none;
   font-weight: ${props => (props.isActive ? props.theme.fontWeight.bold : props.theme.fontWeight.default)};
-  padding: 15px 20px;
+  padding: 0 20px;
+  height: 35px;
+  width: 100%;
+  margin: 12.5px 0;
   display: flex;
   align-items: center;
   outline: none;
   border-right: ${props => (props.isActive ? `1px solid ${props.theme.colors.sidebarItemActive}` : 'none')};
 
   &:hover {
-    color: ${props => props.theme.colors.sidebarItemActive};
-
-    svg {
-      color: ${props => props.theme.colors.sidebarItemActive};
-    }
+    color: ${/* eslint-disable-next-line max-len */
+  props => (props.isActive ? props.theme.colors.sidebarItemActive : props.theme.colors.sidebarHoveredItemLabel)};
+    background-color: ${props => props.theme.colors.sidebarHoveredItem};
   }
 `;
 
@@ -52,41 +53,20 @@ type Props = {
   location: Location,
 };
 
-type State = {
-  currentHovered: string | null,
+export const SidebarComponent = ({ options, location }: Props) => (
+  <Wrapper>
+    {(options || []).map((item) => {
+      const isActive = location.pathname === item.route;
+      return (
+        <StyledLink isActive={isActive} key={item.route} to={item.route}>
+          <Icon src={item.icon(isActive)} alt={`Sidebar Icon ${item.route}`} />
+          {item.label}
+        </StyledLink>
+      );
+    })}
+  </Wrapper>
+);
+
+SidebarComponent.defaultProps = {
+  options: MENU_OPTIONS,
 };
-
-export class SidebarComponent extends Component<Props, State> {
-  static defaultProps = {
-    options: MENU_OPTIONS,
-  };
-
-  state = {
-    currentHovered: null,
-  };
-
-  render() {
-    const { options, location } = this.props;
-    const { currentHovered } = this.state;
-
-    return (
-      <Wrapper>
-        {(options || []).map((item) => {
-          const isActive = location.pathname === item.route;
-          return (
-            <StyledLink
-              onMouseEnter={() => this.setState(() => ({ currentHovered: item.route }))}
-              onMouseLeave={() => this.setState(() => ({ currentHovered: null }))}
-              isActive={isActive}
-              key={item.route}
-              to={item.route}
-            >
-              <Icon src={item.icon(currentHovered === item.route || isActive)} alt={`Sidebar Icon ${item.route}`} />
-              {item.label}
-            </StyledLink>
-          );
-        })}
-      </Wrapper>
-    );
-  }
-}

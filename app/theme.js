@@ -16,6 +16,8 @@ const text = '#FFF';
 const cardBackgroundColor = '#000';
 const sidebarLogoGradientBegin = '#F4B728';
 const sidebarLogoGradientEnd = '#FFE240';
+const sidebarHoveredItem = '#1C1C1C';
+const sidebarHoveredItemLabel = '#969696';
 const background = '#212124';
 
 const appTheme = {
@@ -42,6 +44,8 @@ const appTheme = {
     sidebarBg: brandOne,
     sidebarItem: brandTwo,
     sidebarItemActive: activeItem,
+    sidebarHoveredItem,
+    sidebarHoveredItemLabel,
     cardBackgroundColor,
     text,
     activeItem,
