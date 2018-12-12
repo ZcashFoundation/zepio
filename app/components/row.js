@@ -14,6 +14,7 @@ const Flex = styled.div`
 type Props = {
   alignItems?: string,
   justifyContent?: string,
+  className?: string,
   children: Node,
 };
 
@@ -24,4 +25,5 @@ export const RowComponent = ({ children, ...props }: Props) => (
 RowComponent.defaultProps = {
   alignItems: 'flex-start',
   justifyContent: 'flex-start',
+  className: '',
 };
