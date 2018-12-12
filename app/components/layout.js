@@ -8,7 +8,9 @@ const Layout = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100vh;
-  background: ${props => props.theme.colors.secondary};
+  background-color: ${props => props.theme.colors.background};
+  padding-left: 35px;
+  padding-right: 45px;
 `;
 
 type Props = {
