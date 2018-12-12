@@ -2,7 +2,7 @@
 import React from 'react';
 
 export const ZCashLogo = () => (
-  <svg xmlns='http://www.w3.org/2000/svg' viewBox='-64 -5 150 150'>
+  <svg xmlns='http://www.w3.org/2000/svg' viewBox='-75 -10 175 175'>
     <defs>
       <style>{'.a{ fill:#040508; }'}</style>
     </defs>
