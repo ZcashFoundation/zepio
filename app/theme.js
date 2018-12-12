@@ -21,6 +21,15 @@ const background = '#212124';
 const appTheme = {
   mode: DARK,
   fontFamily: 'PT Sans',
+  fontWeight: {
+    bold: 700,
+    default: 400,
+  },
+  fontSize: {
+    title: 1.25,
+    text: 0.9375,
+    zecValueBase: 1.125,
+  },
   colors: {
     primary: theme('mode', {
       light: lightOne,
@@ -36,14 +45,15 @@ const appTheme = {
     cardBackgroundColor,
     text,
     activeItem,
+    inactiveItem: brandTwo,
     sidebarLogoGradientBegin,
     sidebarLogoGradientEnd,
     background,
   },
-  size: {
-    title: 18,
-    paragraph: 12,
-  },
+  sidebarWidth: '200px',
+  headerHeight: '60px',
+  layoutPaddingLeft: '35px',
+  layoutPaddingRight: '45px',
 };
 
 export const GlobalStyle = createGlobalStyle`
