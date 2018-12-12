@@ -16,6 +16,7 @@ const text = '#FFF';
 const cardBackgroundColor = '#000';
 const sidebarLogoGradientBegin = '#F4B728';
 const sidebarLogoGradientEnd = '#FFE240';
+const background = '#212124';
 
 const appTheme = {
   mode: DARK,
@@ -37,6 +38,7 @@ const appTheme = {
     activeItem,
     sidebarLogoGradientBegin,
     sidebarLogoGradientEnd,
+    background,
   },
   size: {
     title: 18,
