@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   background-color: ${props => props.theme.colors.cardBackgroundColor};
   border-radius: 5px;
   padding: 37px 45px;
-  margin: 20px;
+  margin-top: 20px;
   position: relative;
 `;
 
