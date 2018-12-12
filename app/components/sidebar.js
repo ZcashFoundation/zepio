@@ -2,7 +2,7 @@
 
 import React, { type Element } from 'react';
 import styled from 'styled-components';
-import { Link, withRouter, type Match } from 'react-router-dom';
+import { Link, type Location } from 'react-router-dom';
 import { MENU_OPTIONS } from '../constants/sidebar';
 import { ZCashLogo } from './zcash-logo';
 
@@ -48,16 +48,16 @@ type MenuItem = {
 
 type Props = {
   options?: MenuItem[],
-  match: Match,
+  location: Location,
 };
 
-const Sidebar = ({ options, match }: Props) => (
+export const SidebarComponent = ({ options, location }: Props) => (
   <Wrapper>
     <LogoWrapper>
       <ZCashLogo />
     </LogoWrapper>
     {(options || []).map(item => (
-      <StyledLink isActive={match.path === item.route} key={item.route} to={item.route}>
+      <StyledLink isActive={location.pathname === item.route} key={item.route} to={item.route}>
         {React.cloneElement(item.icon, {
           style: { marginRight: '15px' },
           size: 20,
@@ -68,8 +68,6 @@ const Sidebar = ({ options, match }: Props) => (
   </Wrapper>
 );
 
-export const SidebarComponent = withRouter(Sidebar);
-
-Sidebar.defaultProps = {
+SidebarComponent.defaultProps = {
   options: MENU_OPTIONS,
 };

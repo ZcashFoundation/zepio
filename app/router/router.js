@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, type Location } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ScrollTopComponent } from './scroll-top';
@@ -24,9 +24,9 @@ const Wrapper = styled.div`
   width: 100vw;
 `;
 
-export const RouterComponent = () => (
+export const RouterComponent = ({ location }: { location: Location }) => (
   <Wrapper>
-    <SidebarContainer />
+    <SidebarContainer location={location} />
     <ScrollTopComponent>
       {/* $FlowFixMe */}
       <LayoutComponent>
