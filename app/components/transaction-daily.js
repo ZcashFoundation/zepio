@@ -1,11 +1,14 @@
 // @flow
-import React, { Fragment } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import dateFns from 'date-fns';
 import { TransactionItemComponent, type Transaction } from './transaction-item';
 import { TextComponent } from './text';
 
 const Wrapper = styled.div`
+  margin-top: 20px;
+`;
+
+const TransactionsWrapper = styled.div`
   border-radius: 7.5px;
   overflow: hidden;
   background-color: ${props => props.theme.colors.cardBackgroundColor};
@@ -35,17 +38,17 @@ type Props = {
 };
 
 export const TransactionDailyComponent = ({ transactionsDate, transactions }: Props) => (
-  <Fragment>
-    <Day value={dateFns.format(transactionsDate, 'MMM D, YYYY')} />
-    <Wrapper>
+  <Wrapper>
+    <Day value={transactionsDate} />
+    <TransactionsWrapper>
       {transactions.map(({
         date, type, address, amount,
-      }) => (
+      }, idx) => (
         <div>
-          <TransactionItemComponent type={type} date={date} address={address} amount={amount} />
-          <Divider />
+          <TransactionItemComponent type={type} date={date} address={address || ''} amount={amount} />
+          {idx < transactions.length - 1 && <Divider />}
         </div>
       ))}
-    </Wrapper>
-  </Fragment>
+    </TransactionsWrapper>
+  </Wrapper>
 );
