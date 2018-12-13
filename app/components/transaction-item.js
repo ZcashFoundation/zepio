@@ -16,8 +16,7 @@ import formatNumber from '../utils/formatNumber';
 
 const Wrapper = styled(RowComponent)`
   background-color: ${props => props.theme.colors.cardBackgroundColor};
-  padding: 15px 17px;
-  border-radius: 7.5px;
+  padding: 10px 17px;
 `;
 
 const Icon = styled.img`
@@ -37,9 +36,10 @@ const TransactionTime = styled(TextComponent)`
 const TransactionColumn = styled(ColumnComponent)`
   margin-left: 10px;
   margin-right: 80px;
+  min-width: 60px;
 `;
 
-type Props = {
+export type Transaction = {
   type: 'sent' | 'received',
   date: string,
   address: string,
@@ -51,11 +51,11 @@ const truncateAddress = (address: string) => `${address.substr(0, 20)}...${addre
 
 export const TransactionItemComponent = ({
   type, date, address, amount,
-}: Props) => {
+}: Transaction) => {
   const isReceived = type === 'received';
   return (
     <Wrapper alignItems='center' justifyContent='space-between'>
-      <RowComponent>
+      <RowComponent alignItems='center'>
         <RowComponent alignItems='center'>
           <Icon src={isReceived ? ReceivedIcon : SentIcon} alt='Transaction Type Icon' />
           <TransactionColumn>
