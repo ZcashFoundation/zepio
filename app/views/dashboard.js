@@ -3,7 +3,10 @@
 import React from 'react';
 
 import { WalletSummaryComponent } from '../components/wallet-summary';
+import { TransactionDailyComponent } from '../components/transaction-daily';
 import { withDaemonStatusCheck } from '../components/with-daemon-status-check';
+
+import type { Transaction } from '../components/transaction-item';
 
 type Props = {
   getSummary: () => void,
@@ -14,6 +17,7 @@ type Props = {
   isLoading: boolean,
   dollarValue: number,
   addresses: string[],
+  transactions: { [day: string]: Transaction[] },
 };
 
 export class Dashboard extends React.Component<Props> {
@@ -24,8 +28,10 @@ export class Dashboard extends React.Component<Props> {
 
   render() {
     const {
-      error, isLoading, total, shielded, transparent, dollarValue, addresses,
+      error, isLoading, total, shielded, transparent, dollarValue, addresses, transactions,
     } = this.props;
+
+    const days = Object.keys(transactions);
 
     if (error) {
       return error;
@@ -36,13 +42,18 @@ export class Dashboard extends React.Component<Props> {
         {isLoading ? (
           'Loading'
         ) : (
-          <WalletSummaryComponent
-            total={total}
-            shielded={shielded}
-            transparent={transparent}
-            dollarValue={dollarValue}
-            addresses={addresses}
-          />
+          <div>
+            <WalletSummaryComponent
+              total={total}
+              shielded={shielded}
+              transparent={transparent}
+              dollarValue={dollarValue}
+              addresses={addresses}
+            />
+            {days.map(day => (
+              <TransactionDailyComponent transactionsDate={day} transactions={transactions[day]} />
+            ))}
+          </div>
         )}
       </div>
     );
