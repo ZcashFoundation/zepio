@@ -16,7 +16,7 @@ import formatNumber from '../utils/formatNumber';
 
 const Wrapper = styled(RowComponent)`
   background-color: ${props => props.theme.colors.cardBackgroundColor};
-  padding: 10px 17px;
+  padding: 15px 17px;
 `;
 
 const Icon = styled.img`
@@ -40,7 +40,7 @@ const TransactionColumn = styled(ColumnComponent)`
 `;
 
 export type Transaction = {
-  type: 'sent' | 'received',
+  type: 'send' | 'receive',
   date: string,
   address: string,
   amount: number,
@@ -52,7 +52,7 @@ const truncateAddress = (address: string) => `${address.substr(0, 20)}...${addre
 export const TransactionItemComponent = ({
   type, date, address, amount,
 }: Transaction) => {
-  const isReceived = type === 'received';
+  const isReceived = type === 'receive';
   return (
     <Wrapper alignItems='center' justifyContent='space-between'>
       <RowComponent alignItems='center'>
@@ -60,18 +60,18 @@ export const TransactionItemComponent = ({
           <Icon src={isReceived ? ReceivedIcon : SentIcon} alt='Transaction Type Icon' />
           <TransactionColumn>
             <TransactionTypeLabel isReceived={isReceived} value={type} />
-            <TransactionTime value={dateFns.format(new Date(date), 'HH:mm')} />
+            <TransactionTime value={dateFns.format(new Date(date), 'HH:mm A')} />
           </TransactionColumn>
         </RowComponent>
         <TextComponent value={truncateAddress(address)} align='left' />
       </RowComponent>
-      <ColumnComponent>
+      <ColumnComponent alignItems='flex-end'>
         <TextComponent
-          value={formatNumber(amount, `${isReceived ? '+' : '-'}ZEC `)}
+          value={formatNumber({ value: amount, append: `${isReceived ? '+' : '-'}ZEC ` })}
           color={isReceived ? theme.colors.transactionReceived : theme.colors.transactionSent}
         />
         <TextComponent
-          value={formatNumber(amount, `${isReceived ? '+' : '-'}USD $`)}
+          value={formatNumber({ value: amount, append: `${isReceived ? '+' : '-'}USD $` })}
           color={theme.colors.inactiveItem}
         />
       </ColumnComponent>
