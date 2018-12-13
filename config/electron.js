@@ -13,6 +13,8 @@ import eres from 'eres';
 import { registerDebugShortcut } from '../utils/debug-shortcut';
 import runDaemon from './daemon/zcashd-child-process';
 import zcashLog from './daemon/logger';
+import getZecPrice from '../services/zec-price';
+import store from './electron-store';
 
 let mainWindow: BrowserWindowType;
 let updateAvailable: boolean = false;
@@ -56,6 +58,10 @@ const createWindow = () => {
       devTools: true,
       webSecurity: false,
     },
+  });
+
+  getZecPrice().then((obj) => {
+    store.set('ZEC_DOLLAR_PRICE', obj.USD);
   });
 
   mainWindow.setVisibleOnAllWorkspaces(true);
