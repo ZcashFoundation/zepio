@@ -15,7 +15,7 @@ type Props = {
   transparent: number,
   error: string | null,
   isLoading: boolean,
-  dollarValue: number,
+  zecPrice: number,
   addresses: string[],
   transactions: { [day: string]: Transaction[] },
 };
@@ -28,7 +28,7 @@ export class Dashboard extends React.Component<Props> {
 
   render() {
     const {
-      error, isLoading, total, shielded, transparent, dollarValue, addresses, transactions,
+      error, isLoading, total, shielded, transparent, zecPrice, addresses, transactions,
     } = this.props;
 
     const days = Object.keys(transactions);
@@ -47,11 +47,11 @@ export class Dashboard extends React.Component<Props> {
               total={total}
               shielded={shielded}
               transparent={transparent}
-              dollarValue={dollarValue}
+              zecPrice={zecPrice}
               addresses={addresses}
             />
             {days.map(day => (
-              <TransactionDailyComponent transactionsDate={day} transactions={transactions[day]} />
+              <TransactionDailyComponent transactionsDate={day} transactions={transactions[day]} zecPrice={zecPrice} />
             ))}
           </div>
         )}

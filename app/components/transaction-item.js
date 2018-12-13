@@ -44,13 +44,14 @@ export type Transaction = {
   date: string,
   address: string,
   amount: number,
+  zecPrice: number,
 };
 
 /* eslint-disable-next-line max-len */
 const truncateAddress = (address: string) => `${address.substr(0, 20)}...${address.substr(address.length - 10, address.length)}`;
 
 export const TransactionItemComponent = ({
-  type, date, address, amount,
+  type, date, address, amount, zecPrice,
 }: Transaction) => {
   const isReceived = type === 'receive';
   return (
@@ -71,7 +72,7 @@ export const TransactionItemComponent = ({
           color={isReceived ? theme.colors.transactionReceived : theme.colors.transactionSent}
         />
         <TextComponent
-          value={formatNumber({ value: amount, append: `${isReceived ? '+' : '-'}USD $` })}
+          value={formatNumber({ value: amount * zecPrice, append: `${isReceived ? '+' : '-'}USD $` })}
           color={theme.colors.inactiveItem}
         />
       </ColumnComponent>

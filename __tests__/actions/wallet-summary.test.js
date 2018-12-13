@@ -33,6 +33,7 @@ describe('WalletSummary Actions', () => {
       shielded: 5000,
       addresses: [],
       transactions: {},
+      zecPrice: 50,
     };
 
     store.dispatch(loadWalletSummarySuccess(payload));

@@ -75,12 +75,12 @@ type Props = {
   total: number,
   shielded: number,
   transparent: number,
-  dollarValue: number,
+  zecPrice: number,
   addresses: string[],
 };
 
 export const WalletSummaryComponent = ({
-  total, shielded, transparent, dollarValue, addresses,
+  total, shielded, transparent, zecPrice, addresses,
 }: Props) => (
   <Wrapper>
     <DropdownComponent
@@ -95,13 +95,13 @@ export const WalletSummaryComponent = ({
     <AllAddresses value='ALL ADDRESSES' isBold />
     <ValueBox>
       <TextComponent size={theme.fontSize.zecValueBase * 2.5} value={`ZEC ${formatNumber({ value: total })}`} isBold />
-      <USDValue value={`USD $${formatNumber({ value: total * dollarValue })}`} size={theme.fontSize.zecValueBase * 2} />
+      <USDValue value={`USD $${formatNumber({ value: total * zecPrice })}`} size={theme.fontSize.zecValueBase * 2} />
     </ValueBox>
     <RowComponent>
       <ValueBox>
         <ShieldedValue value='&#9679; SHIELDED' isBold size={theme.fontSize.text * 0.8} />
         <TextComponent value={`ZEC ${formatNumber({ value: shielded })}`} isBold size={theme.fontSize.zecValueBase} />
-        <USDValue value={`USD $${formatNumber({ value: shielded * dollarValue })}`} />
+        <USDValue value={`USD $${formatNumber({ value: shielded * zecPrice })}`} />
       </ValueBox>
       <ValueBox>
         <Label value='&#9679; TRANSPARENT' isBold size={theme.fontSize.text * 0.8} />
@@ -110,7 +110,7 @@ export const WalletSummaryComponent = ({
           isBold
           size={theme.fontSize.zecValueBase}
         />
-        <USDValue value={`USD $${formatNumber({ value: transparent * dollarValue })}`} />
+        <USDValue value={`USD $${formatNumber({ value: transparent * zecPrice })}`} />
       </ValueBox>
     </RowComponent>
   </Wrapper>

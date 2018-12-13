@@ -6,6 +6,7 @@ import * as R from 'ramda';
 import dateFns from 'date-fns';
 import { DashboardView } from '../views/dashboard';
 import rpc from '../../services/api';
+import store from '../../config/electron-store';
 import { loadWalletSummary, loadWalletSummarySuccess, loadWalletSummaryError } from '../redux/modules/wallet';
 
 import type { AppState } from '../types/app-state';
@@ -17,7 +18,7 @@ const mapStateToProps = ({ walletSummary }: AppState) => ({
   transparent: walletSummary.transparent,
   error: walletSummary.error,
   isLoading: walletSummary.isLoading,
-  dollarValue: walletSummary.dollarValue,
+  zecPrice: walletSummary.zecPrice,
   addresses: walletSummary.addresses,
   transactions: walletSummary.transactions,
 });
@@ -53,6 +54,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
           })),
           R.groupBy(obj => dateFns.format(obj.date, 'MMM DD, YYYY')),
         )(transactions),
+        zecPrice: store.get('ZEC_DOLLAR_PRICE'),
       }),
     );
   },

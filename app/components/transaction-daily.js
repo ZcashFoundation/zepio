@@ -35,9 +35,10 @@ const Divider = styled.div`
 type Props = {
   transactionsDate: string,
   transactions: Transaction[],
+  zecPrice: number,
 };
 
-export const TransactionDailyComponent = ({ transactionsDate, transactions }: Props) => (
+export const TransactionDailyComponent = ({ transactionsDate, transactions, zecPrice }: Props) => (
   <Wrapper>
     <Day value={transactionsDate} />
     <TransactionsWrapper>
@@ -45,7 +46,13 @@ export const TransactionDailyComponent = ({ transactionsDate, transactions }: Pr
         date, type, address, amount,
       }, idx) => (
         <div>
-          <TransactionItemComponent type={type} date={date} address={address || ''} amount={amount} />
+          <TransactionItemComponent
+            type={type}
+            date={date}
+            address={address || ''}
+            amount={amount}
+            zecPrice={zecPrice}
+          />
           {idx < transactions.length - 1 && <Divider />}
         </div>
       ))}

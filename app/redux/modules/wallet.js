@@ -19,12 +19,14 @@ export const loadWalletSummarySuccess = ({
   transparent,
   addresses,
   transactions,
+  zecPrice,
 }: {
   total: number,
   shielded: number,
   transparent: number,
   addresses: string[],
   transactions: { [day: string]: Transaction[] },
+  zecPrice: number,
 }) => ({
   type: LOAD_WALLET_SUMMARY_SUCCESS,
   payload: {
@@ -33,6 +35,7 @@ export const loadWalletSummarySuccess = ({
     transparent,
     addresses,
     transactions,
+    zecPrice,
   },
 });
 
@@ -47,7 +50,7 @@ export type State = {
   transparent: number,
   error: string | null,
   isLoading: boolean,
-  dollarValue: number,
+  zecPrice: number,
   addresses: [],
   transactions: { [day: string]: Transaction[] },
 };
@@ -58,7 +61,7 @@ const initialState = {
   transparent: 0,
   error: null,
   isLoading: false,
-  dollarValue: 0,
+  zecPrice: 0,
   addresses: [],
   transactions: {},
 };
