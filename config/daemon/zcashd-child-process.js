@@ -16,7 +16,7 @@ import getDaemonName from './get-daemon-name';
 import fetchParams from './run-fetch-params';
 import log from './logger';
 import store from '../electron-store';
-import generateRandomString from './generate-random-string';
+import generateRandomString from '../../app/utils/generate-random-string';
 
 const getDaemonOptions = ({ username, password }) => {
   /*
