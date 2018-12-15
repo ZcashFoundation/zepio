@@ -36,8 +36,12 @@ type Props = {
 
 export const InputComponent = ({ inputType, onChange, ...props }: Props) => {
   const inputTypes = {
-    input: () => <Input onChange={evt => onChange(evt.target.value)} {...props} />,
-    textarea: () => <Textarea onChange={evt => onChange(evt.target.value)} {...props} />,
+    input: () => (
+      <Input onChange={evt => onChange(evt.target.value)} {...props} />
+    ),
+    textarea: () => (
+      <Textarea onChange={evt => onChange(evt.target.value)} {...props} />
+    ),
     dropdown: () => null,
   };
 

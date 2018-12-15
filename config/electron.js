@@ -1,5 +1,6 @@
 // @flow
 import '@babel/polyfill';
+import dotenv from 'dotenv';
 
 import path from 'path';
 
@@ -13,6 +14,10 @@ import eres from 'eres';
 import { registerDebugShortcut } from '../utils/debug-shortcut';
 import runDaemon from './daemon/zcashd-child-process';
 import zcashLog from './daemon/logger';
+import getZecPrice from '../services/zec-price';
+import store from './electron-store';
+
+dotenv.config();
 
 let mainWindow: BrowserWindowType;
 let updateAvailable: boolean = false;
@@ -37,9 +42,9 @@ const createWindow = () => {
 
   autoUpdater.on('download-progress', progress => showStatus(
     /* eslint-disable-next-line max-len */
-    `Download speed: ${progress.bytesPerSecond} - Downloaded ${progress.percent}% (${progress.transferred}/${
-      progress.total
-    })`,
+    `Download speed: ${progress.bytesPerSecond} - Downloaded ${
+      progress.percent
+    }% (${progress.transferred}/${progress.total})`,
   ));
   autoUpdater.on('update-downloaded', () => {
     updateAvailable = true;
@@ -58,10 +63,18 @@ const createWindow = () => {
     },
   });
 
+  getZecPrice().then((obj) => {
+    store.set('ZEC_DOLLAR_PRICE', obj.USD);
+  });
+
   mainWindow.setVisibleOnAllWorkspaces(true);
   registerDebugShortcut(app, mainWindow);
 
-  mainWindow.loadURL(isDev ? 'http://0.0.0.0:8080/' : `file://${path.join(__dirname, '../build/index.html')}`);
+  mainWindow.loadURL(
+    isDev
+      ? 'http://0.0.0.0:8080/'
+      : `file://${path.join(__dirname, '../build/index.html')}`,
+  );
 
   exports.app = app;
   exports.mainWindow = mainWindow;
@@ -75,7 +88,7 @@ app.on('ready', async () => {
   if (err || !proc) return zcashLog(err);
 
   /* eslint-disable-next-line */
-  zcashLog(`ZCash Daemon running. PID: ${proc.pid}`);
+  zcashLog(`Zcash Daemon running. PID: ${proc.pid}`);
 
   zcashDaemon = proc;
 });
@@ -87,7 +100,7 @@ app.on('window-all-closed', () => {
 });
 app.on('before-quit', () => {
   if (zcashDaemon) {
-    zcashLog('Graceful shutdown ZCash Daemon, this may take a few seconds.');
+    zcashLog('Graceful shutdown Zcash Daemon, this may take a few seconds.');
     zcashDaemon.kill('SIGINT');
   }
 });

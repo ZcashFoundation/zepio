@@ -9,7 +9,9 @@ import { createRootReducer } from './modules/reducer';
 
 export const history = createBrowserHistory();
 
-const shouldEnableDevTools = (process.env.NODE_ENV !== 'production' || process.env.NODE_ENV !== 'staging') && window.devToolsExtension;
+const shouldEnableDevTools = (process.env.NODE_ENV !== 'production'
+    || process.env.NODE_ENV !== 'staging')
+  && window.devToolsExtension;
 
 export const configureStore = (initialState: Object) => {
   const middleware = applyMiddleware(thunk, routerMiddleware(history));

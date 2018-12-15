@@ -1,0 +1,30 @@
+---
+name: Wallet Summary
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import { WalletSummaryComponent } from './wallet-summary.js'
+import { DoczWrapper } from '../theme.js'
+
+# Wallet Summary
+
+<PropsTable of={WalletSummaryComponent} />
+
+## Basic usage
+
+<Playground>
+  <DoczWrapper>
+    {() => (
+      <div style={{ width: '700px' }}>
+        <WalletSummaryComponent
+          total={5000}
+          shielded={2500}
+          transparent={2500}
+          dollarValue={56}
+          addresses={['12345678asdaas9', '98asdasd765asd4sad321']}
+        />
+      </div>
+    )}
+  </DoczWrapper>
+</Playground>

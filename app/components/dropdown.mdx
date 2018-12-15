@@ -1,0 +1,31 @@
+---
+name: DropDown
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import { DropdownComponent } from './dropdown.js'
+import { DoczWrapper } from '../theme.js'
+
+# DropDown
+
+<PropsTable of={DropdownComponent} />
+
+## Basic usage
+
+<Playground>
+  <DoczWrapper>
+    {() => (
+      <div style={{ height: '500px' }}>
+        <DropdownComponent
+          label="Addresses"
+          options={[
+            { label: 'asbh1yeasbdh23848asdasd', onClick: console.log },
+            { label: 'urtyruhjr374hbfdjdhuh', onClick: console.log },
+          ]}
+          renderTrigger={toggleVisibility => <button onClick={toggleVisibility}>Opa</button>}
+        />
+      </div>
+    )}
+  </DoczWrapper>
+</Playground>

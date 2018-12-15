@@ -13,7 +13,7 @@ describe('<Sidebar />', () => {
       // $FlowFixMe
       const { asFragment } = render(
         <MemoryRouter>
-          <SidebarComponent />
+          <SidebarComponent location={{ pathname: '/', hash: '/', search: '' }} />
         </MemoryRouter>,
       );
 

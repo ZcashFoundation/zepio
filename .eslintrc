@@ -34,7 +34,7 @@
     "max-len": [
       "error",
       {
-        "code": 120,
+        "code": 80,
         "tabWidth": 2,
         "ignoreUrls": true,
         "ignoreComments": true,
@@ -43,7 +43,6 @@
         "ignoreTrailingComments": true
       }
     ],
-    "consistent-return": 0,
-    "react/destructuring-assignment": 0
+    "consistent-return": 0
   }
 }

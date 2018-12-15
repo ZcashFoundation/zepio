@@ -13,13 +13,15 @@ const store = configureStore({});
 
 export default () => (
   <ThemeProvider theme={theme}>
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <Fragment>
-          <GlobalStyle />
-          <Router />
-        </Fragment>
-      </ConnectedRouter>
-    </Provider>
+    <Fragment>
+      <GlobalStyle />
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <Fragment>
+            <Router />
+          </Fragment>
+        </ConnectedRouter>
+      </Provider>
+    </Fragment>
   </ThemeProvider>
 );
