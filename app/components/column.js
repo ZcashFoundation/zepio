@@ -6,7 +6,7 @@ import type { Node } from 'react';
 
 const Flex = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: ${props => props.alignItems};
   justify-content: ${props => props.justifyContent};
 `;
@@ -18,11 +18,11 @@ type Props = {
   children: Node,
 };
 
-export const RowComponent = ({ children, ...props }: Props) => (
+export const ColumnComponent = ({ children, ...props }: Props) => (
   <Flex {...props}>{React.Children.map(children, ch => ch)}</Flex>
 );
 
-RowComponent.defaultProps = {
+ColumnComponent.defaultProps = {
   alignItems: 'flex-start',
   justifyContent: 'flex-start',
   className: '',

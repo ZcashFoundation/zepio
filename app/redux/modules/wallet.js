@@ -1,5 +1,6 @@
 // @flow
 import type { Action } from '../../types/redux';
+import type { Transaction } from '../../components/transaction-item';
 
 // Actions
 export const LOAD_WALLET_SUMMARY = 'LOAD_WALLET_SUMMARY';
@@ -17,11 +18,15 @@ export const loadWalletSummarySuccess = ({
   shielded,
   transparent,
   addresses,
+  transactions,
+  zecPrice,
 }: {
   total: number,
   shielded: number,
   transparent: number,
   addresses: string[],
+  transactions: { [day: string]: Transaction[] },
+  zecPrice: number,
 }) => ({
   type: LOAD_WALLET_SUMMARY_SUCCESS,
   payload: {
@@ -29,6 +34,8 @@ export const loadWalletSummarySuccess = ({
     shielded,
     transparent,
     addresses,
+    transactions,
+    zecPrice,
   },
 });
 
@@ -43,8 +50,9 @@ export type State = {
   transparent: number,
   error: string | null,
   isLoading: boolean,
-  dollarValue: number,
+  zecPrice: number,
   addresses: [],
+  transactions: { [day: string]: Transaction[] },
 };
 
 const initialState = {
@@ -53,8 +61,9 @@ const initialState = {
   transparent: 0,
   error: null,
   isLoading: false,
-  dollarValue: 0,
+  zecPrice: 0,
   addresses: [],
+  transactions: {},
 };
 
 export default (state: State = initialState, action: Action) => {

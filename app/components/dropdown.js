@@ -11,7 +11,10 @@ import { TextComponent } from './text';
 
 /* eslint-disable max-len  */
 const MenuWrapper = styled.div`
-  background-image: ${props => `linear-gradient(to right, ${darken(0.05, props.theme.colors.activeItem)}, ${props.theme.colors.activeItem})`};
+  background-image: ${props => `linear-gradient(to right, ${darken(
+    0.05,
+    props.theme.colors.activeItem,
+  )}, ${props.theme.colors.activeItem})`};
   padding: 10px 20px;
   border-radius: 10px;
   margin-left: -10px;
@@ -68,22 +71,27 @@ export class DropdownComponent extends Component<Props, State> {
   };
 
   render() {
+    const { isOpen } = this.state;
+    const { label, options, renderTrigger } = this.props;
+
     return (
       <PopoverWithStyle
-        isOpen={this.state.isOpen}
+        isOpen={isOpen}
         preferPlace='below'
         enterExitTransitionDurationMs={0}
         body={[
-          <ClickOutside onClickOutside={() => this.setState(() => ({ isOpen: false }))}>
+          <ClickOutside
+            onClickOutside={() => this.setState(() => ({ isOpen: false }))}
+          >
             <MenuWrapper>
-              {this.props.label && (
+              {label && (
                 <MenuItem disabled>
-                  <TextComponent value={this.props.label} isBold />
+                  <TextComponent value={label} isBold />
                 </MenuItem>
               )}
-              {this.props.options.map(({ label, onClick }) => (
+              {options.map(({ label: optionLabel, onClick }) => (
                 <MenuItem onClick={onClick}>
-                  <TextComponent value={label} />
+                  <TextComponent value={optionLabel} />
                 </MenuItem>
               ))}
             </MenuWrapper>
@@ -91,7 +99,10 @@ export class DropdownComponent extends Component<Props, State> {
         ]}
         tipSize={7}
       >
-        {this.props.renderTrigger(() => this.setState(state => ({ isOpen: !state.isOpen })), this.state.isOpen)}
+        {renderTrigger(
+          () => this.setState(state => ({ isOpen: !state.isOpen })),
+          isOpen,
+        )}
       </PopoverWithStyle>
     );
   }

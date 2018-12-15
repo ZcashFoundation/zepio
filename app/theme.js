@@ -9,15 +9,32 @@ import { DARK } from './constants/themes';
 
 const darkOne = '#7B00DD';
 const lightOne = '#ffffff';
-const brandOne = '#624cda';
-const brandTwo = '#a6ede2';
+const brandOne = '#000';
+const brandTwo = '#3B3B3F';
 const activeItem = '#F5CB00';
 const text = '#FFF';
 const cardBackgroundColor = '#000';
+const sidebarLogoGradientBegin = '#F4B728';
+const sidebarLogoGradientEnd = '#FFE240';
+const sidebarHoveredItem = '#1C1C1C';
+const sidebarHoveredItemLabel = '#969696';
+const background = '#212124';
+const transactionSent = '#FF6C6C';
+const transactionReceived = '#6AEAC0';
+const transactionsDate = '#777777';
 
 const appTheme = {
   mode: DARK,
   fontFamily: 'PT Sans',
+  fontWeight: {
+    bold: 700,
+    default: 400,
+  },
+  fontSize: {
+    title: 1.25,
+    text: 0.84375,
+    zecValueBase: 1.125,
+  },
   colors: {
     primary: theme('mode', {
       light: lightOne,
@@ -29,15 +46,24 @@ const appTheme = {
     }),
     sidebarBg: brandOne,
     sidebarItem: brandTwo,
-    sidebarItemActive: lightOne,
+    sidebarItemActive: activeItem,
+    sidebarHoveredItem,
+    sidebarHoveredItemLabel,
     cardBackgroundColor,
     text,
     activeItem,
+    inactiveItem: brandTwo,
+    sidebarLogoGradientBegin,
+    sidebarLogoGradientEnd,
+    background,
+    transactionSent,
+    transactionReceived,
+    transactionsDate,
   },
-  size: {
-    title: 18,
-    paragraph: 12,
-  },
+  sidebarWidth: '200px',
+  headerHeight: '60px',
+  layoutPaddingLeft: '50px',
+  layoutPaddingRight: '45px',
 };
 
 export const GlobalStyle = createGlobalStyle`

@@ -3,7 +3,10 @@
 import React from 'react';
 
 import { WalletSummaryComponent } from '../components/wallet-summary';
+import { TransactionDailyComponent } from '../components/transaction-daily';
 import { withDaemonStatusCheck } from '../components/with-daemon-status-check';
+
+import type { Transaction } from '../components/transaction-item';
 
 type Props = {
   getSummary: () => void,
@@ -12,32 +15,56 @@ type Props = {
   transparent: number,
   error: string | null,
   isLoading: boolean,
-  dollarValue: number,
+  zecPrice: number,
   addresses: string[],
+  transactions: { [day: string]: Transaction[] },
 };
 
 export class Dashboard extends React.Component<Props> {
   componentDidMount() {
+    /* eslint-disable-next-line */
     this.props.getSummary();
   }
 
   render() {
-    if (this.props.error) {
-      return this.props.error;
+    const {
+      error,
+      isLoading,
+      total,
+      shielded,
+      transparent,
+      zecPrice,
+      addresses,
+      transactions,
+    } = this.props;
+
+    const days = Object.keys(transactions);
+
+    if (error) {
+      return error;
     }
 
     return (
       <div className='dashboard'>
-        {this.props.isLoading ? (
+        {isLoading ? (
           'Loading'
         ) : (
-          <WalletSummaryComponent
-            total={this.props.total}
-            shielded={this.props.shielded}
-            transparent={this.props.transparent}
-            dollarValue={this.props.dollarValue}
-            addresses={this.props.addresses}
-          />
+          <div>
+            <WalletSummaryComponent
+              total={total}
+              shielded={shielded}
+              transparent={transparent}
+              zecPrice={zecPrice}
+              addresses={addresses}
+            />
+            {days.map(day => (
+              <TransactionDailyComponent
+                transactionsDate={day}
+                transactions={transactions[day]}
+                zecPrice={zecPrice}
+              />
+            ))}
+          </div>
         )}
       </div>
     );
