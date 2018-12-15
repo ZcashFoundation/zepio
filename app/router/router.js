@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { ScrollTopComponent } from './scroll-top';
 import { SidebarContainer } from '../containers/sidebar';
 import { DashboardContainer } from '../containers/dashboard';
+import { TransactionsContainer } from '../containers/transactions';
 import { SendView } from '../views/send';
 import { ReceiveView } from '../views/receive';
 import { SettingsView } from '../views/settings';
@@ -21,6 +22,7 @@ import {
   RECEIVE_ROUTE,
   SETTINGS_ROUTE,
   CONSOLE_ROUTE,
+  TRANSACTIONS_ROUTE,
 } from '../constants/routes';
 
 const FullWrapper = styled.div`
@@ -59,6 +61,10 @@ export const RouterComponent = ({ location }: { location: Location }) => (
             <Route path={RECEIVE_ROUTE} component={ReceiveView} />
             <Route path={SETTINGS_ROUTE} component={SettingsView} />
             <Route path={CONSOLE_ROUTE} component={ConsoleView} />
+            <Route
+              path={TRANSACTIONS_ROUTE}
+              component={TransactionsContainer}
+            />
             <Route component={NotFoundView} />
           </Switch>
         </LayoutComponent>
