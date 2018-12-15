@@ -71,7 +71,6 @@ export default (state: State = initialState, action: Action) => {
     case LOAD_WALLET_SUMMARY:
       return { ...state, isLoading: true };
     case LOAD_WALLET_SUMMARY_SUCCESS:
-      // TODO: Get zec in dollars
       return {
         ...state,
         ...action.payload,
