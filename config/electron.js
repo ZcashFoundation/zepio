@@ -1,5 +1,6 @@
 // @flow
 import '@babel/polyfill';
+import dotenv from 'dotenv';
 
 import path from 'path';
 
@@ -15,6 +16,8 @@ import runDaemon from './daemon/zcashd-child-process';
 import zcashLog from './daemon/logger';
 import getZecPrice from '../services/zec-price';
 import store from './electron-store';
+
+dotenv.config();
 
 let mainWindow: BrowserWindowType;
 let updateAvailable: boolean = false;

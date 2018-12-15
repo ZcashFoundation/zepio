@@ -12,7 +12,7 @@ type Payload = {
 export default (currencies: string[] = ['USD']): Promise<Payload> => new Promise((resolve, reject) => {
   const ENDPOINT = `https://min-api.cryptocompare.com/data/price?fsym=ZEC&tsyms=${currencies.join(
     ',',
-  )}&api_key=b6162b068ff9f8fe2872070b791146b06d186e83d5e52e49dcaa42ef8d1d3875`;
+  )}&api_key=${String(process.env.ZEC_PRICE_API_KEY)}`;
 
   const request = net.request(ENDPOINT);
   request.on('response', (response) => {
