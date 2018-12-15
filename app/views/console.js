@@ -1,25 +1,38 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
-/* eslint-disable-next-line import/no-extraneous-dependencies */
 import { ipcRenderer } from 'electron';
+import styled from 'styled-components';
+import generateRandomString from '../utils/generate-random-string';
+
+const Wrapper = styled.div`
+  max-height: 100%;
+  overflow-y: auto;
+`;
 
 type Props = {};
 
 type State = {
-  log: string | null,
+  log: string,
 };
 
 export class ConsoleView extends Component<Props, State> {
+  scrollView = React.createRef();
+
   state = {
-    log: null,
+    log: '',
   };
 
   componentDidMount() {
     ipcRenderer.on('zcashd-log', (event, message) => {
-      this.setState(() => ({
-        log: message,
+      this.setState(state => ({
+        log: `${state.log}\n${message}`,
       }));
+
+      if (this.scrollView && this.scrollView.current) {
+        // eslint-disable-next-line
+        this.scrollView.current.scrollTop = this.scrollView.current.scrollHeight;
+      }
     });
   }
 
@@ -27,15 +40,15 @@ export class ConsoleView extends Component<Props, State> {
     const { log } = this.state;
 
     return (
-      <div className='dashboard'>
+      <Wrapper ref={this.scrollView}>
         {log
           && log.split('\n').map(item => (
-            <Fragment key={`${item.slice(0, 10)}`}>
+            <Fragment key={generateRandomString()}>
               {item}
               <br />
             </Fragment>
           ))}
-      </div>
+      </Wrapper>
     );
   }
 }
