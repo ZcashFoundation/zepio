@@ -9,6 +9,7 @@ type State = {
 
 type Props = {};
 
+/* eslint-disable max-len */
 export const withDaemonStatusCheck = <PassedProps: {}>(
   WrappedComponent: ComponentType<PassedProps>,
 ): ComponentType<$Diff<PassedProps, Props>> => class extends Component<PassedProps, State> {

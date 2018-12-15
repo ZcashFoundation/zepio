@@ -745,8 +745,8 @@ export type APIMethods = {
   z_exportwallet: (filename: string) => Promise<string>,
   z_getbalance: (address: string, minconf?: number) => Promise<number>,
   z_getnewaddress: (type: string) => Promise<string>,
-  z_getoperationresult: (operationid: string) => Promise<Object[]>,
-  z_getoperationstatus: (operationid: string) => Promise<Object[]>,
+  z_getoperationresult: (operationid?: string[]) => Promise<Object[]>,
+  z_getoperationstatus: (operationid?: string[]) => Promise<Object[]>,
   z_gettotalbalance: (
     minconf?: number,
     includeWatchonly?: boolean,

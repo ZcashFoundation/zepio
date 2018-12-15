@@ -35,13 +35,20 @@ const getDaemonOptions = ({ username, password }) => {
     `-rpcuser=${username}`,
     `-rpcpassword=${password}`,
   ];
-  return isDev ? defaultOptions.concat(['-testnet', '-addnode=testnet.z.cash']) : defaultOptions;
+  return isDev
+    ? defaultOptions.concat(['-testnet', '-addnode=testnet.z.cash'])
+    : defaultOptions;
 };
 
 let resolved = false;
 
+// eslint-disable-next-line
 const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve, reject) => {
-  const processName = path.join(getBinariesPath(), getOsFolder(), getDaemonName());
+  const processName = path.join(
+    getBinariesPath(),
+    getOsFolder(),
+    getDaemonName(),
+  );
 
   const [err] = await eres(fetchParams());
 
@@ -76,9 +83,13 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     store.set('rpcpassword', rpcCredentials.password);
   }
 
-  const childProcess = cp.spawn(processName, getDaemonOptions(rpcCredentials), {
-    stdio: ['ignore', 'pipe', 'pipe'],
-  });
+  const childProcess = cp.spawn(
+    processName,
+    getDaemonOptions(rpcCredentials),
+    {
+      stdio: ['ignore', 'pipe', 'pipe'],
+    },
+  );
 
   childProcess.stdout.on('data', (data) => {
     if (mainWindow) mainWindow.webContents.send('zcashd-log', data.toString());

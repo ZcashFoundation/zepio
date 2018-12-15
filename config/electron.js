@@ -13,6 +13,8 @@ import eres from 'eres';
 import { registerDebugShortcut } from '../utils/debug-shortcut';
 import runDaemon from './daemon/zcashd-child-process';
 import zcashLog from './daemon/logger';
+import getZecPrice from '../services/zec-price';
+import store from './electron-store';
 
 let mainWindow: BrowserWindowType;
 let updateAvailable: boolean = false;
@@ -37,9 +39,9 @@ const createWindow = () => {
 
   autoUpdater.on('download-progress', progress => showStatus(
     /* eslint-disable-next-line max-len */
-    `Download speed: ${progress.bytesPerSecond} - Downloaded ${progress.percent}% (${progress.transferred}/${
-      progress.total
-    })`,
+    `Download speed: ${progress.bytesPerSecond} - Downloaded ${
+      progress.percent
+    }% (${progress.transferred}/${progress.total})`,
   ));
   autoUpdater.on('update-downloaded', () => {
     updateAvailable = true;
@@ -58,10 +60,18 @@ const createWindow = () => {
     },
   });
 
+  getZecPrice().then((obj) => {
+    store.set('ZEC_DOLLAR_PRICE', obj.USD);
+  });
+
   mainWindow.setVisibleOnAllWorkspaces(true);
   registerDebugShortcut(app, mainWindow);
 
-  mainWindow.loadURL(isDev ? 'http://0.0.0.0:8080/' : `file://${path.join(__dirname, '../build/index.html')}`);
+  mainWindow.loadURL(
+    isDev
+      ? 'http://0.0.0.0:8080/'
+      : `file://${path.join(__dirname, '../build/index.html')}`,
+  );
 
   exports.app = app;
   exports.mainWindow = mainWindow;

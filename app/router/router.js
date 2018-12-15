@@ -16,7 +16,11 @@ import { LayoutComponent } from '../components/layout';
 import { HeaderComponent } from '../components/header';
 
 import {
-  DASHBOARD_ROUTE, SEND_ROUTE, RECEIVE_ROUTE, SETTINGS_ROUTE, CONSOLE_ROUTE,
+  DASHBOARD_ROUTE,
+  SEND_ROUTE,
+  RECEIVE_ROUTE,
+  SETTINGS_ROUTE,
+  CONSOLE_ROUTE,
 } from '../constants/routes';
 
 const FullWrapper = styled.div`
@@ -46,7 +50,11 @@ export const RouterComponent = ({ location }: { location: Location }) => (
         {/* $FlowFixMe */}
         <LayoutComponent>
           <Switch>
-            <Route exact path={DASHBOARD_ROUTE} component={DashboardContainer} />
+            <Route
+              exact
+              path={DASHBOARD_ROUTE}
+              component={DashboardContainer}
+            />
             <Route path={SEND_ROUTE} component={SendView} />
             <Route path={RECEIVE_ROUTE} component={ReceiveView} />
             <Route path={SETTINGS_ROUTE} component={SettingsView} />

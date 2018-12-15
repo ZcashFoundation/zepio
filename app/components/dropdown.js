@@ -11,7 +11,10 @@ import { TextComponent } from './text';
 
 /* eslint-disable max-len  */
 const MenuWrapper = styled.div`
-  background-image: ${props => `linear-gradient(to right, ${darken(0.05, props.theme.colors.activeItem)}, ${props.theme.colors.activeItem})`};
+  background-image: ${props => `linear-gradient(to right, ${darken(
+    0.05,
+    props.theme.colors.activeItem,
+  )}, ${props.theme.colors.activeItem})`};
   padding: 10px 20px;
   border-radius: 10px;
   margin-left: -10px;
@@ -77,7 +80,9 @@ export class DropdownComponent extends Component<Props, State> {
         preferPlace='below'
         enterExitTransitionDurationMs={0}
         body={[
-          <ClickOutside onClickOutside={() => this.setState(() => ({ isOpen: false }))}>
+          <ClickOutside
+            onClickOutside={() => this.setState(() => ({ isOpen: false }))}
+          >
             <MenuWrapper>
               {label && (
                 <MenuItem disabled>
@@ -94,7 +99,10 @@ export class DropdownComponent extends Component<Props, State> {
         ]}
         tipSize={7}
       >
-        {renderTrigger(() => this.setState(state => ({ isOpen: !state.isOpen })), isOpen)}
+        {renderTrigger(
+          () => this.setState(state => ({ isOpen: !state.isOpen })),
+          isOpen,
+        )}
       </PopoverWithStyle>
     );
   }

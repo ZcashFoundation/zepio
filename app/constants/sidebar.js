@@ -25,7 +25,8 @@ export const MENU_OPTIONS = [
   {
     label: 'Dashboard',
     route: DASHBOARD_ROUTE,
-    icon: (isActive: boolean) => (isActive ? DashboardIconActive : DashboardIcon),
+    // eslint-disable-next-line
+    icon: (isActive: boolean) => isActive ? DashboardIconActive : DashboardIcon,
   },
   {
     label: 'Send',
@@ -40,7 +41,8 @@ export const MENU_OPTIONS = [
   {
     label: 'Transactions',
     route: TRANSACTIONS_ROUTE,
-    icon: (isActive: boolean) => (isActive ? TransactionsIconActive : TransactionsIcon),
+    // eslint-disable-next-line
+    icon: (isActive: boolean) => isActive ? TransactionsIconActive : TransactionsIcon,
   },
   {
     label: 'Settings',
