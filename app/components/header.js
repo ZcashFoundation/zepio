@@ -3,7 +3,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { ZCashLogo } from './zcash-logo';
+import { ZcashLogo } from './zcash-logo';
 import { TextComponent } from './text';
 
 const Wrapper = styled.div`
@@ -58,7 +58,7 @@ type Props = {
 export const HeaderComponent = ({ title }: Props) => (
   <Wrapper>
     <LogoWrapper>
-      <ZCashLogo />
+      <ZcashLogo />
     </LogoWrapper>
     <TitleWrapper>
       <Title value={title} />

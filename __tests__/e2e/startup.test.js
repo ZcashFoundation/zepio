@@ -2,7 +2,7 @@
 
 import { getApp } from '../setup/utils';
 
-describe('ZCash', () => {
+describe('Zcash', () => {
   const app = getApp();
 
   beforeEach(() => app.start());
@@ -11,7 +11,8 @@ describe('ZCash', () => {
   });
 
   test('should open the window', () => {
-    app.client.getWindowCount()
+    app.client
+      .getWindowCount()
       .then((count: number) => expect(count).toEqual(1));
   });
 });

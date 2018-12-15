@@ -85,7 +85,7 @@ app.on('ready', async () => {
   if (err || !proc) return zcashLog(err);
 
   /* eslint-disable-next-line */
-  zcashLog(`ZCash Daemon running. PID: ${proc.pid}`);
+  zcashLog(`Zcash Daemon running. PID: ${proc.pid}`);
 
   zcashDaemon = proc;
 });
@@ -97,7 +97,7 @@ app.on('window-all-closed', () => {
 });
 app.on('before-quit', () => {
   if (zcashDaemon) {
-    zcashLog('Graceful shutdown ZCash Daemon, this may take a few seconds.');
+    zcashLog('Graceful shutdown Zcash Daemon, this may take a few seconds.');
     zcashDaemon.kill('SIGINT');
   }
 });
