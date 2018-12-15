@@ -38,7 +38,11 @@ type Props = {
   zecPrice: number,
 };
 
-export const TransactionDailyComponent = ({ transactionsDate, transactions, zecPrice }: Props) => (
+export const TransactionDailyComponent = ({
+  transactionsDate,
+  transactions,
+  zecPrice,
+}: Props) => (
   <Wrapper>
     <Day value={transactionsDate} />
     <TransactionsWrapper>

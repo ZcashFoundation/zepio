@@ -13,6 +13,7 @@ import { TextComponent } from './text';
 import theme from '../theme';
 
 import formatNumber from '../utils/formatNumber';
+import truncateAddress from '../utils/truncateAddress';
 
 const Wrapper = styled(RowComponent)`
   background-color: ${props => props.theme.colors.cardBackgroundColor};
@@ -25,7 +26,9 @@ const Icon = styled.img`
 `;
 
 const TransactionTypeLabel = styled(TextComponent)`
-  color: ${props => (props.isReceived ? props.theme.colors.transactionReceived : props.theme.colors.transactionSent)};
+  color: ${props => (props.isReceived
+    ? props.theme.colors.transactionReceived
+    : props.theme.colors.transactionSent)};
   text-transform: capitalize;
 `;
 
@@ -47,32 +50,51 @@ export type Transaction = {
   zecPrice: number,
 };
 
-/* eslint-disable-next-line max-len */
-const truncateAddress = (address: string) => `${address.substr(0, 20)}...${address.substr(address.length - 10, address.length)}`;
-
 export const TransactionItemComponent = ({
-  type, date, address, amount, zecPrice,
+  type,
+  date,
+  address,
+  amount,
+  zecPrice,
 }: Transaction) => {
   const isReceived = type === 'receive';
+  const transactionTime = dateFns.format(new Date(date), 'HH:mm A');
+  const transactionValueInZec = formatNumber({
+    value: amount,
+    append: `${isReceived ? '+' : '-'}ZEC `,
+  });
+  const transactionValueInUsd = formatNumber({
+    value: amount * zecPrice,
+    append: `${isReceived ? '+' : '-'}USD $`,
+  });
+  const transactionAddress = truncateAddress(address);
+
   return (
     <Wrapper alignItems='center' justifyContent='space-between'>
       <RowComponent alignItems='center'>
         <RowComponent alignItems='center'>
-          <Icon src={isReceived ? ReceivedIcon : SentIcon} alt='Transaction Type Icon' />
+          <Icon
+            src={isReceived ? ReceivedIcon : SentIcon}
+            alt='Transaction Type Icon'
+          />
           <TransactionColumn>
             <TransactionTypeLabel isReceived={isReceived} value={type} />
-            <TransactionTime value={dateFns.format(new Date(date), 'HH:mm A')} />
+            <TransactionTime value={transactionTime} />
           </TransactionColumn>
         </RowComponent>
-        <TextComponent value={truncateAddress(address)} align='left' />
+        <TextComponent value={transactionAddress} align='left' />
       </RowComponent>
       <ColumnComponent alignItems='flex-end'>
         <TextComponent
-          value={formatNumber({ value: amount, append: `${isReceived ? '+' : '-'}ZEC ` })}
-          color={isReceived ? theme.colors.transactionReceived : theme.colors.transactionSent}
+          value={transactionValueInZec}
+          color={
+            isReceived
+              ? theme.colors.transactionReceived
+              : theme.colors.transactionSent
+          }
         />
         <TextComponent
-          value={formatNumber({ value: amount * zecPrice, append: `${isReceived ? '+' : '-'}USD $` })}
+          value={transactionValueInUsd}
           color={theme.colors.inactiveItem}
         />
       </ColumnComponent>

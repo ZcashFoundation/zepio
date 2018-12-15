@@ -4,6 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 /* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable max-len */
 // $FlowFixMe
 import { darken } from 'polished';
 

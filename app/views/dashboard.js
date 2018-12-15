@@ -28,7 +28,14 @@ export class Dashboard extends React.Component<Props> {
 
   render() {
     const {
-      error, isLoading, total, shielded, transparent, zecPrice, addresses, transactions,
+      error,
+      isLoading,
+      total,
+      shielded,
+      transparent,
+      zecPrice,
+      addresses,
+      transactions,
     } = this.props;
 
     const days = Object.keys(transactions);
@@ -51,7 +58,11 @@ export class Dashboard extends React.Component<Props> {
               addresses={addresses}
             />
             {days.map(day => (
-              <TransactionDailyComponent transactionsDate={day} transactions={transactions[day]} zecPrice={zecPrice} />
+              <TransactionDailyComponent
+                transactionsDate={day}
+                transactions={transactions[day]}
+                zecPrice={zecPrice}
+              />
             ))}
           </div>
         )}
