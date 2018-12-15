@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { Component, Fragment } from 'react';
 
 import { WalletSummaryComponent } from '../components/wallet-summary';
 import { TransactionDailyComponent } from '../components/transaction-daily';
@@ -20,7 +20,7 @@ type Props = {
   transactions: { [day: string]: Transaction[] },
 };
 
-export class Dashboard extends React.Component<Props> {
+export class Dashboard extends Component<Props> {
   componentDidMount() {
     /* eslint-disable-next-line */
     this.props.getSummary();
@@ -45,11 +45,11 @@ export class Dashboard extends React.Component<Props> {
     }
 
     return (
-      <div className='dashboard'>
+      <Fragment>
         {isLoading ? (
           'Loading'
         ) : (
-          <div>
+          <Fragment>
             <WalletSummaryComponent
               total={total}
               shielded={shielded}
@@ -64,9 +64,9 @@ export class Dashboard extends React.Component<Props> {
                 zecPrice={zecPrice}
               />
             ))}
-          </div>
+          </Fragment>
         )}
-      </div>
+      </Fragment>
     );
   }
 }
