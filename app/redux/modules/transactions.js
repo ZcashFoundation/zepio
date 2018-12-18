@@ -48,7 +48,11 @@ const initialState = {
 export default (state: State = initialState, action: Action) => {
   switch (action.type) {
     case LOAD_TRANSACTIONS:
-      return { ...state, error: null, isLoading: true };
+      return {
+        ...state,
+        error: null,
+        isLoading: true,
+      };
     case LOAD_TRANSACTIONS_SUCCESS:
       return {
         ...state,
@@ -57,7 +61,11 @@ export default (state: State = initialState, action: Action) => {
         error: null,
       };
     case LOAD_TRANSACTIONS_ERROR:
-      return { ...state, isLoading: false, error: action.payload.error };
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error,
+      };
     default:
       return state;
   }
