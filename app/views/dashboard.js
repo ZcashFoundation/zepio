@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 
 import { WalletSummaryComponent } from '../components/wallet-summary';
 import { TransactionDailyComponent } from '../components/transaction-daily';
@@ -20,7 +20,7 @@ type Props = {
   transactions: { [day: string]: Transaction[] },
 };
 
-export class Dashboard extends Component<Props> {
+export class Dashboard extends PureComponent<Props> {
   componentDidMount() {
     /* eslint-disable-next-line */
     this.props.getSummary();

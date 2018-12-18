@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 
 import { TransactionDailyComponent } from '../components/transaction-daily';
 
@@ -13,7 +13,7 @@ type Props = {
   getTransactions: () => void,
 };
 
-export class TransactionsView extends Component<Props> {
+export class TransactionsView extends PureComponent<Props> {
   componentDidMount() {
     // eslint-disable-next-line
     this.props.getTransactions();
