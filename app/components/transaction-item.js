@@ -18,6 +18,11 @@ import truncateAddress from '../utils/truncateAddress';
 const Wrapper = styled(RowComponent)`
   background-color: ${props => props.theme.colors.cardBackgroundColor};
   padding: 15px 17px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${props => props.theme.colors.transactionsItemHovered};
+  }
 `;
 
 const Icon = styled.img`
