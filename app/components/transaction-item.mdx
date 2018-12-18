@@ -9,6 +9,8 @@ import { DoczWrapper } from '../theme.js'
 
 # Transaction Item
 
+## Properties
+
 <PropsTable of={TransactionItemComponent} />
 
 ## Sent
@@ -17,8 +19,8 @@ import { DoczWrapper } from '../theme.js'
   <DoczWrapper>
     {() => (
       <TransactionItemComponent
-        type="sent"
-        address="123456789123456789123456789123456789"
+        type='sent'
+        address='123456789123456789123456789123456789'
         amount={0.8652}
         date={new Date().toISOString()}
       />
@@ -32,8 +34,8 @@ import { DoczWrapper } from '../theme.js'
   <DoczWrapper>
     {() => (
       <TransactionItemComponent
-        type="received"
-        address="123456789123456789123456789123456789"
+        type='received'
+        address='123456789123456789123456789123456789'
         amount={1.7891}
         date={new Date().toISOString()}
       />

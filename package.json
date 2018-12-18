@@ -20,6 +20,7 @@
     "icon:build": "./node_modules/.bin/electron-icon-maker --input=build-assets/icon.png --output=./build",
     "docz:dev": "docz dev",
     "docz:build": "docz build",
+    "docz:deploy": "yarn docz:build && cd ./.docz/dist && now && now alias zec-docz.now.sh",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -43,8 +44,9 @@
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.1",
-    "docz": "^0.12.13",
+    "docz": "0.13.4",
     "docz-plugin-css": "^0.11.0",
+    "docz-theme-default": "0.13.4",
     "electron-builder": "^20.36.2",
     "electron-icon-maker": "^0.0.4",
     "electron-is-dev": "^1.0.1",

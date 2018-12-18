@@ -1,29 +1,37 @@
 ---
-name: DropDown
+name: Dropdown
 ---
 
 import { Playground, PropsTable } from 'docz'
 
+import { Button } from './button.js'
 import { DropdownComponent } from './dropdown.js'
 import { DoczWrapper } from '../theme.js'
 
-# DropDown
+# Dropdown
+
+## Properties
 
 <PropsTable of={DropdownComponent} />
 
-## Basic usage
+## Basic Usage
 
 <Playground>
   <DoczWrapper>
     {() => (
       <div style={{ height: '500px' }}>
         <DropdownComponent
-          label="Addresses"
+          label='Addresses'
+          renderTrigger={toggleVisibility => (
+            <Button
+              label='Show Dropdown'
+              onClick={toggleVisibility}
+            />
+          )}
           options={[
             { label: 'asbh1yeasbdh23848asdasd', onClick: console.log },
             { label: 'urtyruhjr374hbfdjdhuh', onClick: console.log },
           ]}
-          renderTrigger={toggleVisibility => <button onClick={toggleVisibility}>Opa</button>}
         />
       </div>
     )}

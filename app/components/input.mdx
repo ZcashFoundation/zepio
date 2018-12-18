@@ -9,13 +9,21 @@ import { DoczWrapper } from '../theme.js'
 
 # Input
 
+## Properties
+
 <PropsTable of={InputComponent} />
 
 ## Text Input
 
 <Playground>
   <DoczWrapper>
-    {() => <InputComponent inputType="input" value="Hello World!" onChange={console.log} />}
+    {() => (
+      <InputComponent
+        inputType='input'
+        value='Hello World!'
+        onChange={console.log}
+      />
+    )}
   </DoczWrapper>
 </Playground>
 
@@ -25,8 +33,8 @@ import { DoczWrapper } from '../theme.js'
   <DoczWrapper>
     {() => (
       <InputComponent
-        inputType="textarea"
-        value="I'm Zcash Electron Wallet"
+        inputType='textarea'
+        value='I am Zcash Electron Wallet'
         onChange={console.log}
         rows={10}
       />

@@ -9,12 +9,18 @@ import { DoczWrapper } from '../theme.js'
 
 # Sidebar
 
+## General
+
+Sidebar component does not behave correctly inside Docz Styleguide as it is tighly coupled with the router.
+
+## Properties
+
 <PropsTable of={SidebarComponent} />
 
-## Basic usage
+## Basic Usage
 
 <Playground>
   <DoczWrapper>
-    {() => <SidebarComponent />}
+    {() => <SidebarComponent location={{}} />}
   </DoczWrapper>
 </Playground>
