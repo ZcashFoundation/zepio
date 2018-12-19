@@ -41,9 +41,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     // eslint-disable-next-line
     if (addressesErr) return dispatch(loadWalletSummaryError({ error: addressesErr.message }));
 
-    const [transactionsErr, transactions = []] = await eres(
-      rpc.listtransactions(),
-    );
+    const [transactionsErr, transactions] = await eres(rpc.listtransactions());
 
     if (transactionsErr) {
       return dispatch(
@@ -59,6 +57,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
         addresses,
         transactions: flow([
           arr => arr.map(transaction => ({
+            transactionId: transaction.txid,
             type: transaction.category,
             date: new Date(transaction.time * 1000).toISOString(),
             address: transaction.address,
