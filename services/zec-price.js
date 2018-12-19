@@ -1,4 +1,5 @@
 // @flow
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { net } from 'electron';
 
 type Payload = {

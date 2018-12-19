@@ -4,7 +4,6 @@ import React, { PureComponent, Fragment } from 'react';
 
 import { WalletSummaryComponent } from '../components/wallet-summary';
 import { TransactionDailyComponent } from '../components/transaction-daily';
-import { withDaemonStatusCheck } from '../components/with-daemon-status-check';
 
 import type { Transaction } from '../components/transaction-item';
 
@@ -20,7 +19,7 @@ type Props = {
   transactions: { [day: string]: Transaction[] },
 };
 
-export class Dashboard extends PureComponent<Props> {
+export class DashboardView extends PureComponent<Props> {
   componentDidMount() {
     /* eslint-disable-next-line */
     this.props.getSummary();
@@ -70,5 +69,3 @@ export class Dashboard extends PureComponent<Props> {
     );
   }
 }
-
-export const DashboardView = withDaemonStatusCheck(Dashboard);
