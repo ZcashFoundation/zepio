@@ -54,12 +54,9 @@ const CloseIconImg = styled.img`
 const InfoRow = styled(RowComponent)`
   justify-content: space-between;
   align-items: center;
-  width: 30vw;
+  width: 100%;
   height: 80px;
   padding: 0 30px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 const Divider = styled.div`
@@ -73,6 +70,13 @@ const Label = styled(TextComponent)`
   font-weight: ${props => props.theme.fontWeight.bold};
   color: ${props => props.theme.colors.transactionsDetailsLabel};
   margin-bottom: 5px;
+`;
+
+const Ellipsis = styled(TextComponent)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: calc(30vw - 60px);
 `;
 
 type Props = {
@@ -150,7 +154,7 @@ export const TransactionDetailsComponent = ({
       <InfoRow>
         <ColumnComponent>
           <Label value='TRANSACTION ID' />
-          <TextComponent value={transactionId} />
+          <Ellipsis value={transactionId} />
         </ColumnComponent>
       </InfoRow>
       <Divider />
