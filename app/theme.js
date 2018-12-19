@@ -23,6 +23,7 @@ const transactionSent = '#FF6C6C';
 const transactionReceived = '#6AEAC0';
 const transactionsDate = '#777777';
 const transactionsItemHovered = '#222222';
+const transactionsDetailsLabel = transactionsDate;
 
 const appTheme = {
   mode: DARK,
@@ -61,6 +62,7 @@ const appTheme = {
     transactionReceived,
     transactionsDate,
     transactionsItemHovered,
+    transactionsDetailsLabel,
   },
   sidebarWidth: '200px',
   headerHeight: '60px',
