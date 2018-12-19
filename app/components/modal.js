@@ -22,7 +22,9 @@ const ChildrenWrapper = styled.div`
 
 type Props = {
   renderTrigger: (() => void) => Element<*>,
-  children: Element<*>,
+  children: (() => void) => Element<*>,
+  closeOnBackdropClick?: boolean,
+  closeOnEsc?: boolean,
 };
 
 type State = {
@@ -34,16 +36,29 @@ const modalRoot = document.getElementById('modal-root');
 export class ModalComponent extends PureComponent<Props, State> {
   element = document.createElement('div');
 
+  static defaultProps = {
+    closeOnBackdropClick: true,
+    closeOnEsc: true,
+  };
+
   state = {
     isVisible: false,
   };
 
   componentDidMount() {
-    window.addEventListener('keydown', this.handleEscPress);
+    const { closeOnEsc } = this.props;
+
+    if (closeOnEsc) {
+      window.addEventListener('keydown', this.handleEscPress);
+    }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleEscPress);
+    const { closeOnEsc } = this.props;
+
+    if (closeOnEsc) {
+      window.removeEventListener('keydown', this.handleEscPress);
+    }
   }
 
   handleEscPress = (event: Object) => {
@@ -73,21 +88,25 @@ export class ModalComponent extends PureComponent<Props, State> {
   };
 
   render() {
-    const { renderTrigger, children } = this.props;
+    const { renderTrigger, children, closeOnBackdropClick } = this.props;
     const { isVisible } = this.state;
+    const toggleVisibility = isVisible ? this.close : this.open;
 
     return (
       <Fragment>
-        {renderTrigger(isVisible ? this.close : this.open)}
+        {renderTrigger(toggleVisibility)}
         {isVisible
           ? createPortal(
             <ModalWrapper
               id='modal-portal-wrapper'
               onClick={(event) => {
-                if (event.target.id === 'modal-portal-wrapper') this.close();
+                if (
+                  closeOnBackdropClick
+                    && event.target.id === 'modal-portal-wrapper'
+                ) this.close();
               }}
             >
-              <ChildrenWrapper>{children}</ChildrenWrapper>
+              <ChildrenWrapper>{children(toggleVisibility)}</ChildrenWrapper>
             </ModalWrapper>,
             this.element,
           )
