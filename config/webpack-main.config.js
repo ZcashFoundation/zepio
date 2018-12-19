@@ -1,5 +1,5 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin'); // eslint-disable-line
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin'); // eslint-disable-line
+const TerserPlugin = require('terser-webpack-plugin'); // eslint-disable-line
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
@@ -7,7 +7,7 @@ module.exports = {
     index: ['@babel/polyfill', './app/index.js'],
   },
   optimization: {
-    minimizer: [new UglifyJSPlugin({ sourceMap: true })],
+    minimizer: [new TerserPlugin({ sourceMap: true })],
   },
   devtool: 'cheap-module-source-map',
   target: 'electron-renderer',
