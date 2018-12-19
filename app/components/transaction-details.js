@@ -23,6 +23,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 6px;
+  box-shadow: 0px 0px 30px 0px black;
 `;
 
 const TitleWrapper = styled.div`
