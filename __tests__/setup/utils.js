@@ -1,5 +1,5 @@
 // @flow
-
+// eslint-disable-next-line import/no-extraneous-dependencies
 import electron from 'electron';
 import { Application } from 'spectron';
 

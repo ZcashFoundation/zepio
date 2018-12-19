@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { ipcRenderer } from 'electron';
 import styled from 'styled-components';
 import generateRandomString from '../utils/generate-random-string';
