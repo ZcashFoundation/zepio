@@ -17,7 +17,7 @@ import formatNumber from '../utils/formatNumber';
 import truncateAddress from '../utils/truncateAddress';
 
 const Wrapper = styled.div`
-  width: 100%;
+  width: 30vw;
   background-color: ${props => props.theme.colors.background};
   display: flex;
   flex-direction: column;
@@ -52,15 +52,26 @@ const CloseIconImg = styled.img`
 
 const InfoRow = styled(RowComponent)`
   justify-content: space-between;
-  width: 100%;
-  padding: 15px 30px;
+  align-items: center;
+  width: 30vw;
+  height: 80px;
+  padding: 0 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Divider = styled.div`
   width: 100%;
   background-color: ${props => props.theme.colors.transactionsDetailsLabel};
-  height: 2px;
+  height: 1px;
   opacity: 0.5;
+`;
+
+const Label = styled(TextComponent)`
+  font-weight: ${props => props.theme.fontWeight.bold};
+  color: ${props => props.theme.colors.transactionsDetailsLabel};
+  margin-bottom: 5px;
 `;
 
 type Props = {
@@ -74,7 +85,7 @@ type Props = {
   handleClose: () => void,
 };
 
-export const TransactionDetails = ({
+export const TransactionDetailsComponent = ({
   amount,
   type,
   zecPrice,
@@ -91,7 +102,7 @@ export const TransactionDetails = ({
         <CloseIconImg src={CloseIcon} onClick={handleClose} />
       </CloseIconWrapper>
       <TitleWrapper>
-        <TextComponent value='Transactions Details' align='center' />
+        <TextComponent value='Transaction Details' align='center' />
       </TitleWrapper>
       <Icon
         src={isReceived ? ReceivedIcon : SentIcon}
@@ -120,11 +131,7 @@ export const TransactionDetails = ({
       />
       <InfoRow>
         <ColumnComponent>
-          <TextComponent
-            value='DATE'
-            isBold
-            color={theme.colors.transactionsDetailsLabel}
-          />
+          <Label value='DATE' />
           <TextComponent value={dateFns.format(date, 'MMMM D, YYYY HH:MMA')} />
         </ColumnComponent>
         <ColumnComponent>
@@ -133,43 +140,32 @@ export const TransactionDetails = ({
             isBold
             color={theme.colors.transactionsDetailsLabel}
           />
-          <TextComponent value={formatNumber({ value: amount * 0.1 })} />
+          <TextComponent
+            value={formatNumber({ value: amount * 0.1, append: 'ZEC ' })}
+          />
         </ColumnComponent>
       </InfoRow>
       <Divider />
       <InfoRow>
         <ColumnComponent>
-          <TextComponent
-            value='TRANSACTION ID'
-            isBold
-            color={theme.colors.transactionsDetailsLabel}
-          />
+          <Label value='TRANSACTION ID' />
           <TextComponent value={transactionId} />
         </ColumnComponent>
       </InfoRow>
       <Divider />
       <InfoRow>
         <ColumnComponent>
-          <TextComponent
-            value='FROM'
-            isBold
-            color={theme.colors.transactionsDetailsLabel}
-          />
+          <Label value='FROM' />
           <TextComponent value={truncateAddress(from)} />
         </ColumnComponent>
       </InfoRow>
       <Divider />
       <InfoRow>
         <ColumnComponent>
-          <TextComponent
-            value='TO'
-            isBold
-            color={theme.colors.transactionsDetailsLabel}
-          />
+          <Label value='TO' />
           <TextComponent value={truncateAddress(to)} />
         </ColumnComponent>
       </InfoRow>
-      <Divider />
     </Wrapper>
   );
 };
