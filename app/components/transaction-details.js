@@ -71,6 +71,7 @@ type Props = {
   transactionId: string,
   from: string,
   to: string,
+  handleClose: () => void,
 };
 
 export const TransactionDetails = ({
@@ -81,12 +82,13 @@ export const TransactionDetails = ({
   transactionId,
   from,
   to,
+  handleClose,
 }: Props) => {
   const isReceived = type === 'receive';
   return (
     <Wrapper>
       <CloseIconWrapper>
-        <CloseIconImg src={CloseIcon} onClick={() => alert('Close')} />
+        <CloseIconImg src={CloseIcon} onClick={handleClose} />
       </CloseIconWrapper>
       <TitleWrapper>
         <TextComponent value='Transactions Details' align='center' />
