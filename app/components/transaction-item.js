@@ -9,6 +9,8 @@ import ReceivedIcon from '../assets/images/transaction_received_icon.svg';
 import { RowComponent } from './row';
 import { ColumnComponent } from './column';
 import { TextComponent } from './text';
+import { ModalComponent } from './modal';
+import { TransactionDetailsComponent } from './transaction-details';
 
 import theme from '../theme';
 
@@ -53,6 +55,7 @@ export type Transaction = {
   address: string,
   amount: number,
   zecPrice: number,
+  transactionId: string,
 };
 
 export const TransactionItemComponent = ({
@@ -61,6 +64,7 @@ export const TransactionItemComponent = ({
   address,
   amount,
   zecPrice,
+  transactionId,
 }: Transaction) => {
   const isReceived = type === 'receive';
   const transactionTime = dateFns.format(new Date(date), 'HH:mm A');
@@ -75,34 +79,55 @@ export const TransactionItemComponent = ({
   const transactionAddress = truncateAddress(address);
 
   return (
-    <Wrapper alignItems='center' justifyContent='space-between'>
-      <RowComponent alignItems='center'>
-        <RowComponent alignItems='center'>
-          <Icon
-            src={isReceived ? ReceivedIcon : SentIcon}
-            alt='Transaction Type Icon'
-          />
-          <TransactionColumn>
-            <TransactionTypeLabel isReceived={isReceived} value={type} />
-            <TransactionTime value={transactionTime} />
-          </TransactionColumn>
-        </RowComponent>
-        <TextComponent value={transactionAddress} align='left' />
-      </RowComponent>
-      <ColumnComponent alignItems='flex-end'>
-        <TextComponent
-          value={transactionValueInZec}
-          color={
-            isReceived
-              ? theme.colors.transactionReceived
-              : theme.colors.transactionSent
-          }
+    <ModalComponent
+      renderTrigger={toggleVisibility => (
+        <Wrapper
+          alignItems='center'
+          justifyContent='space-between'
+          onClick={toggleVisibility}
+        >
+          <RowComponent alignItems='center'>
+            <RowComponent alignItems='center'>
+              <Icon
+                src={isReceived ? ReceivedIcon : SentIcon}
+                alt='Transaction Type Icon'
+              />
+              <TransactionColumn>
+                <TransactionTypeLabel isReceived={isReceived} value={type} />
+                <TransactionTime value={transactionTime} />
+              </TransactionColumn>
+            </RowComponent>
+            <TextComponent value={transactionAddress} align='left' />
+          </RowComponent>
+          <ColumnComponent alignItems='flex-end'>
+            <TextComponent
+              value={transactionValueInZec}
+              color={
+                isReceived
+                  ? theme.colors.transactionReceived
+                  : theme.colors.transactionSent
+              }
+            />
+            <TextComponent
+              value={transactionValueInUsd}
+              color={theme.colors.inactiveItem}
+            />
+          </ColumnComponent>
+        </Wrapper>
+      )}
+    >
+      {toggleVisibility => (
+        <TransactionDetailsComponent
+          amount={amount}
+          date={date}
+          from={address}
+          to=''
+          transactionId={transactionId}
+          handleClose={toggleVisibility}
+          type={type}
+          zecPrice={zecPrice}
         />
-        <TextComponent
-          value={transactionValueInUsd}
-          color={theme.colors.inactiveItem}
-        />
-      </ColumnComponent>
-    </Wrapper>
+      )}
+    </ModalComponent>
   );
 };
