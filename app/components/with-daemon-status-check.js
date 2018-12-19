@@ -1,6 +1,8 @@
 // @flow
 import React, { type ComponentType, Component } from 'react';
 
+import { LoadingScreen } from './loading-screen';
+
 import rpc from '../../services/api';
 
 type State = {
@@ -51,6 +53,6 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
         return <WrappedComponent {...this.props} {...this.state} />;
       }
 
-      return 'Daemon is starting...';
+      return <LoadingScreen />;
     }
   };

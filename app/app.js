@@ -17,9 +17,8 @@ export default () => (
       <GlobalStyle />
       <Provider store={store}>
         <ConnectedRouter history={history}>
-          <Fragment>
-            <Router />
-          </Fragment>
+          {/* $FlowFixMe */}
+          <Router />
         </ConnectedRouter>
       </Provider>
     </Fragment>
