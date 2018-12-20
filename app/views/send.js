@@ -13,6 +13,8 @@ import { ColumnComponent } from '../components/column';
 import { Divider } from '../components/divider';
 import { Button } from '../components/button';
 
+import formatNumber from '../utils/formatNumber';
+
 const FormWrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
   width: 80%;
@@ -72,7 +74,11 @@ const FormButton = styled(Button)`
   }
 `;
 
-type Props = {};
+type Props = {
+  balance: number,
+  zecPrice: number,
+  addresses: string[],
+};
 type State = {
   showFee: boolean,
   from: string,
@@ -121,9 +127,21 @@ export class SendView extends PureComponent<Props, State> {
   };
 
   render() {
+    const { addresses, balance, zecPrice } = this.props;
     const {
       showFee, from, amount, to, memo, fee, feeType,
     } = this.state;
+
+    const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
+    const zecBalanceInUsd = formatNumber({
+      value: balance * zecPrice,
+      append: 'USD $',
+    });
+    const valueSent = formatNumber({ value: amount, append: 'ZEC ' });
+    const valueSentInUsd = formatNumber({
+      value: amount * zecPrice,
+      append: 'USD $',
+    });
 
     return (
       <RowComponent justifyContent='space-between'>
@@ -133,16 +151,7 @@ export class SendView extends PureComponent<Props, State> {
             onChange={this.handleChange('from')}
             value={from}
             placeholder='Select a address'
-            options={[
-              {
-                label: 'kjnasG86431nvtsa…ks345jbhbdsDGvds',
-                value: 'kjnasG86431nvtsa…ks345jbhbdsDGvds',
-              },
-              {
-                label: 'kjnasG8643asd12e45jbhbdsDGvds',
-                value: 'kjnasG8643asd12e45jbhbdsDGvds',
-              },
-            ]}
+            options={addresses.map(addr => ({ value: addr, label: addr }))}
           />
           <InputLabelComponent value='Amount' />
           <InputComponent
@@ -202,14 +211,14 @@ export class SendView extends PureComponent<Props, State> {
           <InfoCard>
             <InfoContent>
               <InfoCardLabel value='Available Funds:' />
-              <TextComponent value='ZEC 2.235' size={1.125} isBold />
-              <InfoCardUSD value='USD $25.000,00' />
+              <TextComponent value={zecBalance} size={1.125} isBold />
+              <InfoCardUSD value={zecBalanceInUsd} />
             </InfoContent>
             <Divider opacity={0.5} />
             <InfoContent>
               <InfoCardLabel value='Sending' />
-              <TextComponent value='ZEC 0' size={1.125} isBold />
-              <InfoCardUSD value='USD $0.00' />
+              <TextComponent value={valueSent} size={1.125} isBold />
+              <InfoCardUSD value={valueSentInUsd} />
             </InfoContent>
           </InfoCard>
           <FormButton label='Send' variant='secondary' focused />
