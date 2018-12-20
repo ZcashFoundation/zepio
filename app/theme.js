@@ -23,7 +23,7 @@ const transactionSent = '#FF6C6C';
 const transactionReceived = '#6AEAC0';
 const transactionsDate = '#777777';
 const transactionsItemHovered = '#222222';
-const selectButtonShadow = '#EEC94C';
+const selectButtonShadow = 'rgba(238,201,76,0.65)';
 
 const appTheme = {
   mode: DARK,
