@@ -27,6 +27,7 @@ const ValueWrapper = styled.div`
   width: 95%;
   padding: 13px;
   opacity: ${props => (props.hasValue ? '1' : '0.2')};
+  text-transform: capitalize;
 `;
 
 const SelectMenuButtonWrapper = styled.button`
@@ -45,7 +46,9 @@ const SelectMenuButton = styled.button`
   background-color: transparent;
   border: 1px solid ${props => props.theme.colors.text};
   border-radius: 100%;
-  box-shadow: ${props => `0px 0px 10px 0px ${props.theme.colors.selectButtonShadow}`};
+  box-shadow: ${props => `0px 0px 10px 0px ${
+    props.theme.colors.selectButtonShadow
+  }, 0px 0px 10px 0px ${props.theme.colors.selectButtonShadow} inset`};
 `;
 /* eslint-enable max-len */
 
@@ -59,7 +62,7 @@ const OptionsWrapper = styled.div`
   flex-direction: column;
   position: absolute;
   width: 100%;
-  bottom: ${props => `-${props.optionsAmount * 60}px`};
+  ${props => `${props.placement}: ${`-${props.optionsAmount * 60}px`}`};
 `;
 
 const Option = styled.button`
@@ -69,6 +72,7 @@ const Option = styled.button`
   background-color: ${props => props.theme.colors.inputBackground};
   cursor: pointer;
   z-index: 99;
+  text-transform: capitalize;
 
   &:hover {
     background-color: ${props => props.theme.colors.background};
@@ -80,6 +84,7 @@ type Props = {
   options: { value: string, label: string }[],
   placeholder?: string,
   onChange: string => void,
+  placement?: 'top' | 'bottom',
 };
 type State = {
   isOpen: boolean,
@@ -92,6 +97,7 @@ export class SelectComponent extends PureComponent<Props, State> {
 
   static defaultProps = {
     placeholder: '',
+    placement: 'bottom',
   };
 
   onSelect = (value: string) => {
@@ -112,8 +118,21 @@ export class SelectComponent extends PureComponent<Props, State> {
     if (option) return option.label;
   };
 
+  getSelectIcon = () => {
+    const { placement } = this.props;
+    const { isOpen } = this.state;
+
+    if (placement === 'bottom') {
+      return isOpen ? ChevronUp : ChevronDown;
+    }
+
+    return isOpen ? ChevronDown : ChevronUp;
+  };
+
   render() {
-    const { value, options, placeholder } = this.props;
+    const {
+      value, options, placeholder, placement,
+    } = this.props;
     const { isOpen } = this.state;
 
     return (
@@ -123,16 +142,20 @@ export class SelectComponent extends PureComponent<Props, State> {
         </ValueWrapper>
         <SelectMenuButtonWrapper>
           <SelectMenuButton>
-            <Icon src={isOpen ? ChevronUp : ChevronDown} />
+            <Icon src={this.getSelectIcon()} />
           </SelectMenuButton>
         </SelectMenuButtonWrapper>
         {isOpen && (
           <OptionsWrapper
             id='select-options-wrapper'
             optionsAmount={options.length}
+            placement={placement}
           >
             {options.map(({ label, value: optionValue }) => (
-              <Option onClick={() => this.onSelect(optionValue)}>
+              <Option
+                key={label + optionValue}
+                onClick={() => this.onSelect(optionValue)}
+              >
                 <TextComponent value={label} />
               </Option>
             ))}
