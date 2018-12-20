@@ -6,9 +6,19 @@ import { InputLabelComponent } from '../components/input-label';
 import { InputComponent } from '../components/input';
 import { TextComponent } from '../components/text';
 import { SelectComponent } from '../components/select';
+import { RowComponent } from '../components/row';
+import { ColumnComponent } from '../components/column';
+import { Divider } from '../components/divider';
+import { Button } from '../components/button';
 
-const Wrapper = styled.div`
+const FormWrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
+  width: 80%;
+`;
+
+const SendWrapper = styled(ColumnComponent)`
+  margin-top: 60px;
+  width: 15%;
 `;
 
 const ShowFeeButton = styled.button`
@@ -21,6 +31,42 @@ const ShowFeeButton = styled.button`
 
   &:hover {
     text-decoration: underline;
+  }
+`;
+
+const InfoCard = styled.div`
+  width: 100%;
+  background-color: ${props => props.theme.colors.cardBackgroundColor};
+  border-radius: ${props => props.theme.boxBorderRadius};
+`;
+
+const InfoContent = styled.div`
+  padding: 15px;
+`;
+
+const InfoCardLabel = styled(TextComponent)`
+  opacity: 0.5;
+  margin-bottom: 10px;
+`;
+
+const InfoCardUSD = styled(TextComponent)`
+  opacity: 0.5;
+  margin-top: 2.5px;
+`;
+
+const FormButton = styled(Button)`
+  margin: 10px 0;
+  border-color: ${props => (props.focused
+    ? props.theme.colors.activeItem
+    : props.theme.colors.inactiveItem)};
+
+  &:hover {
+    border-color: ${props => (props.focused
+    ? props.theme.colors.activeItem
+    : props.theme.colors.inactiveItem)};
+    background-color: ${props => (props.focused
+    ? props.theme.colors.activeItem
+    : props.theme.colors.inactiveItem)};
   }
 `;
 
@@ -56,65 +102,84 @@ export class SendView extends PureComponent<Props, State> {
     } = this.state;
 
     return (
-      <Wrapper>
-        <InputLabelComponent value='From' />
-        <SelectComponent
-          onChange={this.handleChange('from')}
-          value={from}
-          placeholder='Select a address'
-          options={[
-            {
-              label: 'kjnasG86431nvtsa…ks345jbhbdsDGvds',
-              value: 'kjnasG86431nvtsa…ks345jbhbdsDGvds',
-            },
-            {
-              label: 'kjnasG8643asd12e45jbhbdsDGvds',
-              value: 'kjnasG8643asd12e45jbhbdsDGvds',
-            },
-          ]}
-        />
-        <InputLabelComponent value='Amount' />
-        <InputComponent
-          type='number'
-          onChange={this.handleChange('amount')}
-          value={String(amount)}
-          placeholder='kjnasG86431nvtsa…ks345jbhbdsDGvds'
-        />
-        <InputLabelComponent value='To' />
-        <InputComponent
-          onChange={this.handleChange('to')}
-          value={to}
-          placeholder='kjnasG86431nvtsa…ks345jbhbdsDGvds'
-        />
-        <InputLabelComponent value='Memo' />
-        <InputComponent
-          onChange={this.handleChange('memo')}
-          value={memo}
-          inputType='textarea'
-          placeholder='kjnasG86431nvtsa…ks345jbhbdsDGvds'
-        />
-
-        <ShowFeeButton
-          onClick={() => this.setState(state => ({ showFee: !state.showFee }))}
-        >
-          <TextComponent
-            value={`${showFee ? 'Hide' : 'Show'} Additional Options`}
-            align='right'
+      <RowComponent justifyContent='space-between'>
+        <FormWrapper>
+          <InputLabelComponent value='From' />
+          <SelectComponent
+            onChange={this.handleChange('from')}
+            value={from}
+            placeholder='Select a address'
+            options={[
+              {
+                label: 'kjnasG86431nvtsa…ks345jbhbdsDGvds',
+                value: 'kjnasG86431nvtsa…ks345jbhbdsDGvds',
+              },
+              {
+                label: 'kjnasG8643asd12e45jbhbdsDGvds',
+                value: 'kjnasG8643asd12e45jbhbdsDGvds',
+              },
+            ]}
           />
-        </ShowFeeButton>
+          <InputLabelComponent value='Amount' />
+          <InputComponent
+            type='number'
+            onChange={this.handleChange('amount')}
+            value={String(amount)}
+            placeholder='kjnasG86431nvtsa…ks345jbhbdsDGvds'
+          />
+          <InputLabelComponent value='To' />
+          <InputComponent
+            onChange={this.handleChange('to')}
+            value={to}
+            placeholder='kjnasG86431nvtsa…ks345jbhbdsDGvds'
+          />
+          <InputLabelComponent value='Memo' />
+          <InputComponent
+            onChange={this.handleChange('memo')}
+            value={memo}
+            inputType='textarea'
+            placeholder='Enter a text here'
+          />
 
-        {showFee && (
-          <Fragment>
-            <InputLabelComponent value='Fee' />
-            <InputComponent
-              type='number'
-              onChange={this.handleChange('fee')}
-              value={String(fee)}
-              placeholder='kjnasG86431nvtsa…ks345jbhbdsDGvds'
+          <ShowFeeButton
+            onClick={() => this.setState(state => ({ showFee: !state.showFee }))
+            }
+          >
+            <TextComponent
+              value={`${showFee ? 'Hide' : 'Show'} Additional Options`}
+              align='right'
             />
-          </Fragment>
-        )}
-      </Wrapper>
+          </ShowFeeButton>
+          {showFee && (
+            <Fragment>
+              <InputLabelComponent value='Fee' />
+              <InputComponent
+                type='number'
+                onChange={this.handleChange('fee')}
+                value={String(fee)}
+                placeholder='kjnasG86431nvtsa…ks345jbhbdsDGvds'
+              />
+            </Fragment>
+          )}
+        </FormWrapper>
+        <SendWrapper>
+          <InfoCard>
+            <InfoContent>
+              <InfoCardLabel value='Available Funds:' />
+              <TextComponent value='ZEC 2.235' size={1.125} isBold />
+              <InfoCardUSD value='USD $25.000,00' />
+            </InfoContent>
+            <Divider opacity={0.5} />
+            <InfoContent>
+              <InfoCardLabel value='Sending' />
+              <TextComponent value='ZEC 0' size={1.125} isBold />
+              <InfoCardUSD value='USD $0.00' />
+            </InfoContent>
+          </InfoCard>
+          <FormButton label='Send' variant='secondary' focused />
+          <FormButton label='Cancel' variant='secondary' />
+        </SendWrapper>
+      </RowComponent>
     );
   }
 }
