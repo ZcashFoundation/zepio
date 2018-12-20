@@ -25,7 +25,7 @@ const SelectWrapper = styled.div`
 
 const ValueWrapper = styled.div`
   width: 95%;
-  padding: 15px;
+  padding: 13px;
   opacity: ${props => (props.hasValue ? '1' : '0.2')};
 `;
 
@@ -36,7 +36,7 @@ const SelectMenuButtonWrapper = styled.button`
   background-color: transparent;
   width: 50px;
   height: 100%;
-  padding: 15px;
+  padding: 13px;
   border-left: ${props => `1px solid ${props.theme.colors.background}`};
 `;
 /* eslint-disable max-len */
@@ -91,7 +91,7 @@ export class SelectComponent extends PureComponent<Props, State> {
   };
 
   static defaultProps = {
-    placeholder: null,
+    placeholder: '',
   };
 
   onSelect = (value: string) => {
@@ -105,6 +105,13 @@ export class SelectComponent extends PureComponent<Props, State> {
     if (isOpen && event.target.id !== 'select-options-wrapper') this.setState(() => ({ isOpen: false }));
   };
 
+  getSelectedLabel = (value: string) => {
+    const { options } = this.props;
+    const option = options.find(opt => opt.value === value);
+
+    if (option) return option.label;
+  };
+
   render() {
     const { value, options, placeholder } = this.props;
     const { isOpen } = this.state;
@@ -112,7 +119,7 @@ export class SelectComponent extends PureComponent<Props, State> {
     return (
       <SelectWrapper onClick={() => this.setState(() => ({ isOpen: !isOpen }))}>
         <ValueWrapper hasValue={Boolean(value)}>
-          {value || placeholder}
+          {this.getSelectedLabel(value) || placeholder}
         </ValueWrapper>
         <SelectMenuButtonWrapper>
           <SelectMenuButton>
