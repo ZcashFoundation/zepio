@@ -8,7 +8,7 @@ import { ScrollTopComponent } from './scroll-top';
 import { SidebarContainer } from '../containers/sidebar';
 import { DashboardContainer } from '../containers/dashboard';
 import { TransactionsContainer } from '../containers/transactions';
-import { SendView } from '../views/send';
+import { SendContainer } from '../containers/send';
 import { ReceiveView } from '../views/receive';
 import { SettingsView } from '../views/settings';
 import { NotFoundView } from '../views/not-found';
@@ -57,7 +57,7 @@ export const RouterComponent = ({ location }: { location: Location }) => (
               path={DASHBOARD_ROUTE}
               component={DashboardContainer}
             />
-            <Route path={SEND_ROUTE} component={SendView} />
+            <Route path={SEND_ROUTE} component={SendContainer} />
             <Route path={RECEIVE_ROUTE} component={ReceiveView} />
             <Route path={SETTINGS_ROUTE} component={SettingsView} />
             <Route path={CONSOLE_ROUTE} component={ConsoleView} />
