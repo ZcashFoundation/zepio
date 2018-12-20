@@ -48,9 +48,9 @@ export const RouterComponent = ({ location }: { location: Location }) => (
     <HeaderComponent title={getTitle(location.pathname)} />
     <ContentWrapper>
       <SidebarContainer location={location} />
-      <ScrollTopComponent>
-        {/* $FlowFixMe */}
-        <LayoutComponent>
+      {/* $FlowFixMe */}
+      <LayoutComponent>
+        <ScrollTopComponent>
           <Switch>
             <Route
               exact
@@ -67,8 +67,8 @@ export const RouterComponent = ({ location }: { location: Location }) => (
             />
             <Route component={NotFoundView} />
           </Switch>
-        </LayoutComponent>
-      </ScrollTopComponent>
+        </ScrollTopComponent>
+      </LayoutComponent>
     </ContentWrapper>
   </FullWrapper>
 );
