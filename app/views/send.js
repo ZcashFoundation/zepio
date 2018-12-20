@@ -206,6 +206,9 @@ export class SendView extends PureComponent<Props, State> {
               </ColumnComponent>
             </RowComponent>
           )}
+          {feeType === FEES.CUSTOM && (
+            <TextComponent value='Custom fees may compromise your privacy since fees are transparent' />
+          )}
         </FormWrapper>
         <SendWrapper>
           <InfoCard>
