@@ -4,7 +4,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const getDefaultStyles = t => styled[t]`
-  border-radius: 6px;
+  border-radius: ${// $FlowFixMe
+  props => props.theme.boxBorderRadius};
   border: none;
   background-color: ${// $FlowFixMe
   props => props.theme.colors.inputBackground};

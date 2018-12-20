@@ -16,7 +16,7 @@ const MenuWrapper = styled.div`
     props.theme.colors.activeItem,
   )}, ${props.theme.colors.activeItem})`};
   padding: 10px 20px;
-  border-radius: 10px;
+  border-radius: ${props => props.theme.boxBorderRadius};
   margin-left: -10px;
 `;
 

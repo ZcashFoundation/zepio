@@ -9,7 +9,7 @@ import ChevronDown from '../assets/images/chevron-down.svg';
 const SelectWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  border-radius: 6px;
+  border-radius: ${props => props.theme.boxBorderRadius};
   border: none;
   background-color: ${// $FlowFixMe
   props => props.theme.colors.inputBackground};

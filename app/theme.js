@@ -70,6 +70,7 @@ const appTheme = {
   layoutPaddingLeft: '50px',
   layoutPaddingRight: '45px',
   layoutContentPaddingTop: '20px',
+  boxBorderRadius: '6px',
 };
 
 export const GlobalStyle = createGlobalStyle`
