@@ -42,6 +42,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       loadTransactionsSuccess({
         list: flow([
           arr => arr.map(transaction => ({
+            transactionId: transaction.txid,
             type: transaction.category,
             date: new Date(transaction.time * 1000).toISOString(),
             address: transaction.address,

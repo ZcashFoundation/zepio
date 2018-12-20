@@ -46,20 +46,23 @@ export const TransactionDailyComponent = ({
   <Wrapper>
     <Day value={transactionsDate} />
     <TransactionsWrapper>
-      {transactions.map(({
-        date, type, address, amount,
-      }, idx) => (
-        <Fragment key={`${address}-${type}-${amount}-${date}`}>
-          <TransactionItemComponent
-            type={type}
-            date={date}
-            address={address || ''}
-            amount={amount}
-            zecPrice={zecPrice}
-          />
-          {idx < transactions.length - 1 && <Divider />}
-        </Fragment>
-      ))}
+      {transactions.map(
+        ({
+          date, type, address, amount, transactionId,
+        }, idx) => (
+          <Fragment key={`${address}-${type}-${amount}-${date}`}>
+            <TransactionItemComponent
+              transactionId={transactionId}
+              type={type}
+              date={date}
+              address={address || ''}
+              amount={amount}
+              zecPrice={zecPrice}
+            />
+            {idx < transactions.length - 1 && <Divider />}
+          </Fragment>
+        ),
+      )}
     </TransactionsWrapper>
   </Wrapper>
 );
