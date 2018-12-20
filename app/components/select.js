@@ -28,6 +28,9 @@ const ValueWrapper = styled.div`
   padding: 13px;
   opacity: ${props => (props.hasValue ? '1' : '0.2')};
   text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const SelectMenuButtonWrapper = styled.button`
