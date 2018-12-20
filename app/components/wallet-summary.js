@@ -23,7 +23,7 @@ const Wrapper = styled.div`
 
 const AllAddresses = styled(TextComponent)`
   margin-bottom: 2.5px;
-  font-size: ${props => `${props.theme.fontSize.text}em`};
+  font-size: ${props => `${props.theme.fontSize.sub}em`};
 `;
 
 const ValueBox = styled.div`
@@ -39,6 +39,7 @@ const Label = styled(TextComponent)`
 
 const USDValue = styled(TextComponent)`
   opacity: 0.5;
+  font-weight: 300;
 `;
 
 const ShieldedValue = styled(Label)`
@@ -115,7 +116,7 @@ export const WalletSummaryComponent = ({
         <ShieldedValue
           value='&#9679; SHIELDED'
           isBold
-          size={theme.fontSize.text * 0.8}
+          size={theme.fontSize.sub}
         />
         <TextComponent
           value={`ZEC ${formatNumber({ value: shielded })}`}
@@ -130,7 +131,7 @@ export const WalletSummaryComponent = ({
         <Label
           value='&#9679; TRANSPARENT'
           isBold
-          size={theme.fontSize.text * 0.8}
+          size={theme.fontSize.sub}
         />
         <TextComponent
           value={`ZEC ${formatNumber({ value: transparent })}`}
