@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 import { InputLabelComponent } from '../components/input-label';
@@ -140,7 +140,6 @@ export class SendView extends PureComponent<Props, State> {
             inputType='textarea'
             placeholder='Enter a text here'
           />
-
           <ShowFeeButton
             onClick={() => this.setState(state => ({ showFee: !state.showFee }))
             }
@@ -151,15 +150,29 @@ export class SendView extends PureComponent<Props, State> {
             />
           </ShowFeeButton>
           {showFee && (
-            <Fragment>
-              <InputLabelComponent value='Fee' />
-              <InputComponent
-                type='number'
-                onChange={this.handleChange('fee')}
-                value={String(fee)}
-                placeholder='kjnasG86431nvtsa…ks345jbhbdsDGvds'
-              />
-            </Fragment>
+            <RowComponent alignItems='flex-end' justifyContent='space-between'>
+              <ColumnComponent width='74%'>
+                <InputLabelComponent value='Fee' />
+                <InputComponent
+                  type='number'
+                  onChange={this.handleChange('fee')}
+                  value={String(fee)}
+                  placeholder='kjnasG86431nvtsa…ks345jbhbdsDGvds'
+                />
+              </ColumnComponent>
+              <ColumnComponent width='25%'>
+                <SelectComponent
+                  onChange={this.handleChange('from')}
+                  value={from}
+                  options={[
+                    {
+                      label: 'Medium',
+                      value: 'medium',
+                    },
+                  ]}
+                />
+              </ColumnComponent>
+            </RowComponent>
           )}
         </FormWrapper>
         <SendWrapper>
