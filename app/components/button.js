@@ -8,29 +8,23 @@ import { Link } from 'react-router-dom';
 // $FlowFixMe
 import { darken } from 'polished';
 
-const defaultStyles = `
+const DefaultButton = styled.button`
   padding: 10px 30px;
-  font-family: ${
-  // $FlowFixMe
-  props => props.theme.fontFamily
-};
-  font-weight: ${
-  // $FlowFixMe
-  props => props.theme.fontWeight.bold
-};
-  font-size: ${
-  // $FlowFixMe
-  props => `${props.theme.fontSize.text}em`
-};
+  font-family: ${// $FlowFixMe
+  props => props.theme.fontFamily};
+  font-weight: ${// $FlowFixMe
+  props => props.theme.fontWeight.bold};
+  font-size: ${// $FlowFixMe
+  props => `${props.theme.fontSize.text}em`};
   cursor: pointer;
   outline: none;
   min-width: 100px;
   border-radius: 100px;
   transition: background-color 0.1s ease-in-out;
+  width: 100%;
 `;
 
-const Primary = styled.button`
-  ${defaultStyles};
+const Primary = styled(DefaultButton)`
   background-color: ${props => props.theme.colors.primary};
   color: ${props => props.theme.colors.secondary};
   border: none;
@@ -46,9 +40,8 @@ const Primary = styled.button`
   }
 `;
 
-const Secondary = styled.button`
-  ${defaultStyles};
-  background-color: Transparent;
+const Secondary = styled(DefaultButton)`
+  background-color: transparent;
   color: ${props => props.theme.colors.secondary};
   border: 2px solid #3e3c42;
 
@@ -73,19 +66,25 @@ type Props = {
   to?: string,
   variant?: 'primary' | 'secondary',
   disabled?: boolean,
+  className?: string,
 };
 
 export const Button = ({
-  onClick, label, to, variant, disabled,
+  onClick,
+  label,
+  to,
+  variant,
+  disabled,
+  className,
 }: Props) => {
   if (to && onClick) throw new Error('Should define either "to" or "onClick"');
 
   const component = variant === 'primary' ? (
-    <Primary onClick={onClick} disabled={disabled}>
+    <Primary onClick={onClick} disabled={disabled} className={className}>
       {label}
     </Primary>
   ) : (
-    <Secondary onClick={onClick} disabled={disabled}>
+    <Secondary onClick={onClick} disabled={disabled} className={className}>
       {label}
     </Secondary>
   );
@@ -98,4 +97,5 @@ Button.defaultProps = {
   variant: 'primary',
   onClick: null,
   disabled: false,
+  className: '',
 };
