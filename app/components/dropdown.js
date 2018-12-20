@@ -15,7 +15,7 @@ const MenuWrapper = styled.div`
     0.05,
     props.theme.colors.activeItem,
   )}, ${props.theme.colors.activeItem})`};
-  padding: 10px 20px;
+  padding: 10px 0;
   border-radius: 10px;
   margin-left: -10px;
 `;
@@ -27,7 +27,7 @@ const MenuItem = styled.button`
   border-bottom-style: solid;
   border-bottom-color: ${props => props.theme.colors.text};
   border-bottom-width: 1px;
-  padding: 15px 0;
+  padding: 15px 10px;
   cursor: pointer;
   width: 100%;
   text-align: left;
