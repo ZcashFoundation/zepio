@@ -2,6 +2,8 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
+import FEES from '../constants/fees';
+
 import { InputLabelComponent } from '../components/input-label';
 import { InputComponent } from '../components/input';
 import { TextComponent } from '../components/text';
@@ -76,7 +78,8 @@ type State = {
   from: string,
   amount: number,
   to: string,
-  fee: number,
+  feeType: string | number,
+  fee: number | null,
   memo: string,
 };
 
@@ -86,7 +89,8 @@ export class SendView extends PureComponent<Props, State> {
     from: '',
     amount: 0,
     to: '',
-    fee: 0,
+    feeType: FEES.LOW,
+    fee: FEES.LOW,
     memo: '',
   };
 
@@ -96,9 +100,29 @@ export class SendView extends PureComponent<Props, State> {
     }));
   };
 
+  handleChangeFeeType = (value: string) => {
+    this.setState(
+      {
+        feeType: value,
+        fee: null,
+      },
+      () => {
+        if (
+          value === String(FEES.LOW)
+          || value === String(FEES.MEDIUM)
+          || value === String(FEES.HIGH)
+        ) {
+          this.setState(() => ({
+            fee: Number(value),
+          }));
+        }
+      },
+    );
+  };
+
   render() {
     const {
-      showFee, from, amount, to, memo, fee,
+      showFee, from, amount, to, memo, fee, feeType,
     } = this.state;
 
     return (
@@ -157,19 +181,18 @@ export class SendView extends PureComponent<Props, State> {
                   type='number'
                   onChange={this.handleChange('fee')}
                   value={String(fee)}
-                  placeholder='kjnasG86431nvtsa…ks345jbhbdsDGvds'
+                  disabled={feeType !== FEES.CUSTOM}
                 />
               </ColumnComponent>
               <ColumnComponent width='25%'>
                 <SelectComponent
-                  onChange={this.handleChange('from')}
-                  value={from}
-                  options={[
-                    {
-                      label: 'Medium',
-                      value: 'medium',
-                    },
-                  ]}
+                  onChange={this.handleChangeFeeType}
+                  value={String(feeType)}
+                  options={Object.keys(FEES).map(cur => ({
+                    label: cur.toLowerCase(),
+                    value: String(FEES[cur]),
+                  }))}
+                  placement='top'
                 />
               </ColumnComponent>
             </RowComponent>
