@@ -26,7 +26,7 @@ const transactionsItemHovered = '#222222';
 
 const appTheme = {
   mode: DARK,
-  fontFamily: 'PT Sans',
+  fontFamily: 'Roboto',
   fontWeight: {
     bold: 700,
     default: 400,
@@ -34,6 +34,7 @@ const appTheme = {
   fontSize: {
     title: 1.25,
     text: 0.84375,
+    sub: 0.667,
     zecValueBase: 1.125,
   },
   colors: {
