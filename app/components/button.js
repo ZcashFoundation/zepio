@@ -10,12 +10,9 @@ import { darken } from 'polished';
 
 const DefaultButton = styled.button`
   padding: 10px 30px;
-  font-family: ${// $FlowFixMe
-  props => props.theme.fontFamily};
-  font-weight: ${// $FlowFixMe
-  props => props.theme.fontWeight.bold};
-  font-size: ${// $FlowFixMe
-  props => `${props.theme.fontSize.text}em`};
+  font-family: ${props => props.theme.fontFamily};
+  font-weight: ${props => props.theme.fontWeight.bold};
+  font-size: ${props => `${props.theme.fontSize.text}em`};
   cursor: pointer;
   outline: none;
   min-width: 100px;
@@ -67,6 +64,7 @@ type Props = {
   variant?: 'primary' | 'secondary',
   disabled?: boolean,
   className?: string,
+  isLoading?: boolean,
 };
 
 export const Button = ({
@@ -76,17 +74,17 @@ export const Button = ({
   variant,
   disabled,
   className,
+  isLoading,
 }: Props) => {
   if (to && onClick) throw new Error('Should define either "to" or "onClick"');
 
+  const props = { onClick, disabled: disabled || isLoading, className };
+  const buttonLabel = isLoading ? 'Loading...' : label;
+
   const component = variant === 'primary' ? (
-    <Primary onClick={onClick} disabled={disabled} className={className}>
-      {label}
-    </Primary>
+    <Primary {...props}>{buttonLabel}</Primary>
   ) : (
-    <Secondary onClick={onClick} disabled={disabled} className={className}>
-      {label}
-    </Secondary>
+    <Secondary {...props}>{buttonLabel}</Secondary>
   );
 
   return to ? <Link to={String(to)}>{component}</Link> : component;
@@ -98,4 +96,5 @@ Button.defaultProps = {
   onClick: null,
   disabled: false,
   className: '',
+  isLoading: false,
 };
