@@ -15,6 +15,8 @@ import { Button } from '../components/button';
 
 import formatNumber from '../utils/formatNumber';
 
+import type { SendTransactionInput } from '../containers/send';
+
 const FormWrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
   width: 80%;
@@ -78,6 +80,9 @@ type Props = {
   balance: number,
   zecPrice: number,
   addresses: string[],
+  sendTransaction: SendTransactionInput => void,
+  // error: string | null,
+  isSending: boolean,
 };
 type State = {
   showFee: boolean,
@@ -126,8 +131,27 @@ export class SendView extends PureComponent<Props, State> {
     );
   };
 
+  handleSubmit = () => {
+    const {
+      from, amount, to, memo, fee,
+    } = this.state;
+    const { sendTransaction } = this.props;
+
+    if (!from || !amount || !to || !memo || !fee) return;
+
+    sendTransaction({
+      from,
+      to,
+      amount,
+      fee,
+      memo,
+    });
+  };
+
   render() {
-    const { addresses, balance, zecPrice } = this.props;
+    const {
+      addresses, balance, zecPrice, isSending,
+    } = this.props;
     const {
       showFee, from, amount, to, memo, fee, feeType,
     } = this.state;
@@ -224,7 +248,13 @@ export class SendView extends PureComponent<Props, State> {
               <InfoCardUSD value={valueSentInUsd} />
             </InfoContent>
           </InfoCard>
-          <FormButton label='Send' variant='secondary' focused />
+          <FormButton
+            label='Send'
+            variant='secondary'
+            focused
+            onClick={this.handleSubmit}
+            isLoading={isSending}
+          />
           <FormButton label='Cancel' variant='secondary' />
         </SendWrapper>
       </RowComponent>
