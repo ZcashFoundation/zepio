@@ -90,7 +90,7 @@ export class DropdownComponent extends Component<Props, State> {
                 </MenuItem>
               )}
               {options.map(({ label: optionLabel, onClick }) => (
-                <MenuItem onClick={onClick}>
+                <MenuItem onClick={onClick} key={optionLabel}>
                   <TextComponent value={optionLabel} />
                 </MenuItem>
               ))}

@@ -14,5 +14,8 @@ export default {
         },
       ],
     },
+    body: {
+      raw: '<div id="modal-root" />',
+    },
   },
 };

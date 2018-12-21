@@ -6,8 +6,6 @@ import { TransactionItemComponent, type Transaction } from './transaction-item';
 import { TextComponent } from './text';
 import { Divider } from './divider';
 
-import theme from '../theme';
-
 const Wrapper = styled.div`
   margin-top: 20px;
 `;
@@ -44,22 +42,23 @@ export const TransactionDailyComponent = ({
   <Wrapper>
     <Day value={transactionsDate} />
     <TransactionsWrapper>
-      {transactions.map(({
-        date, type, address, amount,
-      }, idx) => (
-        <Fragment key={address + type + date}>
-          <TransactionItemComponent
-            type={type}
-            date={date}
-            address={address || ''}
-            amount={amount}
-            zecPrice={zecPrice}
-          />
-          {idx < transactions.length - 1 && (
-          <Divider color={theme.colors.inactiveItem} />
-          )}
-        </Fragment>
-      ))}
+      {transactions.map(
+        ({
+          date, type, address, amount, transactionId,
+        }, idx) => (
+          <Fragment key={`${address}-${type}-${amount}-${date}`}>
+            <TransactionItemComponent
+              transactionId={transactionId}
+              type={type}
+              date={date}
+              address={address || ''}
+              amount={amount}
+              zecPrice={zecPrice}
+            />
+            {idx < transactions.length - 1 && <Divider />}
+          </Fragment>
+        ),
+      )}
     </TransactionsWrapper>
   </Wrapper>
 );
