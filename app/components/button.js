@@ -20,7 +20,7 @@ const defaultStyles = `
 };
   font-size: ${
   // $FlowFixMe
-  props => `${props.theme.fontSize.text}em`
+  props => `${props.theme.fontSize.regular}em`
 };
   cursor: pointer;
   outline: none;
