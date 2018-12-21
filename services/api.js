@@ -32,7 +32,10 @@ const api: APIMethods = METHODS.reduce(
           params: args,
         },
       })
-      .then(data => Promise.resolve(data.body && data.body.result)),
+      .then(data => Promise.resolve(data.body && data.body.result))
+      .catch(payload => Promise.reject(
+        new Error(payload.body?.error.message || 'Something went wrong'),
+      )),
   }),
   {},
 );
