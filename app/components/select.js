@@ -21,6 +21,11 @@ const SelectWrapper = styled.div`
   props => props.theme.fontFamily};
   cursor: pointer;
   position: relative;
+
+  ${props => props.isOpen
+    && `border-${props.placement}-left-radius: 0; border-${
+      props.placement
+    }-right-radius: 0;`}
 `;
 
 const ValueWrapper = styled.div`
@@ -139,7 +144,11 @@ export class SelectComponent extends PureComponent<Props, State> {
     const { isOpen } = this.state;
 
     return (
-      <SelectWrapper onClick={() => this.setState(() => ({ isOpen: !isOpen }))}>
+      <SelectWrapper
+        isOpen={isOpen}
+        placement={placement}
+        onClick={() => this.setState(() => ({ isOpen: !isOpen }))}
+      >
         <ValueWrapper hasValue={Boolean(value)}>
           {this.getSelectedLabel(value) || placeholder}
         </ValueWrapper>
