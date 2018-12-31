@@ -48,6 +48,6 @@ TextComponent.defaultProps = {
   className: '',
   isBold: false,
   color: theme.colors.text,
-  size: theme.fontSize.text,
+  size: theme.fontSize.regular,
   align: 'left',
 };

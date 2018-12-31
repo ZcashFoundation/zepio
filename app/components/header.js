@@ -38,7 +38,7 @@ const TitleWrapper = styled.div`
 `;
 
 const Title = styled(TextComponent)`
-  font-size: ${props => `${props.theme.fontSize.title}em`};
+  font-size: ${props => `${props.theme.fontSize.large}em`};
   margin-top: 10px;
   margin-bottom: 10px;
   text-transform: capitalize;
