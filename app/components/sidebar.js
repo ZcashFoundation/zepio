@@ -19,7 +19,7 @@ const StyledLink = styled(Link)`
   color: ${props => (props.isActive
     ? props.theme.colors.sidebarItemActive
     : props.theme.colors.sidebarItem)};
-  font-size: ${props => `${props.theme.fontSize.text}em`};
+  font-size: ${props => `${props.theme.fontSize.regular}em`};
   text-decoration: none;
   font-weight: ${props => (props.isActive
     ? props.theme.fontWeight.bold

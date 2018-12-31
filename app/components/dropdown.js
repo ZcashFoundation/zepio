@@ -27,7 +27,7 @@ const MenuItem = styled.button`
   border-bottom-style: solid;
   border-bottom-color: ${props => props.theme.colors.text};
   border-bottom-width: 1px;
-  padding: 15px 0;
+  padding: 15px 10px;
   cursor: pointer;
   width: 100%;
   text-align: left;

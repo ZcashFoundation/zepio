@@ -23,7 +23,7 @@ const Wrapper = styled.div`
 
 const AllAddresses = styled(TextComponent)`
   margin-bottom: 2.5px;
-  font-size: ${props => `${props.theme.fontSize.text}em`};
+  font-size: ${props => `${props.theme.fontSize.small}em`};
 `;
 
 const ValueBox = styled.div`
@@ -39,6 +39,7 @@ const Label = styled(TextComponent)`
 
 const USDValue = styled(TextComponent)`
   opacity: 0.5;
+  font-weight: ${props => props.theme.fontWeight.light};
 `;
 
 const ShieldedValue = styled(Label)`
@@ -101,13 +102,13 @@ export const WalletSummaryComponent = ({
     <AllAddresses value='ALL ADDRESSES' isBold />
     <ValueBox>
       <TextComponent
-        size={theme.fontSize.zecValueBase * 2.5}
+        size={theme.fontSize.medium * 2.5}
         value={`ZEC ${formatNumber({ value: total })}`}
         isBold
       />
       <USDValue
         value={`USD $${formatNumber({ value: total * zecPrice })}`}
-        size={theme.fontSize.zecValueBase * 2}
+        size={theme.fontSize.medium * 2}
       />
     </ValueBox>
     <RowComponent>
@@ -115,12 +116,12 @@ export const WalletSummaryComponent = ({
         <ShieldedValue
           value='&#9679; SHIELDED'
           isBold
-          size={theme.fontSize.text * 0.8}
+          size={theme.fontSize.small}
         />
         <TextComponent
           value={`ZEC ${formatNumber({ value: shielded })}`}
           isBold
-          size={theme.fontSize.zecValueBase}
+          size={theme.fontSize.medium}
         />
         <USDValue
           value={`USD $${formatNumber({ value: shielded * zecPrice })}`}
@@ -130,12 +131,12 @@ export const WalletSummaryComponent = ({
         <Label
           value='&#9679; TRANSPARENT'
           isBold
-          size={theme.fontSize.text * 0.8}
+          size={theme.fontSize.small}
         />
         <TextComponent
           value={`ZEC ${formatNumber({ value: transparent })}`}
           isBold
-          size={theme.fontSize.zecValueBase}
+          size={theme.fontSize.medium}
         />
         <USDValue
           value={`USD $${formatNumber({ value: transparent * zecPrice })}`}

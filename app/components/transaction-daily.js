@@ -23,7 +23,7 @@ const TransactionsWrapper = styled.div`
 const Day = styled(TextComponent)`
   text-transform: uppercase;
   color: ${props => props.theme.colors.transactionsDate};
-  font-size: ${props => `${props.theme.fontSize.text * 0.9}em`};
+  font-size: ${props => `${props.theme.fontSize.regular * 0.9}em`};
   font-weight: ${props => props.theme.fontWeight.bold};
   margin-bottom: 5px;
 `;

@@ -10,9 +10,18 @@ import { darken } from 'polished';
 
 const DefaultButton = styled.button`
   padding: 10px 30px;
-  font-family: ${props => props.theme.fontFamily};
-  font-weight: ${props => props.theme.fontWeight.bold};
-  font-size: ${props => `${props.theme.fontSize.text}em`};
+  font-family: ${
+  // $FlowFixMe
+  props => props.theme.fontFamily
+};
+  font-weight: ${
+  // $FlowFixMe
+  props => props.theme.fontWeight.bold
+};
+  font-size: ${
+  // $FlowFixMe
+  props => `${props.theme.fontSize.regular}em`
+};
   cursor: pointer;
   outline: none;
   min-width: 100px;

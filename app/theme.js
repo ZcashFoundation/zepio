@@ -28,15 +28,17 @@ const transactionsDetailsLabel = transactionsDate;
 
 const appTheme = {
   mode: DARK,
-  fontFamily: 'PT Sans',
+  fontFamily: 'Roboto',
   fontWeight: {
     bold: 700,
     default: 400,
+    light: 300,
   },
   fontSize: {
-    title: 1.25,
-    text: 0.84375,
-    zecValueBase: 1.125,
+    large: 1.25,
+    medium: 1.125,
+    regular: 0.84375,
+    small: 0.667,
   },
   colors: {
     primary: theme('mode', {
