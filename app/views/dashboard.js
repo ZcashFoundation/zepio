@@ -61,6 +61,7 @@ export class DashboardView extends PureComponent<Props> {
                 transactionsDate={day}
                 transactions={transactions[day]}
                 zecPrice={zecPrice}
+                key={day}
               />
             ))}
           </Fragment>

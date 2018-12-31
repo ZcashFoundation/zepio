@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { ZcashLogo } from './zcash-logo';
 import { TextComponent } from './text';
+import { Divider } from './divider';
 
 const Wrapper = styled.div`
   height: ${props => props.theme.headerHeight};
@@ -44,13 +45,6 @@ const Title = styled(TextComponent)`
   text-transform: capitalize;
 `;
 
-const Divider = styled.div`
-  width: 100%;
-  background-color: ${props => props.theme.colors.text};
-  height: 1px;
-  opacity: 0.1;
-`;
-
 type Props = {
   title: string,
 };
@@ -62,7 +56,7 @@ export const HeaderComponent = ({ title }: Props) => (
     </LogoWrapper>
     <TitleWrapper>
       <Title value={title} />
-      <Divider />
+      <Divider opacity={0.1} />
     </TitleWrapper>
   </Wrapper>
 );

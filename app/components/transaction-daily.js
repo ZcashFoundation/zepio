@@ -1,15 +1,17 @@
 // @flow
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
+
 import { TransactionItemComponent, type Transaction } from './transaction-item';
 import { TextComponent } from './text';
+import { Divider } from './divider';
 
 const Wrapper = styled.div`
   margin-top: 20px;
 `;
 
 const TransactionsWrapper = styled.div`
-  border-radius: 7.5px;
+  border-radius: ${props => props.theme.boxBorderRadius};
   overflow: hidden;
   background-color: ${props => props.theme.colors.cardBackgroundColor};
   padding: 0;
@@ -24,12 +26,6 @@ const Day = styled(TextComponent)`
   font-size: ${props => `${props.theme.fontSize.regular * 0.9}em`};
   font-weight: ${props => props.theme.fontWeight.bold};
   margin-bottom: 5px;
-`;
-
-const Divider = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: ${props => props.theme.colors.inactiveItem};
 `;
 
 type Props = {

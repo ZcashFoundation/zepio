@@ -15,10 +15,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${props => props.theme.colors.cardBackgroundColor};
-  border-radius: 5px;
+  border-radius: ${props => props.theme.boxBorderRadius};
   padding: 37px 45px;
-  margin-top: 20px;
   position: relative;
+  margin-top: ${props => props.theme.layoutContentPaddingTop};
 `;
 
 const AllAddresses = styled(TextComponent)`

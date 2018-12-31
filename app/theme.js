@@ -23,6 +23,7 @@ const transactionSent = '#FF6C6C';
 const transactionReceived = '#6AEAC0';
 const transactionsDate = '#777777';
 const transactionsItemHovered = '#222222';
+const selectButtonShadow = 'rgba(238,201,76,0.65)';
 const transactionsDetailsLabel = transactionsDate;
 
 const appTheme = {
@@ -64,12 +65,16 @@ const appTheme = {
     transactionReceived,
     transactionsDate,
     transactionsItemHovered,
+    inputBackground: brandOne,
+    selectButtonShadow,
     transactionsDetailsLabel,
   },
   sidebarWidth: '200px',
   headerHeight: '60px',
   layoutPaddingLeft: '50px',
   layoutPaddingRight: '45px',
+  layoutContentPaddingTop: '20px',
+  boxBorderRadius: '6px',
 };
 
 export const GlobalStyle = createGlobalStyle`

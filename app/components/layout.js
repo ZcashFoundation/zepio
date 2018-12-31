@@ -10,6 +10,7 @@ const Layout = styled.div`
   background-color: ${props => props.theme.colors.background};
   padding-left: ${props => props.theme.layoutPaddingLeft};
   padding-right: ${props => props.theme.layoutPaddingRight};
+  overflow: auto;
 `;
 
 type Props = {

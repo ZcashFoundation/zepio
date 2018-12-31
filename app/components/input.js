@@ -3,30 +3,30 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-// TODO: Missing styles
-
-const defaultStyles = `
-  padding: 10px;
+const getDefaultStyles = t => styled[t]`
+  border-radius: ${// $FlowFixMe
+  props => props.theme.boxBorderRadius};
+  border: none;
+  background-color: ${// $FlowFixMe
+  props => props.theme.colors.inputBackground};
+  color: ${// $FlowFixMe
+  props => props.theme.colors.text};
+  padding: 15px;
   width: 100%;
   outline: none;
-  font-family: ${
-  // $FlowFixMe
-  props => props.theme.fontFamily
-}
+  font-family: ${// $FlowFixMe
+  props => props.theme.fontFamily};
+
+  ::placeholder {
+    opacity: 0.5;
+  }
 `;
 
-const Input = styled.input.attrs({
-  type: 'text',
-})`
-  ${defaultStyles};
-`;
-
-const Textarea = styled.textarea`
-  ${defaultStyles};
-`;
+const Input = getDefaultStyles('input');
+const Textarea = getDefaultStyles('textarea');
 
 type Props = {
-  inputType?: 'input' | 'textarea' | 'dropdown',
+  inputType?: 'input' | 'textarea',
   value: string,
   onChange: string => void,
   rows?: number,
@@ -42,7 +42,6 @@ export const InputComponent = ({ inputType, onChange, ...props }: Props) => {
     textarea: () => (
       <Textarea onChange={evt => onChange(evt.target.value)} {...props} />
     ),
-    dropdown: () => null,
   };
 
   if (!Object.keys(inputTypes).find(key => key === inputType)) {

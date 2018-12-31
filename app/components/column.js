@@ -9,6 +9,7 @@ const Flex = styled.div`
   flex-direction: column;
   align-items: ${props => props.alignItems};
   justify-content: ${props => props.justifyContent};
+  ${props => props.width && `width: ${props.width};`}
 `;
 
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
   justifyContent?: string,
   className?: string,
   children: Node,
+  width?: string,
 };
 
 export const ColumnComponent = ({ children, ...props }: Props) => (
@@ -26,4 +28,5 @@ ColumnComponent.defaultProps = {
   alignItems: 'flex-start',
   justifyContent: 'flex-start',
   className: '',
+  width: '',
 };
