@@ -5,11 +5,12 @@ import { LoadingScreen } from './loading-screen';
 
 import rpc from '../../services/api';
 
+type Props = {};
+
 type State = {
   isRunning: boolean,
+  progress: number,
 };
-
-type Props = {};
 
 /* eslint-disable max-len */
 export const withDaemonStatusCheck = <PassedProps: {}>(
@@ -19,6 +20,7 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
 
     state = {
       isRunning: false,
+      progress: 0,
     };
 
     componentDidMount() {
@@ -35,24 +37,36 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
     }
 
     runTest = () => {
-      rpc.getinfo().then((response) => {
-        if (response) {
-          this.setState(() => ({ isRunning: true }));
-          if (this.timer) {
-            clearInterval(this.timer);
-            this.timer = null;
+      rpc
+        .getinfo()
+        .then((response) => {
+          if (response) {
+            setTimeout(() => {
+              this.setState(() => ({ isRunning: true }));
+            }, 500);
+            this.setState(() => ({ progress: 100 }));
+
+            if (this.timer) {
+              clearInterval(this.timer);
+              this.timer = null;
+            }
           }
-        }
-      });
+        })
+        .catch(() => {
+          this.setState((state) => {
+            const newProgress = state.progress > 70 ? state.progress + 2.5 : state.progress + 5;
+            return { progress: newProgress > 95 ? 95 : newProgress };
+          });
+        });
     };
 
     render() {
-      const { isRunning } = this.state;
+      const { isRunning, progress } = this.state;
 
       if (isRunning) {
         return <WrappedComponent {...this.props} {...this.state} />;
       }
 
-      return <LoadingScreen />;
+      return <LoadingScreen progress={progress} />;
     }
   };
