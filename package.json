@@ -143,7 +143,12 @@
       "target": [
         "pkg",
         "dmg"
-      ]
+      ],
+      "icon": "./build/icons/mac/icon.icns"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "./build/icons/win/icon.ico"
     }
   },
   "jest": {
