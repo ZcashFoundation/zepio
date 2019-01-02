@@ -31,7 +31,7 @@ const getDaemonOptions = ({ username, password }) => {
   const defaultOptions = [
     '-showmetrics',
     '--metricsui=0',
-    '-metricsrefreshtime=3',
+    '-metricsrefreshtime=1',
     `-rpcuser=${username}`,
     `-rpcpassword=${password}`,
   ];
