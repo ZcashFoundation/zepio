@@ -2,12 +2,12 @@
 
 import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'connected-react-router';
-import { createBrowserHistory } from 'history';
+import { createHashHistory } from 'history';
 import thunk from 'redux-thunk';
 
 import { createRootReducer } from './modules/reducer';
 
-export const history = createBrowserHistory();
+export const history = createHashHistory();
 
 const shouldEnableDevTools = (process.env.NODE_ENV !== 'production'
     || process.env.NODE_ENV !== 'staging')
