@@ -8,7 +8,7 @@ module.exports = {
     path: outputPath,
     filename: 'bundle.js',
     chunkFilename: '[name].chunk.js',
-    publicPath: '/',
+    publicPath: './',
   },
   ...mainWebpack,
 };
