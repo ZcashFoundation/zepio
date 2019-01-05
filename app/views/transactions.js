@@ -2,11 +2,11 @@
 import React, { PureComponent, Fragment } from 'react';
 
 import { TransactionDailyComponent } from '../components/transaction-daily';
+import { TextComponent } from '../components/text';
 
 import type { Transaction } from '../components/transaction-item';
 
 type Props = {
-  isLoading: boolean,
   error: string | null,
   transactions: { [day: string]: Transaction[] },
   zecPrice: number,
@@ -20,27 +20,23 @@ export class TransactionsView extends PureComponent<Props> {
   }
 
   render() {
-    const {
-      error, isLoading, transactions, zecPrice,
-    } = this.props;
+    const { error, transactions, zecPrice } = this.props;
 
     if (error) {
-      return error;
+      return <TextComponent value={error} />;
     }
 
     const days = Object.keys(transactions);
 
     return (
       <Fragment>
-        {isLoading
-          ? 'Loading'
-          : days.map(day => (
-            <TransactionDailyComponent
-              transactionsDate={day}
-              transactions={transactions[day]}
-              zecPrice={zecPrice}
-            />
-          ))}
+        {days.map(day => (
+          <TransactionDailyComponent
+            transactionsDate={day}
+            transactions={transactions[day]}
+            zecPrice={zecPrice}
+          />
+        ))}
       </Fragment>
     );
   }
