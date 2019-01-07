@@ -3,6 +3,7 @@ import React, { PureComponent, Fragment } from 'react';
 
 import { TransactionDailyComponent } from '../components/transaction-daily';
 import { TextComponent } from '../components/text';
+import { EmptyTransactionsComponent } from '../components/empty-transactions';
 
 import type { Transaction } from '../components/transaction-item';
 
@@ -30,13 +31,17 @@ export class TransactionsView extends PureComponent<Props> {
 
     return (
       <Fragment>
-        {days.map(day => (
-          <TransactionDailyComponent
-            transactionsDate={day}
-            transactions={transactions[day]}
-            zecPrice={zecPrice}
-          />
-        ))}
+        {days.length === 0 ? (
+          <EmptyTransactionsComponent />
+        ) : (
+          days.map(day => (
+            <TransactionDailyComponent
+              transactionsDate={day}
+              transactions={transactions[day]}
+              zecPrice={zecPrice}
+            />
+          ))
+        )}
       </Fragment>
     );
   }
