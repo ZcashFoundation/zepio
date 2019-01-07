@@ -87,7 +87,7 @@ type Props = {
 type State = {
   showFee: boolean,
   from: string,
-  amount: number,
+  amount: string,
   to: string,
   feeType: string | number,
   fee: number | null,
@@ -98,7 +98,7 @@ export class SendView extends PureComponent<Props, State> {
   state = {
     showFee: false,
     from: '',
-    amount: 0,
+    amount: '0',
     to: '',
     feeType: FEES.LOW,
     fee: FEES.LOW,
@@ -137,7 +137,7 @@ export class SendView extends PureComponent<Props, State> {
     } = this.state;
     const { sendTransaction } = this.props;
 
-    if (!from || !amount || !to || !memo || !fee) return;
+    if (!from || !amount || !to || !fee) return;
 
     sendTransaction({
       from,
@@ -161,9 +161,12 @@ export class SendView extends PureComponent<Props, State> {
       value: balance * zecPrice,
       append: 'USD $',
     });
-    const valueSent = formatNumber({ value: amount, append: 'ZEC ' });
+    const valueSent = formatNumber({
+      value: Number.parseFloat(amount),
+      append: 'ZEC ',
+    });
     const valueSentInUsd = formatNumber({
-      value: amount * zecPrice,
+      value: Number.parseFloat(amount) * zecPrice,
       append: 'USD $',
     });
 

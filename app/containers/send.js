@@ -11,13 +11,15 @@ import {
   sendTransactionError,
 } from '../redux/modules/send';
 
+import filterObjectNullKeys from '../utils/filterObjectNullKeys';
+
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
 
 export type SendTransactionInput = {
   from: string,
   to: string,
-  amount: number,
+  amount: string,
   fee: number,
   memo: string,
 };
@@ -41,7 +43,19 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(sendTransaction());
 
     const [sendErr] = await eres(
-      rpc.z_sendmany(from, [{ address: to, amount, memo }], 1, fee),
+      rpc.z_sendmany(
+        from,
+        // $FlowFixMe
+        [
+          filterObjectNullKeys({
+            address: to,
+            amount: Number.parseFloat(amount),
+            memo,
+          }),
+        ],
+        1,
+        Number.parseFloat(String(fee)),
+      ),
     );
 
     // eslint-disable-next-line
