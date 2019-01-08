@@ -16,6 +16,10 @@ const Wrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
 `;
 
+const Row = styled(RowComponent)`
+  margin-bottom: 10px;
+`;
+
 const Label = styled(InputLabelComponent)`
   margin: 0;
   margin-bottom: 10px;
@@ -24,7 +28,7 @@ const Label = styled(InputLabelComponent)`
 export const ReceiveView = ({ addresses }: Props) => (
   <Wrapper>
     {(addresses || []).map(address => (
-      <RowComponent alignItems='center' justifyContent='space-between'>
+      <Row alignItems='center' justifyContent='space-between'>
         <ColumnComponent width='85%'>
           <Label value='Your z-address: ' />
           <InputComponent
@@ -34,7 +38,7 @@ export const ReceiveView = ({ addresses }: Props) => (
           />
         </ColumnComponent>
         <QRCode value={address} />
-      </RowComponent>
+      </Row>
     ))}
   </Wrapper>
 );
