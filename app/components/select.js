@@ -50,6 +50,7 @@ const SelectMenuButtonWrapper = styled.button`
 `;
 /* eslint-disable max-len */
 const SelectMenuButton = styled.button`
+  padding: 3px 7px;
   outline: none;
   background-color: transparent;
   border: 1px solid ${props => props.theme.colors.text};
