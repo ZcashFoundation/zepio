@@ -4,21 +4,21 @@ name: Transaction Details
 
 import { Playground, PropsTable } from 'docz'
 
-import { TransactionDetails } from './transaction-details.js'
+import { TransactionDetailsComponent } from './transaction-details.js'
 import { DoczWrapper } from '../theme.js'
 
 # Transaction Details
 
 ## Properties
 
-<PropsTable of={TransactionDetails} />
+<PropsTable of={TransactionDetailsComponent} />
 
 ## Basic Usage
 
 <Playground>
   <DoczWrapper>
     {() => (
-      <TransactionDetails
+      <TransactionDetailsComponent
         type="receive"
         amount={2851}
         zecPrice={56}
