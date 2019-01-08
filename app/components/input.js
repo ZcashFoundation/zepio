@@ -33,6 +33,7 @@ type Props = {
   rows?: number,
   disabled?: boolean,
   type?: string,
+  step?: number,
 };
 
 export const InputComponent = ({ inputType, onChange, ...props }: Props) => {
