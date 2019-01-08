@@ -185,7 +185,8 @@ export class SendView extends PureComponent<Props, State> {
             type='number'
             onChange={this.handleChange('amount')}
             value={String(amount)}
-            placeholder='kjnasG86431nvtsa…ks345jbhbdsDGvds'
+            placeholder='0.01'
+            step={0.01}
           />
           <InputLabelComponent value='To' />
           <InputComponent
