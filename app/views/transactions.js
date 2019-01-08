@@ -5,11 +5,11 @@ import { TransactionDailyComponent } from '../components/transaction-daily';
 import { TextComponent } from '../components/text';
 import { EmptyTransactionsComponent } from '../components/empty-transactions';
 
-import type { Transaction } from '../components/transaction-item';
+import type { TransactionsList } from '../redux/modules/transactions';
 
 type Props = {
   error: string | null,
-  transactions: { [day: string]: Transaction[] },
+  transactions: TransactionsList,
   zecPrice: number,
   getTransactions: () => void,
 };
@@ -27,17 +27,15 @@ export class TransactionsView extends PureComponent<Props> {
       return <TextComponent value={error} />;
     }
 
-    const days = Object.keys(transactions);
-
     return (
       <Fragment>
-        {days.length === 0 ? (
+        {transactions.length === 0 ? (
           <EmptyTransactionsComponent />
         ) : (
-          days.map(day => (
+          transactions.map(({ day, list }) => (
             <TransactionDailyComponent
               transactionsDate={day}
-              transactions={transactions[day]}
+              transactions={list}
               zecPrice={zecPrice}
             />
           ))

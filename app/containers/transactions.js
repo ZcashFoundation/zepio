@@ -14,6 +14,8 @@ import {
 import rpc from '../../services/api';
 import store from '../../config/electron-store';
 
+import sortBy from '../utils/sortBy';
+
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
 
@@ -38,18 +40,25 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       );
     }
 
+    const formattedTransactions = flow([
+      arr => arr.map(transaction => ({
+        transactionId: transaction.txid,
+        type: transaction.category,
+        date: new Date(transaction.time * 1000).toISOString(),
+        address: transaction.address,
+        amount: Math.abs(transaction.amount),
+      })),
+      arr => groupBy(arr, obj => dateFns.format(obj.date, 'MMM DD, YYYY')),
+      obj => Object.keys(obj).map(day => ({
+        day,
+        list: sortBy('date')(obj[day]),
+      })),
+      sortBy('day'),
+    ])(transactions);
+
     dispatch(
       loadTransactionsSuccess({
-        list: flow([
-          arr => arr.map(transaction => ({
-            transactionId: transaction.txid,
-            type: transaction.category,
-            date: new Date(transaction.time * 1000).toISOString(),
-            address: transaction.address,
-            amount: Math.abs(transaction.amount),
-          })),
-          arr => groupBy(arr, obj => dateFns.format(obj.date, 'MMM DD, YYYY')),
-        ])(transactions),
+        list: formattedTransactions,
         zecPrice: store.get('ZEC_DOLLAR_PRICE'),
       }),
     );

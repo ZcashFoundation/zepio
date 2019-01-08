@@ -7,7 +7,7 @@ import { TransactionDailyComponent } from '../components/transaction-daily';
 import { TextComponent } from '../components/text';
 import { EmptyTransactionsComponent } from '../components/empty-transactions';
 
-import type { Transaction } from '../components/transaction-item';
+import type { TransactionsList } from '../redux/modules/transactions';
 
 type Props = {
   getSummary: () => void,
@@ -17,7 +17,7 @@ type Props = {
   error: string | null,
   zecPrice: number,
   addresses: string[],
-  transactions: { [day: string]: Transaction[] },
+  transactions: TransactionsList,
 };
 
 export class DashboardView extends PureComponent<Props> {
@@ -37,8 +37,6 @@ export class DashboardView extends PureComponent<Props> {
       transactions,
     } = this.props;
 
-    const days = Object.keys(transactions);
-
     if (error) {
       return <TextComponent value={error} />;
     }
@@ -52,13 +50,13 @@ export class DashboardView extends PureComponent<Props> {
           zecPrice={zecPrice}
           addresses={addresses}
         />
-        {days.length === 0 ? (
+        {transactions.length === 0 ? (
           <EmptyTransactionsComponent />
         ) : (
-          days.map(day => (
+          transactions.map(({ day, list }) => (
             <TransactionDailyComponent
               transactionsDate={day}
-              transactions={transactions[day]}
+              transactions={list}
               zecPrice={zecPrice}
               key={day}
             />

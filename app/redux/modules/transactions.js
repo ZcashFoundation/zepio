@@ -7,6 +7,8 @@ export const LOAD_TRANSACTIONS = 'LOAD_TRANSACTIONS';
 export const LOAD_TRANSACTIONS_SUCCESS = 'LOAD_TRANSACTIONS_SUCCESS';
 export const LOAD_TRANSACTIONS_ERROR = 'LOAD_TRANSACTIONS_ERROR';
 
+export type TransactionsList = { day: string, list: Transaction[] }[];
+
 export const loadTransactions = () => ({
   type: LOAD_TRANSACTIONS,
   payload: {},
@@ -16,7 +18,7 @@ export const loadTransactionsSuccess = ({
   list,
   zecPrice,
 }: {
-  list: { [day: string]: Transaction[] },
+  list: TransactionsList,
   zecPrice: number,
 }) => ({
   type: LOAD_TRANSACTIONS_SUCCESS,
@@ -34,13 +36,13 @@ export const loadTransactionsError = ({ error }: { error: string }) => ({
 export type State = {
   isLoading: boolean,
   error: string | null,
-  list: { [day: string]: Transaction[] },
+  list: TransactionsList,
   zecPrice: number,
 };
 
 const initialState = {
   zecPrice: 0,
-  list: {},
+  list: [],
   error: null,
   isLoading: false,
 };
