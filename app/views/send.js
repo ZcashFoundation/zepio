@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import { BigNumber } from 'bignumber.js';
 
 import FEES from '../constants/fees';
 
@@ -158,15 +159,15 @@ export class SendView extends PureComponent<Props, State> {
 
     const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
     const zecBalanceInUsd = formatNumber({
-      value: balance * zecPrice,
+      value: new BigNumber(balance).multipliedBy(zecPrice).toNumber(),
       append: 'USD $',
     });
     const valueSent = formatNumber({
-      value: Number.parseFloat(amount),
+      value: new BigNumber(amount).toNumber(),
       append: 'ZEC ',
     });
     const valueSentInUsd = formatNumber({
-      value: Number.parseFloat(amount) * zecPrice,
+      value: new BigNumber(amount).multipliedBy(zecPrice).toNumber(),
       append: 'USD $',
     });
 

@@ -1,6 +1,7 @@
 // @flow
 import { connect } from 'react-redux';
 import eres from 'eres';
+import { BigNumber } from 'bignumber.js';
 
 import rpc from '../../services/api';
 import { SendView } from '../views/send';
@@ -49,12 +50,12 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
         [
           filterObjectNullKeys({
             address: to,
-            amount: Number.parseFloat(amount),
+            amount: new BigNumber(amount).toNumber(),
             memo,
           }),
         ],
         1,
-        Number.parseFloat(String(fee)),
+        new BigNumber(fee).toNumber(),
       ),
     );
 

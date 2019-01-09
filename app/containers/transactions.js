@@ -4,6 +4,7 @@ import eres from 'eres';
 import flow from 'lodash.flow';
 import groupBy from 'lodash.groupby';
 import dateFns from 'date-fns';
+import { BigNumber } from 'bignumber.js';
 
 import { TransactionsView } from '../views/transactions';
 import {
@@ -46,7 +47,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
         type: transaction.category,
         date: new Date(transaction.time * 1000).toISOString(),
         address: transaction.address,
-        amount: Math.abs(transaction.amount),
+        amount: new BigNumber(transaction.amount).absoluteValue().toNumber(),
       })),
       arr => groupBy(arr, obj => dateFns.format(obj.date, 'MMM DD, YYYY')),
       obj => Object.keys(obj).map(day => ({
