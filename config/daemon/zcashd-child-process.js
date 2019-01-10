@@ -34,6 +34,9 @@ const getDaemonOptions = ({ username, password }) => {
     '-metricsrefreshtime=1',
     `-rpcuser=${username}`,
     `-rpcpassword=${password}`,
+    // TODO: For test purposes only
+    '-testnet',
+    '-addnode=testnet.z.cash',
   ];
   return isDev
     ? defaultOptions.concat(['-testnet', '-addnode=testnet.z.cash'])
