@@ -74,6 +74,24 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       sortBy('day'),
     ])(transactions);
 
+    if (!zAddresses.length) {
+      const [getNewZAddressErr, newZAddress] = await eres(
+        rpc.z_getnewaddress(),
+      );
+
+      if (!getNewZAddressErr && newZAddress) {
+        zAddresses.push(newZAddress);
+      }
+    }
+
+    if (!transparentAddresses.length) {
+      const [getNewAddressErr, newAddress] = await eres(rpc.getnewaddress(''));
+
+      if (!getNewAddressErr && newAddress) {
+        transparentAddresses.push(newAddress);
+      }
+    }
+
     dispatch(
       loadWalletSummarySuccess({
         transparent: walletSummary.transparent,

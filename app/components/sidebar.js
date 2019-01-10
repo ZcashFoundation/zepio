@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   font-family: ${props => props.theme.fontFamily}
   background-color: ${props => props.theme.colors.sidebarBg}; 
   padding-top: 15px;
+  position: relative;
 `;
 
 const StyledLink = styled(Link)`
@@ -34,7 +35,6 @@ const StyledLink = styled(Link)`
   border-right: ${props => (props.isActive
     ? `1px solid ${props.theme.colors.sidebarItemActive}`
     : 'none')};
-  z-index: 100;
   cursor: pointer;
 
   &:hover {
