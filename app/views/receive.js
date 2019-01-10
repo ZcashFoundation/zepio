@@ -30,7 +30,7 @@ export const ReceiveView = ({ addresses }: Props) => (
     {(addresses || []).map(address => (
       <Row alignItems='center' justifyContent='space-between'>
         <ColumnComponent width='85%'>
-          <Label value='Your z-address: ' />
+          <Label value='Your Address: ' />
           <InputComponent
             value={address}
             onChange={() => {}}
