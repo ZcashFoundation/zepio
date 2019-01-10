@@ -9,7 +9,7 @@ import { SidebarContainer } from '../containers/sidebar';
 import { DashboardContainer } from '../containers/dashboard';
 import { TransactionsContainer } from '../containers/transactions';
 import { SendContainer } from '../containers/send';
-import { ReceiveView } from '../views/receive';
+import { ReceiveContainer } from '../containers/receive';
 import { SettingsView } from '../views/settings';
 import { NotFoundView } from '../views/not-found';
 import { ConsoleView } from '../views/console';
@@ -58,7 +58,7 @@ export const RouterComponent = ({ location }: { location: Location }) => (
               component={DashboardContainer}
             />
             <Route path={SEND_ROUTE} component={SendContainer} />
-            <Route path={RECEIVE_ROUTE} component={ReceiveView} />
+            <Route path={RECEIVE_ROUTE} component={ReceiveContainer} />
             <Route path={SETTINGS_ROUTE} component={SettingsView} />
             <Route path={CONSOLE_ROUTE} component={ConsoleView} />
             <Route

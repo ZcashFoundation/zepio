@@ -32,7 +32,7 @@ describe('WalletSummary Actions', () => {
       transparent: 5000,
       shielded: 5000,
       addresses: [],
-      transactions: {},
+      transactions: [],
       zecPrice: 50,
     };
 

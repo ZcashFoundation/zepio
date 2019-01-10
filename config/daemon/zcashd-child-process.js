@@ -78,6 +78,8 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
       password: generateRandomString(),
     };
 
+  if (isDev) log('Rpc Credentials', rpcCredentials);
+
   if (!hasCredentials) {
     store.set('rpcuser', rpcCredentials.username);
     store.set('rpcpassword', rpcCredentials.password);

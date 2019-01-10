@@ -1,6 +1,7 @@
 // @flow
 import { connect } from 'react-redux';
 import eres from 'eres';
+import { BigNumber } from 'bignumber.js';
 
 import rpc from '../../services/api';
 import { SendView } from '../views/send';
@@ -11,13 +12,15 @@ import {
   sendTransactionError,
 } from '../redux/modules/send';
 
+import filterObjectNullKeys from '../utils/filterObjectNullKeys';
+
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
 
 export type SendTransactionInput = {
   from: string,
   to: string,
-  amount: number,
+  amount: string,
   fee: number,
   memo: string,
 };
@@ -41,7 +44,19 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(sendTransaction());
 
     const [sendErr] = await eres(
-      rpc.z_sendmany(from, [{ address: to, amount, memo }], 1, fee),
+      rpc.z_sendmany(
+        from,
+        // $FlowFixMe
+        [
+          filterObjectNullKeys({
+            address: to,
+            amount: new BigNumber(amount).toNumber(),
+            memo,
+          }),
+        ],
+        1,
+        new BigNumber(fee).toNumber(),
+      ),
     );
 
     // eslint-disable-next-line

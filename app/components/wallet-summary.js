@@ -17,6 +17,7 @@ const Wrapper = styled.div`
   background-color: ${props => props.theme.colors.cardBackgroundColor};
   border-radius: ${props => props.theme.boxBorderRadius};
   padding: 37px 45px;
+  min-height: 250px;
   position: relative;
   margin-top: ${props => props.theme.layoutContentPaddingTop};
 `;
@@ -128,11 +129,7 @@ export const WalletSummaryComponent = ({
         />
       </ValueBox>
       <ValueBox>
-        <Label
-          value='&#9679; TRANSPARENT'
-          isBold
-          size={theme.fontSize.small}
-        />
+        <Label value='&#9679; TRANSPARENT' isBold size={theme.fontSize.small} />
         <TextComponent
           value={`ZEC ${formatNumber({ value: transparent })}`}
           isBold
