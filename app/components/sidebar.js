@@ -34,6 +34,8 @@ const StyledLink = styled(Link)`
   border-right: ${props => (props.isActive
     ? `1px solid ${props.theme.colors.sidebarItemActive}`
     : 'none')};
+  z-index: 100;
+  cursor: pointer;
 
   &:hover {
     color: ${/* eslint-disable-next-line max-len */
