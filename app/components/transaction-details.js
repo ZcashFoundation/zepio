@@ -76,7 +76,7 @@ const Ellipsis = styled(TextComponent)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: calc(30vw - 60px);
+  width: 100%;
 `;
 
 type Props = {
@@ -152,23 +152,23 @@ export const TransactionDetailsComponent = ({
       </InfoRow>
       <Divider />
       <InfoRow>
-        <ColumnComponent>
+        <ColumnComponent width='100%'>
           <Label value='TRANSACTION ID' />
           <Ellipsis value={transactionId} />
         </ColumnComponent>
       </InfoRow>
       <Divider />
       <InfoRow>
-        <ColumnComponent>
+        <ColumnComponent width='100%'>
           <Label value='FROM' />
-          <TextComponent value={truncateAddress(from)} />
+          <Ellipsis value={truncateAddress(from)} />
         </ColumnComponent>
       </InfoRow>
       <Divider />
       <InfoRow>
-        <ColumnComponent>
+        <ColumnComponent width='100%'>
           <Label value='TO' />
-          <TextComponent value={truncateAddress(to)} />
+          <Ellipsis value={truncateAddress(to)} />
         </ColumnComponent>
       </InfoRow>
     </Wrapper>
