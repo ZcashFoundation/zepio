@@ -115,6 +115,11 @@ const initialState = {
 export class SendView extends PureComponent<Props, State> {
   state = initialState;
 
+  componentDidMount() {
+    const { resetSendView } = this.props;
+    resetSendView();
+  }
+
   handleChange = (field: string) => (value: string) => {
     this.setState(() => ({
       [field]: value,
