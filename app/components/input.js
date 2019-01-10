@@ -29,9 +29,11 @@ type Props = {
   inputType?: 'input' | 'textarea',
   value: string,
   onChange: string => void,
+  onFocus?: (SyntheticFocusEvent<HTMLInputElement>) => void,
   rows?: number,
   disabled?: boolean,
   type?: string,
+  step?: number,
 };
 
 export const InputComponent = ({ inputType, onChange, ...props }: Props) => {

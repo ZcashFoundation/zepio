@@ -13,6 +13,7 @@ import {
   loadWalletSummarySuccess,
   loadWalletSummaryError,
 } from '../redux/modules/wallet';
+import sortBy from '../utils/sortBy';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
@@ -36,10 +37,18 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
     if (err) return dispatch(loadWalletSummaryError({ error: err.message }));
 
-    const [addressesErr, addresses] = await eres(rpc.z_listaddresses());
+    const [zAddressesErr, zAddresses] = await eres(rpc.z_listaddresses());
+
+    const [tAddressesErr, transparentAddresses] = await eres(
+      rpc.getaddressesbyaccount(''),
+    );
 
     // eslint-disable-next-line
-    if (addressesErr) return dispatch(loadWalletSummaryError({ error: addressesErr.message }));
+    if (zAddressesErr || tAddressesErr) return dispatch(
+      loadWalletSummaryError({
+        error: zAddressesErr?.message || tAddressesErr?.message,
+      }),
+    );
 
     const [transactionsErr, transactions] = await eres(rpc.listtransactions());
 
@@ -49,22 +58,29 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       );
     }
 
+    const formattedTransactions = flow([
+      arr => arr.map(transaction => ({
+        transactionId: transaction.txid,
+        type: transaction.category,
+        date: new Date(transaction.time * 1000).toISOString(),
+        address: transaction.address,
+        amount: Math.abs(transaction.amount),
+      })),
+      arr => groupBy(arr, obj => dateFns.format(obj.date, 'MMM DD, YYYY')),
+      obj => Object.keys(obj).map(day => ({
+        day,
+        list: sortBy('date')(obj[day]),
+      })),
+      sortBy('day'),
+    ])(transactions);
+
     dispatch(
       loadWalletSummarySuccess({
         transparent: walletSummary.transparent,
         total: walletSummary.total,
         shielded: walletSummary.private,
-        addresses,
-        transactions: flow([
-          arr => arr.map(transaction => ({
-            transactionId: transaction.txid,
-            type: transaction.category,
-            date: new Date(transaction.time * 1000).toISOString(),
-            address: transaction.address,
-            amount: Math.abs(transaction.amount),
-          })),
-          arr => groupBy(arr, obj => dateFns.format(obj.date, 'MMM DD, YYYY')),
-        ])(transactions),
+        addresses: [...zAddresses, ...transparentAddresses],
+        transactions: formattedTransactions,
         zecPrice: store.get('ZEC_DOLLAR_PRICE'),
       }),
     );

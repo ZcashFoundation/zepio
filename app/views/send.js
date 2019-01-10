@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import { BigNumber } from 'bignumber.js';
 
 import FEES from '../constants/fees';
 
@@ -87,7 +88,7 @@ type Props = {
 type State = {
   showFee: boolean,
   from: string,
-  amount: number,
+  amount: string,
   to: string,
   feeType: string | number,
   fee: number | null,
@@ -98,7 +99,7 @@ export class SendView extends PureComponent<Props, State> {
   state = {
     showFee: false,
     from: '',
-    amount: 0,
+    amount: '0',
     to: '',
     feeType: FEES.LOW,
     fee: FEES.LOW,
@@ -137,7 +138,7 @@ export class SendView extends PureComponent<Props, State> {
     } = this.state;
     const { sendTransaction } = this.props;
 
-    if (!from || !amount || !to || !memo || !fee) return;
+    if (!from || !amount || !to || !fee) return;
 
     sendTransaction({
       from,
@@ -158,12 +159,15 @@ export class SendView extends PureComponent<Props, State> {
 
     const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
     const zecBalanceInUsd = formatNumber({
-      value: balance * zecPrice,
+      value: new BigNumber(balance).multipliedBy(zecPrice).toNumber(),
       append: 'USD $',
     });
-    const valueSent = formatNumber({ value: amount, append: 'ZEC ' });
+    const valueSent = formatNumber({
+      value: new BigNumber(amount).toNumber(),
+      append: 'ZEC ',
+    });
     const valueSentInUsd = formatNumber({
-      value: amount * zecPrice,
+      value: new BigNumber(amount).multipliedBy(zecPrice).toNumber(),
       append: 'USD $',
     });
 
@@ -182,7 +186,8 @@ export class SendView extends PureComponent<Props, State> {
             type='number'
             onChange={this.handleChange('amount')}
             value={String(amount)}
-            placeholder='0.00 ZEC'
+            placeholder='0.01'
+            step={0.01}
           />
           <InputLabelComponent value='To' />
           <InputComponent
