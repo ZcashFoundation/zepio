@@ -20,12 +20,12 @@ import type { SendTransactionInput } from '../containers/send';
 
 const FormWrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
-  width: 80%;
+  width: 65%;
 `;
 
 const SendWrapper = styled(ColumnComponent)`
   margin-top: 60px;
-  width: 15%;
+  width: 30%;
 `;
 
 const ShowFeeButton = styled.button`
@@ -99,7 +99,7 @@ export class SendView extends PureComponent<Props, State> {
   state = {
     showFee: false,
     from: '',
-    amount: '0',
+    amount: '',
     to: '',
     feeType: FEES.LOW,
     fee: FEES.LOW,
@@ -186,14 +186,14 @@ export class SendView extends PureComponent<Props, State> {
             type='number'
             onChange={this.handleChange('amount')}
             value={String(amount)}
-            placeholder='0.01'
+            placeholder='ZEC 0.0'
             step={0.01}
           />
           <InputLabelComponent value='To' />
           <InputComponent
             onChange={this.handleChange('to')}
             value={to}
-            placeholder='kjnasG86431nvtsa…ks345jbhbdsDGvds'
+            placeholder='Enter Address'
           />
           <InputLabelComponent value='Memo' />
           <InputComponent
@@ -243,14 +243,14 @@ export class SendView extends PureComponent<Props, State> {
           <InfoCard>
             <InfoContent>
               <InfoCardLabel value='Available Funds:' />
-              <TextComponent value={zecBalance} size={1.125} isBold />
-              <InfoCardUSD value={zecBalanceInUsd} />
+              <TextComponent value={zecBalance} size={1.25} isBold />
+              <InfoCardUSD value={zecBalanceInUsd} size={0.84375} />
             </InfoContent>
             <Divider opacity={0.5} />
             <InfoContent>
               <InfoCardLabel value='Sending' />
-              <TextComponent value={valueSent} size={1.125} isBold />
-              <InfoCardUSD value={valueSentInUsd} />
+              <TextComponent value={valueSent} size={1.25} isBold />
+              <InfoCardUSD value={valueSentInUsd} size={0.84375} />
             </InfoContent>
           </InfoCard>
           <FormButton
