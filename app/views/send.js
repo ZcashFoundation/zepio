@@ -17,6 +17,7 @@ import { Button } from '../components/button';
 import formatNumber from '../utils/formatNumber';
 
 import type { SendTransactionInput } from '../containers/send';
+import type { State as SendState } from '../redux/modules/send';
 
 const FormWrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
@@ -77,14 +78,20 @@ const FormButton = styled(Button)`
   }
 `;
 
-type Props = {
+const SuccessWrapper = styled(ColumnComponent)`
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`;
+
+type Props = SendState & {
   balance: number,
   zecPrice: number,
   addresses: string[],
   sendTransaction: SendTransactionInput => void,
-  // error: string | null,
-  isSending: boolean,
+  resetSendView: () => void,
 };
+
 type State = {
   showFee: boolean,
   from: string,
@@ -95,16 +102,23 @@ type State = {
   memo: string,
 };
 
+const initialState = {
+  showFee: false,
+  from: '',
+  amount: '0',
+  to: '',
+  feeType: FEES.LOW,
+  fee: FEES.LOW,
+  memo: '',
+};
+
 export class SendView extends PureComponent<Props, State> {
-  state = {
-    showFee: false,
-    from: '',
-    amount: '',
-    to: '',
-    feeType: FEES.LOW,
-    fee: FEES.LOW,
-    memo: '',
-  };
+  state = initialState;
+
+  componentDidMount() {
+    const { resetSendView } = this.props;
+    resetSendView();
+  }
 
   handleChange = (field: string) => (value: string) => {
     this.setState(() => ({
@@ -149,9 +163,20 @@ export class SendView extends PureComponent<Props, State> {
     });
   };
 
+  reset = () => {
+    const { resetSendView } = this.props;
+
+    this.setState(initialState, () => resetSendView());
+  };
+
   render() {
     const {
-      addresses, balance, zecPrice, isSending,
+      addresses,
+      balance,
+      zecPrice,
+      isSending,
+      error,
+      operationId,
     } = this.props;
     const {
       showFee, from, amount, to, memo, fee, feeType,
@@ -171,9 +196,20 @@ export class SendView extends PureComponent<Props, State> {
       append: 'USD $',
     });
 
-    return (
+    return operationId ? (
+      <SuccessWrapper>
+        <TextComponent value={`Processing operation: ${operationId}`} />
+        <TextComponent value={`Amount: ${amount}`} />
+        <TextComponent value={`From: ${from}`} />
+        <TextComponent value={`To: ${to}`} />
+        <button type='button' onClick={this.reset}>
+          Send again!
+        </button>
+      </SuccessWrapper>
+    ) : (
       <RowComponent justifyContent='space-between'>
         <FormWrapper>
+          {error && <TextComponent value={error} />}
           <InputLabelComponent value='From' />
           <SelectComponent
             onChange={this.handleChange('from')}

@@ -10,6 +10,7 @@ import {
   sendTransaction,
   sendTransactionSuccess,
   sendTransactionError,
+  resetSendTransaction,
 } from '../redux/modules/send';
 
 import filterObjectNullKeys from '../utils/filterObjectNullKeys';
@@ -31,6 +32,7 @@ const mapStateToProps = ({ walletSummary, sendStatus }: AppState) => ({
   addresses: walletSummary.addresses,
   error: sendStatus.error,
   isSending: sendStatus.isSending,
+  operationId: sendStatus.operationId,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -43,7 +45,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }: SendTransactionInput) => {
     dispatch(sendTransaction());
 
-    const [sendErr] = await eres(
+    const [sendErr, operationId] = await eres(
       rpc.z_sendmany(
         from,
         // $FlowFixMe
@@ -60,10 +62,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     );
 
     // eslint-disable-next-line
-    if (sendErr) return dispatch(sendTransactionError({ error: sendErr.message }));
+    if (sendErr || !operationId) return dispatch(sendTransactionError({ error: sendErr.message }));
 
-    dispatch(sendTransactionSuccess());
+    dispatch(sendTransactionSuccess({ operationId }));
   },
+  resetSendView: () => dispatch(resetSendTransaction()),
 });
 
 export const SendContainer = connect(

@@ -12,14 +12,11 @@ const SelectWrapper = styled.div`
   flex-direction: row;
   border-radius: ${props => props.theme.boxBorderRadius};
   border: none;
-  background-color: ${// $FlowFixMe
-  props => props.theme.colors.inputBackground};
-  color: ${// $FlowFixMe
-  props => props.theme.colors.text};
+  background-color: ${props => props.theme.colors.inputBackground};
+  color: ${props => props.theme.colors.text};
   width: 100%;
   outline: none;
-  font-family: ${// $FlowFixMe
-  props => props.theme.fontFamily};
+  font-family: ${props => props.theme.fontFamily};
   cursor: pointer;
   position: relative;
 
@@ -73,6 +70,7 @@ const OptionsWrapper = styled.div`
   position: absolute;
   width: 100%;
   ${props => `${props.placement}: ${`-${props.optionsAmount * 60}px`}`};
+  overflow-y: auto;
 `;
 
 const Option = styled.button`
