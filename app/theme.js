@@ -30,7 +30,7 @@ const appTheme = {
   mode: DARK,
   fontFamily: 'Roboto',
   fontWeight: {
-    bold: 700,
+    bold: 900,
     default: 400,
     light: 300,
   },
