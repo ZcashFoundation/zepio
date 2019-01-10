@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import generateRandomString from '../utils/generate-random-string';
 import { TextComponent } from '../components/text';
 
-import ConsoleSymbol from '../assets/images/console_zcash.svg';
+import ConsoleSymbol from '../assets/images/console_zcash.png';
 
 const Wrapper = styled.div`
   max-height: 100%;
@@ -34,16 +34,21 @@ const initialLog = `
   In order to ensure you are adequately protecting your privacy when using Zcash, please see <https://z.cash/support/security/>.
 `;
 
-const defaultState = `  
-  \n
+const defaultState = `
+  Thank you for running a Zcash node!
+  You're helping to strengthen the network and contributing to a social good :)
+  In order to ensure you are adequately protecting your privacy when using Zcash, please see <https://z.cash/support/security/>.
+  
   Block height | 0
   Connections | 0
   Network solution rate | 0 Sol/s
-  
   You are currently not mining.
   To enable mining, add 'gen=1' to your zcash.conf and restart.
+
   Since starting this node 0 minutes, 0 seconds ago:
 - You have validated 0 transactions!
+\n
+------------------------------------------
 `;
 
 const breakpoints = [1, 4, 7, 10, 13];
@@ -56,7 +61,7 @@ type State = {
 
 export class ConsoleView extends Component<Props, State> {
   state = {
-    log: initialLog + defaultState,
+    log: defaultState,
   };
 
   componentDidMount() {
