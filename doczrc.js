@@ -12,6 +12,14 @@ export default {
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css?family=PT+Sans:400,700',
         },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css?family=Source+Code+Pro',
+        },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,700',
+        },
       ],
     },
     body: {

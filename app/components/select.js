@@ -7,6 +7,7 @@ import ChevronUp from '../assets/images/chevron-up.svg';
 import ChevronDown from '../assets/images/chevron-down.svg';
 
 const SelectWrapper = styled.div`
+  align-items: center;
   display: flex;
   flex-direction: row;
   border-radius: ${props => props.theme.boxBorderRadius};

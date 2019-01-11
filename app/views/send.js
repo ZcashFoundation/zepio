@@ -234,14 +234,14 @@ export class SendView extends PureComponent<Props, State> {
             type='number'
             onChange={this.handleChange('amount')}
             value={String(amount)}
-            placeholder='0.01'
+            placeholder='ZEC 0.0'
             step={0.01}
           />
           <InputLabelComponent value='To' />
           <InputComponent
             onChange={this.handleChange('to')}
             value={to}
-            placeholder='kjnasG86431nvtsa…ks345jbhbdsDGvds'
+            placeholder='Enter Address'
           />
           <InputLabelComponent value='Memo' />
           <InputComponent
@@ -292,14 +292,14 @@ export class SendView extends PureComponent<Props, State> {
           <InfoCard>
             <InfoContent>
               <InfoCardLabel value='Available Funds:' />
-              <TextComponent value={zecBalance} size={1.125} isBold />
-              <InfoCardUSD value={zecBalanceInUsd} />
+              <TextComponent value={zecBalance} size={1.25} isBold />
+              <InfoCardUSD value={zecBalanceInUsd} size={0.84375} />
             </InfoContent>
             <Divider opacity={0.5} />
             <InfoContent>
               <InfoCardLabel value='Sending' />
-              <TextComponent value={valueSent} size={1.125} isBold />
-              <InfoCardUSD value={valueSentInUsd} />
+              <TextComponent value={valueSent} size={1.25} isBold />
+              <InfoCardUSD value={valueSentInUsd} size={0.84375} />
             </InfoContent>
           </InfoCard>
           <FormButton
