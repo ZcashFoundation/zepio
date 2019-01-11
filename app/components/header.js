@@ -43,6 +43,8 @@ const Title = styled(TextComponent)`
   margin-top: 10px;
   margin-bottom: 10px;
   text-transform: capitalize;
+  letter-spacing: 0.25px;
+  font-weight: ${props => props.theme.fontWeight.bold};
 `;
 
 type Props = {

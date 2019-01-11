@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   width: ${props => props.theme.sidebarWidth};
   height: ${props => `calc(100vh - ${props.theme.headerHeight})`};
   font-family: ${props => props.theme.fontFamily}
-  background-color: ${props => props.theme.colors.sidebarBg}; 
+  background-color: ${props => props.theme.colors.sidebarBg};
   padding-top: 15px;
   position: relative;
 `;
@@ -22,20 +22,22 @@ const StyledLink = styled(Link)`
     : props.theme.colors.sidebarItem)};
   font-size: ${props => `${props.theme.fontSize.regular}em`};
   text-decoration: none;
-  font-weight: ${props => (props.isActive
-    ? props.theme.fontWeight.bold
-    : props.theme.fontWeight.default)};
-  padding: 0 20px;
+  font-weight: ${props => props.theme.fontWeight.bold};
+  background-color: ${props => (props.isActive
+    ? `${props.theme.colors.sidebarHoveredItem}`
+    : 'transparent')};
+  letter-spacing: 0.25px;
+  padding: 25px 20px;
   height: 35px;
   width: 100%;
-  margin: 12.5px 0;
   display: flex;
   align-items: center;
   outline: none;
   border-right: ${props => (props.isActive
-    ? `1px solid ${props.theme.colors.sidebarItemActive}`
+    ? `3px solid ${props.theme.colors.sidebarItemActive}`
     : 'none')};
   cursor: pointer;
+  transition: all 0.03s ${props => props.theme.colors.transitionEase};
 
   &:hover {
     color: ${/* eslint-disable-next-line max-len */
@@ -47,9 +49,13 @@ const StyledLink = styled(Link)`
 `;
 
 const Icon = styled.img`
-  width: 20px;
-  height: 20px;
-  margin-right: 15px;
+  width: 17px;
+  height: 17px;
+  margin-right: 13px;
+
+  ${StyledLink}:hover & {
+    filter: ${props => (props.isActive ? 'none' : 'brightness(200%)')};
+  }
 `;
 
 type MenuItem = {
@@ -67,9 +73,18 @@ export const SidebarComponent = ({ options, location }: Props) => (
   <Wrapper>
     {(options || []).map((item) => {
       const isActive = location.pathname === item.route;
+
       return (
-        <StyledLink isActive={isActive} key={item.route} to={item.route}>
-          <Icon src={item.icon(isActive)} alt={`Sidebar Icon ${item.route}`} />
+        <StyledLink
+          isActive={isActive}
+          key={item.route}
+          to={item.route}
+        >
+          <Icon
+            isActive={isActive}
+            src={item.icon(isActive)}
+            alt={`Sidebar Icon ${item.route}`}
+          />
           {item.label}
         </StyledLink>
       );

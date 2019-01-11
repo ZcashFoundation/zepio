@@ -15,9 +15,9 @@ const MenuWrapper = styled.div`
     0.05,
     props.theme.colors.activeItem,
   )}, ${props.theme.colors.activeItem})`};
-  padding: 10px 20px;
   border-radius: ${props => props.theme.boxBorderRadius};
   margin-left: -10px;
+  max-width: 400px;
 `;
 
 const MenuItem = styled.button`
@@ -27,13 +27,14 @@ const MenuItem = styled.button`
   border-bottom-style: solid;
   border-bottom-color: ${props => props.theme.colors.text};
   border-bottom-width: 1px;
-  padding: 15px 10px;
+  padding: 15px;
   cursor: pointer;
+  font-weight: 700;
   width: 100%;
   text-align: left;
 
   &:hover {
-    opacity: 0.9;
+    opacity: 1;
   }
 
   &:disabled {
@@ -42,6 +43,10 @@ const MenuItem = styled.button`
     &:hover {
       opacity: 1;
     }
+  }
+
+  &:last-child {
+    border-bottom: none;
   }
 `;
 
@@ -74,30 +79,32 @@ export class DropdownComponent extends Component<Props, State> {
     const { isOpen } = this.state;
     const { label, options, renderTrigger } = this.props;
 
+    const body = [
+      <ClickOutside
+        onClickOutside={() => this.setState(() => ({ isOpen: false }))}
+      >
+        <MenuWrapper>
+          {label && (
+            <MenuItem disabled isGroupLabel>
+              <TextComponent value={label} isBold />
+            </MenuItem>
+          )}
+          {options.map(({ label: optionLabel, onClick }) => (
+            <MenuItem onClick={onClick} key={optionLabel}>
+              <TextComponent value={optionLabel} />
+            </MenuItem>
+          ))}
+        </MenuWrapper>
+      </ClickOutside>,
+    ];
+
     return (
       <PopoverWithStyle
         isOpen={isOpen}
         preferPlace='below'
         enterExitTransitionDurationMs={0}
-        body={[
-          <ClickOutside
-            onClickOutside={() => this.setState(() => ({ isOpen: false }))}
-          >
-            <MenuWrapper>
-              {label && (
-                <MenuItem disabled>
-                  <TextComponent value={label} isBold />
-                </MenuItem>
-              )}
-              {options.map(({ label: optionLabel, onClick }) => (
-                <MenuItem onClick={onClick} key={optionLabel}>
-                  <TextComponent value={optionLabel} />
-                </MenuItem>
-              ))}
-            </MenuWrapper>
-          </ClickOutside>,
-        ]}
         tipSize={7}
+        body={body}
       >
         {renderTrigger(
           () => this.setState(state => ({ isOpen: !state.isOpen })),

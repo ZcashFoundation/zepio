@@ -17,7 +17,7 @@ const cardBackgroundColor = '#000';
 const sidebarLogoGradientBegin = '#F4B728';
 const sidebarLogoGradientEnd = '#FFE240';
 const sidebarHoveredItem = '#1C1C1C';
-const sidebarHoveredItemLabel = '#969696';
+const sidebarHoveredItemLabel = '#76767e';
 const background = '#212124';
 const transactionSent = '#FF6C6C';
 const transactionReceived = '#6AEAC0';
@@ -30,7 +30,7 @@ const appTheme = {
   mode: DARK,
   fontFamily: 'Roboto',
   fontWeight: {
-    bold: 900,
+    bold: 700,
     default: 400,
     light: 300,
   },
@@ -69,12 +69,13 @@ const appTheme = {
     selectButtonShadow,
     transactionsDetailsLabel,
   },
-  sidebarWidth: '200px',
+  sidebarWidth: '180px',
   headerHeight: '60px',
-  layoutPaddingLeft: '50px',
-  layoutPaddingRight: '45px',
+  layoutPaddingLeft: '35px',
+  layoutPaddingRight: '35px',
   layoutContentPaddingTop: '20px',
-  boxBorderRadius: '6px',
+  boxBorderRadius: '3px',
+  transitionEase: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
 };
 
 export const GlobalStyle = createGlobalStyle`

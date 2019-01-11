@@ -8,7 +8,8 @@ import store from '../config/electron-store';
 
 const RPC = {
   host: '127.0.0.1',
-  port: isDev ? 18232 : 8232,
+  // port: isDev ? 18232 : 8232,
+  port: 18232, // TODO: Test purposes only
   user: store.get('rpcuser'),
   password: store.get('rpcpassword'),
 };

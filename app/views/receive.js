@@ -28,7 +28,11 @@ const Label = styled(InputLabelComponent)`
 export const ReceiveView = ({ addresses }: Props) => (
   <Wrapper>
     {(addresses || []).map(address => (
-      <Row alignItems='center' justifyContent='space-between'>
+      <Row
+        key={address}
+        alignItems='center'
+        justifyContent='space-between'
+      >
         <ColumnComponent width='85%'>
           <Label value='Your Address: ' />
           <InputComponent

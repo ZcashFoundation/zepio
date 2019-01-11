@@ -1,5 +1,6 @@
 [ignore]
 .*/node_modules/polished/.*
+./__tests__
 
 [include]
 

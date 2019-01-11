@@ -23,7 +23,7 @@ const Wrapper = styled(RowComponent)`
   cursor: pointer;
 
   &:hover {
-    background-color: ${props => props.theme.colors.transactionsItemHovered};
+    background-color: #101010;
   }
 `;
 
@@ -93,7 +93,11 @@ export const TransactionItemComponent = ({
                 alt='Transaction Type Icon'
               />
               <TransactionColumn>
-                <TransactionTypeLabel isReceived={isReceived} value={type} />
+                <TransactionTypeLabel
+                  isReceived={isReceived}
+                  value={type}
+                  isBold
+                />
                 <TransactionTime value={transactionTime} />
               </TransactionColumn>
             </RowComponent>
@@ -101,6 +105,7 @@ export const TransactionItemComponent = ({
           </RowComponent>
           <ColumnComponent alignItems='flex-end'>
             <TextComponent
+              isBold
               value={transactionValueInZec}
               color={
                 isReceived
