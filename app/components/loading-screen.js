@@ -47,6 +47,6 @@ export const LoadingScreen = ({ progress }: { progress: number }) => (
         bgColor={theme.colors.inactiveItem}
       />
     </CircleWrapper>
-    <TextComponent value='Zcash Application Starting' />
+    <TextComponent value='ZEC Wallet Starting' />
   </Wrapper>
 );
