@@ -93,7 +93,11 @@ export const TransactionItemComponent = ({
                 alt='Transaction Type Icon'
               />
               <TransactionColumn>
-                <TransactionTypeLabel isReceived={isReceived} value={type} />
+                <TransactionTypeLabel
+                  isReceived={isReceived}
+                  value={type}
+                  isBold
+                />
                 <TransactionTime value={transactionTime} />
               </TransactionColumn>
             </RowComponent>
@@ -101,6 +105,7 @@ export const TransactionItemComponent = ({
           </RowComponent>
           <ColumnComponent alignItems='flex-end'>
             <TextComponent
+              isBold
               value={transactionValueInZec}
               color={
                 isReceived

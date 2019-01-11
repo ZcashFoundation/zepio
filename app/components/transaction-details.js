@@ -17,17 +17,19 @@ import formatNumber from '../utils/formatNumber';
 import truncateAddress from '../utils/truncateAddress';
 
 const Wrapper = styled.div`
-  width: 30vw;
+  width: 460px;
   background-color: ${props => props.theme.colors.background};
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 6px;
   box-shadow: 0px 0px 30px 0px black;
+  position: relative;
 `;
 
 const TitleWrapper = styled.div`
   margin-top: 20px;
+  margin-bottom: 30px;
 `;
 
 const Icon = styled.img`
@@ -41,13 +43,14 @@ const CloseIconWrapper = styled.div`
   width: 100%;
   align-items: flex-end;
   justify-content: flex-end;
+  position: absolute;
 `;
 
 const CloseIconImg = styled.img`
-  width: 12.5px;
-  height: 12.5px;
-  margin-top: 10px;
-  margin-right: 10px;
+  width: 16px;
+  height: 16px;
+  margin-top: 12px;
+  margin-right: 12px;
   cursor: pointer;
 `;
 
@@ -57,11 +60,27 @@ const InfoRow = styled(RowComponent)`
   width: 100%;
   height: 80px;
   padding: 0 30px;
+
+  &first-child {
+    margin-top: 30px;
+  }
+
+  &:hover {
+    background: #1d1d1d;
+  }
+`;
+
+const DetailsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
 `;
 
 const Divider = styled.div`
   width: 100%;
-  background-color: ${props => props.theme.colors.transactionsDetailsLabel};
+  background-color: #3a3a3a;
   height: 1px;
   opacity: 0.5;
 `;
@@ -70,6 +89,7 @@ const Label = styled(TextComponent)`
   font-weight: ${props => props.theme.fontWeight.bold};
   color: ${props => props.theme.colors.transactionsDetailsLabel};
   margin-bottom: 5px;
+  letter-spacing: 0.25px;
 `;
 
 const Ellipsis = styled(TextComponent)`
@@ -101,39 +121,48 @@ export const TransactionDetailsComponent = ({
   handleClose,
 }: Props) => {
   const isReceived = type === 'receive';
+
   return (
     <Wrapper>
       <CloseIconWrapper>
-        <CloseIconImg src={CloseIcon} onClick={handleClose} />
+        <CloseIconImg
+          src={CloseIcon}
+          onClick={handleClose}
+        />
       </CloseIconWrapper>
       <TitleWrapper>
-        <TextComponent value='Transaction Details' align='center' />
+        <TextComponent
+          value='Transaction Details'
+          align='center'
+        />
       </TitleWrapper>
-      <Icon
-        src={isReceived ? ReceivedIcon : SentIcon}
-        alt='Transaction Type Icon'
-      />
-      <TextComponent
-        value={formatNumber({
-          append: `${isReceived ? '+' : '-'}ZEC `,
-          value: amount,
-        })}
-        color={
-          isReceived
-            ? theme.colors.transactionReceived
-            : theme.colors.transactionSent
-        }
-        isBold
-        size={2.625}
-      />
-      <TextComponent
-        value={formatNumber({
-          append: `${isReceived ? '+' : '-'}USD `,
-          value: amount * zecPrice,
-        })}
-        size={1.5}
-        color={theme.colors.transactionsDetailsLabel}
-      />
+      <DetailsWrapper>
+        <Icon
+          src={isReceived ? ReceivedIcon : SentIcon}
+          alt='Transaction Type Icon'
+        />
+        <TextComponent
+          isBold
+          size={2.625}
+          value={formatNumber({
+            append: `${isReceived ? '+' : '-'}ZEC `,
+            value: amount,
+          })}
+          color={
+            isReceived
+              ? theme.colors.transactionReceived
+              : theme.colors.transactionSent
+          }
+        />
+        <TextComponent
+          value={formatNumber({
+            append: `${isReceived ? '+' : '-'}USD `,
+            value: amount * zecPrice,
+          })}
+          size={1.5}
+          color={theme.colors.transactionsDetailsLabel}
+        />
+      </DetailsWrapper>
       <InfoRow>
         <ColumnComponent>
           <Label value='DATE' />

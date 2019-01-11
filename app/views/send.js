@@ -21,12 +21,12 @@ import type { State as SendState } from '../redux/modules/send';
 
 const FormWrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
-  width: 80%;
+  width: 71%;
 `;
 
 const SendWrapper = styled(ColumnComponent)`
   margin-top: 60px;
-  width: 15%;
+  width: 25%;
 `;
 
 const ShowFeeButton = styled.button`
@@ -179,12 +179,18 @@ export class SendView extends PureComponent<Props, State> {
       operationId,
     } = this.props;
     const {
-      showFee, from, amount, to, memo, fee, feeType,
+      showFee,
+      from,
+      amount,
+      to,
+      memo,
+      fee,
+      feeType,
     } = this.state;
 
     const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
     const zecBalanceInUsd = formatNumber({
-      value: new BigNumber(balance).multipliedBy(zecPrice).toNumber(),
+      value: new BigNumber(balance).times(zecPrice).toNumber(),
       append: 'USD $',
     });
     const valueSent = formatNumber({
@@ -192,7 +198,7 @@ export class SendView extends PureComponent<Props, State> {
       append: 'ZEC ',
     });
     const valueSentInUsd = formatNumber({
-      value: new BigNumber(amount).multipliedBy(zecPrice).toNumber(),
+      value: new BigNumber(amount).times(zecPrice).toNumber(),
       append: 'USD $',
     });
 
@@ -243,6 +249,7 @@ export class SendView extends PureComponent<Props, State> {
             }
           >
             <TextComponent
+              paddingTop='10px'
               value={`${showFee ? 'Hide' : 'Show'} Additional Options`}
               align='right'
             />
