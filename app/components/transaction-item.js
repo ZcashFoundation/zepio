@@ -23,7 +23,7 @@ const Wrapper = styled(RowComponent)`
   cursor: pointer;
 
   &:hover {
-    background-color: ${props => props.theme.colors.transactionsItemHovered};
+    background-color: #101010;
   }
 `;
 
