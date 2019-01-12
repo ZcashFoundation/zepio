@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { TextComponent } from './text';
 import { Button } from './button';
 import { Divider } from './divider';
+import { ModalComponent } from './modal';
 
 import CloseIcon from '../assets/images/close_icon.svg';
 
@@ -46,7 +47,7 @@ const Btn = styled(Button)`
 `;
 
 type Props = {
-  handleClose: () => void,
+  renderTrigger: (() => void) => Element<*>,
   title: string,
   onConfirm: () => void,
   showButtons?: boolean,
@@ -58,26 +59,34 @@ export const ConfirmDialogComponent = ({
   children,
   title,
   onConfirm,
-  handleClose,
+  renderTrigger,
   showButtons,
   width,
 }: Props) => (
-  <Wrapper width={width}>
-    <CloseIconWrapper>
-      <CloseIconImg src={CloseIcon} onClick={handleClose} />
-    </CloseIconWrapper>
-    <TitleWrapper>
-      <TextComponent value={title} align='center' />
-    </TitleWrapper>
-    <Divider />
-    {React.Children.map(children, _ => _)}
-    {showButtons && (
-      <>
-        <Btn label='Confirm' onClick={onConfirm} />
-        <Btn label='Cancel' onClick={handleClose} variant='secondary' />
-      </>
+  <ModalComponent
+    renderTrigger={renderTrigger}
+    closeOnBackdropClick={false}
+    closeOnEsc={false}
+  >
+    {toggle => (
+      <Wrapper width={width}>
+        <CloseIconWrapper>
+          <CloseIconImg src={CloseIcon} onClick={toggle} />
+        </CloseIconWrapper>
+        <TitleWrapper>
+          <TextComponent value={title} align='center' />
+        </TitleWrapper>
+        <Divider />
+        {React.Children.map(children, _ => _)}
+        {showButtons && (
+          <>
+            <Btn label='Confirm' onClick={onConfirm} />
+            <Btn label='Cancel' onClick={toggle} variant='secondary' />
+          </>
+        )}
+      </Wrapper>
     )}
-  </Wrapper>
+  </ModalComponent>
 );
 
 ConfirmDialogComponent.defaultProps = {
