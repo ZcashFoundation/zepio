@@ -17,7 +17,8 @@ const DefaultButton = styled.button`
   outline: none;
   min-width: 100px;
   border-radius: 100px;
-  transition: background-color 0.1s ${props => props.theme.colors.transitionEase};
+  transition: background-color 0.1s
+    ${props => props.theme.colors.transitionEase};
   width: 100%;
 `;
 
@@ -60,7 +61,7 @@ const Secondary = styled(DefaultButton)`
 type Props = {
   label: string,
   onClick?: () => void,
-  to?: string,
+  to?: ?string,
   variant?: 'primary' | 'secondary',
   disabled?: boolean,
   className?: string,
