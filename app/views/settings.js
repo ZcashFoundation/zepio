@@ -49,18 +49,24 @@ type Props = {
 type State = {
   viewKeys: Key[],
   privateKeys: Key[],
-  isLoading: boolean,
+  importedPrivateKeys: string,
   successExportViewKeys: boolean,
   successExportPrivateKeys: boolean,
+  successImportPrivateKeys: boolean,
+  isLoading: boolean,
+  error: string | null,
 };
 
 export class SettingsView extends PureComponent<Props, State> {
   state = {
     viewKeys: [],
     privateKeys: [],
+    importedPrivateKeys: '',
     isLoading: false,
     successExportViewKeys: false,
     successExportPrivateKeys: false,
+    successImportPrivateKeys: false,
+    error: null,
   };
 
   exportViewKeys = () => {
@@ -105,13 +111,40 @@ export class SettingsView extends PureComponent<Props, State> {
     });
   };
 
+  importPrivateKeys = () => {
+    const { importedPrivateKeys } = this.state;
+
+    if (!importedPrivateKeys) return;
+
+    const keys = importedPrivateKeys
+      .split('\n')
+      .map(key => key.trim())
+      .filter(key => !!key);
+
+    this.setState({ isLoading: true, error: null });
+
+    Promise.all(keys.map(key => rpc.z_importkey(key)))
+      .then(() => {
+        this.setState({
+          successImportPrivateKeys: true,
+          isLoading: false,
+        });
+      })
+      .catch((error) => {
+        this.setState({ isLoading: false, error: error.message });
+      });
+  };
+
   render = () => {
     const {
       viewKeys,
-      isLoading,
-      successExportViewKeys,
       privateKeys,
+      importedPrivateKeys,
+      successExportViewKeys,
       successExportPrivateKeys,
+      successImportPrivateKeys,
+      isLoading,
+      error,
     } = this.state;
 
     return (
@@ -142,13 +175,7 @@ export class SettingsView extends PureComponent<Props, State> {
                 </>
               ))
             ) : (
-              <TextComponent
-                value={
-                  isLoading
-                    ? 'Loading...'
-                    : 'Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.'
-                }
-              />
+              <TextComponent value='Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.' />
             )}
           </ModalContent>
         </ConfirmDialogComponent>
@@ -179,14 +206,36 @@ export class SettingsView extends PureComponent<Props, State> {
                 </>
               ))
             ) : (
+              <TextComponent value='Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.' />
+            )}
+          </ModalContent>
+        </ConfirmDialogComponent>
+
+        <ConfirmDialogComponent
+          title='Import private keys'
+          renderTrigger={toggleVisibility => (
+            <Btn label='Import private keys' onClick={toggleVisibility} />
+          )}
+          onConfirm={this.importPrivateKeys}
+          showButtons={!successImportPrivateKeys}
+          width={900}
+          isLoading={isLoading}
+        >
+          <ModalContent>
+            <InputLabelComponent value='Please paste your private keys here, one per line. The keys will be imported into your zcashd node' />
+            <InputComponent
+              value={importedPrivateKeys}
+              onChange={value => this.setState({ importedPrivateKeys: value })}
+              inputType='textarea'
+              rows={10}
+            />
+            {successImportPrivateKeys && (
               <TextComponent
-                value={
-                  isLoading
-                    ? 'Loading...'
-                    : 'Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.'
-                }
+                value='Private keys imported in your node'
+                align='center'
               />
             )}
+            {error && <TextComponent value={error} align='center' />}
           </ModalContent>
         </ConfirmDialogComponent>
       </Wrapper>
