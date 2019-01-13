@@ -1,6 +1,13 @@
 // @flow
+/* eslint-disable import/no-extraneous-dependencies */
+import fs from 'fs';
+import { promisify } from 'util';
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import electron from 'electron';
+import isDev from 'electron-is-dev';
+import dateFns from 'date-fns';
+import eres from 'eres';
 
 import { Button } from '../components/button';
 import { ConfirmDialogComponent } from '../components/confirm-dialog';
@@ -11,6 +18,8 @@ import { RowComponent } from '../components/row';
 import { Clipboard } from '../components/clipboard';
 
 import rpc from '../../services/api';
+
+const HOME_DIR = electron.remote.app.getPath('home');
 
 const Wrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
@@ -135,6 +144,40 @@ export class SettingsView extends PureComponent<Props, State> {
       });
   };
 
+  backupWalletDat = async () => {
+    const zcashDir = isDev ? `${HOME_DIR}/.zcash/testnet3` : HOME_DIR;
+    const walletDatPath = `${zcashDir}/wallet.dat`;
+    const backupFileName = `zcash-wallet-backup-${dateFns.format(
+      new Date(),
+      'YYYY-MM-DD-mm-ss',
+    )}.dat`;
+
+    const [cannotAccess] = await eres(promisify(fs.access)(walletDatPath));
+
+    /* eslint-disable no-alert */
+
+    if (cannotAccess) {
+      alert(
+        "Couldn't backup the wallet.dat file. You need to back it up manually.",
+      );
+    }
+
+    electron.remote.dialog.showSaveDialog(
+      { defaultPath: backupFileName },
+      async (pathToSave) => {
+        const [error] = await eres(
+          promisify(fs.copyFile)(walletDatPath, pathToSave),
+        );
+
+        if (error) {
+          alert(
+            "Couldn't backup the wallet.dat file. You need to back it up manually.",
+          );
+        }
+      },
+    );
+  };
+
   render = () => {
     const {
       viewKeys,
@@ -238,6 +281,8 @@ export class SettingsView extends PureComponent<Props, State> {
             {error && <TextComponent value={error} align='center' />}
           </ModalContent>
         </ConfirmDialogComponent>
+
+        <Btn label='Backup wallet.dat' onClick={this.backupWalletDat} />
       </Wrapper>
     );
   };
