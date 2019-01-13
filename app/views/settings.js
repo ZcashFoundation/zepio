@@ -145,26 +145,29 @@ export class SettingsView extends PureComponent<Props, State> {
   };
 
   backupWalletDat = async () => {
-    const zcashDir = isDev ? `${HOME_DIR}/.zcash/testnet3` : HOME_DIR;
-    const walletDatPath = `${zcashDir}/wallet.dat`;
     const backupFileName = `zcash-wallet-backup-${dateFns.format(
       new Date(),
       'YYYY-MM-DD-mm-ss',
     )}.dat`;
 
-    const [cannotAccess] = await eres(promisify(fs.access)(walletDatPath));
-
-    /* eslint-disable no-alert */
-
-    if (cannotAccess) {
-      alert(
-        "Couldn't backup the wallet.dat file. You need to back it up manually.",
-      );
-    }
-
     electron.remote.dialog.showSaveDialog(
       { defaultPath: backupFileName },
       async (pathToSave) => {
+        if (!pathToSave) return;
+
+        const zcashDir = isDev ? `${HOME_DIR}/.zcash/testnet3` : HOME_DIR;
+        const walletDatPath = `${zcashDir}/wallet.dat`;
+
+        const [cannotAccess] = await eres(promisify(fs.access)(walletDatPath));
+
+        /* eslint-disable no-alert */
+
+        if (cannotAccess) {
+          alert(
+            "Couldn't backup the wallet.dat file. You need to back it up manually.",
+          );
+        }
+
         const [error] = await eres(
           promisify(fs.copyFile)(walletDatPath, pathToSave),
         );
