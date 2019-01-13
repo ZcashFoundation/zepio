@@ -52,6 +52,7 @@ type Props = {
   onConfirm: () => void,
   showButtons?: boolean,
   width?: number,
+  isLoading?: boolean,
   children: Element<*>,
 };
 
@@ -61,6 +62,7 @@ export const ConfirmDialogComponent = ({
   onConfirm,
   renderTrigger,
   showButtons,
+  isLoading,
   width,
 }: Props) => (
   <ModalComponent
@@ -80,8 +82,13 @@ export const ConfirmDialogComponent = ({
         {React.Children.map(children, _ => _)}
         {showButtons && (
           <>
-            <Btn label='Confirm' onClick={onConfirm} />
-            <Btn label='Cancel' onClick={toggle} variant='secondary' />
+            <Btn label='Confirm' onClick={onConfirm} isLoading={isLoading} />
+            <Btn
+              label='Cancel'
+              onClick={toggle}
+              variant='secondary'
+              disabled={isLoading}
+            />
           </>
         )}
       </Wrapper>
@@ -92,4 +99,5 @@ export const ConfirmDialogComponent = ({
 ConfirmDialogComponent.defaultProps = {
   showButtons: true,
   width: 460,
+  isLoading: false,
 };
