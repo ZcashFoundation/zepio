@@ -48,28 +48,29 @@ export class StatusPill extends Component<Props, State> {
 
   componentDidMount() {
     const { verificationprogress } = this.state;
-    this.getBlockchainStatus();
+    setTimeout(() => {
+      this.getBlockchainStatus();
+    }, 500);
     this.status(verificationprogress);
   }
 
   status = (progress: number) => {
     if (progress === 100.0) {
-      setState(() => ({ type: 'ready' , icon: readyIcon }));
+      this.setState(() => ({ type: 'ready', icon: readyIcon }));
     }
   }
 
   getBlockchainStatus = async () => {
-
     const [blockchainErr, blockchaininfo] = await eres(
-      setTimeout(() => {rpc.getblockchaininfo()}, 500),
+      rpc.getblockchaininfo(),
     );
 
-    setState(() => ({
+    this.setState(() => ({
       verificationprogress: blockchaininfo.verificationprogress,
     }));
 
     if (blockchainErr) {
-      setState(() => ({ type: 'error' , icon: errorIcon }));
+      this.setState(() => ({ type: 'error', icon: errorIcon }));
     }
   }
 
