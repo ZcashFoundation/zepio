@@ -67,7 +67,7 @@ export const HeaderComponent = ({ title }: Props) => (
     <TitleWrapper>
       <TitleRow alignItems='center' justifyContent='space-around'>
         <Title value={title} />
-        <StatusPill percent={0.1} />
+        <StatusPill />
       </TitleRow>
       <Divider opacity={0.1} />
     </TitleWrapper>

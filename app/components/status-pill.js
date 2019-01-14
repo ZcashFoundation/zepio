@@ -1,13 +1,15 @@
 // @flow
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import eres from 'eres';
 
 import { TextComponent } from './text';
 
+import rpc from '../../services/api';
+
 import readyIcon from '../assets/images/green_check.png';
 import syncIcon from '../assets/images/sync_icon.png';
-// import errorIcon from '../assets/images/error_icon.png';
-
+import errorIcon from '../assets/images/error_icon.png';
 
 const Wrapper = styled.div`
   align-items: center;
@@ -29,29 +31,25 @@ const StatusPillLabel = styled(TextComponent)`
   text-transform: uppercase;
 `;
 
-type Props = {
-  percent: number,
-};
+type Props = {};
 
 type State = {
   type: string,
   icon: string,
+  verificationprogress: number,
 };
 
 export class StatusPill extends Component<Props, State> {
-  static defaulProps = {
-    percent: 0,
-  };
-
   state = {
     type: 'synching',
     icon: syncIcon,
+    verificationprogress: 0,
   };
 
   componentDidMount() {
-    const { percent } = this.props;
+    const { verificationprogress } = this.state;
 
-    this.status(percent);
+    this.status(verificationprogress);
   }
 
   status = (progress: number) => {
@@ -61,11 +59,25 @@ export class StatusPill extends Component<Props, State> {
     }
   }
 
-  render() {
-    const { type, icon } = this.state;
-    const { percent } = this.props;
+  getBlockchainStatus = async () => {
+    const [blockchainError, blockchaininfo] = await eres(
+      rpc.getblockchaininfo(),
+    );
 
-    const showPercent = percent > 0 && percent < 100.0 ? `(${percent}%)` : '';
+    this.setState(() => ({
+      verificationprogress: blockchaininfo.verificationprogress,
+    }));
+
+    if (blockchainError) {
+      this.setState(() => ({ type: 'error' }));
+      this.setState(() => ({ icon: errorIcon }));
+    }
+  }
+
+  render() {
+    const { type, icon, verificationprogress } = this.state;
+
+    const showPercent = verificationprogress > 0 && verificationprogress < 100.0 ? `(${verificationprogress}%)` : '';
 
     return (
       <Wrapper>
