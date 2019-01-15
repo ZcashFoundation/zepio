@@ -47,15 +47,11 @@ export class StatusPill extends Component<Props, State> {
   };
 
   componentDidMount() {
-    const { verificationprogress } = this.state;
-    setTimeout(() => {
-      this.getBlockchainStatus();
-    }, 500);
-    this.status(verificationprogress);
+    this.getBlockchainStatus();
   }
 
   status = (progress: number) => {
-    if (progress === 100.0) {
+    if (progress > 99.99) {
       this.setState(() => ({ type: 'ready', icon: readyIcon }));
     }
   }
@@ -65,8 +61,10 @@ export class StatusPill extends Component<Props, State> {
       rpc.getblockchaininfo(),
     );
 
+    const newProgress = (blockchaininfo.verificationprogress * 100);
+
     this.setState(() => ({
-      verificationprogress: blockchaininfo.verificationprogress,
+      verificationprogress: newProgress,
     }));
 
     if (blockchainErr) {
@@ -76,9 +74,13 @@ export class StatusPill extends Component<Props, State> {
 
   render() {
     const { type, icon, verificationprogress } = this.state;
+    const isSynching = verificationprogress > 0 && verificationprogress < 100.0;
+    const showPercent = isSynching ? `(${verificationprogress.toFixed(2)}%)` : '';
 
-    const showPercent = verificationprogress > 0 && verificationprogress < 100.0 ? `(${verificationprogress}%)` : '';
-
+    setTimeout(() => {
+      this.getBlockchainStatus();
+      this.status(verificationprogress);
+    }, 500);
     return (
       <Wrapper>
         <Icon src={icon} />
