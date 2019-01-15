@@ -48,25 +48,30 @@ type Props = {};
 type State = {
   type: string,
   icon: string,
-  verificationprogress: number,
+  progress: number,
   isSynching: boolean,
 };
 
 export class StatusPill extends Component<Props, State> {
+  timer: ?IntervalID = null;
+
   state = {
     type: 'synching',
     icon: syncIcon,
-    verificationprogress: 0,
+    progress: 0,
     isSynching: true,
   };
 
   componentDidMount() {
-    this.getBlockchainStatus();
+    this.timer = setInterval(() => {
+      this.getBlockchainStatus();
+    }, 500);
   }
 
-  status = (progress: number) => {
-    if (progress > 99.99) {
-      this.setState(() => ({ type: 'ready', icon: readyIcon, isSynching: false }));
+  componentWillUnmount() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
     }
   }
 
@@ -75,27 +80,28 @@ export class StatusPill extends Component<Props, State> {
       rpc.getblockchaininfo(),
     );
 
-    const newProgress = (blockchaininfo.verificationprogress * 100);
+    const newProgress = blockchaininfo.verificationprogress * 100;
 
-    this.setState(() => ({
-      verificationprogress: newProgress,
-    }));
+    this.setState({
+      progress: newProgress,
+      ...(newProgress > 99.99 ? {
+        type: 'ready',
+        icon: readyIcon,
+        isSynching: false,
+      } : {}),
+    });
 
     if (blockchainErr) {
-      this.setState(() => ({ type: 'error', icon: errorIcon, isSynching: false }));
+      this.setState(() => ({ type: 'error', icon: errorIcon }));
     }
   }
 
   render() {
     const {
-      type, icon, verificationprogress, isSynching,
+      type, icon, progress, isSynching,
     } = this.state;
-    const showPercent = isSynching ? `(${verificationprogress.toFixed(2)}%)` : '';
+    const showPercent = isSynching ? `(${progress.toFixed(2)}%)` : '';
 
-    setTimeout(() => {
-      this.getBlockchainStatus();
-      this.status(verificationprogress);
-    }, 500);
     return (
       <Wrapper>
         <Icon src={icon} animated={isSynching} />
