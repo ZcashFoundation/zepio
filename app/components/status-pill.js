@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import eres from 'eres';
 
 import { TextComponent } from './text';
@@ -10,6 +10,16 @@ import rpc from '../../services/api';
 import readyIcon from '../assets/images/green_check.png';
 import syncIcon from '../assets/images/sync_icon.png';
 import errorIcon from '../assets/images/error_icon.png';
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
 
 const Wrapper = styled.div`
   align-items: center;
@@ -23,6 +33,8 @@ const Icon = styled.img`
   width: 12px;
   height: 12px;
   margin-right: 8px;
+  animation: 2s linear infinite;
+  animation-name: ${props => (props.animated ? rotate : 'none')};
 `;
 
 const StatusPillLabel = styled(TextComponent)`
@@ -37,6 +49,7 @@ type State = {
   type: string,
   icon: string,
   verificationprogress: number,
+  isSynching: boolean,
 };
 
 export class StatusPill extends Component<Props, State> {
@@ -44,6 +57,7 @@ export class StatusPill extends Component<Props, State> {
     type: 'synching',
     icon: syncIcon,
     verificationprogress: 0,
+    isSynching: true,
   };
 
   componentDidMount() {
@@ -52,7 +66,7 @@ export class StatusPill extends Component<Props, State> {
 
   status = (progress: number) => {
     if (progress > 99.99) {
-      this.setState(() => ({ type: 'ready', icon: readyIcon }));
+      this.setState(() => ({ type: 'ready', icon: readyIcon, isSynching: false }));
     }
   }
 
@@ -68,13 +82,14 @@ export class StatusPill extends Component<Props, State> {
     }));
 
     if (blockchainErr) {
-      this.setState(() => ({ type: 'error', icon: errorIcon }));
+      this.setState(() => ({ type: 'error', icon: errorIcon, isSynching: false }));
     }
   }
 
   render() {
-    const { type, icon, verificationprogress } = this.state;
-    const isSynching = verificationprogress > 0 && verificationprogress < 100.0;
+    const {
+      type, icon, verificationprogress, isSynching,
+    } = this.state;
     const showPercent = isSynching ? `(${verificationprogress.toFixed(2)}%)` : '';
 
     setTimeout(() => {
@@ -83,7 +98,7 @@ export class StatusPill extends Component<Props, State> {
     }, 500);
     return (
       <Wrapper>
-        <Icon src={icon} />
+        <Icon src={icon} animated={isSynching} />
         <StatusPillLabel value={`${type} ${showPercent}`} />
       </Wrapper>
     );
