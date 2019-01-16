@@ -91,7 +91,7 @@ export const Button = ({
 };
 
 Button.defaultProps = {
-  to: null,
+  to: '',
   variant: 'primary',
   onClick: null,
   disabled: false,

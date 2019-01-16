@@ -20,6 +20,7 @@ const MenuWrapper = styled.div`
   border-radius: ${props => props.theme.boxBorderRadius};
   margin-left: -10px;
   max-width: 400px;
+  overflow: hidden;
 `;
 
 const MenuItem = styled.button`
@@ -53,6 +54,12 @@ const MenuItem = styled.button`
   }
 `;
 
+const OptionItem = styled(MenuItem)`
+  &:hover {
+    background-color: #F9D114;
+  }
+`;
+
 const Option = styled(TextComponent)`
   overflow: hidden;
   text-overflow: ellipsis;
@@ -63,7 +70,6 @@ const PopoverWithStyle = styled(Popover)`
   & > .Popover-tip {
     fill: ${props => props.theme.colors.activeItem};
   }
-  left: 10px;
 `;
 
 type Props = {
@@ -104,9 +110,9 @@ export class DropdownComponent extends Component<Props, State> {
             </MenuItem>
           )}
           {options.map(({ label: optionLabel, onClick }) => (
-            <MenuItem onClick={onClick} key={optionLabel}>
+            <OptionItem onClick={onClick} key={optionLabel}>
               <Option value={truncate ? truncateAddress(optionLabel) : optionLabel} />
-            </MenuItem>
+            </OptionItem>
           ))}
         </MenuWrapper>
       </ClickOutside>,
