@@ -9,6 +9,8 @@ import ClickOutside from 'react-click-outside';
 
 import { TextComponent } from './text';
 
+import truncateAddress from '../utils/truncateAddress';
+
 /* eslint-disable max-len  */
 const MenuWrapper = styled.div`
   background-image: ${props => `linear-gradient(to right, ${darken(
@@ -30,6 +32,7 @@ const MenuItem = styled.button`
   padding: 15px;
   cursor: pointer;
   font-weight: 700;
+  overflow: hidden;
   width: 100%;
   text-align: left;
 
@@ -50,16 +53,24 @@ const MenuItem = styled.button`
   }
 `;
 
+const Option = styled(TextComponent)`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
 const PopoverWithStyle = styled(Popover)`
   & > .Popover-tip {
     fill: ${props => props.theme.colors.activeItem};
   }
+  left: 10px;
 `;
 
 type Props = {
   renderTrigger: (toggleVisibility: () => void, isOpen: boolean) => Node,
   options: Array<{ label: string, onClick: () => void }>,
   label?: string | null,
+  truncate?: boolean,
 };
 
 type State = {
@@ -73,11 +84,14 @@ export class DropdownComponent extends Component<Props, State> {
 
   static defaultProps = {
     label: null,
+    truncate: false,
   };
 
   render() {
     const { isOpen } = this.state;
-    const { label, options, renderTrigger } = this.props;
+    const {
+      label, options, truncate, renderTrigger,
+    } = this.props;
 
     const body = [
       <ClickOutside
@@ -91,7 +105,7 @@ export class DropdownComponent extends Component<Props, State> {
           )}
           {options.map(({ label: optionLabel, onClick }) => (
             <MenuItem onClick={onClick} key={optionLabel}>
-              <TextComponent value={optionLabel} />
+              <Option value={truncate ? truncateAddress(optionLabel) : optionLabel} />
             </MenuItem>
           ))}
         </MenuWrapper>
