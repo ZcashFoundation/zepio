@@ -3,10 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { InputLabelComponent } from '../components/input-label';
-import { InputComponent } from '../components/input';
-import { QRCode } from '../components/qrcode';
 import { RowComponent } from '../components/row';
-import { ColumnComponent } from '../components/column';
+import { WalletAddress } from '../components/wallet-address';
 
 type Props = {
   addresses: Array<string>,
@@ -27,21 +25,14 @@ const Label = styled(InputLabelComponent)`
 
 export const ReceiveView = ({ addresses }: Props) => (
   <Wrapper>
+    <Label value='Addresses: ' />
     {(addresses || []).map(address => (
       <Row
         key={address}
         alignItems='center'
         justifyContent='space-between'
       >
-        <ColumnComponent width='85%'>
-          <Label value='Your Address: ' />
-          <InputComponent
-            value={address}
-            onChange={() => {}}
-            onFocus={event => event.currentTarget.select()}
-          />
-        </ColumnComponent>
-        <QRCode value={address} />
+        <WalletAddress address={address} />
       </Row>
     ))}
   </Wrapper>
