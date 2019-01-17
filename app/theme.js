@@ -24,6 +24,7 @@ const transactionReceived = '#6AEAC0';
 const transactionsDate = '#777777';
 const transactionsItemHovered = '#222222';
 const selectButtonShadow = 'rgba(238,201,76,0.65)';
+const statusPillLabel = '#727272';
 const transactionsDetailsLabel = transactionsDate;
 
 const appTheme = {
@@ -68,6 +69,7 @@ const appTheme = {
     inputBackground: brandOne,
     selectButtonShadow,
     transactionsDetailsLabel,
+    statusPillLabel,
   },
   sidebarWidth: '180px',
   headerHeight: '60px',

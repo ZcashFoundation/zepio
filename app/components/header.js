@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import { ZcashLogo } from './zcash-logo';
 import { TextComponent } from './text';
 import { Divider } from './divider';
+import { RowComponent } from './row';
+import { StatusPill } from './status-pill';
 
 const Wrapper = styled.div`
   height: ${props => props.theme.headerHeight};
@@ -38,6 +40,12 @@ const TitleWrapper = styled.div`
   padding-right: ${props => props.theme.layoutPaddingRight};
 `;
 
+const TitleRow = styled(RowComponent)`
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
 const Title = styled(TextComponent)`
   font-size: ${props => `${props.theme.fontSize.large}em`};
   margin-top: 10px;
@@ -57,7 +65,10 @@ export const HeaderComponent = ({ title }: Props) => (
       <ZcashLogo />
     </LogoWrapper>
     <TitleWrapper>
-      <Title value={title} />
+      <TitleRow alignItems='center' justifyContent='space-around'>
+        <Title value={title} />
+        <StatusPill />
+      </TitleRow>
       <Divider opacity={0.1} />
     </TitleWrapper>
   </Wrapper>
