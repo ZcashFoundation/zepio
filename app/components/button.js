@@ -86,21 +86,23 @@ export const Button = ({
 }: Props) => {
   if (to && onClick) throw new Error('Should define either "to" or "onClick"');
 
-  const props = { onClick, disabled: disabled || isLoading, icon: null, className };
+  const props = {
+    onClick, disabled: disabled || isLoading, icon: null, className,
+  };
   const buttonLabel = isLoading ? 'Loading...' : label;
 
   const component = variant === 'primary' ? (
     <Primary {...props}>
-      {icon ?
-        <Icon src={icon} />
+      {icon
+        ? <Icon src={icon} />
         : null
       }
       {buttonLabel}
     </Primary>
   ) : (
     <Secondary {...props}>
-      {icon ?
-        <Icon src={icon} />
+      {icon
+        ? <Icon src={icon} />
         : null
       }
       {buttonLabel}
@@ -112,6 +114,7 @@ export const Button = ({
 
 Button.defaultProps = {
   to: '',
+  icon: null,
   variant: 'primary',
   onClick: null,
   disabled: false,

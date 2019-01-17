@@ -8,6 +8,8 @@ import { QRCode } from './qrcode';
 
 import truncateAddress from '../utils/truncateAddress';
 
+import eyeIcon from '../assets/images/eye.png';
+
 const AddressWrapper = styled.div`
   align-items: center;
   display: flex;
@@ -82,6 +84,7 @@ export class WalletAddress extends Component<Props, State> {
             onFocus={event => event.currentTarget.select()}
           />
           <Button
+            icon={eyeIcon}
             label={`${isVisible ? 'Hide' : 'Show'} full address and QR Code`}
             onClick={toggleVisibility}
             variant='secondary'
