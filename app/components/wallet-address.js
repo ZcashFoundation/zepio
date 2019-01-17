@@ -55,10 +55,6 @@ export class WalletAddress extends Component<Props, State> {
     isVisible: false,
   };
 
-  componentDidMount() {
-
-  }
-
   show = () => {
     this.setState(
       () => ({ isVisible: true }),
