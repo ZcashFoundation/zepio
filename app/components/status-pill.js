@@ -65,7 +65,7 @@ export class StatusPill extends Component<Props, State> {
   componentDidMount() {
     this.timer = setInterval(() => {
       this.getBlockchainStatus();
-    }, 500);
+    }, 2000);
   }
 
   componentWillUnmount() {
