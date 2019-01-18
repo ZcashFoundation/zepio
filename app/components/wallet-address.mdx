@@ -1,0 +1,28 @@
+---
+name: Wallet Address
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import { WalletAddress } from './wallet-address.js'
+import { DoczWrapper } from '../theme.js'
+
+# Wallet Address
+
+## Properties
+
+<PropsTable of={WalletAddress} />
+
+## Basic usage
+
+<Playground>
+  <DoczWrapper>
+    {() => (
+      <div style={{ width: '700px' }}>
+        <WalletAddress
+          address='t14oHp2v54vfmdgQ3v3SNuQga8JKHTNi2a1'
+        />
+      </div>
+    )}
+  </DoczWrapper>
+</Playground>
