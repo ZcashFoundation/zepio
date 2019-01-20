@@ -7,11 +7,11 @@ import { normalize } from 'polished'; // eslint-disable-line
 
 import { DARK } from './constants/themes';
 
-const darkOne = '#F5CB00';
+const darkOne = '#F4B728';
 const lightOne = '#ffffff';
 const brandOne = '#000';
 const brandTwo = '#3B3B3F';
-const activeItem = '#F5CB00';
+const activeItem = '#F4B728';
 const text = '#FFF';
 const cardBackgroundColor = '#000';
 const sidebarLogoGradientBegin = '#F4B728';
@@ -24,6 +24,7 @@ const transactionReceived = '#6AEAC0';
 const transactionsDate = '#777777';
 const transactionsItemHovered = '#222222';
 const selectButtonShadow = 'rgba(238,201,76,0.65)';
+const statusPillLabel = '#727272';
 const transactionsDetailsLabel = transactionsDate;
 
 const appTheme = {
@@ -68,6 +69,7 @@ const appTheme = {
     inputBackground: brandOne,
     selectButtonShadow,
     transactionsDetailsLabel,
+    statusPillLabel,
   },
   sidebarWidth: '180px',
   headerHeight: '60px',

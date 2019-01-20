@@ -58,12 +58,19 @@ const Secondary = styled(DefaultButton)`
   }
 `;
 
+const Icon = styled.img`
+  height: 9px;
+  width: 12px;
+  margin-right: 10px;
+`;
+
 type Props = {
   label: string,
   onClick?: () => void,
   to?: ?string,
   variant?: 'primary' | 'secondary',
   disabled?: boolean,
+  icon?: string,
   className?: string,
   isLoading?: boolean,
 };
@@ -74,25 +81,41 @@ export const Button = ({
   to,
   variant,
   disabled,
+  icon,
   className,
   isLoading,
 }: Props) => {
   if (to && onClick) throw new Error('Should define either "to" or "onClick"');
 
-  const props = { onClick, disabled: disabled || isLoading, className };
+  const props = {
+    onClick, disabled: disabled || isLoading, icon: null, className,
+  };
   const buttonLabel = isLoading ? 'Loading...' : label;
 
   const component = variant === 'primary' ? (
-    <Primary {...props}>{buttonLabel}</Primary>
+    <Primary {...props}>
+      {icon
+        ? <Icon src={icon} />
+        : null
+      }
+      {buttonLabel}
+    </Primary>
   ) : (
-    <Secondary {...props}>{buttonLabel}</Secondary>
+    <Secondary {...props}>
+      {icon
+        ? <Icon src={icon} />
+        : null
+      }
+      {buttonLabel}
+    </Secondary>
   );
 
   return to ? <Link to={String(to)}>{component}</Link> : component;
 };
 
 Button.defaultProps = {
-  to: null,
+  to: '',
+  icon: null,
   variant: 'primary',
   onClick: null,
   disabled: false,
