@@ -43,7 +43,7 @@ const StyledLink = styled(Link)`
     color: ${/* eslint-disable-next-line max-len */
   props => (props.isActive
     ? props.theme.colors.sidebarItemActive
-    : props.theme.colors.sidebarHoveredItemLabel)};
+    : '#ddd')}
     background-color: ${props => props.theme.colors.sidebarHoveredItem};
   }
 `;
@@ -54,7 +54,7 @@ const Icon = styled.img`
   margin-right: 13px;
 
   ${StyledLink}:hover & {
-    filter: ${props => (props.isActive ? 'none' : 'brightness(200%)')};
+    filter: ${props => (props.isActive ? 'none' : 'brightness(300%)')};
   }
 `;
 
@@ -83,7 +83,7 @@ export const SidebarComponent = ({ options, location }: Props) => (
           <Icon
             isActive={isActive}
             src={item.icon(isActive)}
-            alt={`Sidebar Icon ${item.route}`}
+            alt={`${item.route}`}
           />
           {item.label}
         </StyledLink>

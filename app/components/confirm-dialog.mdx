@@ -1,0 +1,31 @@
+---
+name: Confirm Dialog
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import { Button } from './button.js'
+import { ConfirmDialogComponent } from './confirm-dialog.js'
+import { DoczWrapper } from '../theme.js'
+
+# Confirm Dialog
+
+## Properties
+
+<PropsTable of={ConfirmDialogComponent} />
+
+## Basic Usage
+
+<Playground>
+  <DoczWrapper>
+    {() => (
+      <ConfirmDialogComponent
+        title="Confirm example"
+        onConfirm={() => alert('Confirm')}
+        renderTrigger={toggle => <button onClick={toggle}> Open! </button>}
+      >
+        <div>Confirm content</div>
+      </ConfirmDialogComponent>
+    )}
+  </DoczWrapper>
+</Playground>
