@@ -21,6 +21,11 @@ import type { SendTransactionInput } from '../containers/send';
 import type { State as SendState } from '../redux/modules/send';
 
 import SentIcon from '../assets/images/transaction_sent_icon.svg';
+import MenuIcon from '../assets/images/menu_icon.svg';
+import ValidIcon from '../assets/images/green_check.png';
+import InvalidIcon from '../assets/images/error_icon.png';
+
+import theme from '../theme';
 
 const FormWrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
@@ -30,19 +35,6 @@ const FormWrapper = styled.div`
 const SendWrapper = styled(ColumnComponent)`
   margin-top: 60px;
   width: 25%;
-`;
-
-const ShowFeeButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  color: ${props => props.theme.colors.text};
-  outline: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 const InfoCard = styled.div`
@@ -97,10 +89,10 @@ const ConfirmItemWrapper = styled(RowComponent)`
   }
 `;
 
-const ConfirmItemLabel = styled(TextComponent)`
+const ItemLabel = styled(TextComponent)`
   font-weight: ${props => props.theme.fontWeight.bold};
   font-size: ${props => props.theme.fontSize.small};
-  color: ${props => props.theme.colors.modalItemLabel};
+  color: ${props => props.color || props.theme.colors.modalItemLabel};
   margin-bottom: 3.5px;
 `;
 
@@ -122,12 +114,44 @@ const Icon = styled.img`
   margin-left: 15px;
 `;
 
+const ValidateStatusIcon = styled.img`
+  width: 13px;
+  height: 13px;
+  margin-right: 7px;
+`;
+
+const ShowFeeButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  color: ${props => props.theme.colors.text};
+  outline: none;
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const SeeMoreIcon = styled.img`
+  width: 25px;
+  height: 25px;
+  border: 1px solid ${props => props.theme.colors.text};
+  border-radius: 100%;
+  margin-right: 11.5px;
+`;
+
 type Props = SendState & {
   balance: number,
   zecPrice: number,
   addresses: string[],
   sendTransaction: SendTransactionInput => void,
   resetSendView: () => void,
+  validateAddress: ({ address: string }) => void,
 };
 
 type State = {
@@ -159,12 +183,17 @@ export class SendView extends PureComponent<Props, State> {
   }
 
   handleChange = (field: string) => (value: string) => {
+    const { validateAddress } = this.props;
+
     if (field === 'amount') {
       if (value !== '') {
         this.setState(() => ({
           [field]: value,
         }));
       }
+    } else if (field === 'to') {
+      // eslint-disable-next-line max-len
+      this.setState({ [field]: value }, () => validateAddress({ address: value }));
     } else {
       this.setState(() => ({ [field]: value }));
     }
@@ -179,12 +208,10 @@ export class SendView extends PureComponent<Props, State> {
     } else {
       const fee = new BigNumber(value);
 
-      this.setState(
-        {
-          feeType: fee.toString(),
-          fee: fee.toNumber(),
-        },
-      );
+      this.setState({
+        feeType: fee.toString(),
+        fee: fee.toNumber(),
+      });
     }
   };
 
@@ -232,6 +259,22 @@ export class SendView extends PureComponent<Props, State> {
     if (feeValue.isEqualTo(FEES.HIGH)) return `High ZEC ${feeValue.toString()}`;
 
     return `Custom ZEC ${feeValue.toString()}`;
+  };
+
+  renderValidationStatus = () => {
+    const { isToAddressValid } = this.props;
+
+    return isToAddressValid ? (
+      <RowComponent alignItems='center'>
+        <ValidateStatusIcon src={ValidIcon} />
+        <ItemLabel value='VALID' color={theme.colors.transactionReceived} />
+      </RowComponent>
+    ) : (
+      <RowComponent alignItems='center'>
+        <ValidateStatusIcon src={InvalidIcon} />
+        <ItemLabel value='INVALID' color={theme.colors.transactionSent} />
+      </RowComponent>
+    );
   };
 
   render() {
@@ -295,6 +338,7 @@ export class SendView extends PureComponent<Props, State> {
             onChange={this.handleChange('to')}
             value={to}
             placeholder='Enter Address'
+            renderRight={to ? this.renderValidationStatus : () => null}
           />
           <InputLabelComponent value='Memo' />
           <InputComponent
@@ -307,10 +351,10 @@ export class SendView extends PureComponent<Props, State> {
             onClick={() => this.setState(state => ({ showFee: !state.showFee }))
             }
           >
+            <SeeMoreIcon src={MenuIcon} alt='Show more icon' />
             <TextComponent
               paddingTop='10px'
               value={`${showFee ? 'Hide' : 'Show'} Additional Options`}
-              align='right'
             />
           </ShowFeeButton>
           {showFee && (
@@ -371,7 +415,7 @@ export class SendView extends PureComponent<Props, State> {
             <>
               <ConfirmItemWrapper alignItems='center'>
                 <ColumnComponent>
-                  <ConfirmItemLabel value='AMOUNT' />
+                  <ItemLabel value='AMOUNT' />
                   <SendZECValue value={`-${valueSent}`} />
                   <SendUSDValue value={`-${valueSentInUsd}`} />
                 </ColumnComponent>
@@ -382,21 +426,21 @@ export class SendView extends PureComponent<Props, State> {
               <Divider opacity={0.3} />
               <ConfirmItemWrapper alignItems='center'>
                 <ColumnComponent>
-                  <ConfirmItemLabel value='FEE' />
+                  <ItemLabel value='FEE' />
                   <TextComponent value={this.getFeeText()} />
                 </ColumnComponent>
               </ConfirmItemWrapper>
               <Divider opacity={0.3} />
               <ConfirmItemWrapper alignItems='center'>
                 <ColumnComponent>
-                  <ConfirmItemLabel value='FROM' />
+                  <ItemLabel value='FROM' />
                   <TextComponent value={from} />
                 </ColumnComponent>
               </ConfirmItemWrapper>
               <Divider opacity={0.3} />
               <ConfirmItemWrapper alignItems='center'>
                 <ColumnComponent>
-                  <ConfirmItemLabel value='TO' />
+                  <ItemLabel value='TO' />
                   <TextComponent value={to} />
                 </ColumnComponent>
               </ConfirmItemWrapper>

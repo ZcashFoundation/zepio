@@ -11,6 +11,8 @@ import {
   sendTransactionSuccess,
   sendTransactionError,
   resetSendTransaction,
+  validateAddressSuccess,
+  validateAddressError,
 } from '../redux/modules/send';
 
 import filterObjectNullKeys from '../utils/filterObjectNullKeys';
@@ -33,6 +35,7 @@ const mapStateToProps = ({ walletSummary, sendStatus }: AppState) => ({
   error: sendStatus.error,
   isSending: sendStatus.isSending,
   operationId: sendStatus.operationId,
+  isToAddressValid: sendStatus.isToAddressValid,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -67,6 +70,29 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(sendTransactionSuccess({ operationId }));
   },
   resetSendView: () => dispatch(resetSendTransaction()),
+  validateAddress: async ({ address }: { address: string }) => {
+    if (address.startsWith('z')) {
+      const [, validationResult] = await eres(rpc.z_validateaddress(address));
+
+      return dispatch(
+        validateAddressSuccess({
+          isValid: Boolean(validationResult && validationResult.isvalid),
+        }),
+      );
+    }
+
+    const [, validationResult] = await eres(rpc.validateaddress(address));
+
+    if (validationResult) {
+      return dispatch(
+        validateAddressSuccess({
+          isValid: Boolean(validationResult && validationResult.isvalid),
+        }),
+      );
+    }
+
+    return dispatch(validateAddressError());
+  },
 });
 
 export const SendContainer = connect(
