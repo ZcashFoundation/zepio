@@ -71,6 +71,7 @@ const appTheme = {
     selectButtonShadow,
     transactionsDetailsLabel,
     statusPillLabel,
+    modalItemLabel: transactionsDate,
   },
   sidebarWidth: '180px',
   headerHeight: '60px',
