@@ -204,26 +204,28 @@ export class SettingsView extends PureComponent<Props, State> {
           showButtons={!successExportViewKeys}
           width={750}
         >
-          <ModalContent>
-            {successExportViewKeys ? (
-              viewKeys.map(({ zAddress, key }) => (
-                <>
-                  <InputLabelComponent value={zAddress} />
-                  <RowComponent alignItems='center'>
-                    <InputComponent
-                      value={key}
-                      onFocus={(event) => {
-                        event.currentTarget.select();
-                      }}
-                    />
-                    <ClipboardButton text={key} />
-                  </RowComponent>
-                </>
-              ))
-            ) : (
-              <TextComponent value='Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.' />
-            )}
-          </ModalContent>
+          {() => (
+            <ModalContent>
+              {successExportViewKeys ? (
+                viewKeys.map(({ zAddress, key }) => (
+                  <>
+                    <InputLabelComponent value={zAddress} />
+                    <RowComponent alignItems='center'>
+                      <InputComponent
+                        value={key}
+                        onFocus={(event) => {
+                          event.currentTarget.select();
+                        }}
+                      />
+                      <ClipboardButton text={key} />
+                    </RowComponent>
+                  </>
+                ))
+              ) : (
+                <TextComponent value='Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.' />
+              )}
+            </ModalContent>
+          )}
         </ConfirmDialogComponent>
 
         <ConfirmDialogComponent
@@ -235,26 +237,28 @@ export class SettingsView extends PureComponent<Props, State> {
           showButtons={!successExportPrivateKeys}
           width={750}
         >
-          <ModalContent>
-            {successExportPrivateKeys ? (
-              privateKeys.map(({ zAddress, key }) => (
-                <>
-                  <InputLabelComponent value={zAddress} />
-                  <RowComponent alignItems='center'>
-                    <InputComponent
-                      value={key}
-                      onFocus={(event) => {
-                        event.currentTarget.select();
-                      }}
-                    />
-                    <ClipboardButton text={key} />
-                  </RowComponent>
-                </>
-              ))
-            ) : (
-              <TextComponent value='Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.' />
-            )}
-          </ModalContent>
+          {() => (
+            <ModalContent>
+              {successExportPrivateKeys ? (
+                privateKeys.map(({ zAddress, key }) => (
+                  <>
+                    <InputLabelComponent value={zAddress} />
+                    <RowComponent alignItems='center'>
+                      <InputComponent
+                        value={key}
+                        onFocus={(event) => {
+                          event.currentTarget.select();
+                        }}
+                      />
+                      <ClipboardButton text={key} />
+                    </RowComponent>
+                  </>
+                ))
+              ) : (
+                <TextComponent value='Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.' />
+              )}
+            </ModalContent>
+          )}
         </ConfirmDialogComponent>
 
         <ConfirmDialogComponent
@@ -267,22 +271,25 @@ export class SettingsView extends PureComponent<Props, State> {
           width={900}
           isLoading={isLoading}
         >
-          <ModalContent>
-            <InputLabelComponent value='Please paste your private keys here, one per line. The keys will be imported into your zcashd node' />
-            <InputComponent
-              value={importedPrivateKeys}
-              onChange={value => this.setState({ importedPrivateKeys: value })}
-              inputType='textarea'
-              rows={10}
-            />
-            {successImportPrivateKeys && (
-              <TextComponent
-                value='Private keys imported in your node'
-                align='center'
+          {() => (
+            <ModalContent>
+              <InputLabelComponent value='Please paste your private keys here, one per line. The keys will be imported into your zcashd node' />
+              <InputComponent
+                value={importedPrivateKeys}
+                onChange={value => this.setState({ importedPrivateKeys: value })
+                }
+                inputType='textarea'
+                rows={10}
               />
-            )}
-            {error && <TextComponent value={error} align='center' />}
-          </ModalContent>
+              {successImportPrivateKeys && (
+                <TextComponent
+                  value='Private keys imported in your node'
+                  align='center'
+                />
+              )}
+              {error && <TextComponent value={error} align='center' />}
+            </ModalContent>
+          )}
         </ConfirmDialogComponent>
 
         <Btn label='Backup wallet.dat' onClick={this.backupWalletDat} />
