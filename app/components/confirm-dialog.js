@@ -78,7 +78,7 @@ export const ConfirmDialogComponent = ({
         <TitleWrapper>
           <TextComponent value={title} align='center' />
         </TitleWrapper>
-        <Divider />
+        <Divider opacity={0.3} />
         {React.Children.map(children, _ => _)}
         {showButtons && (
           <>
