@@ -75,6 +75,10 @@ const SeeMoreIcon = styled.img`
   height: 25px;
 `;
 
+const Dropdown = styled(DropdownComponent)`
+  display: none;
+`;
+
 type Props = {
   total: number,
   shielded: number,
@@ -91,7 +95,7 @@ export const WalletSummaryComponent = ({
   addresses,
 }: Props) => (
   <Wrapper>
-    <DropdownComponent
+    <Dropdown
       label='All Addresses'
       renderTrigger={(toggleVisibility, isOpen) => (
         <SeeMoreButton onClick={toggleVisibility} isOpen={isOpen}>
