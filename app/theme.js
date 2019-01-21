@@ -8,6 +8,7 @@ import { normalize } from 'polished'; // eslint-disable-line
 import { DARK } from './constants/themes';
 
 const darkOne = '#F4B728';
+const blackTwo = '#171717';
 const lightOne = '#ffffff';
 const brandOne = '#000';
 const brandTwo = '#3B3B3F';
@@ -70,6 +71,7 @@ const appTheme = {
     selectButtonShadow,
     transactionsDetailsLabel,
     statusPillLabel,
+    blackTwo,
   },
   sidebarWidth: '180px',
   headerHeight: '60px',
