@@ -50,54 +50,64 @@ type Props = {
   renderTrigger: (() => void) => Element<*>,
   title: string,
   onConfirm: () => void,
+  onClose?: () => void,
   showButtons?: boolean,
   width?: number,
   isLoading?: boolean,
-  children: Element<*>,
+  children: (() => void) => Element<*>,
 };
 
 export const ConfirmDialogComponent = ({
   children,
   title,
   onConfirm,
+  onClose,
   renderTrigger,
   showButtons,
   isLoading,
   width,
-}: Props) => (
-  <ModalComponent
-    renderTrigger={renderTrigger}
-    closeOnBackdropClick={false}
-    closeOnEsc={false}
-  >
-    {toggle => (
-      <Wrapper width={width}>
-        <CloseIconWrapper>
-          <CloseIconImg src={CloseIcon} onClick={toggle} />
-        </CloseIconWrapper>
-        <TitleWrapper>
-          <TextComponent value={title} align='center' />
-        </TitleWrapper>
-        <Divider opacity={0.3} />
-        {React.Children.map(children, _ => _)}
-        {showButtons && (
-          <>
-            <Btn label='Confirm' onClick={onConfirm} isLoading={isLoading} />
-            <Btn
-              label='Cancel'
-              onClick={toggle}
-              variant='secondary'
-              disabled={isLoading}
-            />
-          </>
-        )}
-      </Wrapper>
-    )}
-  </ModalComponent>
-);
+}: Props) => {
+  const handleClose = toggle => () => {
+    toggle();
+    if (onClose) onClose();
+  };
+
+  return (
+    <ModalComponent
+      renderTrigger={renderTrigger}
+      closeOnBackdropClick={false}
+      closeOnEsc={false}
+    >
+      {toggle => (
+        <Wrapper width={width}>
+          <CloseIconWrapper>
+            <CloseIconImg src={CloseIcon} onClick={handleClose(toggle)} />
+          </CloseIconWrapper>
+          <TitleWrapper>
+            <TextComponent value={title} align='center' />
+          </TitleWrapper>
+          <Divider opacity={0.3} />
+          {children(handleClose(toggle))}
+          {showButtons && (
+            <>
+              <Btn label='Confirm' onClick={onConfirm} isLoading={isLoading} />
+              <Btn
+                label='Cancel'
+                onClick={handleClose(toggle)}
+                variant='secondary'
+                disabled={isLoading}
+              />
+            </>
+          )}
+        </Wrapper>
+      )}
+    </ModalComponent>
+  );
+};
 
 ConfirmDialogComponent.defaultProps = {
   showButtons: true,
   width: 460,
   isLoading: false,
+  onClose: () => {},
 };
