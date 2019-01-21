@@ -70,7 +70,7 @@ type Props = {
   to?: ?string,
   variant?: 'primary' | 'secondary',
   disabled?: boolean,
-  icon?: string,
+  icon?: any,
   className?: string,
   isLoading?: boolean,
 };
