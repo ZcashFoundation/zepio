@@ -64,10 +64,42 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       ),
     );
 
-    // eslint-disable-next-line
+    // eslint-disable-next-line max-len
     if (sendErr || !operationId) return dispatch(sendTransactionError({ error: sendErr.message }));
 
-    dispatch(sendTransactionSuccess({ operationId }));
+    /**
+      Output is a list of operation status objects.
+      [
+        {“operationid”: “opid-12ee…”,
+        “status”: “queued”},
+        {“operationid”: “opd-098a…”, “status”: ”executing”},
+        {“operationid”: “opid-9876”, “status”: ”failed”}
+      ]
+
+      When the operation succeeds, the status object will also include the result.
+      {“operationid”: “opid-0e0e”, “status”:”success”, “execution_time”:”25”, “result”: {“txid”:”af3887654…”,...}}
+
+      then the promise will only be resolved when a "success" or "failure" status is obtained
+     */
+    const interval = setInterval(async () => {
+      const [, status] = await eres(rpc.z_getoperationstatus());
+
+      const operationStatus = status.find(({ id }) => operationId === id);
+
+      if (operationStatus && operationStatus.status === 'success') {
+        clearInterval(interval);
+        dispatch(
+          sendTransactionSuccess({ operationId: operationStatus.result.txid }),
+        );
+      }
+
+      if (operationStatus && operationStatus.status === 'failed') {
+        clearInterval(interval);
+        dispatch(
+          sendTransactionError({ error: operationStatus.error.message }),
+        );
+      }
+    }, 2000);
   },
   resetSendView: () => dispatch(resetSendTransaction()),
   validateAddress: async ({ address }: { address: string }) => {

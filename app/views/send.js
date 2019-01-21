@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { BigNumber } from 'bignumber.js';
 
 import FEES from '../constants/fees';
@@ -24,8 +24,27 @@ import SentIcon from '../assets/images/transaction_sent_icon.svg';
 import MenuIcon from '../assets/images/menu_icon.svg';
 import ValidIcon from '../assets/images/green_check.png';
 import InvalidIcon from '../assets/images/error_icon.png';
+import LoadingIcon from '../assets/images/sync_icon.png';
 
 import theme from '../theme';
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const Loader = styled.img`
+  width: 25px;
+  height: 25px;
+  animation: 2s linear infinite;
+  animation-name: ${rotate};
+  margin-bottom: 10px;
+`;
 
 const FormWrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
@@ -73,20 +92,19 @@ const FormButton = styled(Button)`
   }
 `;
 
-const SuccessWrapper = styled(ColumnComponent)`
+const ModalContent = styled(ColumnComponent)`
+  min-height: 400px;
   align-items: center;
   justify-content: center;
-  height: 100%;
+
+  p {
+    word-break: break-all;
+  }
 `;
 
 const ConfirmItemWrapper = styled(RowComponent)`
   padding: 22.5px 33.5px;
   width: 100%;
-  overflow-y: auto;
-
-  p {
-    word-break: break-all;
-  }
 `;
 
 const ItemLabel = styled(TextComponent)`
@@ -179,19 +197,14 @@ export class SendView extends PureComponent<Props, State> {
 
   componentDidMount() {
     const { resetSendView } = this.props;
+
     resetSendView();
   }
 
   handleChange = (field: string) => (value: string) => {
     const { validateAddress } = this.props;
 
-    if (field === 'amount') {
-      if (value !== '') {
-        this.setState(() => ({
-          [field]: value,
-        }));
-      }
-    } else if (field === 'to') {
+    if (field === 'to') {
       // eslint-disable-next-line max-len
       this.setState({ [field]: value }, () => validateAddress({ address: value }));
     } else {
@@ -236,8 +249,9 @@ export class SendView extends PureComponent<Props, State> {
     const {
       from, amount, to, fee,
     } = this.state;
+    const { isToAddressValid } = this.props;
 
-    if (!from || !amount || !to || !fee) return;
+    if (!from || !amount || !to || !fee || !isToAddressValid) return;
 
     toggle();
   };
@@ -277,6 +291,87 @@ export class SendView extends PureComponent<Props, State> {
     );
   };
 
+  renderModalContent = ({
+    valueSent,
+    valueSentInUsd,
+    toggle,
+  }: {
+    valueSent: string,
+    valueSentInUsd: string,
+    toggle: () => void,
+  }) => {
+    const { operationId, isSending, error } = this.props;
+    const { from, to } = this.state;
+
+    if (isSending) {
+      return (
+        <>
+          <Loader src={LoadingIcon} />
+          <TextComponent value='Processing transaction...' />
+        </>
+      );
+    }
+
+    if (operationId) {
+      return (
+        <>
+          <TextComponent
+            value={`Transaction ID: ${operationId}`}
+            align='center'
+          />
+          <button
+            type='button'
+            onClick={() => {
+              this.reset();
+              toggle();
+            }}
+          >
+            Send again!
+          </button>
+        </>
+      );
+    }
+
+    if (error) return <TextComponent value={error} />;
+
+    return (
+      <>
+        <ConfirmItemWrapper alignItems='center'>
+          <ColumnComponent>
+            <ItemLabel value='AMOUNT' />
+            <SendZECValue value={`-${valueSent}`} />
+            <SendUSDValue value={`-${valueSentInUsd}`} />
+          </ColumnComponent>
+          <ColumnComponent>
+            <Icon src={SentIcon} alt='Transaction Type Icon' />
+          </ColumnComponent>
+        </ConfirmItemWrapper>
+        <Divider opacity={0.3} />
+        <ConfirmItemWrapper alignItems='center'>
+          <ColumnComponent>
+            <ItemLabel value='FEE' />
+            <TextComponent value={this.getFeeText()} />
+          </ColumnComponent>
+        </ConfirmItemWrapper>
+        <Divider opacity={0.3} />
+        <ConfirmItemWrapper alignItems='center'>
+          <ColumnComponent>
+            <ItemLabel value='FROM' />
+            <TextComponent value={from} />
+          </ColumnComponent>
+        </ConfirmItemWrapper>
+        <Divider opacity={0.3} />
+        <ConfirmItemWrapper alignItems='center'>
+          <ColumnComponent>
+            <ItemLabel value='TO' />
+            <TextComponent value={to} />
+          </ColumnComponent>
+        </ConfirmItemWrapper>
+        <Divider opacity={0.3} marginBottom='27.5px' />
+      </>
+    );
+  };
+
   render() {
     const {
       addresses,
@@ -304,20 +399,9 @@ export class SendView extends PureComponent<Props, State> {
       append: 'USD $',
     });
 
-    return operationId ? (
-      <SuccessWrapper>
-        <TextComponent value={`Processing operation: ${operationId}`} />
-        <TextComponent value={`Amount: ${amount}`} />
-        <TextComponent value={`From: ${from}`} />
-        <TextComponent value={`To: ${to}`} />
-        <button type='button' onClick={this.reset}>
-          Send again!
-        </button>
-      </SuccessWrapper>
-    ) : (
+    return (
       <RowComponent justifyContent='space-between'>
         <FormWrapper>
-          {error && <TextComponent value={error} />}
           <InputLabelComponent value='From' />
           <SelectComponent
             onChange={this.handleChange('from')}
@@ -408,44 +492,16 @@ export class SendView extends PureComponent<Props, State> {
                 variant='secondary'
                 focused
                 onClick={this.showModal(toggle)}
-                isLoading={isSending}
               />
             )}
+            showButtons={!isSending && !error && !operationId}
+            onClose={this.reset}
           >
-            <>
-              <ConfirmItemWrapper alignItems='center'>
-                <ColumnComponent>
-                  <ItemLabel value='AMOUNT' />
-                  <SendZECValue value={`-${valueSent}`} />
-                  <SendUSDValue value={`-${valueSentInUsd}`} />
-                </ColumnComponent>
-                <ColumnComponent>
-                  <Icon src={SentIcon} alt='Transaction Type Icon' />
-                </ColumnComponent>
-              </ConfirmItemWrapper>
-              <Divider opacity={0.3} />
-              <ConfirmItemWrapper alignItems='center'>
-                <ColumnComponent>
-                  <ItemLabel value='FEE' />
-                  <TextComponent value={this.getFeeText()} />
-                </ColumnComponent>
-              </ConfirmItemWrapper>
-              <Divider opacity={0.3} />
-              <ConfirmItemWrapper alignItems='center'>
-                <ColumnComponent>
-                  <ItemLabel value='FROM' />
-                  <TextComponent value={from} />
-                </ColumnComponent>
-              </ConfirmItemWrapper>
-              <Divider opacity={0.3} />
-              <ConfirmItemWrapper alignItems='center'>
-                <ColumnComponent>
-                  <ItemLabel value='TO' />
-                  <TextComponent value={to} />
-                </ColumnComponent>
-              </ConfirmItemWrapper>
-              <Divider opacity={0.3} marginBottom='27.5px' />
-            </>
+            {toggle => (
+              <ModalContent>
+                {this.renderModalContent({ valueSent, valueSentInUsd, toggle })}
+              </ModalContent>
+            )}
           </ConfirmDialogComponent>
           <FormButton label='Cancel' variant='secondary' />
         </SendWrapper>
