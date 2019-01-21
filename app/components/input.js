@@ -3,12 +3,14 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import theme from '../theme';
+
 const getDefaultStyles = t => styled[t]`
   border-radius: ${// $FlowFixMe
   props => props.theme.boxBorderRadius};
   border: none;
   background-color: ${// $FlowFixMe
-  props => props.theme.colors.inputBackground};
+  props => props.bgColor || props.theme.colors.inputBackground};
   color: ${// $FlowFixMe
   props => props.theme.colors.text};
   padding: 15px;
@@ -34,15 +36,26 @@ type Props = {
   disabled?: boolean,
   type?: string,
   step?: number,
+  bgColor?: string,
 };
 
-export const InputComponent = ({ inputType, onChange, ...props }: Props) => {
+export const InputComponent = ({
+  inputType, onChange, bgColor, ...props
+}: Props) => {
   const inputTypes = {
     input: () => (
-      <Input onChange={evt => onChange(evt.target.value)} {...props} />
+      <Input
+        onChange={evt => onChange(evt.target.value)}
+        bgColor={bgColor}
+        {...props}
+      />
     ),
     textarea: () => (
-      <Textarea onChange={evt => onChange(evt.target.value)} {...props} />
+      <Textarea
+        onChange={evt => onChange(evt.target.value)}
+        bgColor={bgColor}
+        {...props}
+      />
     ),
   };
 
@@ -58,4 +71,5 @@ InputComponent.defaultProps = {
   rows: 4,
   disabled: false,
   type: 'text',
+  bgColor: theme.colors.inputBackground,
 };
