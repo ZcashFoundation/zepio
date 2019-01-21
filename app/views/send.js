@@ -13,11 +13,14 @@ import { RowComponent } from '../components/row';
 import { ColumnComponent } from '../components/column';
 import { Divider } from '../components/divider';
 import { Button } from '../components/button';
+import { ConfirmDialogComponent } from '../components/confirm-dialog';
 
 import formatNumber from '../utils/formatNumber';
 
 import type { SendTransactionInput } from '../containers/send';
 import type { State as SendState } from '../redux/modules/send';
+
+import SentIcon from '../assets/images/transaction_sent_icon.svg';
 
 const FormWrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
@@ -84,6 +87,41 @@ const SuccessWrapper = styled(ColumnComponent)`
   height: 100%;
 `;
 
+const ConfirmItemWrapper = styled(RowComponent)`
+  padding: 22.5px 33.5px;
+  width: 100%;
+  overflow-y: auto;
+
+  p {
+    word-break: break-all;
+  }
+`;
+
+const ConfirmItemLabel = styled(TextComponent)`
+  font-weight: ${props => props.theme.fontWeight.bold};
+  font-size: ${props => props.theme.fontSize.small};
+  color: ${props => props.theme.colors.modalItemLabel};
+  margin-bottom: 3.5px;
+`;
+
+const SendZECValue = styled(TextComponent)`
+  color: ${props => props.theme.colors.transactionSent};
+  font-size: ${props => `${props.theme.fontSize.large}em`};
+  font-weight: ${props => props.theme.fontWeight.bold};
+`;
+
+const SendUSDValue = styled(TextComponent)`
+  opacity: 0.5;
+  font-weight: ${props => props.theme.fontWeight.light};
+  font-size: ${props => `${props.theme.fontSize.medium}em`};
+`;
+
+const Icon = styled.img`
+  width: 35px;
+  height: 35px;
+  margin-left: 15px;
+`;
+
 type Props = SendState & {
   balance: number,
   zecPrice: number,
@@ -133,23 +171,21 @@ export class SendView extends PureComponent<Props, State> {
   };
 
   handleChangeFeeType = (value: string) => {
-    this.setState(
-      {
-        feeType: value,
+    if (value === FEES.CUSTOM) {
+      this.setState({
+        feeType: FEES.CUSTOM,
         fee: null,
-      },
-      () => {
-        if (
-          value === String(FEES.LOW)
-          || value === String(FEES.MEDIUM)
-          || value === String(FEES.HIGH)
-        ) {
-          this.setState(() => ({
-            fee: Number(value),
-          }));
-        }
-      },
-    );
+      });
+    } else {
+      const fee = new BigNumber(value);
+
+      this.setState(
+        {
+          feeType: fee.toString(),
+          fee: fee.toNumber(),
+        },
+      );
+    }
   };
 
   handleSubmit = () => {
@@ -169,10 +205,33 @@ export class SendView extends PureComponent<Props, State> {
     });
   };
 
+  showModal = (toggle: void => void) => () => {
+    const {
+      from, amount, to, fee,
+    } = this.state;
+
+    if (!from || !amount || !to || !fee) return;
+
+    toggle();
+  };
+
   reset = () => {
     const { resetSendView } = this.props;
 
     this.setState(initialState, () => resetSendView());
+  };
+
+  getFeeText = () => {
+    const { fee } = this.state;
+
+    const feeValue = new BigNumber(fee);
+
+    if (feeValue.isEqualTo(FEES.LOW)) return `Low ZEC ${feeValue.toString()}`;
+    // eslint-disable-next-line max-len
+    if (feeValue.isEqualTo(FEES.MEDIUM)) return `Medium ZEC ${feeValue.toString()}`;
+    if (feeValue.isEqualTo(FEES.HIGH)) return `High ZEC ${feeValue.toString()}`;
+
+    return `Custom ZEC ${feeValue.toString()}`;
   };
 
   render() {
@@ -185,13 +244,7 @@ export class SendView extends PureComponent<Props, State> {
       operationId,
     } = this.props;
     const {
-      showFee,
-      from,
-      amount,
-      to,
-      memo,
-      fee,
-      feeType,
+      showFee, from, amount, to, memo, fee, feeType,
     } = this.state;
 
     const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
@@ -295,20 +348,61 @@ export class SendView extends PureComponent<Props, State> {
               <TextComponent value={zecBalance} size={1.25} isBold />
               <InfoCardUSD value={zecBalanceInUsd} size={0.84375} />
             </InfoContent>
-            <Divider opacity={0.5} />
+            <Divider opacity={0.3} />
             <InfoContent>
               <InfoCardLabel value='Sending' />
               <TextComponent value={valueSent} size={1.25} isBold />
               <InfoCardUSD value={valueSentInUsd} size={0.84375} />
             </InfoContent>
           </InfoCard>
-          <FormButton
-            label='Send'
-            variant='secondary'
-            focused
-            onClick={this.handleSubmit}
-            isLoading={isSending}
-          />
+          <ConfirmDialogComponent
+            title='Please Confirm Transaction Details'
+            onConfirm={this.handleSubmit}
+            renderTrigger={toggle => (
+              <FormButton
+                label='Send'
+                variant='secondary'
+                focused
+                onClick={this.showModal(toggle)}
+                isLoading={isSending}
+              />
+            )}
+          >
+            <>
+              <ConfirmItemWrapper alignItems='center'>
+                <ColumnComponent>
+                  <ConfirmItemLabel value='AMOUNT' />
+                  <SendZECValue value={`-${valueSent}`} />
+                  <SendUSDValue value={`-${valueSentInUsd}`} />
+                </ColumnComponent>
+                <ColumnComponent>
+                  <Icon src={SentIcon} alt='Transaction Type Icon' />
+                </ColumnComponent>
+              </ConfirmItemWrapper>
+              <Divider opacity={0.3} />
+              <ConfirmItemWrapper alignItems='center'>
+                <ColumnComponent>
+                  <ConfirmItemLabel value='FEE' />
+                  <TextComponent value={this.getFeeText()} />
+                </ColumnComponent>
+              </ConfirmItemWrapper>
+              <Divider opacity={0.3} />
+              <ConfirmItemWrapper alignItems='center'>
+                <ColumnComponent>
+                  <ConfirmItemLabel value='FROM' />
+                  <TextComponent value={from} />
+                </ColumnComponent>
+              </ConfirmItemWrapper>
+              <Divider opacity={0.3} />
+              <ConfirmItemWrapper alignItems='center'>
+                <ColumnComponent>
+                  <ConfirmItemLabel value='TO' />
+                  <TextComponent value={to} />
+                </ColumnComponent>
+              </ConfirmItemWrapper>
+              <Divider opacity={0.3} marginBottom='27.5px' />
+            </>
+          </ConfirmDialogComponent>
           <FormButton label='Cancel' variant='secondary' />
         </SendWrapper>
       </RowComponent>
