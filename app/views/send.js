@@ -105,7 +105,7 @@ type State = {
 const initialState = {
   showFee: false,
   from: '',
-  amount: '0',
+  amount: '',
   to: '',
   feeType: FEES.LOW,
   fee: FEES.LOW,
@@ -232,10 +232,12 @@ export class SendView extends PureComponent<Props, State> {
           <InputLabelComponent value='Amount' />
           <InputComponent
             type='number'
+            defaultValue={0.00}
             onChange={this.handleChange('amount')}
             value={String(amount)}
             placeholder='ZEC 0.0'
             step={0.01}
+            min={0.01}
           />
           <InputLabelComponent value='To' />
           <InputComponent
