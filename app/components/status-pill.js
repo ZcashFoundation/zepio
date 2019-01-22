@@ -26,7 +26,7 @@ const Wrapper = styled.div`
   display: flex;
   background-color: #000;
   border-radius: 27px;
-  padding: 7px 13px;
+  padding: 8px 16px;
 `;
 
 const Icon = styled.img`
@@ -41,6 +41,8 @@ const StatusPillLabel = styled(TextComponent)`
   color: ${props => props.theme.colors.statusPillLabel};
   font-weight: ${props => props.theme.fontWeight.bold};
   text-transform: uppercase;
+  font-size: 10px;
+  padding-top: 1px;
 `;
 
 type Props = {};

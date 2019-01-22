@@ -1,7 +1,7 @@
 // @flow
 import { connect } from 'react-redux';
 
-import { ReceiveView } from '../views/receive';
+import { SettingsView } from '../views/settings';
 
 import type { AppState } from '../types/app-state';
 
@@ -10,4 +10,4 @@ const mapStateToProps = ({ walletSummary }: AppState) => ({
 });
 
 // $FlowFixMe
-export const ReceiveContainer = connect(mapStateToProps)(ReceiveView);
+export const SettingsContainer = connect(mapStateToProps)(SettingsView);

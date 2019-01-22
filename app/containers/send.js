@@ -69,6 +69,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   resetSendView: () => dispatch(resetSendTransaction()),
 });
 
+// $FlowFixMe
 export const SendContainer = connect(
   mapStateToProps,
   mapDispatchToProps,

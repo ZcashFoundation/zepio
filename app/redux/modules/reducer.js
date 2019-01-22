@@ -8,6 +8,7 @@ import wallet from './wallet';
 import transactions from './transactions';
 import send from './send';
 
+// $FlowFixMe
 export const createRootReducer = (history: RouterHistory) => combineReducers({
   walletSummary: wallet,
   transactions,

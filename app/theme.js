@@ -11,14 +11,15 @@ const darkOne = '#F4B728';
 const blackTwo = '#171717';
 const lightOne = '#ffffff';
 const brandOne = '#000';
-const brandTwo = '#3B3B3F';
+// const brandTwo = '#3B3B3F';
+const brandThree = '#5d5d65';
 const activeItem = '#F4B728';
 const text = '#FFF';
 const cardBackgroundColor = '#000';
 const sidebarLogoGradientBegin = '#F4B728';
 const sidebarLogoGradientEnd = '#FFE240';
 const sidebarHoveredItem = '#1C1C1C';
-const sidebarHoveredItemLabel = '#76767e';
+const sidebarHoveredItemLabel = '#8e8e96';
 const background = '#212124';
 const transactionSent = '#FF6C6C';
 const transactionReceived = '#6AEAC0';
@@ -52,14 +53,14 @@ const appTheme = {
       dark: lightOne,
     }),
     sidebarBg: brandOne,
-    sidebarItem: brandTwo,
+    sidebarItem: brandThree,
     sidebarItemActive: activeItem,
     sidebarHoveredItem,
     sidebarHoveredItemLabel,
     cardBackgroundColor,
     text,
     activeItem,
-    inactiveItem: brandTwo,
+    inactiveItem: brandThree,
     sidebarLogoGradientBegin,
     sidebarLogoGradientEnd,
     background,

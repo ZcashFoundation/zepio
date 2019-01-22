@@ -10,7 +10,7 @@ import { DashboardContainer } from '../containers/dashboard';
 import { TransactionsContainer } from '../containers/transactions';
 import { SendContainer } from '../containers/send';
 import { ReceiveContainer } from '../containers/receive';
-import { SettingsView } from '../views/settings';
+import { SettingsContainer } from '../containers/settings';
 import { NotFoundView } from '../views/not-found';
 import { ConsoleView } from '../views/console';
 import { LayoutComponent } from '../components/layout';
@@ -59,7 +59,7 @@ export const RouterComponent = ({ location }: { location: Location }) => (
             />
             <Route path={SEND_ROUTE} component={SendContainer} />
             <Route path={RECEIVE_ROUTE} component={ReceiveContainer} />
-            <Route path={SETTINGS_ROUTE} component={SettingsView} />
+            <Route path={SETTINGS_ROUTE} component={SettingsContainer} />
             <Route path={CONSOLE_ROUTE} component={ConsoleView} />
             <Route
               path={TRANSACTIONS_ROUTE}
