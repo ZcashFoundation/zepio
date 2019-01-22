@@ -186,13 +186,15 @@ export class SendView extends PureComponent<Props, State> {
       feeType,
     } = this.state;
 
+    const fixedAmount = amount === '' ? '0.00' : amount;
+
     const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
     const zecBalanceInUsd = formatNumber({
       value: new BigNumber(balance).times(zecPrice).toNumber(),
       append: 'USD $',
     });
     const valueSent = formatNumber({
-      value: new BigNumber(amount).toNumber(),
+      value: new BigNumber(fixedAmount).toFormat(2),
       append: 'ZEC ',
     });
     const valueSentInUsd = formatNumber({
