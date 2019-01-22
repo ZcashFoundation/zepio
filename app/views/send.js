@@ -29,6 +29,25 @@ const SendWrapper = styled(ColumnComponent)`
   width: 25%;
 `;
 
+const AmountWrapper = styled.div`
+  width: 100%;
+  &:before {
+    content: 'ZEC';
+    font-family: ${props => props.theme.fontFamily};
+    position: absolute;
+    margin-top: 15px;
+    margin-left: 15px;
+    display: block;
+    transition: all 0.05s ease-in-out;
+    opacity: ${props => (props.isEmpty ? '0' : '1')};
+    color: #fff;
+  }
+`;
+
+const AmountInput = styled(InputComponent)`
+  padding-left: ${props => (props.isEmpty ? '15' : '50')}px;
+`;
+
 const ShowFeeButton = styled.button`
   background: none;
   border: none;
@@ -186,7 +205,9 @@ export class SendView extends PureComponent<Props, State> {
       feeType,
     } = this.state;
 
-    const fixedAmount = amount === '' ? '0.00' : amount;
+    const isEmpty = amount === '';
+
+    const fixedAmount = isEmpty ? '0.00' : amount;
 
     const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
     const zecBalanceInUsd = formatNumber({
@@ -224,15 +245,16 @@ export class SendView extends PureComponent<Props, State> {
             options={addresses.map(addr => ({ value: addr, label: addr }))}
           />
           <InputLabelComponent value='Amount' />
-          <InputComponent
-            type='number'
-            defaultValue={0.00}
-            onChange={this.handleChange('amount')}
-            value={String(amount)}
-            placeholder='ZEC 0.0'
-            step={0.01}
-            min={0.01}
-          />
+          <AmountWrapper isEmpty={isEmpty}>
+            <AmountInput
+              isEmpty={isEmpty}
+              type='number'
+              onChange={this.handleChange('amount')}
+              value={String(amount)}
+              placeholder='ZEC 0.0'
+              min={0.01}
+            />
+          </AmountWrapper>
           <InputLabelComponent value='To' />
           <InputComponent
             onChange={this.handleChange('to')}
