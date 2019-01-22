@@ -70,7 +70,7 @@ const OptionsWrapper = styled.div`
   flex-direction: column;
   position: absolute;
   width: 100%;
-  ${props => `${props.placement}: ${`-${props.optionsAmount * 60}px`}`};
+  ${props => `${props.placement}: ${`-${props.optionsAmount * 62}px`}`};
   overflow-y: auto;
 `;
 
