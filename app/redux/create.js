@@ -21,5 +21,6 @@ export const configureStore = (initialState: Object) => {
     shouldEnableDevTools ? window.devToolsExtension() : f => f,
   );
 
+  // $FlowFixMe
   return createStore(createRootReducer(history), initialState, enhancer);
 };
