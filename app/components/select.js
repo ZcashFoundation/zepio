@@ -134,7 +134,7 @@ export class SelectComponent extends PureComponent<Props, State> {
     const { placement } = this.props;
     const { isOpen } = this.state;
 
-    if (placement === 'bottom') {
+    if (placement === 'top') {
       return isOpen ? ChevronUp : ChevronDown;
     }
 
