@@ -74,12 +74,12 @@ const OptionsWrapper = styled.div`
   overflow-y: auto;
 `;
 
-/* eslint-disable max-len */
 const Option = styled.button`
   border: none;
   background: none;
   height: 60px;
-  background-color: ${props => props.bgColor || props.theme.colors.inputBackground};
+  background-color: ${
+  props => props.bgColor || props.theme.colors.inputBackground};
   cursor: pointer;
   z-index: 99;
   text-transform: capitalize;
@@ -88,7 +88,6 @@ const Option = styled.button`
     background-color: ${props => props.theme.colors.background};
   }
 `;
-/* eslint-enable max-len */
 
 type Props = {
   value: string,
