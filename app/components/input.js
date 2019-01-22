@@ -4,18 +4,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 const getDefaultStyles = t => styled[t]`
-  border-radius: ${// $FlowFixMe
-  props => props.theme.boxBorderRadius};
+  border-radius: ${props => props.theme.boxBorderRadius};
   border: none;
-  background-color: ${// $FlowFixMe
-  props => props.theme.colors.inputBackground};
-  color: ${// $FlowFixMe
-  props => props.theme.colors.text};
+  background-color: ${props => props.theme.colors.inputBackground};
+  color: ${props => props.theme.colors.text};
   padding: 15px;
   width: 100%;
   outline: none;
-  font-family: ${// $FlowFixMe
-  props => props.theme.fontFamily};
+  font-family: ${props => props.theme.fontFamily};
 
   ::placeholder {
     opacity: 0.5;
@@ -28,7 +24,7 @@ const Textarea = getDefaultStyles('textarea');
 type Props = {
   inputType?: 'input' | 'textarea',
   value: string,
-  onChange: string => void,
+  onChange?: string => void,
   onFocus?: (SyntheticFocusEvent<HTMLInputElement>) => void,
   rows?: number,
   disabled?: boolean,
@@ -36,7 +32,11 @@ type Props = {
   step?: number,
 };
 
-export const InputComponent = ({ inputType, onChange, ...props }: Props) => {
+export const InputComponent = ({
+  inputType,
+  onChange = () => {},
+  ...props
+}: Props) => {
   const inputTypes = {
     input: () => (
       <Input onChange={evt => onChange(evt.target.value)} {...props} />

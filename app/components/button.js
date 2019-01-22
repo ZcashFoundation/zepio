@@ -17,7 +17,8 @@ const DefaultButton = styled.button`
   outline: none;
   min-width: 100px;
   border-radius: 100px;
-  transition: background-color 0.1s ${props => props.theme.colors.transitionEase};
+  transition: background-color 0.1s
+    ${props => props.theme.colors.transitionEase};
   width: 100%;
 `;
 
@@ -66,10 +67,10 @@ const Icon = styled.img`
 type Props = {
   label: string,
   onClick?: () => void,
-  to?: string,
+  to?: ?string,
   variant?: 'primary' | 'secondary',
   disabled?: boolean,
-  icon?: string,
+  icon?: string | null,
   className?: string,
   isLoading?: boolean,
 };
@@ -87,24 +88,21 @@ export const Button = ({
   if (to && onClick) throw new Error('Should define either "to" or "onClick"');
 
   const props = {
-    onClick, disabled: disabled || isLoading, icon: null, className,
+    onClick,
+    disabled: disabled || isLoading,
+    icon: null,
+    className,
   };
   const buttonLabel = isLoading ? 'Loading...' : label;
 
   const component = variant === 'primary' ? (
     <Primary {...props}>
-      {icon
-        ? <Icon src={icon} />
-        : null
-      }
+      {icon ? <Icon src={icon} /> : null}
       {buttonLabel}
     </Primary>
   ) : (
     <Secondary {...props}>
-      {icon
-        ? <Icon src={icon} />
-        : null
-      }
+      {icon ? <Icon src={icon} /> : null}
       {buttonLabel}
     </Secondary>
   );
@@ -116,7 +114,7 @@ Button.defaultProps = {
   to: '',
   icon: null,
   variant: 'primary',
-  onClick: null,
+  onClick: () => {},
   disabled: false,
   className: '',
   isLoading: false,
