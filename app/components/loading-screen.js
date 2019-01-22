@@ -36,7 +36,7 @@ const Logo = styled.img`
 `;
 
 export const LoadingScreen = ({ progress }: { progress: number }) => (
-  <Wrapper>
+  <Wrapper id='loading-screen'>
     <CircleWrapper>
       <Logo src={zcashLogo} alt='Zcash logo' />
       <CircleProgressComponent

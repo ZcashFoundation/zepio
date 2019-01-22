@@ -21,5 +21,5 @@ export const LayoutComponent = (props: Props) => {
   // $FlowFixMe
   const { children } = props; // eslint-disable-line
 
-  return <Layout>{children}</Layout>;
+  return <Layout id='layout'>{children}</Layout>;
 };
