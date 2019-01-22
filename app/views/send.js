@@ -121,15 +121,7 @@ export class SendView extends PureComponent<Props, State> {
   }
 
   handleChange = (field: string) => (value: string) => {
-    if (field === 'amount') {
-      if (value !== '') {
-        this.setState(() => ({
-          [field]: value,
-        }));
-      }
-    } else {
-      this.setState(() => ({ [field]: value }));
-    }
+    this.setState(() => ({ [field]: value }));
   };
 
   handleChangeFeeType = (value: string) => {
