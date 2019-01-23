@@ -60,7 +60,7 @@ type Props = {
 };
 
 export const HeaderComponent = ({ title }: Props) => (
-  <Wrapper>
+  <Wrapper id='header'>
     <LogoWrapper>
       <ZcashLogo />
     </LogoWrapper>

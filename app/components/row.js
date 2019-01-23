@@ -16,6 +16,7 @@ type Props = {
   justifyContent?: string,
   className?: string,
   children: Node,
+  id?: string,
 };
 
 export const RowComponent = ({ children, ...props }: Props) => (
@@ -26,4 +27,5 @@ RowComponent.defaultProps = {
   alignItems: 'flex-start',
   justifyContent: 'flex-start',
   className: '',
+  id: '',
 };

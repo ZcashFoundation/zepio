@@ -73,6 +73,7 @@ type Props = {
   icon?: string | null,
   className?: string,
   isLoading?: boolean,
+  id?: string,
 };
 
 export const Button = ({
@@ -84,6 +85,7 @@ export const Button = ({
   icon,
   className,
   isLoading,
+  id,
 }: Props) => {
   if (to && onClick) throw new Error('Should define either "to" or "onClick"');
 
@@ -92,6 +94,7 @@ export const Button = ({
     disabled: disabled || isLoading,
     icon: null,
     className,
+    id,
   };
   const buttonLabel = isLoading ? 'Loading...' : label;
 
@@ -118,4 +121,5 @@ Button.defaultProps = {
   disabled: false,
   className: '',
   isLoading: false,
+  id: '',
 };

@@ -64,18 +64,6 @@ const InfoCardUSD = styled(TextComponent)`
 
 const FormButton = styled(Button)`
   margin: 10px 0;
-  border-color: ${props => (props.focused
-    ? props.theme.colors.activeItem
-    : props.theme.colors.inactiveItem)};
-
-  &:hover {
-    border-color: ${props => (props.focused
-    ? props.theme.colors.activeItem
-    : props.theme.colors.inactiveItem)};
-    background-color: ${props => (props.focused
-    ? props.theme.colors.activeItem
-    : props.theme.colors.inactiveItem)};
-  }
 `;
 
 const SuccessWrapper = styled(ColumnComponent)`
@@ -185,13 +173,7 @@ export class SendView extends PureComponent<Props, State> {
       operationId,
     } = this.props;
     const {
-      showFee,
-      from,
-      amount,
-      to,
-      memo,
-      fee,
-      feeType,
+      showFee, from, amount, to, memo, fee, feeType,
     } = this.state;
 
     const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
@@ -209,7 +191,7 @@ export class SendView extends PureComponent<Props, State> {
     });
 
     return operationId ? (
-      <SuccessWrapper>
+      <SuccessWrapper id='send-success-wrapper'>
         <TextComponent value={`Processing operation: ${operationId}`} />
         <TextComponent value={`Amount: ${amount}`} />
         <TextComponent value={`From: ${from}`} />
@@ -219,7 +201,7 @@ export class SendView extends PureComponent<Props, State> {
         </button>
       </SuccessWrapper>
     ) : (
-      <RowComponent justifyContent='space-between'>
+      <RowComponent id='send-wrapper' justifyContent='space-between'>
         <FormWrapper>
           {error && <TextComponent value={error} />}
           <InputLabelComponent value='From' />
@@ -231,6 +213,7 @@ export class SendView extends PureComponent<Props, State> {
           />
           <InputLabelComponent value='Amount' />
           <InputComponent
+            name='amount'
             type='number'
             onChange={this.handleChange('amount')}
             value={String(amount)}
@@ -242,6 +225,7 @@ export class SendView extends PureComponent<Props, State> {
             onChange={this.handleChange('to')}
             value={to}
             placeholder='Enter Address'
+            name='to'
           />
           <InputLabelComponent value='Memo' />
           <InputComponent
@@ -249,8 +233,10 @@ export class SendView extends PureComponent<Props, State> {
             value={memo}
             inputType='textarea'
             placeholder='Enter a text here'
+            name='memo'
           />
           <ShowFeeButton
+            id='send-show-additional-options-button'
             onClick={() => this.setState(state => ({ showFee: !state.showFee }))
             }
           >
@@ -261,7 +247,11 @@ export class SendView extends PureComponent<Props, State> {
             />
           </ShowFeeButton>
           {showFee && (
-            <RowComponent alignItems='flex-end' justifyContent='space-between'>
+            <RowComponent
+              id='send-fee-wrapper'
+              alignItems='flex-end'
+              justifyContent='space-between'
+            >
               <ColumnComponent width='74%'>
                 <InputLabelComponent value='Fee' />
                 <InputComponent
@@ -269,6 +259,7 @@ export class SendView extends PureComponent<Props, State> {
                   onChange={this.handleChange('fee')}
                   value={String(fee)}
                   disabled={feeType !== FEES.CUSTOM}
+                  name='fee'
                 />
               </ColumnComponent>
               <ColumnComponent width='25%'>
@@ -303,11 +294,13 @@ export class SendView extends PureComponent<Props, State> {
             </InfoContent>
           </InfoCard>
           <FormButton
+            id='send-submit-button'
             label='Send'
             variant='secondary'
             focused
             onClick={this.handleSubmit}
             isLoading={isSending}
+            disabled={!from || !amount || !to || !fee}
           />
           <FormButton label='Cancel' variant='secondary' />
         </SendWrapper>
