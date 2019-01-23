@@ -11,4 +11,7 @@ export const getApp = () => new Application({
   startTimeout: TIMEOUT,
   waitTimeout: TIMEOUT,
   quitTimeout: TIMEOUT,
+  env: {
+    NODE_ENV: 'test',
+  },
 });
