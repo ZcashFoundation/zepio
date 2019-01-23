@@ -30,6 +30,7 @@ type Props = {
   disabled?: boolean,
   type?: string,
   step?: number,
+  name?: string,
 };
 
 export const InputComponent = ({
@@ -58,4 +59,5 @@ InputComponent.defaultProps = {
   rows: 4,
   disabled: false,
   type: 'text',
+  name: '',
 };
