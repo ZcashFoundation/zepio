@@ -21,8 +21,10 @@
     "docz:dev": "docz dev",
     "docz:build": "docz build",
     "docz:deploy": "yarn docz:build && cd ./.docz/dist && now && now alias zec-docz.now.sh",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "jest --runInBand",
+    "test:watch": "jest --watch",
+    "e2e:serve": "node -r @babel/register ./__tests__/setup/mockAPI.js",
+    "e2e:run": "yarn test e2e"
   },
   "author": {
     "name": "André Neves",
@@ -43,6 +45,7 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "concurrently": "^4.1.0",
+    "create-test-server": "https://github.com/georgelima/create-test-server",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.1",
     "docz": "0.13.4",
