@@ -11,7 +11,7 @@ beforeAll(async () => {
 afterAll(() => app.stop());
 
 describe('Console', () => {
-  it('should load "Console Page"', async () => {
+  test('should load "Console Page"', async () => {
     await app.client.element('#sidebar a:nth-child(6)').click();
 
     expect(app.client.getText('#header p:first-child')).resolves.toEqual(
