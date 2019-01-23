@@ -203,7 +203,7 @@ export class SendView extends PureComponent<Props, State> {
     ) : (
       <RowComponent id='send-wrapper' justifyContent='space-between'>
         <FormWrapper>
-          {error && <TextComponent value={error} />}
+          {error && <TextComponent id='send-error-text' value={error} />}
           <InputLabelComponent value='From' />
           <SelectComponent
             onChange={this.handleChange('from')}

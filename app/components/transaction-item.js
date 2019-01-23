@@ -82,6 +82,7 @@ export const TransactionItemComponent = ({
     <ModalComponent
       renderTrigger={toggleVisibility => (
         <Wrapper
+          id={`transaction-item-${transactionId}`}
           alignItems='center'
           justifyContent='space-between'
           onClick={toggleVisibility}

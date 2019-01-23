@@ -23,6 +23,7 @@ type Props = {
   className?: string,
   size?: string | number,
   align?: string,
+  id?: string,
 };
 
 export const TextComponent = ({
@@ -32,8 +33,10 @@ export const TextComponent = ({
   className,
   size,
   align,
+  id,
 }: Props) => (
   <Text
+    id={id}
     className={className}
     isBold={isBold}
     color={color}
@@ -50,4 +53,5 @@ TextComponent.defaultProps = {
   color: theme.colors.text,
   size: theme.fontSize.regular,
   align: 'left',
+  id: '',
 };

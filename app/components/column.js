@@ -18,6 +18,7 @@ type Props = {
   className?: string,
   children: Node,
   width?: string,
+  id?: string,
 };
 
 export const ColumnComponent = ({ children, ...props }: Props) => (
@@ -29,4 +30,5 @@ ColumnComponent.defaultProps = {
   justifyContent: 'flex-start',
   className: '',
   width: '',
+  id: '',
 };
