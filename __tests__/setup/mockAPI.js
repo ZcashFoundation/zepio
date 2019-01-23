@@ -4,6 +4,8 @@ import 'babel-polyfill';
 
 import createTestServer from 'create-test-server';
 
+const transactions = [];
+
 createTestServer({
   httpPort: '18232',
 }).then(async (server) => {
@@ -37,8 +39,35 @@ createTestServer({
         });
       case 'listtransactions':
         return res.send({
-          result: [],
+          result: transactions,
         });
+      case 'z_sendmany':
+        // eslint-disable-next-line
+        const [from, [obj], minconf, fee] = req.body.params;
+
+        if (obj.address[0] === 'z' || obj.address[0] === 't') {
+          transactions.push({
+            account: '',
+            address: obj.address,
+            category: 'send',
+            amount: obj.amount,
+            vout: 0,
+            fee,
+            confirmations: 10,
+            blockhash: 20,
+            blockindex: 10,
+            txid: `operation-id-${transactions.length + 1}`,
+            time: Date.now(),
+            timereceived: Date.now(),
+            comment: '',
+            otheraccount: '',
+            size: 10,
+          });
+
+          return res.send({ result: 'operation-id-1' });
+        }
+
+        return res.status(500).send({ error: { message: 'Invalid address!' } });
       default:
         return null;
     }
