@@ -25,6 +25,20 @@ createTestServer({
         return res.send({
           result: { transparent: 2.5, private: 3.5, total: 6 },
         });
+      case 'z_listaddresses':
+        return res.send({
+          result: [
+            'zs1z7rejlpsa98s2rrrfkwmaxu53e4ue0ulcrw0h4x5g8jl04tak0d3mm47vdtahatqrlkngh9sly',
+          ],
+        });
+      case 'getaddressesbyaccount':
+        return res.send({
+          result: ['t3Pnbg7XjP7FGPBUuz75H65aczphHgkpoJW'],
+        });
+      case 'listtransactions':
+        return res.send({
+          result: [],
+        });
       default:
         return null;
     }
