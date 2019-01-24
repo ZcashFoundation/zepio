@@ -4,8 +4,6 @@ import styled from 'styled-components';
 
 import { TextComponent } from './text';
 import { RowComponent } from './row';
-import { DropdownComponent } from './dropdown';
-import MenuIcon from '../assets/images/menu_icon.svg';
 
 import formatNumber from '../utils/formatNumber';
 
@@ -47,40 +45,11 @@ const ShieldedValue = styled(Label)`
   color: ${props => props.theme.colors.activeItem};
 `;
 
-const SeeMoreButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  outline: none;
-  border-style: solid;
-  border-radius: 100%;
-  border-width: 1px;
-  border-color: ${props => (props.isOpen
-    ? props.theme.colors.activeItem
-    : props.theme.colors.inactiveItem)};
-  background-color: transparent;
-  padding: 5px;
-  cursor: pointer;
-  position: absolute;
-  right: 10px;
-  top: 10px;
-
-  &:hover {
-    border-color: ${props => props.theme.colors.activeItem};
-  }
-`;
-
-const SeeMoreIcon = styled.img`
-  width: 25px;
-  height: 25px;
-`;
-
 type Props = {
   total: number,
   shielded: number,
   transparent: number,
   zecPrice: number,
-  addresses: string[],
 };
 
 export const WalletSummaryComponent = ({
@@ -88,19 +57,12 @@ export const WalletSummaryComponent = ({
   shielded,
   transparent,
   zecPrice,
-  addresses,
 }: Props) => (
   <Wrapper>
-    <DropdownComponent
-      label='All Addresses'
-      renderTrigger={(toggleVisibility, isOpen) => (
-        <SeeMoreButton onClick={toggleVisibility} isOpen={isOpen}>
-          <SeeMoreIcon src={MenuIcon} alt='Menu Icon' />
-        </SeeMoreButton>
-      )}
-      options={addresses.map(addr => ({ label: addr, onClick: x => x }))}
+    <AllAddresses
+      value='ALL ADDRESSES'
+      isBold
     />
-    <AllAddresses value='ALL ADDRESSES' isBold />
     <ValueBox>
       <TextComponent
         size={theme.fontSize.medium * 2.5}
@@ -129,7 +91,11 @@ export const WalletSummaryComponent = ({
         />
       </ValueBox>
       <ValueBox>
-        <Label value='&#9679; TRANSPARENT' isBold size={theme.fontSize.small} />
+        <Label
+          value='&#9679; TRANSPARENT'
+          isBold
+          size={theme.fontSize.small}
+        />
         <TextComponent
           value={`ZEC ${formatNumber({ value: transparent })}`}
           isBold
