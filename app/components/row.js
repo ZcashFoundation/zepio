@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import type { Node } from 'react';
+import type { Node, ElementProps } from 'react';
 
 const Flex = styled.div`
   display: flex;
@@ -12,11 +12,11 @@ const Flex = styled.div`
 `;
 
 type Props = {
+  ...ElementProps<'div'>,
   alignItems?: string,
   justifyContent?: string,
   className?: string,
   children: Node,
-  id?: string,
 };
 
 export const RowComponent = ({ children, ...props }: Props) => (
@@ -27,5 +27,4 @@ RowComponent.defaultProps = {
   alignItems: 'flex-start',
   justifyContent: 'flex-start',
   className: '',
-  id: '',
 };
