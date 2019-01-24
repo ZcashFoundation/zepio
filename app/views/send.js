@@ -75,19 +75,6 @@ const AmountInput = styled(InputComponent)`
   padding-left: ${props => (props.isEmpty ? '15' : '50')}px;
 `;
 
-// const ShowFeeButton = styled.button`
-//   align-items: center;
-//   background: none;
-//   border: none;
-//   cursor: pointer;
-//   display: flex;
-//   width: 100%;
-//   color: ${props => props.theme.colors.text};
-//   outline: none;
-//   margin-bottom: 15px;
-//   margin-top: 15px;
-// `;
-
 const ShowFeeButton = styled.button`
   background: none;
   border: none;
@@ -210,6 +197,8 @@ type Props = {
   sendTransaction: SendTransactionInput => void,
   resetSendView: () => void,
   validateAddress: ({ address: string }) => void,
+  loadAddresses: () => void,
+  loadZECPrice: () => void,
 };
 
 type State = {
@@ -236,9 +225,11 @@ export class SendView extends PureComponent<Props, State> {
   state = initialState;
 
   componentDidMount() {
-    const { resetSendView } = this.props;
+    const { resetSendView, loadAddresses, loadZECPrice } = this.props;
 
     resetSendView();
+    loadAddresses();
+    loadZECPrice();
   }
 
   handleChange = (field: string) => (value: string) => {
@@ -340,7 +331,7 @@ export class SendView extends PureComponent<Props, State> {
     /* eslint-disable react/no-unused-prop-types */
     valueSent: string,
     valueSentInUsd: string,
-    toggle: () => void
+    toggle: () => void,
     /* eslint-enable react/no-unused-prop-types */
   }) => {
     // eslint-disable-next-line react/prop-types
