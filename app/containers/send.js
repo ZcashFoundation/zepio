@@ -20,6 +20,11 @@ import filterObjectNullKeys from '../utils/filterObjectNullKeys';
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
 
+import {
+  loadAddressesSuccess,
+  loadAddressesError,
+} from '../redux/modules/receive';
+
 export type SendTransactionInput = {
   from: string,
   to: string,
@@ -124,6 +129,21 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     }
 
     return dispatch(validateAddressError());
+  },
+  loadAddresses: async () => {
+    const [zAddressesErr, zAddresses] = await eres(rpc.z_listaddresses());
+
+    const [tAddressesErr, transparentAddresses] = await eres(
+      rpc.getaddressesbyaccount(''),
+    );
+
+    if (zAddressesErr || tAddressesErr) return dispatch(loadAddressesError({ error: 'Something went wrong!' }));
+
+    dispatch(
+      loadAddressesSuccess({
+        addresses: [...zAddresses, ...transparentAddresses],
+      }),
+    );
   },
 });
 
