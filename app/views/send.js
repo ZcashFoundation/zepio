@@ -202,7 +202,8 @@ const ValidateStatusIcon = styled.img`
   margin-right: 7px;
 `;
 
-type Props = SendState & {
+type Props = {
+  ...SendState,
   balance: number,
   zecPrice: number,
   addresses: string[],
@@ -284,10 +285,11 @@ export class SendView extends PureComponent<Props, State> {
     });
   };
 
-  showModal = (toggle: void => void) => () => {
+  showModal = (toggle: void => void) => {
     const {
       from, amount, to, fee,
     } = this.state;
+    // eslint-disable-next-line react/prop-types
     const { isToAddressValid } = this.props;
 
     if (!from || !amount || !to || !fee || !isToAddressValid) return;
@@ -335,10 +337,13 @@ export class SendView extends PureComponent<Props, State> {
     valueSentInUsd,
     toggle,
   }: {
+    /* eslint-disable react/no-unused-prop-types */
     valueSent: string,
     valueSentInUsd: string,
-    toggle: () => void,
+    toggle: () => void
+    /* eslint-enable react/no-unused-prop-types */
   }) => {
+    // eslint-disable-next-line react/prop-types
     const { operationId, isSending, error } = this.props;
     const { from, to } = this.state;
 
@@ -488,7 +493,10 @@ export class SendView extends PureComponent<Props, State> {
           </ShowFeeButton>
           {showFee && (
             <FeeWrapper>
-              <RowComponent alignItems='flex-end' justifyContent='space-between'>
+              <RowComponent
+                alignItems='flex-end'
+                justifyContent='space-between'
+              >
                 <ColumnComponent width='74%'>
                   <InputLabelComponent value='Fee' />
                   <InputComponent
@@ -540,7 +548,7 @@ export class SendView extends PureComponent<Props, State> {
                 label='Send'
                 variant='secondary'
                 focused
-                onClick={this.showModal(toggle)}
+                onClick={() => this.showModal(toggle)}
               />
             )}
             showButtons={!isSending && !error && !operationId}
