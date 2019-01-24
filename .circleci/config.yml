@@ -21,11 +21,8 @@ jobs:
           command: yarn e2e:serve
           background: true
       - run: yarn wait-on http://localhost:8080 && yarn wait-on http://localhost:18232
-      - run:
-          command: coproc ffmpeg -f x11grab -video_size 1024x768 -i :99 -codec:v libx264 -r 12 /tmp/e2e-record.mp4 & sleep 600 && echo 'q' >&"${COPROC[1]}"
-          background: true
       - run: export DISPLAY=:99
-      - run: xvfb-run --listen-tcp --server-num=99 --auth-file /tmp/xvfb.auth -s "-ac -screen 0 1024x768x24" yarn e2e:run
+      - run: xvfb-run --listen-tcp --server-num=99 --auth-file /tmp/xvfb.auth -s "-ac -screen 0 1024x768x24" yarn e2e:run & (coproc ffmpeg -f x11grab -video_size 1024x768 -i :99 -codec:v libx264 -r 12 /tmp/e2e-record.mp4 & sleep 600 && echo 'q' >&"${COPROC[1]}")
       - store_artifacts:
           path: /tmp/e2e-record.mp4
           destination: e2e-record.mp4
