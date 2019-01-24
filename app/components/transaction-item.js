@@ -23,7 +23,7 @@ const Wrapper = styled(RowComponent)`
   cursor: pointer;
 
   &:hover {
-    background-color: #101010;
+    background-color: #0a0a0a;
   }
 `;
 
@@ -37,6 +37,14 @@ const TransactionTypeLabel = styled(TextComponent)`
     ? props.theme.colors.transactionReceived
     : props.theme.colors.transactionSent)};
   text-transform: capitalize;
+`;
+
+const TransactionAddress = styled(TextComponent)`
+  color: #a7a7a7;
+
+  ${Wrapper}:hover & {
+    color: #fff;
+  }
 `;
 
 const TransactionTime = styled(TextComponent)`
@@ -101,7 +109,7 @@ export const TransactionItemComponent = ({
                 <TransactionTime value={transactionTime} />
               </TransactionColumn>
             </RowComponent>
-            <TextComponent value={transactionAddress} align='left' />
+            <TransactionAddress value={transactionAddress} />
           </RowComponent>
           <ColumnComponent alignItems='flex-end'>
             <TextComponent
