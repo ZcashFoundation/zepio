@@ -75,44 +75,42 @@ const AmountInput = styled(InputComponent)`
   padding-left: ${props => (props.isEmpty ? '15' : '50')}px;
 `;
 
+// const ShowFeeButton = styled.button`
+//   align-items: center;
+//   background: none;
+//   border: none;
+//   cursor: pointer;
+//   display: flex;
+//   width: 100%;
+//   color: ${props => props.theme.colors.text};
+//   outline: none;
+//   margin-bottom: 15px;
+//   margin-top: 15px;
+// `;
+
 const ShowFeeButton = styled.button`
-  align-items: center;
   background: none;
   border: none;
   cursor: pointer;
-  display: flex;
   width: 100%;
   color: ${props => props.theme.colors.text};
   outline: none;
-  margin-bottom: 15px;
-  margin-top: 15px;
-`;
-
-const SeeMoreButton = styled.button`
   display: flex;
   align-items: center;
-  justify-content: center;
-  outline: none;
-  border-style: solid;
-  border-radius: 100%;
-  border-width: 1px;
-  border-color: ${props => (props.isOpen
-    ? props.theme.colors.activeItem
-    : props.theme.colors.inactiveItem)};
-  background-color: transparent;
-  padding: 5px;
-  cursor: pointer;
-  margin-right: 10px;
-  margin-left: -2px;
+  margin-top: 30px;
+  opacity: 0.7;
 
   &:hover {
-    border-color: ${props => props.theme.colors.activeItem};
+    opacity: 1;
   }
 `;
 
 const SeeMoreIcon = styled.img`
   width: 25px;
   height: 25px;
+  border: 1px solid ${props => props.theme.colors.text};
+  border-radius: 100%;
+  margin-right: 11.5px;
 `;
 
 const FeeWrapper = styled.div`
@@ -202,31 +200,6 @@ const ValidateStatusIcon = styled.img`
   width: 13px;
   height: 13px;
   margin-right: 7px;
-`;
-
-const ShowFeeButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  color: ${props => props.theme.colors.text};
-  outline: none;
-  display: flex;
-  align-items: center;
-  margin-top: 30px;
-  opacity: 0.7;
-
-  &:hover {
-    opacity: 1;
-  }
-`;
-
-const SeeMoreIcon = styled.img`
-  width: 25px;
-  height: 25px;
-  border: 1px solid ${props => props.theme.colors.text};
-  border-radius: 100%;
-  margin-right: 11.5px;
 `;
 
 type Props = SendState & {
