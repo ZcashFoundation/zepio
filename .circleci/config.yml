@@ -1,0 +1,30 @@
+version: 2
+
+jobs:
+  test:
+    docker:
+      - image: electronuserland/builder:wine-chrome
+    steps:
+      - checkout
+      - run: apt-get -y update
+      - run: apt-get -y install libusb-1.0-0-dev graphicsmagick libudev-dev
+      - run: apt-get -y install libxtst6 libxss1 libgtk2.0-0 libnss3 libasound2 libgconf-2-4
+      - run: yarn install
+      - run:
+          name: Run Webpack
+          command: yarn dev
+          background: true
+      - run:
+          name: Run Mock RPC API
+          command: yarn e2e:serve
+          background: true
+      - run: yarn wait-on http://localhost:8080 && yarn wait-on http://localhost:18232
+      - run: yarn e2e:run
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
+          filters:
+            branches:
+              only: feature/e2e
