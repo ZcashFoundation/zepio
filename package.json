@@ -45,7 +45,7 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "concurrently": "^4.1.0",
-    "create-test-server": "https://github.com/georgelima/create-test-server",
+    "create-test-server": "georgelima/create-test-server",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.1",
     "docz": "0.13.4",
