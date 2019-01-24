@@ -32,6 +32,25 @@ const SendWrapper = styled(ColumnComponent)`
   width: 25%;
 `;
 
+const AmountWrapper = styled.div`
+  width: 100%;
+  &:before {
+    content: 'ZEC';
+    font-family: ${props => props.theme.fontFamily};
+    position: absolute;
+    margin-top: 15px;
+    margin-left: 15px;
+    display: block;
+    transition: all 0.05s ease-in-out;
+    opacity: ${props => (props.isEmpty ? '0' : '1')};
+    color: #fff;
+  }
+`;
+
+const AmountInput = styled(InputComponent)`
+  padding-left: ${props => (props.isEmpty ? '15' : '50')}px;
+`;
+
 const ShowFeeButton = styled.button`
   align-items: center;
   background: none;
@@ -142,7 +161,7 @@ type State = {
 const initialState = {
   showFee: false,
   from: '',
-  amount: '0',
+  amount: '',
   to: '',
   feeType: FEES.LOW,
   fee: FEES.LOW,
@@ -158,15 +177,7 @@ export class SendView extends PureComponent<Props, State> {
   }
 
   handleChange = (field: string) => (value: string) => {
-    if (field === 'amount') {
-      if (value !== '') {
-        this.setState(() => ({
-          [field]: value,
-        }));
-      }
-    } else {
-      this.setState(() => ({ [field]: value }));
-    }
+    this.setState(() => ({ [field]: value }));
   };
 
   handleChangeFeeType = (value: string) => {
@@ -231,13 +242,17 @@ export class SendView extends PureComponent<Props, State> {
       feeType,
     } = this.state;
 
+    const isEmpty = amount === '';
+
+    const fixedAmount = isEmpty ? '0.00' : amount;
+
     const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
     const zecBalanceInUsd = formatNumber({
       value: new BigNumber(balance).times(zecPrice).toNumber(),
       append: 'USD $',
     });
     const valueSent = formatNumber({
-      value: new BigNumber(amount).toNumber(),
+      value: new BigNumber(fixedAmount).toFormat(2),
       append: 'ZEC ',
     });
     const valueSentInUsd = formatNumber({
@@ -267,13 +282,16 @@ export class SendView extends PureComponent<Props, State> {
             options={addresses.map(addr => ({ value: addr, label: addr }))}
           />
           <InputLabelComponent value='Amount' />
-          <InputComponent
-            type='number'
-            onChange={this.handleChange('amount')}
-            value={String(amount)}
-            placeholder='ZEC 0.0'
-            step={0.01}
-          />
+          <AmountWrapper isEmpty={isEmpty}>
+            <AmountInput
+              isEmpty={isEmpty}
+              type='number'
+              onChange={this.handleChange('amount')}
+              value={String(amount)}
+              placeholder='ZEC 0.0'
+              min={0.01}
+            />
+          </AmountWrapper>
           <InputLabelComponent value='To' />
           <InputComponent
             onChange={this.handleChange('to')}
