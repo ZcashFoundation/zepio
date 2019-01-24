@@ -1,8 +1,8 @@
 // @flow
 
 export default {
-  LOW: 1,
-  MEDIUM: 5,
-  HIGH: 9,
+  LOW: 0.001,
+  MEDIUM: 0.005,
+  HIGH: 0.009,
   CUSTOM: 'custom',
 };

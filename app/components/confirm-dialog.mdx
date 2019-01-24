@@ -24,7 +24,7 @@ import { DoczWrapper } from '../theme.js'
         onConfirm={() => alert('Confirm')}
         renderTrigger={toggle => <button onClick={toggle}> Open! </button>}
       >
-        <div>Confirm content</div>
+        {toggle => <div>Confirm content</div>}
       </ConfirmDialogComponent>
     )}
   </DoczWrapper>

@@ -43,6 +43,7 @@ const StatusPillLabel = styled(TextComponent)`
   text-transform: uppercase;
   font-size: 10px;
   padding-top: 1px;
+  user-select: none;
 `;
 
 type Props = {};
@@ -51,17 +52,17 @@ type State = {
   type: string,
   icon: string,
   progress: number,
-  isSynching: boolean,
+  isSyncing: boolean,
 };
 
 export class StatusPill extends Component<Props, State> {
   timer: ?IntervalID = null;
 
   state = {
-    type: 'synching',
+    type: 'syncing',
     icon: syncIcon,
     progress: 0,
-    isSynching: true,
+    isSyncing: true,
   };
 
   componentDidMount() {
@@ -88,7 +89,7 @@ export class StatusPill extends Component<Props, State> {
         ? {
           type: 'ready',
           icon: readyIcon,
-          isSynching: false,
+          isSyncing: false,
         }
         : {}),
     });
@@ -100,13 +101,13 @@ export class StatusPill extends Component<Props, State> {
 
   render() {
     const {
-      type, icon, progress, isSynching,
+      type, icon, progress, isSyncing,
     } = this.state;
-    const showPercent = isSynching ? `(${progress.toFixed(2)}%)` : '';
+    const showPercent = isSyncing ? `(${progress.toFixed(2)}%)` : '';
 
     return (
       <Wrapper id='status-pill'>
-        <Icon src={icon} animated={isSynching} />
+        <Icon src={icon} animated={isSyncing} />
         <StatusPillLabel value={`${type} ${showPercent}`} />
       </Wrapper>
     );

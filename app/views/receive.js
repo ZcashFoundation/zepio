@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 import { InputLabelComponent } from '../components/input-label';
@@ -8,6 +8,7 @@ import { WalletAddress } from '../components/wallet-address';
 
 type Props = {
   addresses: Array<string>,
+  loadAddresses: () => void,
 };
 
 const Wrapper = styled.div`
@@ -19,21 +20,31 @@ const Row = styled(RowComponent)`
 `;
 
 const Label = styled(InputLabelComponent)`
-  margin: 0;
+  margin-left: 0;
+  margin-right: 0;
   margin-bottom: 10px;
+  margin-top: 10px;
 `;
 
-export const ReceiveView = ({ addresses }: Props) => (
-  <Wrapper>
-    <Label value='Addresses: ' />
-    {(addresses || []).map(address => (
-      <Row
-        key={address}
-        alignItems='center'
-        justifyContent='space-between'
-      >
-        <WalletAddress address={address} />
-      </Row>
-    ))}
-  </Wrapper>
-);
+export class ReceiveView extends PureComponent<Props> {
+  componentDidMount() {
+    const { loadAddresses } = this.props;
+
+    loadAddresses();
+  }
+
+  render() {
+    const { addresses } = this.props;
+
+    return (
+      <Wrapper>
+        <Label value='Addresses: ' />
+        {(addresses || []).map(address => (
+          <Row key={address} alignItems='center' justifyContent='space-between'>
+            <WalletAddress address={address} />
+          </Row>
+        ))}
+      </Wrapper>
+    );
+  }
+}

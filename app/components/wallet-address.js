@@ -34,6 +34,21 @@ const Input = styled.input`
   }
 `;
 
+const Btn = styled(Button)`
+  border-width: 1px;
+  font-weight: ${props => props.theme.fontWeight.light};
+  border-color: ${props => (props.isVisible
+    ? props.theme.colors.primary : props.theme.colors.buttonBorderColor
+  )};
+  padding: 6px 10px;
+  width: 50%;
+
+  img {
+    height: 12px;
+    width: 16px;
+  }
+`;
+
 const QRCodeWrapper = styled.div`
   align-items: center;
   display: flex;
@@ -83,11 +98,12 @@ export class WalletAddress extends Component<Props, State> {
             onChange={() => {}}
             onFocus={event => event.currentTarget.select()}
           />
-          <Button
+          <Btn
             icon={eyeIcon}
             label={`${isVisible ? 'Hide' : 'Show'} full address and QR Code`}
             onClick={toggleVisibility}
             variant='secondary'
+            isVisible={isVisible}
           />
         </AddressWrapper>
         {isVisible
