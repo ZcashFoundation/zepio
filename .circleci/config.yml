@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run: apt-get -y update
       - run: apt-get -y install libusb-1.0-0-dev graphicsmagick libudev-dev
-      - run: apt-get -y install libxtst6 libxss1 libgtk2.0-0 libnss3 libasound2 libgconf-2-4 ffmpeg frei0r-plugins
+      - run: apt-get -y install xvfb libxtst6 libxss1 libgtk2.0-0 libnss3 libasound2 libgconf-2-4 ffmpeg frei0r-plugins
       # TODO: Just a quick try
       - run: rm yarn.lock
       - run: yarn install
@@ -21,10 +21,16 @@ jobs:
           command: yarn e2e:serve
           background: true
       - run: yarn wait-on http://localhost:8080 && yarn wait-on http://localhost:18232
+      - run:
+          command: Xvfb -ac :99 -screen 0 1280x1024x24
+          background: true
+      - run:
+          command: coproc ffmpeg -f x11grab -video_size 1024x768 -i :99 -codec:v libx264 -r 12 /tmp/e2e-record.mp4 & sleep 600 && echo 'q' >&"${COPROC[1]}"
+          background: true
       - run: export DISPLAY=:99
-      - run: xvfb-run --listen-tcp --server-num=99 --auth-file /tmp/xvfb.auth -s "-ac -screen 0 1024x768x24" yarn e2e:run & ffmpeg -f x11grab -video_size 1024x768 -i :99 -codec:v libx264 -r 12 video.mp4
+      - run: yarn e2e:run
       - store_artifacts:
-          path: ./e2e-record.mp4
+          path: /tmp/e2e-record.mp4
           destination: e2e-record.mp4
 workflows:
   version: 2
