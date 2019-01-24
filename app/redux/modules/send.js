@@ -7,6 +7,7 @@ export const SEND_TRANSACTION_ERROR = 'SEND_TRANSACTION_ERROR';
 export const RESET_SEND_TRANSACTION = 'RESET_SEND_TRANSACTION';
 export const VALIDATE_ADDRESS_SUCCESS = 'VALIDATE_ADDRESS_SUCCESS';
 export const VALIDATE_ADDRESS_ERROR = 'VALIDATE_ADDRESS_SUCCESS';
+export const LOAD_ZEC_PRICE = 'LOAD_ZEC_PRICE';
 
 export const sendTransaction = () => ({
   type: SEND_TRANSACTION,
@@ -48,11 +49,19 @@ export const validateAddressError = () => ({
   payload: {},
 });
 
+export const loadZECPrice = ({ value }: { value: number }) => ({
+  type: LOAD_ZEC_PRICE,
+  payload: {
+    value,
+  },
+});
+
 export type State = {
   isSending: boolean,
   isToAddressValid: boolean,
   error: string | null,
   operationId: string | null,
+  zecPrice: number,
 };
 
 const initialState: State = {
@@ -60,6 +69,7 @@ const initialState: State = {
   error: null,
   operationId: null,
   isToAddressValid: false,
+  zecPrice: 0,
 };
 
 export default (state: State = initialState, action: Action): State => {
@@ -95,6 +105,8 @@ export default (state: State = initialState, action: Action): State => {
         ...state,
         isToAddressValid: false,
       };
+    case LOAD_ZEC_PRICE:
+      return { ...state, zecPrice: action.payload.value };
     case RESET_SEND_TRANSACTION:
       return initialState;
     default:
