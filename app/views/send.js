@@ -1,7 +1,8 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { BigNumber } from 'bignumber.js';
+import { Transition, animated } from 'react-spring';
 
 import FEES from '../constants/fees';
 
@@ -75,19 +76,6 @@ const AmountInput = styled(InputComponent)`
   padding-left: ${props => (props.isEmpty ? '15' : '50')}px;
 `;
 
-// const ShowFeeButton = styled.button`
-//   align-items: center;
-//   background: none;
-//   border: none;
-//   cursor: pointer;
-//   display: flex;
-//   width: 100%;
-//   color: ${props => props.theme.colors.text};
-//   outline: none;
-//   margin-bottom: 15px;
-//   margin-top: 15px;
-// `;
-
 const ShowFeeButton = styled.button`
   background: none;
   border: none;
@@ -97,7 +85,7 @@ const ShowFeeButton = styled.button`
   outline: none;
   display: flex;
   align-items: center;
-  margin-top: 30px;
+  margin: 30px 0;
   opacity: 0.7;
 
   &:hover {
@@ -115,7 +103,7 @@ const SeeMoreIcon = styled.img`
 
 const FeeWrapper = styled.div`
   background-color: #000;
-  border-radius: 6px;
+  border-radius: 4px;
   padding: 13px 19px;
   margin-bottom: 20px;
 `;
@@ -141,6 +129,7 @@ const InfoCardUSD = styled(TextComponent)`
 `;
 
 const FormButton = styled(Button)`
+  width: 100%;
   margin: 10px 0;
   border-color: ${props => (props.focused
     ? props.theme.colors.activeItem
@@ -202,11 +191,27 @@ const ValidateStatusIcon = styled.img`
   margin-right: 7px;
 `;
 
+const RevealsMain = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  & > div {
+    top: 0;
+    right: 0;
+    left: 0;
+  }
+`;
+
 type Props = SendState & {
   balance: number,
   zecPrice: number,
   addresses: string[],
   sendTransaction: SendTransactionInput => void,
+  loadAddresses: () => void,
   resetSendView: () => void,
   validateAddress: ({ address: string }) => void,
 };
@@ -235,7 +240,9 @@ export class SendView extends PureComponent<Props, State> {
   state = initialState;
 
   componentDidMount() {
-    const { resetSendView } = this.props;
+    const { resetSendView, addresses, loadAddresses } = this.props;
+
+    if (addresses.length === 0) loadAddresses();
 
     resetSendView();
   }
@@ -344,16 +351,16 @@ export class SendView extends PureComponent<Props, State> {
 
     if (isSending) {
       return (
-        <>
+        <Fragment>
           <Loader src={LoadingIcon} />
           <TextComponent value='Processing transaction...' />
-        </>
+        </Fragment>
       );
     }
 
     if (operationId) {
       return (
-        <>
+        <Fragment>
           <TextComponent
             value={`Transaction ID: ${operationId}`}
             align='center'
@@ -367,7 +374,7 @@ export class SendView extends PureComponent<Props, State> {
           >
             Send again!
           </button>
-        </>
+        </Fragment>
       );
     }
 
@@ -478,42 +485,65 @@ export class SendView extends PureComponent<Props, State> {
             placeholder='Enter a text here'
           />
           <ShowFeeButton
-            onClick={() => this.setState(state => ({ showFee: !state.showFee }))
-            }
+            onClick={() => this.setState(state => ({
+              showFee: !state.showFee,
+            }))}
           >
-            <SeeMoreIcon src={MenuIcon} alt='Show more icon' />
+            <SeeMoreIcon
+              src={MenuIcon}
+              alt='Show more icon'
+            />
             <TextComponent
               value={`${showFee ? 'Hide' : 'Show'} Additional Options`}
             />
           </ShowFeeButton>
-          {showFee && (
-            <FeeWrapper>
-              <RowComponent alignItems='flex-end' justifyContent='space-between'>
-                <ColumnComponent width='74%'>
-                  <InputLabelComponent value='Fee' />
-                  <InputComponent
-                    type='number'
-                    onChange={this.handleChange('fee')}
-                    value={String(fee)}
-                    disabled={feeType !== FEES.CUSTOM}
-                    bgColor={theme.colors.blackTwo}
-                  />
-                </ColumnComponent>
-                <ColumnComponent width='25%'>
-                  <SelectComponent
-                    onChange={this.handleChangeFeeType}
-                    value={String(feeType)}
-                    options={Object.keys(FEES).map(cur => ({
-                      label: cur.toLowerCase(),
-                      value: String(FEES[cur]),
-                    }))}
-                    placement='top'
-                    bgColor={theme.colors.blackTwo}
-                  />
-                </ColumnComponent>
-              </RowComponent>
-            </FeeWrapper>
-          )}
+          <RevealsMain>
+            <Transition
+              native
+              items={showFee}
+              leave={{ height: 0 }}
+              from={{
+                position: 'absolute',
+                overflow: 'hidden',
+                height: 0,
+              }}
+              enter={[{
+                height: 'auto',
+                width: 'auto',
+              }]}
+            >
+              {show => show && (props => (
+                <animated.div style={props}>
+                  <FeeWrapper>
+                    <RowComponent alignItems='flex-end' justifyContent='space-between'>
+                      <ColumnComponent width='74%'>
+                        <InputLabelComponent value='Fee' />
+                        <InputComponent
+                          type='number'
+                          onChange={this.handleChange('fee')}
+                          value={String(fee)}
+                          disabled={feeType !== FEES.CUSTOM}
+                          bgColor={theme.colors.blackTwo}
+                        />
+                      </ColumnComponent>
+                      <ColumnComponent width='25%'>
+                        <SelectComponent
+                          placement='top'
+                          value={String(feeType)}
+                          bgColor={theme.colors.blackTwo}
+                          onChange={this.handleChangeFeeType}
+                          options={Object.keys(FEES).map(cur => ({
+                            label: cur.toLowerCase(),
+                            value: String(FEES[cur]),
+                          }))}
+                        />
+                      </ColumnComponent>
+                    </RowComponent>
+                  </FeeWrapper>
+                </animated.div>
+              ))}
+            </Transition>
+          </RevealsMain>
           {feeType === FEES.CUSTOM && (
             <TextComponent value='Custom fees may compromise your privacy since fees are transparent' />
           )}
@@ -540,6 +570,7 @@ export class SendView extends PureComponent<Props, State> {
                 label='Send'
                 variant='secondary'
                 focused
+                isFluid
                 onClick={this.showModal(toggle)}
               />
             )}
@@ -548,7 +579,11 @@ export class SendView extends PureComponent<Props, State> {
           >
             {toggle => (
               <ModalContent>
-                {this.renderModalContent({ valueSent, valueSentInUsd, toggle })}
+                {this.renderModalContent({
+                  valueSent,
+                  valueSentInUsd,
+                  toggle,
+                })}
               </ModalContent>
             )}
           </ConfirmDialogComponent>

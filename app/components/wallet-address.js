@@ -1,6 +1,7 @@
 // @flow
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import { Transition, animated } from 'react-spring';
 
 import { ColumnComponent } from './column';
 import { Button } from './button';
@@ -36,16 +37,16 @@ const Input = styled.input`
 
 const Btn = styled(Button)`
   border-width: 1px;
-  font-weight: ${props => props.theme.fontWeight.light};
+  font-weight: ${props => props.theme.fontWeight.regular};
   border-color: ${props => (props.isVisible
     ? props.theme.colors.primary : props.theme.colors.buttonBorderColor
   )};
-  padding: 6px 10px;
-  width: 50%;
+  padding: 8px 10px;
+  min-width: 260px;
 
   img {
     height: 12px;
-    width: 16px;
+    width: 20px;
   }
 `;
 
@@ -59,36 +60,50 @@ const QRCodeWrapper = styled.div`
   width: 100%;
 `;
 
+const RevealsMain = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  & > div {
+    top: 0;
+    right: 0;
+    left: 0;
+  }
+`;
+
 type Props = {
   address: string,
+  isVisible?: boolean,
 };
 
 type State = {
   isVisible: boolean,
 };
 
-export class WalletAddress extends Component<Props, State> {
-  state = {
+export class WalletAddress extends PureComponent<Props, State> {
+  static defaultProps = {
     isVisible: false,
-  };
+  }
 
-  show = () => {
-    this.setState(
-      () => ({ isVisible: true }),
-    );
-  };
+  constructor(props: Props) {
+    super(props);
 
-  hide = () => {
-    this.setState(
-      () => ({ isVisible: false }),
-    );
-  };
+    this.state = { isVisible: props.isVisible };
+  }
 
+  show = () => this.setState(() => ({ isVisible: true }));
+
+  hide = () => this.setState(() => ({ isVisible: false }));
 
   render() {
     const { address } = this.props;
     const { isVisible } = this.state;
     const toggleVisibility = isVisible ? this.hide : this.show;
+    const buttonLabel = `${isVisible ? 'Hide' : 'Show'} details and QR Code`;
 
     return (
       <ColumnComponent width='100%'>
@@ -100,19 +115,34 @@ export class WalletAddress extends Component<Props, State> {
           />
           <Btn
             icon={eyeIcon}
-            label={`${isVisible ? 'Hide' : 'Show'} full address and QR Code`}
+            label={buttonLabel}
             onClick={toggleVisibility}
             variant='secondary'
             isVisible={isVisible}
           />
         </AddressWrapper>
-        {isVisible
-          ? (
-            <QRCodeWrapper>
-              <QRCode value={address} />
-            </QRCodeWrapper>
-          )
-          : null}
+        <RevealsMain>
+          <Transition
+            native
+            items={isVisible}
+            enter={[{ height: 'auto' }]}
+            leave={{ height: 0 }}
+            from={{
+              // TODO: fix this
+              // position: 'absolute',
+              // overflow: 'hidden',
+              // height: 0,
+            }}
+          >
+            {show => show && (props => (
+              <animated.div style={props}>
+                <QRCodeWrapper>
+                  <QRCode value={address} />
+                </QRCodeWrapper>
+              </animated.div>
+            ))}
+          </Transition>
+        </RevealsMain>
       </ColumnComponent>
     );
   }
