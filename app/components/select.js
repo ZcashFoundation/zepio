@@ -6,13 +6,16 @@ import { TextComponent } from './text';
 import ChevronUp from '../assets/images/chevron-up.svg';
 import ChevronDown from '../assets/images/chevron-down.svg';
 
+import theme from '../theme';
+
+/* eslint-disable max-len */
 const SelectWrapper = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
   border-radius: ${props => props.theme.boxBorderRadius};
   border: none;
-  background-color: ${props => props.theme.colors.inputBackground};
+  background-color: ${props => props.bgColor || props.theme.colors.inputBackground};
   color: ${props => props.theme.colors.text};
   width: 100%;
   outline: none;
@@ -25,6 +28,7 @@ const SelectWrapper = styled.div`
       props.placement
     }-right-radius: 0;`}
 `;
+/* eslint-enable max-len */
 
 const ValueWrapper = styled.div`
   width: 95%;
@@ -51,11 +55,8 @@ const SelectMenuButton = styled.button`
   padding: 3px 7px;
   outline: none;
   background-color: transparent;
-  border: 1px solid ${props => props.theme.colors.text};
+  border: 1px solid ${props => (props.isOpen ? props.theme.colors.primary : '#29292D')};
   border-radius: 100%;
-  box-shadow: ${props => `0px 0px 10px 0px ${
-    props.theme.colors.selectButtonShadow
-  }, 0px 0px 10px 0px ${props.theme.colors.selectButtonShadow} inset`};
 `;
 /* eslint-enable max-len */
 
@@ -69,7 +70,7 @@ const OptionsWrapper = styled.div`
   flex-direction: column;
   position: absolute;
   width: 100%;
-  ${props => `${props.placement}: ${`-${props.optionsAmount * 60}px`}`};
+  ${props => `${props.placement}: ${`-${props.optionsAmount * 62}px`}`};
   overflow-y: auto;
 `;
 
@@ -77,7 +78,8 @@ const Option = styled.button`
   border: none;
   background: none;
   height: 60px;
-  background-color: ${props => props.theme.colors.inputBackground};
+  background-color: ${
+  props => props.bgColor || props.theme.colors.inputBackground};
   cursor: pointer;
   z-index: 99;
   text-transform: capitalize;
@@ -93,6 +95,7 @@ type Props = {
   placeholder?: string,
   onChange: string => void,
   placement?: 'top' | 'bottom',
+  bgColor?: string,
 };
 type State = {
   isOpen: boolean,
@@ -106,6 +109,7 @@ export class SelectComponent extends PureComponent<Props, State> {
   static defaultProps = {
     placeholder: '',
     placement: 'bottom',
+    bgColor: theme.colors.inputBackground,
   };
 
   onSelect = (value: string) => {
@@ -130,7 +134,7 @@ export class SelectComponent extends PureComponent<Props, State> {
     const { placement } = this.props;
     const { isOpen } = this.state;
 
-    if (placement === 'bottom') {
+    if (placement === 'top') {
       return isOpen ? ChevronUp : ChevronDown;
     }
 
@@ -139,7 +143,7 @@ export class SelectComponent extends PureComponent<Props, State> {
 
   render() {
     const {
-      value, options, placeholder, placement,
+      value, options, placeholder, placement, bgColor,
     } = this.props;
     const { isOpen } = this.state;
 
@@ -148,12 +152,13 @@ export class SelectComponent extends PureComponent<Props, State> {
         isOpen={isOpen}
         placement={placement}
         onClick={() => this.setState(() => ({ isOpen: !isOpen }))}
+        bgColor={bgColor}
       >
         <ValueWrapper hasValue={Boolean(value)}>
           {this.getSelectedLabel(value) || placeholder}
         </ValueWrapper>
         <SelectMenuButtonWrapper>
-          <SelectMenuButton>
+          <SelectMenuButton isOpen={isOpen}>
             <Icon src={this.getSelectIcon()} />
           </SelectMenuButton>
         </SelectMenuButtonWrapper>
@@ -167,6 +172,7 @@ export class SelectComponent extends PureComponent<Props, State> {
               <Option
                 key={label + optionValue}
                 onClick={() => this.onSelect(optionValue)}
+                bgColor={bgColor}
               >
                 <TextComponent value={label} />
               </Option>

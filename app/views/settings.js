@@ -47,6 +47,22 @@ const ClipboardButton = styled(Clipboard)`
   margin-left: 5px;
 `;
 
+const SettingWrapper = styled.div`
+  margin-bottom: 45px;
+  min-width: 200px;
+  width: 37%;
+`;
+
+const SettingTitle = styled(TextComponent)`
+  font-size: ${props => `${props.theme.fontSize.regular}em`};
+  font-weight: ${props => props.theme.fontWeight.bold};
+`;
+
+const SettingContent = styled(TextComponent)`
+  margin-bottom: 20px;
+  margin-top: 10px;
+`;
+
 type Key = {
   zAddress: string,
   key: string,
@@ -198,94 +214,117 @@ export class SettingsView extends PureComponent<Props, State> {
         <ConfirmDialogComponent
           title='Export view keys'
           renderTrigger={toggleVisibility => (
-            <Btn label='Export view keys' onClick={toggleVisibility} />
+            <SettingWrapper>
+              <SettingTitle value='Export view keys' />
+              <SettingContent value='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.' />
+              <Btn label='Export view keys' onClick={toggleVisibility} />
+            </SettingWrapper>
           )}
           onConfirm={this.exportViewKeys}
           showButtons={!successExportViewKeys}
           width={750}
         >
-          <ModalContent>
-            {successExportViewKeys ? (
-              viewKeys.map(({ zAddress, key }) => (
-                <>
-                  <InputLabelComponent value={zAddress} />
-                  <RowComponent alignItems='center'>
-                    <InputComponent
-                      value={key}
-                      onFocus={(event) => {
-                        event.currentTarget.select();
-                      }}
-                    />
-                    <ClipboardButton text={key} />
-                  </RowComponent>
-                </>
-              ))
-            ) : (
-              <TextComponent value='Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.' />
-            )}
-          </ModalContent>
+          {() => (
+            <ModalContent>
+              {successExportViewKeys ? (
+                viewKeys.map(({ zAddress, key }) => (
+                  <>
+                    <InputLabelComponent value={zAddress} />
+                    <RowComponent alignItems='center'>
+                      <InputComponent
+                        value={key}
+                        onFocus={(event) => {
+                          event.currentTarget.select();
+                        }}
+                      />
+                      <ClipboardButton text={key} />
+                    </RowComponent>
+                  </>
+                ))
+              ) : (
+                <TextComponent value='Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.' />
+              )}
+            </ModalContent>
+          )}
         </ConfirmDialogComponent>
 
         <ConfirmDialogComponent
           title='Export private keys'
           renderTrigger={toggleVisibility => (
-            <Btn label='Export private keys' onClick={toggleVisibility} />
+            <SettingWrapper>
+              <SettingTitle value='Export private keys' />
+              <SettingContent value='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.' />
+              <Btn label='Export private keys' onClick={toggleVisibility} />
+            </SettingWrapper>
           )}
           onConfirm={this.exportPrivateKeys}
           showButtons={!successExportPrivateKeys}
           width={750}
         >
-          <ModalContent>
-            {successExportPrivateKeys ? (
-              privateKeys.map(({ zAddress, key }) => (
-                <>
-                  <InputLabelComponent value={zAddress} />
-                  <RowComponent alignItems='center'>
-                    <InputComponent
-                      value={key}
-                      onFocus={(event) => {
-                        event.currentTarget.select();
-                      }}
-                    />
-                    <ClipboardButton text={key} />
-                  </RowComponent>
-                </>
-              ))
-            ) : (
-              <TextComponent value='Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.' />
-            )}
-          </ModalContent>
+          {() => (
+            <ModalContent>
+              {successExportPrivateKeys ? (
+                privateKeys.map(({ zAddress, key }) => (
+                  <>
+                    <InputLabelComponent value={zAddress} />
+                    <RowComponent alignItems='center'>
+                      <InputComponent
+                        value={key}
+                        onFocus={(event) => {
+                          event.currentTarget.select();
+                        }}
+                      />
+                      <ClipboardButton text={key} />
+                    </RowComponent>
+                  </>
+                ))
+              ) : (
+                <TextComponent value='Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.' />
+              )}
+            </ModalContent>
+          )}
         </ConfirmDialogComponent>
 
         <ConfirmDialogComponent
           title='Import private keys'
           renderTrigger={toggleVisibility => (
-            <Btn label='Import private keys' onClick={toggleVisibility} />
+            <SettingWrapper>
+              <SettingTitle value='Import private keys' />
+              <SettingContent value='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.' />
+              <Btn label='Import private keys' onClick={toggleVisibility} />
+            </SettingWrapper>
           )}
           onConfirm={this.importPrivateKeys}
           showButtons={!successImportPrivateKeys}
           width={900}
           isLoading={isLoading}
         >
-          <ModalContent>
-            <InputLabelComponent value='Please paste your private keys here, one per line. The keys will be imported into your zcashd node' />
-            <InputComponent
-              value={importedPrivateKeys}
-              onChange={value => this.setState({ importedPrivateKeys: value })}
-              inputType='textarea'
-              rows={10}
-            />
-            {successImportPrivateKeys && (
-              <TextComponent
-                value='Private keys imported in your node'
-                align='center'
+          {() => (
+            <ModalContent>
+              <InputLabelComponent value='Please paste your private keys here, one per line. The keys will be imported into your zcashd node' />
+              <InputComponent
+                value={importedPrivateKeys}
+                onChange={value => this.setState({ importedPrivateKeys: value })
+                }
+                inputType='textarea'
+                rows={10}
               />
-            )}
-            {error && <TextComponent value={error} align='center' />}
-          </ModalContent>
+              {successImportPrivateKeys && (
+                <TextComponent
+                  value='Private keys imported in your node'
+                  align='center'
+                />
+              )}
+              {error && <TextComponent value={error} align='center' />}
+            </ModalContent>
+          )}
         </ConfirmDialogComponent>
 
-        <Btn label='Backup wallet.dat' onClick={this.backupWalletDat} />
+        <SettingWrapper>
+          <SettingTitle value='Backup Wallet' />
+          <SettingContent value='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.' />
+          <Btn label='Backup wallet.dat' onClick={this.backupWalletDat} />
+        </SettingWrapper>
       </Wrapper>
     );
   };

@@ -51,7 +51,7 @@ export type State = {
   error: string | null,
   isLoading: boolean,
   zecPrice: number,
-  addresses: [],
+  addresses: string[],
   transactions: TransactionsList,
 };
 

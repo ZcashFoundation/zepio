@@ -9,6 +9,7 @@ import transactions from './transactions';
 import send from './send';
 import receive from './receive';
 
+// $FlowFixMe
 export const createRootReducer = (history: RouterHistory) => combineReducers({
   walletSummary: wallet,
   transactions,

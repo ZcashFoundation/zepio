@@ -20,8 +20,10 @@ const Row = styled(RowComponent)`
 `;
 
 const Label = styled(InputLabelComponent)`
-  margin: 0;
+  margin-left: 0;
+  margin-right: 0;
   margin-bottom: 10px;
+  margin-top: 10px;
 `;
 
 export class ReceiveView extends PureComponent<Props> {
