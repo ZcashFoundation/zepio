@@ -113,6 +113,7 @@
     "react-popover": "^0.5.10",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "react-spring": "^7.2.10",
     "redux": "^4.0.1",
     "redux-thunk": "^2.2.0",
     "styled-components": "^4.1.1",
