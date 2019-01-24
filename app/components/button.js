@@ -22,7 +22,6 @@ const DefaultButton = styled.button`
   border-radius: 100px;
   transition: background-color 0.1s
     ${props => props.theme.colors.transitionEase};
-  width: 100%;
 `;
 
 const Primary = styled(DefaultButton)`
