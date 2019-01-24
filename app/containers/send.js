@@ -127,6 +127,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
 });
 
+// $FlowFixMe
 export const SendContainer = connect(
   mapStateToProps,
   mapDispatchToProps,

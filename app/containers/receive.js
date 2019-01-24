@@ -9,4 +9,5 @@ const mapStateToProps = ({ walletSummary }: AppState) => ({
   addresses: walletSummary.addresses,
 });
 
+// $FlowFixMe
 export const ReceiveContainer = connect(mapStateToProps)(ReceiveView);

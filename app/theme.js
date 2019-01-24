@@ -8,10 +8,12 @@ import { normalize } from 'polished'; // eslint-disable-line
 import { DARK } from './constants/themes';
 
 const darkOne = '#F4B728';
+const blackTwo = '#171717';
 const lightOne = '#ffffff';
 const brandOne = '#000';
 // const brandTwo = '#3B3B3F';
 const brandThree = '#5d5d65';
+const buttonBorderColor = '#3e3c42';
 const activeItem = '#F4B728';
 const text = '#FFF';
 const cardBackgroundColor = '#000';
@@ -72,6 +74,8 @@ const appTheme = {
     transactionsDetailsLabel,
     statusPillLabel,
     modalItemLabel: transactionsDate,
+    blackTwo,
+    buttonBorderColor,
   },
   sidebarWidth: '180px',
   headerHeight: '60px',

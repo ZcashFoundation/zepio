@@ -66,6 +66,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
 });
 
+// $FlowFixMe
 export const TransactionsContainer = connect(
   mapStateToProps,
   mapDispatchToProps,

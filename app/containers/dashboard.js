@@ -105,6 +105,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
 });
 
+// $FlowFixMe
 export const DashboardContainer = connect(
   mapStateToProps,
   mapDispatchToProps,

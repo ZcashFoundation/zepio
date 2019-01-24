@@ -1,12 +1,14 @@
 // @flow
 import React, { type Element } from 'react';
-
 import styled from 'styled-components';
+
+import theme from '../theme';
 
 const getDefaultStyles = t => styled[t]`
   border-radius: ${props => props.theme.boxBorderRadius};
   border: none;
-  background-color: ${props => props.theme.colors.inputBackground};
+  background-color: ${
+  props => props.bgColor || props.theme.colors.inputBackground};
   color: ${props => props.theme.colors.text};
   padding: 15px;
   padding-right: ${props => (props.withRightElement ? '85px' : '15px')};
@@ -42,10 +44,12 @@ type Props = {
   type?: string,
   step?: number,
   renderRight?: () => Element<*> | null,
+  bgColor?: string,
 };
 
 export const InputComponent = ({
   inputType,
+  bgColor,
   onChange = () => {},
   renderRight = () => null,
   ...props
@@ -56,12 +60,17 @@ export const InputComponent = ({
     input: () => (
       <Input
         onChange={evt => onChange(evt.target.value)}
-        {...props}
         withRightElement={Boolean(rightElement)}
+        bgColor={bgColor}
+        {...props}
       />
     ),
     textarea: () => (
-      <Textarea onChange={evt => onChange(evt.target.value)} {...props} />
+      <Textarea
+        onChange={evt => onChange(evt.target.value)}
+        bgColor={bgColor}
+        {...props}
+      />
     ),
   };
 
@@ -86,4 +95,5 @@ InputComponent.defaultProps = {
   onChange: () => {},
   onFocus: () => {},
   step: 1,
+  bgColor: theme.colors.inputBackground,
 };
