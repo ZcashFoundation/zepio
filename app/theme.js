@@ -73,6 +73,7 @@ const appTheme = {
     selectButtonShadow,
     transactionsDetailsLabel,
     statusPillLabel,
+    modalItemLabel: transactionsDate,
     blackTwo,
     buttonBorderColor,
   },
