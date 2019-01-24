@@ -59,7 +59,7 @@ export class StatusPill extends Component<Props, State> {
   timer: ?IntervalID = null;
 
   state = {
-    type: 'synching',
+    type: 'syncing',
     icon: syncIcon,
     progress: 0,
     isSyncing: true,
