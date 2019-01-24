@@ -9,6 +9,9 @@ import { Link } from 'react-router-dom';
 import { darken } from 'polished';
 
 const DefaultButton = styled.button`
+  align-items: center;
+  display: flex;
+  justify-content: center;
   padding: 10px 30px;
   font-family: ${props => props.theme.fontFamily};
   font-weight: ${props => props.theme.fontWeight.bold};
@@ -32,7 +35,7 @@ const Primary = styled(DefaultButton)`
   }
 
   &:disabled {
-    background-color: #3e3c42;
+    background-color: ${props => props.theme.colors.buttonBorderColor};
     cursor: not-allowed;
     opacity: 0.8;
   }
@@ -41,7 +44,7 @@ const Primary = styled(DefaultButton)`
 const Secondary = styled(DefaultButton)`
   background-color: transparent;
   color: ${props => props.theme.colors.secondary};
-  border: 2px solid #3e3c42;
+  border: 2px solid ${props => props.theme.colors.buttonBorderColor};
 
   &:hover {
     border-color: ${props => props.theme.colors.primary};
@@ -50,16 +53,16 @@ const Secondary = styled(DefaultButton)`
   &:disabled {
     background-color: Transparent;
     cursor: not-allowed;
-    color: #3e3c42;
+    color: ${props => props.theme.colors.buttonBorderColor};
 
     &:hover {
-      border-color: #3e3c42;
+      border-color: ${props => props.theme.colors.buttonBorderColor};
     }
   }
 `;
 
 const Icon = styled.img`
-  height: 9px;
+  height: 12px;
   width: 12px;
   margin-right: 10px;
 `;

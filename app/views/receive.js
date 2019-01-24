@@ -19,21 +19,38 @@ const Row = styled(RowComponent)`
 `;
 
 const Label = styled(InputLabelComponent)`
-  margin: 0;
+  margin-left: 0;
+  margin-right: 0;
   margin-bottom: 10px;
+  margin-top: 10px;
 `;
 
-export const ReceiveView = ({ addresses }: Props) => (
-  <Wrapper>
-    <Label value='Addresses: ' />
-    {(addresses || []).map(address => (
-      <Row
-        key={address}
-        alignItems='center'
-        justifyContent='space-between'
-      >
-        <WalletAddress address={address} />
-      </Row>
-    ))}
-  </Wrapper>
-);
+export const ReceiveView = ({ addresses }: Props) => {
+  const shieldedAddresses = addresses.filter(addr => addr.startsWith('zt'));
+  const transparentAddresses = addresses.filter(addr => addr.startsWith('t'));
+
+  return (
+    <Wrapper>
+      <Label value='Shielded Addresses: ' />
+      {(shieldedAddresses || []).map(address => (
+        <Row
+          key={address}
+          alignItems='center'
+          justifyContent='space-between'
+        >
+          <WalletAddress address={address} />
+        </Row>
+      ))}
+      <Label value='Transparent Addresses: ' />
+      {(transparentAddresses || []).map(address => (
+        <Row
+          key={address}
+          alignItems='center'
+          justifyContent='space-between'
+        >
+          <WalletAddress address={address} />
+        </Row>
+      ))}
+    </Wrapper>
+  );
+};

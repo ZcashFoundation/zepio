@@ -47,6 +47,22 @@ const ClipboardButton = styled(Clipboard)`
   margin-left: 5px;
 `;
 
+const SettingWrapper = styled.div`
+  margin-bottom: 45px;
+  min-width: 200px;
+  width: 37%;
+`;
+
+const SettingTitle = styled(TextComponent)`
+  font-size: ${props => `${props.theme.fontSize.regular}em`};
+  font-weight: ${props => props.theme.fontWeight.bold};
+`;
+
+const SettingContent = styled(TextComponent)`
+  margin-bottom: 20px;
+  margin-top: 10px;
+`;
+
 type Key = {
   zAddress: string,
   key: string,
@@ -198,7 +214,11 @@ export class SettingsView extends PureComponent<Props, State> {
         <ConfirmDialogComponent
           title='Export view keys'
           renderTrigger={toggleVisibility => (
-            <Btn label='Export view keys' onClick={toggleVisibility} />
+            <SettingWrapper>
+              <SettingTitle value='Export view keys' />
+              <SettingContent value='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.' />
+              <Btn label='Export view keys' onClick={toggleVisibility} />
+            </SettingWrapper>
           )}
           onConfirm={this.exportViewKeys}
           showButtons={!successExportViewKeys}
@@ -229,7 +249,11 @@ export class SettingsView extends PureComponent<Props, State> {
         <ConfirmDialogComponent
           title='Export private keys'
           renderTrigger={toggleVisibility => (
-            <Btn label='Export private keys' onClick={toggleVisibility} />
+            <SettingWrapper>
+              <SettingTitle value='Export private keys' />
+              <SettingContent value='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.' />
+              <Btn label='Export private keys' onClick={toggleVisibility} />
+            </SettingWrapper>
           )}
           onConfirm={this.exportPrivateKeys}
           showButtons={!successExportPrivateKeys}
@@ -260,7 +284,11 @@ export class SettingsView extends PureComponent<Props, State> {
         <ConfirmDialogComponent
           title='Import private keys'
           renderTrigger={toggleVisibility => (
-            <Btn label='Import private keys' onClick={toggleVisibility} />
+            <SettingWrapper>
+              <SettingTitle value='Import private keys' />
+              <SettingContent value='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.' />
+              <Btn label='Import private keys' onClick={toggleVisibility} />
+            </SettingWrapper>
           )}
           onConfirm={this.importPrivateKeys}
           showButtons={!successImportPrivateKeys}
@@ -285,7 +313,11 @@ export class SettingsView extends PureComponent<Props, State> {
           </ModalContent>
         </ConfirmDialogComponent>
 
-        <Btn label='Backup wallet.dat' onClick={this.backupWalletDat} />
+        <SettingWrapper>
+          <SettingTitle value='Backup Wallet' />
+          <SettingContent value='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.' />
+          <Btn label='Backup wallet.dat' onClick={this.backupWalletDat} />
+        </SettingWrapper>
       </Wrapper>
     );
   };
