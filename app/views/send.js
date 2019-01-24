@@ -13,11 +13,14 @@ import { RowComponent } from '../components/row';
 import { ColumnComponent } from '../components/column';
 import { Divider } from '../components/divider';
 import { Button } from '../components/button';
+import MenuIcon from '../assets/images/menu_icon.svg';
 
 import formatNumber from '../utils/formatNumber';
 
 import type { SendTransactionInput } from '../containers/send';
 import type { State as SendState } from '../redux/modules/send';
+
+import theme from '../theme';
 
 const FormWrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
@@ -30,16 +33,50 @@ const SendWrapper = styled(ColumnComponent)`
 `;
 
 const ShowFeeButton = styled.button`
+  align-items: center;
   background: none;
   border: none;
   cursor: pointer;
+  display: flex;
   width: 100%;
   color: ${props => props.theme.colors.text};
   outline: none;
+  margin-bottom: 15px;
+  margin-top: 15px;
+`;
+
+const SeeMoreButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border-style: solid;
+  border-radius: 100%;
+  border-width: 1px;
+  border-color: ${props => (props.isOpen
+    ? props.theme.colors.activeItem
+    : props.theme.colors.inactiveItem)};
+  background-color: transparent;
+  padding: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  margin-left: -2px;
 
   &:hover {
-    text-decoration: underline;
+    border-color: ${props => props.theme.colors.activeItem};
   }
+`;
+
+const SeeMoreIcon = styled.img`
+  width: 25px;
+  height: 25px;
+`;
+
+const FeeWrapper = styled.div`
+  background-color: #000;
+  border-radius: 6px;
+  padding: 13px 19px;
+  margin-bottom: 20px;
 `;
 
 const InfoCard = styled.div`
@@ -254,35 +291,40 @@ export class SendView extends PureComponent<Props, State> {
             onClick={() => this.setState(state => ({ showFee: !state.showFee }))
             }
           >
+            <SeeMoreButton isOpen={showFee}>
+              <SeeMoreIcon src={MenuIcon} alt='' />
+            </SeeMoreButton>
             <TextComponent
-              paddingTop='10px'
               value={`${showFee ? 'Hide' : 'Show'} Additional Options`}
-              align='right'
             />
           </ShowFeeButton>
           {showFee && (
-            <RowComponent alignItems='flex-end' justifyContent='space-between'>
-              <ColumnComponent width='74%'>
-                <InputLabelComponent value='Fee' />
-                <InputComponent
-                  type='number'
-                  onChange={this.handleChange('fee')}
-                  value={String(fee)}
-                  disabled={feeType !== FEES.CUSTOM}
-                />
-              </ColumnComponent>
-              <ColumnComponent width='25%'>
-                <SelectComponent
-                  onChange={this.handleChangeFeeType}
-                  value={String(feeType)}
-                  options={Object.keys(FEES).map(cur => ({
-                    label: cur.toLowerCase(),
-                    value: String(FEES[cur]),
-                  }))}
-                  placement='top'
-                />
-              </ColumnComponent>
-            </RowComponent>
+            <FeeWrapper>
+              <RowComponent alignItems='flex-end' justifyContent='space-between'>
+                <ColumnComponent width='74%'>
+                  <InputLabelComponent value='Fee' />
+                  <InputComponent
+                    type='number'
+                    onChange={this.handleChange('fee')}
+                    value={String(fee)}
+                    disabled={feeType !== FEES.CUSTOM}
+                    bgColor={theme.colors.blackTwo}
+                  />
+                </ColumnComponent>
+                <ColumnComponent width='25%'>
+                  <SelectComponent
+                    onChange={this.handleChangeFeeType}
+                    value={String(feeType)}
+                    options={Object.keys(FEES).map(cur => ({
+                      label: cur.toLowerCase(),
+                      value: String(FEES[cur]),
+                    }))}
+                    placement='top'
+                    bgColor={theme.colors.blackTwo}
+                  />
+                </ColumnComponent>
+              </RowComponent>
+            </FeeWrapper>
           )}
           {feeType === FEES.CUSTOM && (
             <TextComponent value='Custom fees may compromise your privacy since fees are transparent' />

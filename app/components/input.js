@@ -1,12 +1,14 @@
 // @flow
 import React from 'react';
-
 import styled from 'styled-components';
+
+import theme from '../theme';
 
 const getDefaultStyles = t => styled[t]`
   border-radius: ${props => props.theme.boxBorderRadius};
   border: none;
-  background-color: ${props => props.theme.colors.inputBackground};
+  background-color: ${
+  props => props.bgColor || props.theme.colors.inputBackground};
   color: ${props => props.theme.colors.text};
   padding: 15px;
   width: 100%;
@@ -30,19 +32,29 @@ type Props = {
   disabled?: boolean,
   type?: string,
   step?: number,
+  bgColor?: string,
 };
 
 export const InputComponent = ({
   inputType,
+  bgColor,
   onChange = () => {},
   ...props
 }: Props) => {
   const inputTypes = {
     input: () => (
-      <Input onChange={evt => onChange(evt.target.value)} {...props} />
+      <Input
+        onChange={evt => onChange(evt.target.value)}
+        bgColor={bgColor}
+        {...props}
+      />
     ),
     textarea: () => (
-      <Textarea onChange={evt => onChange(evt.target.value)} {...props} />
+      <Textarea
+        onChange={evt => onChange(evt.target.value)}
+        bgColor={bgColor}
+        {...props}
+      />
     ),
   };
 
@@ -58,4 +70,5 @@ InputComponent.defaultProps = {
   rows: 4,
   disabled: false,
   type: 'text',
+  bgColor: theme.colors.inputBackground,
 };
