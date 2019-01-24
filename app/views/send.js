@@ -341,7 +341,7 @@ export class SendView extends PureComponent<Props, State> {
 
     if (operationId) {
       return (
-        <>
+        <ColumnComponent width='100%' id='send-success-wrapper'>
           <TextComponent value={`Transaction ID: ${operationId}`} align='center' />
           <button
             type='button'
@@ -352,11 +352,11 @@ export class SendView extends PureComponent<Props, State> {
           >
             Send again!
           </button>
-        </>
+        </ColumnComponent>
       );
     }
 
-    if (error) return <TextComponent value={error} />;
+    if (error) return <TextComponent id='send-error-message' value={error} />;
 
     return (
       <>
@@ -423,7 +423,7 @@ export class SendView extends PureComponent<Props, State> {
     });
 
     return (
-      <RowComponent justifyContent='space-between'>
+      <RowComponent id='send-wrapper' justifyContent='space-between'>
         <FormWrapper>
           <InputLabelComponent value='From' />
           <SelectComponent
@@ -441,6 +441,7 @@ export class SendView extends PureComponent<Props, State> {
               value={String(amount)}
               placeholder='ZEC 0.0'
               min={0.01}
+              name='amount'
             />
           </AmountWrapper>
           <InputLabelComponent value='To' />
@@ -449,6 +450,7 @@ export class SendView extends PureComponent<Props, State> {
             value={to}
             placeholder='Enter Address'
             renderRight={to ? this.renderValidationStatus : () => null}
+            name='to'
           />
           <InputLabelComponent value='Memo' />
           <InputComponent
@@ -466,7 +468,7 @@ export class SendView extends PureComponent<Props, State> {
             <TextComponent value={`${showFee ? 'Hide' : 'Show'} Additional Options`} />
           </ShowFeeButton>
           {showFee && (
-            <FeeWrapper>
+            <FeeWrapper id='send-fee-wrapper'>
               <RowComponent alignItems='flex-end' justifyContent='space-between'>
                 <ColumnComponent width='74%'>
                   <InputLabelComponent value='Fee' marginTop='0px' />
@@ -476,6 +478,7 @@ export class SendView extends PureComponent<Props, State> {
                     value={String(fee)}
                     disabled={feeType !== FEES.CUSTOM}
                     bgColor={theme.colors.blackTwo}
+                    name='fee'
                   />
                 </ColumnComponent>
                 <ColumnComponent width='25%'>
@@ -516,17 +519,19 @@ export class SendView extends PureComponent<Props, State> {
             onConfirm={this.handleSubmit}
             renderTrigger={toggle => (
               <FormButton
+                id='send-submit-button'
                 label='Send'
                 variant='secondary'
                 focused
                 onClick={() => this.showModal(toggle)}
+                disabled={!from || !amount || !to || !fee}
               />
             )}
             showButtons={!isSending && !error && !operationId}
             onClose={this.reset}
           >
             {toggle => (
-              <ModalContent>
+              <ModalContent id='send-confirm-transaction-modal'>
                 {this.renderModalContent({ valueSent, valueSentInUsd, toggle })}
               </ModalContent>
             )}

@@ -73,7 +73,7 @@ export class LoadingScreen extends PureComponent<Props, State> {
           }}
         >
           {() => props => (
-            <animated.div style={props}>
+            <animated.div style={props} id='loading-screen'>
               <CircleWrapper>
                 <Logo src={zcashLogo} alt='Zcash logo' />
                 <CircleProgressComponent
