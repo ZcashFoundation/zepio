@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 import { InputLabelComponent } from '../components/input-label';
@@ -8,6 +8,7 @@ import { WalletAddress } from '../components/wallet-address';
 
 type Props = {
   addresses: Array<string>,
+  loadAddresses: () => void,
 };
 
 const Wrapper = styled.div`
@@ -25,32 +26,25 @@ const Label = styled(InputLabelComponent)`
   margin-top: 10px;
 `;
 
-export const ReceiveView = ({ addresses }: Props) => {
-  const shieldedAddresses = addresses.filter(addr => addr.startsWith('zt'));
-  const transparentAddresses = addresses.filter(addr => addr.startsWith('t'));
+export class ReceiveView extends PureComponent<Props> {
+  componentDidMount() {
+    const { loadAddresses } = this.props;
 
-  return (
-    <Wrapper>
-      <Label value='Shielded Addresses: ' />
-      {(shieldedAddresses || []).map(address => (
-        <Row
-          key={address}
-          alignItems='center'
-          justifyContent='space-between'
-        >
-          <WalletAddress address={address} />
-        </Row>
-      ))}
-      <Label value='Transparent Addresses: ' />
-      {(transparentAddresses || []).map(address => (
-        <Row
-          key={address}
-          alignItems='center'
-          justifyContent='space-between'
-        >
-          <WalletAddress address={address} />
-        </Row>
-      ))}
-    </Wrapper>
-  );
-};
+    loadAddresses();
+  }
+
+  render() {
+    const { addresses } = this.props;
+
+    return (
+      <Wrapper>
+        <Label value='Addresses: ' />
+        {(addresses || []).map(address => (
+          <Row key={address} alignItems='center' justifyContent='space-between'>
+            <WalletAddress address={address} />
+          </Row>
+        ))}
+      </Wrapper>
+    );
+  }
+}
