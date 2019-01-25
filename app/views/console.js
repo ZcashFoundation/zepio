@@ -74,7 +74,7 @@ export class ConsoleView extends Component<Props, State> {
     const { log } = this.state;
 
     return (
-      <Wrapper>
+      <Wrapper id='console-wrapper'>
         <Fragment>
           <ConsoleImg src={ConsoleSymbol} alt='Zcashd' />
           {log.split('\n').map((item, idx) => (

@@ -20,7 +20,6 @@ const client = got.extend({
   auth: `${RPC.user}:${RPC.password}`,
 });
 
-// $FlowFixMe
 const api: APIMethods = METHODS.reduce(
   (obj, method) => ({
     ...obj,
