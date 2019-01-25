@@ -79,25 +79,25 @@ export class StatusPill extends Component<Props, State> {
   }
 
   getBlockchainStatus = async () => {
-    const [blockchainErr, blockchaininfo] = await eres(
-      rpc.getblockchaininfo(),
-    );
+    const [blockchainErr, blockchaininfo] = await eres(rpc.getblockchaininfo());
 
     const newProgress = blockchaininfo.verificationprogress * 100;
 
     this.setState({
       progress: newProgress,
-      ...(newProgress > 99.99 ? {
-        type: 'ready',
-        icon: readyIcon,
-        isSyncing: false,
-      } : {}),
+      ...(newProgress > 99.99
+        ? {
+          type: 'ready',
+          icon: readyIcon,
+          isSyncing: false,
+        }
+        : {}),
     });
 
     if (blockchainErr) {
       this.setState(() => ({ type: 'error', icon: errorIcon }));
     }
-  }
+  };
 
   render() {
     const {
@@ -106,7 +106,7 @@ export class StatusPill extends Component<Props, State> {
     const showPercent = isSyncing ? `(${progress.toFixed(2)}%)` : '';
 
     return (
-      <Wrapper>
+      <Wrapper id='status-pill'>
         <Icon src={icon} animated={isSyncing} />
         <StatusPillLabel value={`${type} ${showPercent}`} />
       </Wrapper>

@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 /* eslint-disable max-len */
 // $FlowFixMe
 import { darken } from 'polished';
+import type { ElementProps } from 'react';
 
 const DefaultButton = styled.button`
   align-items: center;
@@ -20,8 +21,7 @@ const DefaultButton = styled.button`
   outline: none;
   min-width: 100px;
   border-radius: 100px;
-  transition: background-color 0.1s
-    ${props => props.theme.colors.transitionEase};
+  transition: background-color 0.1s ${props => props.theme.colors.transitionEase};
 `;
 
 const Primary = styled(DefaultButton)`
@@ -67,6 +67,7 @@ const Icon = styled.img`
 `;
 
 type Props = {
+  ...ElementProps<'button'>,
   label: string,
   onClick?: () => void,
   to?: ?string,
@@ -86,6 +87,7 @@ export const Button = ({
   icon,
   className,
   isLoading,
+  id,
 }: Props) => {
   if (to && onClick) throw new Error('Should define either "to" or "onClick"');
 
@@ -94,6 +96,7 @@ export const Button = ({
     disabled: disabled || isLoading,
     icon: null,
     className,
+    id,
   };
   const buttonLabel = isLoading ? 'Loading...' : label;
 

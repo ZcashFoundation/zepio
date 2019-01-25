@@ -83,6 +83,12 @@ const createWindow = () => {
 /* eslint-disable-next-line consistent-return */
 app.on('ready', async () => {
   createWindow();
+
+  if (process.env.NODE_ENV === 'test') {
+    zcashLog('Not running daemon, please run the mock API');
+    return;
+  }
+
   const [err, proc] = await eres(runDaemon());
 
   if (err || !proc) return zcashLog(err);

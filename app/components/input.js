@@ -7,8 +7,7 @@ import theme from '../theme';
 const getDefaultStyles = t => styled[t]`
   border-radius: ${props => props.theme.boxBorderRadius};
   border: none;
-  background-color: ${
-  props => props.bgColor || props.theme.colors.inputBackground};
+  background-color: ${props => props.bgColor || props.theme.colors.inputBackground};
   color: ${props => props.theme.colors.text};
   padding: 15px;
   padding-right: ${props => (props.withRightElement ? '85px' : '15px')};
@@ -43,6 +42,7 @@ type Props = {
   disabled?: boolean,
   type?: string,
   step?: number,
+  name?: string,
   renderRight?: () => Element<*> | null,
   bgColor?: string,
 };
@@ -66,11 +66,7 @@ export const InputComponent = ({
       />
     ),
     textarea: () => (
-      <Textarea
-        onChange={evt => onChange(evt.target.value)}
-        bgColor={bgColor}
-        {...props}
-      />
+      <Textarea onChange={evt => onChange(evt.target.value)} bgColor={bgColor} {...props} />
     ),
   };
 
@@ -91,6 +87,7 @@ InputComponent.defaultProps = {
   rows: 4,
   disabled: false,
   type: 'text',
+  name: '',
   renderRight: () => null,
   onChange: () => {},
   onFocus: () => {},

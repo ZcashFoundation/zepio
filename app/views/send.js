@@ -59,6 +59,7 @@ const SendWrapper = styled(ColumnComponent)`
 
 const AmountWrapper = styled.div`
   width: 100%;
+  position: relative;
 
   &:before {
     content: 'ZEC';
@@ -68,14 +69,14 @@ const AmountWrapper = styled.div`
     margin-left: 15px;
     display: block;
     transition: all 0.05s ease-in-out;
-    opacity: ${props => (props.isEmpty ? 0.25 : 1)};
+    opacity: ${props => (props.isEmpty ? '0' : '1')};
     color: #fff;
-    z-index: 20;
+    z-index: 10;
   }
 `;
 
 const AmountInput = styled(InputComponent)`
-  padding-left: 50px;
+  padding-left: ${props => (props.isEmpty ? '15' : '50')}px;
 `;
 
 const ShowFeeButton = styled.button`
@@ -133,18 +134,6 @@ const InfoCardUSD = styled(TextComponent)`
 const FormButton = styled(Button)`
   width: 100%;
   margin: 10px 0;
-  border-color: ${props => (props.focused
-    ? props.theme.colors.activeItem
-    : props.theme.colors.inactiveItem)};
-
-  &:hover {
-    border-color: ${props => (props.focused
-    ? props.theme.colors.activeItem
-    : props.theme.colors.inactiveItem)};
-    background-color: ${props => (props.focused
-    ? props.theme.colors.activeItem
-    : props.theme.colors.inactiveItem)};
-  }
 `;
 
 const ModalContent = styled(ColumnComponent)`
@@ -376,7 +365,10 @@ export class SendView extends PureComponent<Props, State> {
 
     if (operationId) {
       return (
-        <Fragment>
+        <ColumnComponent
+          width='100%'
+          id='send-success-wrapper'
+        >
           <TextComponent
             value={`Transaction ID: ${operationId}`}
             align='center'
@@ -390,11 +382,11 @@ export class SendView extends PureComponent<Props, State> {
           >
             Send again!
           </button>
-        </Fragment>
+        </ColumnComponent>
       );
     }
 
-    if (error) return <TextComponent value={error} />;
+    if (error) return <TextComponent id='send-error-message' value={error} />;
 
     return (
       <>
@@ -436,12 +428,7 @@ export class SendView extends PureComponent<Props, State> {
 
   render() {
     const {
-      addresses,
-      balance,
-      zecPrice,
-      isSending,
-      error,
-      operationId,
+      addresses, balance, zecPrice, isSending, error, operationId,
     } = this.props;
     const {
       showFee, from, amount, to, memo, fee, feeType,
@@ -466,7 +453,7 @@ export class SendView extends PureComponent<Props, State> {
     });
 
     return (
-      <RowComponent justifyContent='space-between'>
+      <RowComponent id='send-wrapper' justifyContent='space-between'>
         <FormWrapper>
           <InputLabelComponent value='From' />
           <SelectComponent
@@ -482,8 +469,9 @@ export class SendView extends PureComponent<Props, State> {
               type='number'
               onChange={this.handleChange('amount')}
               value={String(amount)}
-              placeholder='0.0'
+              placeholder='ZEC 0.0'
               min={0.01}
+              name='amount'
             />
           </AmountWrapper>
           <InputLabelComponent value='To' />
@@ -492,6 +480,7 @@ export class SendView extends PureComponent<Props, State> {
             value={to}
             placeholder='Enter Address'
             renderRight={to ? this.renderValidationStatus : () => null}
+            name='to'
           />
           <InputLabelComponent value='Memo' />
           <InputComponent
@@ -499,8 +488,10 @@ export class SendView extends PureComponent<Props, State> {
             value={memo}
             inputType='textarea'
             placeholder='Enter a text here'
+            name='memo'
           />
           <ShowFeeButton
+            id='send-show-additional-options-button'
             onClick={() => this.setState(state => ({
               showFee: !state.showFee,
             }))}
@@ -532,8 +523,11 @@ export class SendView extends PureComponent<Props, State> {
             >
               {show => show && (props => (
                 <animated.div style={props}>
-                  <FeeWrapper>
-                    <RowComponent alignItems='flex-end' justifyContent='space-between'>
+                  <FeeWrapper id='send-fee-wrapper'>
+                    <RowComponent
+                      alignItems='flex-end'
+                      justifyContent='space-between'
+                    >
                       <ColumnComponent width='74%'>
                         <InputLabelComponent value='Fee' />
                         <InputComponent
@@ -542,6 +536,7 @@ export class SendView extends PureComponent<Props, State> {
                           value={String(fee)}
                           disabled={feeType !== FEES.CUSTOM}
                           bgColor={theme.colors.blackTwo}
+                          name='fee'
                         />
                       </ColumnComponent>
                       <ColumnComponent width='25%'>
@@ -588,15 +583,17 @@ export class SendView extends PureComponent<Props, State> {
             renderTrigger={toggle => (
               <FormButton
                 onClick={() => this.showModal(toggle)}
+                id='send-submit-button'
                 label='Send'
                 variant='secondary'
                 focused
                 isFluid
+                disabled={!from || !amount || !to || !fee}
               />
             )}
           >
             {toggle => (
-              <ModalContent>
+              <ModalContent id='send-confirm-transaction-modal'>
                 {this.renderModalContent({
                   valueSent,
                   valueSentInUsd,
