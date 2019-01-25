@@ -6,6 +6,7 @@ jobs:
       - image: electronuserland/builder:wine-chrome
     steps:
       - checkout
+      - run: apt-get -y update
       - run: apt install software-properties-common
       - run: add-apt-repository ppa:jonathonf/ffmpeg-4
       - run: apt-get -y update
