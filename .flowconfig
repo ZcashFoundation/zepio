@@ -1,11 +1,15 @@
 [ignore]
+.*/node_modules/polished/.*
+./__tests__
 
 [include]
 
 [libs]
+flow-typed
 
 [lints]
 
 [options]
+esproposal.optional_chaining=enable
 
 [strict]

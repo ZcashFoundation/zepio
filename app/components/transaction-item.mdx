@@ -1,0 +1,44 @@
+---
+name: Transaction Item
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import { TransactionItemComponent } from './transaction-item.js'
+import { DoczWrapper } from '../theme.js'
+
+# Transaction Item
+
+## Properties
+
+<PropsTable of={TransactionItemComponent} />
+
+## Sent
+
+<Playground>
+  <DoczWrapper>
+    {() => (
+      <TransactionItemComponent
+        type='sent'
+        address='123456789123456789123456789123456789'
+        amount={0.8652}
+        date={new Date().toISOString()}
+      />
+    )}
+  </DoczWrapper>
+</Playground>
+
+## Received
+
+<Playground>
+  <DoczWrapper>
+    {() => (
+      <TransactionItemComponent
+        type='received'
+        address='123456789123456789123456789123456789'
+        amount={1.7891}
+        date={new Date().toISOString()}
+      />
+    )}
+  </DoczWrapper>
+</Playground>

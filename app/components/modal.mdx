@@ -1,0 +1,57 @@
+---
+name: Modal
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import { ModalComponent } from './modal.js'
+
+# Modal
+
+## Properties
+
+<PropsTable of={ModalComponent} />
+
+## Basic usage
+
+<Playground>
+  <ModalComponent
+    renderTrigger={toggleVisibility => (
+      <button type="button" onClick={toggleVisibility}>
+        Open Modal
+      </button>
+    )}
+  >
+    {toggleVisibility => (
+      <div style={{ padding: '50px', backgroundColor: 'white' }}>
+        Modal Content
+        <button type="button" onClick={toggleVisibility}>
+          Close Modal
+        </button>
+      </div>
+    )}
+  </ModalComponent>
+</Playground>
+
+## Don't close with ESC or backdrop click
+
+<Playground>
+  <ModalComponent
+    closeOnEsc={false}
+    closeOnBackdropClick={false}
+    renderTrigger={toggleVisibility => (
+      <button type="button" onClick={toggleVisibility}>
+        Open Modal
+      </button>
+    )}
+  >
+    {toggleVisibility => (
+      <div style={{ padding: '50px', backgroundColor: 'white' }}>
+        Modal Content
+        <button type="button" onClick={toggleVisibility}>
+          Close Modal
+        </button>
+      </div>
+    )}
+  </ModalComponent>
+</Playground>

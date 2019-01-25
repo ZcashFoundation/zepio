@@ -1,0 +1,48 @@
+version: 2
+
+jobs:
+  test:
+    docker:
+      - image: electronuserland/builder:wine-chrome
+    steps:
+      - checkout
+      - run: apt-get -y update
+      - run: apt install -y software-properties-common
+      - run: add-apt-repository ppa:jonathonf/ffmpeg-4
+      - run: apt-get -y update
+      - run: apt-get -y install libusb-1.0-0-dev graphicsmagick libudev-dev
+      - run: apt-get -y install tmux xvfb libxtst6 libxss1 libgtk2.0-0 libnss3 libasound2 libgconf-2-4 ffmpeg frei0r-plugins
+      # TODO: Just a quick try
+      - run: rm yarn.lock
+      - run: yarn install
+      - run:
+          name: Run Webpack
+          command: yarn dev
+          background: true
+      - run:
+          name: Run Mock RPC API
+          command: yarn e2e:serve
+          background: true
+      - run: yarn wait-on http://localhost:8080 && yarn wait-on http://localhost:18232
+      - run:
+          command: Xvfb :44 -auth /tmp/xvfb.auth -ac -screen 0 1024x768x24 -listen tcp
+          background: true
+      - run:
+          command: ffmpeg -y -f x11grab -video_size 1024x768 -i :44 -codec:v libx264 -r 12 /tmp/e2e-record.mp4
+          background: true
+      - run: DISPLAY=:44 yarn e2e:run
+      - run: |
+          kill -s SIGINT $(pgrep ffmpeg)
+          sleep 10
+          kill -s SIGTERM $(pgrep Xvfb)
+      - store_artifacts:
+          path: /tmp/e2e-record.mp4
+          destination: e2e-record.mp4
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test:
+          filters:
+            branches:
+              only: feature/e2e

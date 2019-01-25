@@ -3,3 +3,8 @@ node_modules
 dist
 .DS_Store
 flow-coverage
+build
+.docz
+coverage
+flow-typed
+.env

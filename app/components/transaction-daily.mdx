@@ -1,0 +1,40 @@
+---
+name: Transaction Daily
+---
+
+import { Playground, PropsTable } from 'docz'
+
+import { TransactionDailyComponent } from './transaction-daily.js'
+import { DoczWrapper } from '../theme.js'
+
+# Transaction Item
+
+## Properties
+
+<PropsTable of={TransactionDailyComponent} />
+
+## Basic Usage
+
+<Playground>
+  <DoczWrapper>
+    {() => (
+      <TransactionDailyComponent
+        transactionsDate={new Date().toISOString()}
+        transactions={[
+          {
+            type: 'received',
+            address: '123456789123456789123456789123456789',
+            amount: 1.7891,
+            date: new Date().toISOString(),
+          },
+          {
+            type: 'sent',
+            address: '123456789123456789123456789123456789',
+            amount: 0.8458,
+            date: new Date().toISOString(),
+          },
+        ]}
+      />
+    )}
+  </DoczWrapper>
+</Playground>
