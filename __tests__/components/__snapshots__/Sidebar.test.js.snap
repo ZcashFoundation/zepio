@@ -1,29 +1,75 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Sidebar /> render() should render correctly 1`] = `
+exports[`<SidebarComponent /> render() should render correctly 1`] = `
 <DocumentFragment>
   <div
-    class="sc-bdVaJa fnXMXv"
+    class="sc-bdVaJa igFjJZ"
   >
     <a
+      class="sc-bwzfXH kBVjXq"
       href="/"
     >
+      <img
+        alt="/"
+        class="sc-htpNat kwYHDD"
+        src="[object Object]"
+      />
       Dashboard
     </a>
     <a
+      class="sc-bwzfXH cYKDCP"
       href="/send"
     >
+      <img
+        alt="/send"
+        class="sc-htpNat eZYlLl"
+        src="[object Object]"
+      />
       Send
     </a>
     <a
+      class="sc-bwzfXH cYKDCP"
       href="/receive"
     >
+      <img
+        alt="/receive"
+        class="sc-htpNat eZYlLl"
+        src="[object Object]"
+      />
       Receive
     </a>
     <a
+      class="sc-bwzfXH cYKDCP"
+      href="/transactions"
+    >
+      <img
+        alt="/transactions"
+        class="sc-htpNat eZYlLl"
+        src="[object Object]"
+      />
+      Transactions
+    </a>
+    <a
+      class="sc-bwzfXH cYKDCP"
       href="/settings"
     >
+      <img
+        alt="/settings"
+        class="sc-htpNat eZYlLl"
+        src="[object Object]"
+      />
       Settings
+    </a>
+    <a
+      class="sc-bwzfXH cYKDCP"
+      href="/console"
+    >
+      <img
+        alt="/console"
+        class="sc-htpNat eZYlLl"
+        src="[object Object]"
+      />
+      Console
     </a>
   </div>
 </DocumentFragment>

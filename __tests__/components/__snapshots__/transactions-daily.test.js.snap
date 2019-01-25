@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TransactionDailyComponent /> render() should render user daily transactions 1`] = `
+<div>
+  <div
+    class="sc-kpOJdX inMzwo"
+  >
+    <p
+      class="sc-ckVGcZ kFpbuU sc-htpNat jxQpDz"
+      color="#FFF"
+    >
+      2019-01-25T20:38:40.521Z
+    </p>
+    <div
+      class="sc-dxgOiQ cLfqec"
+    >
+      <div
+        class="sc-fjdhpX kUigkI sc-bdVaJa bWRfen"
+      >
+        <div
+          class="sc-bdVaJa eFCRqo"
+        >
+          <div
+            class="sc-bdVaJa eFCRqo"
+          >
+            <img
+              alt="Transaction Type Icon"
+              class="sc-jzJRlG dHAJgd"
+              src="[object Object]"
+            />
+            <div
+              class="sc-kgoBCf fmsvla sc-bwzfXH iiePXZ"
+              width=""
+            >
+              <p
+                class="sc-cSHVUG bHGbwE sc-htpNat dkQVQA"
+                color="#FFF"
+              >
+                received
+              </p>
+              <p
+                class="sc-chPdSV hltHrj sc-htpNat jxQpDz"
+                color="#FFF"
+              >
+                17:38 PM
+              </p>
+            </div>
+          </div>
+          <p
+            class="sc-kAzzGY dMXFTy sc-htpNat jxQpDz"
+            color="#FFF"
+          >
+            12345678912345678912...9123456789
+          </p>
+        </div>
+        <div
+          class="sc-bwzfXH jExuEg"
+          width=""
+        >
+          <p
+            class="sc-htpNat jAbxuE"
+            color="#FF6C6C"
+          >
+            -ZEC 1.789
+          </p>
+          <p
+            class="sc-htpNat dhSLjI"
+            color="#5d5d65"
+          >
+            -USD $0
+          </p>
+        </div>
+      </div>
+      <div
+        class="sc-kGXeez jZgEID"
+      />
+      <div
+        class="sc-fjdhpX kUigkI sc-bdVaJa bWRfen"
+      >
+        <div
+          class="sc-bdVaJa eFCRqo"
+        >
+          <div
+            class="sc-bdVaJa eFCRqo"
+          >
+            <img
+              alt="Transaction Type Icon"
+              class="sc-jzJRlG dHAJgd"
+              src="[object Object]"
+            />
+            <div
+              class="sc-kgoBCf fmsvla sc-bwzfXH iiePXZ"
+              width=""
+            >
+              <p
+                class="sc-cSHVUG bHGbwE sc-htpNat dkQVQA"
+                color="#FFF"
+              >
+                sent
+              </p>
+              <p
+                class="sc-chPdSV hltHrj sc-htpNat jxQpDz"
+                color="#FFF"
+              >
+                17:38 PM
+              </p>
+            </div>
+          </div>
+          <p
+            class="sc-kAzzGY dMXFTy sc-htpNat jxQpDz"
+            color="#FFF"
+          >
+            12345678912345678912...9123456789
+          </p>
+        </div>
+        <div
+          class="sc-bwzfXH jExuEg"
+          width=""
+        >
+          <p
+            class="sc-htpNat jAbxuE"
+            color="#FF6C6C"
+          >
+            -ZEC 0.846
+          </p>
+          <p
+            class="sc-htpNat dhSLjI"
+            color="#5d5d65"
+          >
+            -USD $0
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

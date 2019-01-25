@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<WalletAddress /> render() should render wallet address component correctly 1`] = `
+<div>
+  <div
+    style="width: 700px;"
+  >
+    <div
+      class="sc-bdVaJa eMHGRJ"
+      width="100%"
+    >
+      <div
+        class="sc-EHOje gdDRhj"
+      >
+        <input
+          class="sc-bZQynM kSTZfH"
+          value="t14oHp2v54vfmdgQ3v3S...8JKHTNi2a1"
+        />
+        <button
+          class="sc-gzVnrw epOqxZ sc-bxivhb fPicDU"
+        >
+          <img
+            class="sc-ifAKCX hBMlcu"
+            src="[object Object]"
+          />
+          Show full address and QR Code
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

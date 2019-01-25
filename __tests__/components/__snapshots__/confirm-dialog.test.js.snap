@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConfirmDialogComponent /> render() should render confirm dialog correctly 1`] = `
+<div>
+  <button>
+     Open! 
+  </button>
+</div>
+`;
