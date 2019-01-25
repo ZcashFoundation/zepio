@@ -24,7 +24,7 @@
     "test": "jest --runInBand",
     "test:watch": "jest --watch",
     "e2e:serve": "node -r @babel/register ./__tests__/setup/mockAPI.js",
-    "e2e:run": "yarn test e2e/sidebar"
+    "e2e:run": "yarn test e2e"
   },
   "author": {
     "name": "André Neves",
