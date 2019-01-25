@@ -53,12 +53,13 @@ const FormWrapper = styled.div`
 `;
 
 const SendWrapper = styled(ColumnComponent)`
-  margin-top: 60px;
   width: 25%;
+  margin-top: 60px;
 `;
 
 const AmountWrapper = styled.div`
   width: 100%;
+
   &:before {
     content: 'ZEC';
     font-family: ${props => props.theme.fontFamily};
@@ -67,13 +68,14 @@ const AmountWrapper = styled.div`
     margin-left: 15px;
     display: block;
     transition: all 0.05s ease-in-out;
-    opacity: ${props => (props.isEmpty ? '0' : '1')};
+    opacity: ${props => (props.isEmpty ? 0.25 : 1)};
     color: #fff;
+    z-index: 20;
   }
 `;
 
 const AmountInput = styled(InputComponent)`
-  padding-left: ${props => (props.isEmpty ? '15' : '50')}px;
+  padding-left: 50px;
 `;
 
 const ShowFeeButton = styled.button`
@@ -206,7 +208,8 @@ const RevealsMain = styled.div`
   }
 `;
 
-type Props = SendState & {
+type Props = {
+  ...SendState,
   balance: number,
   zecPrice: number,
   addresses: string[],
@@ -214,6 +217,8 @@ type Props = SendState & {
   loadAddresses: () => void,
   resetSendView: () => void,
   validateAddress: ({ address: string }) => void,
+  loadAddresses: () => void,
+  loadZECPrice: () => void,
 };
 
 type State = {
@@ -240,11 +245,11 @@ export class SendView extends PureComponent<Props, State> {
   state = initialState;
 
   componentDidMount() {
-    const { resetSendView, addresses, loadAddresses } = this.props;
-
-    if (addresses.length === 0) loadAddresses();
+    const { resetSendView, loadAddresses, loadZECPrice } = this.props;
 
     resetSendView();
+    loadAddresses();
+    loadZECPrice();
   }
 
   handleChange = (field: string) => (value: string) => {
@@ -252,7 +257,8 @@ export class SendView extends PureComponent<Props, State> {
 
     if (field === 'to') {
       // eslint-disable-next-line max-len
-      this.setState({ [field]: value }, () => validateAddress({ address: value }));
+      this.setState(() => ({ [field]: value }),
+        () => validateAddress({ address: value }) );
     } else {
       this.setState(() => ({ [field]: value }));
     }
@@ -260,17 +266,17 @@ export class SendView extends PureComponent<Props, State> {
 
   handleChangeFeeType = (value: string) => {
     if (value === FEES.CUSTOM) {
-      this.setState({
+      this.setState(() => ({
         feeType: FEES.CUSTOM,
         fee: null,
-      });
+      }));
     } else {
       const fee = new BigNumber(value);
 
-      this.setState({
+      this.setState(() => ({
         feeType: fee.toString(),
         fee: fee.toNumber(),
-      });
+      }));
     }
   };
 
@@ -291,10 +297,11 @@ export class SendView extends PureComponent<Props, State> {
     });
   };
 
-  showModal = (toggle: void => void) => () => {
+  showModal = (toggle: void => void) => {
     const {
       from, amount, to, fee,
     } = this.state;
+    // eslint-disable-next-line react/prop-types
     const { isToAddressValid } = this.props;
 
     if (!from || !amount || !to || !fee || !isToAddressValid) return;
@@ -327,12 +334,18 @@ export class SendView extends PureComponent<Props, State> {
     return isToAddressValid ? (
       <RowComponent alignItems='center'>
         <ValidateStatusIcon src={ValidIcon} />
-        <ItemLabel value='VALID' color={theme.colors.transactionReceived} />
+        <ItemLabel
+          value='VALID'
+          color={theme.colors.transactionReceived}
+        />
       </RowComponent>
     ) : (
       <RowComponent alignItems='center'>
         <ValidateStatusIcon src={InvalidIcon} />
-        <ItemLabel value='INVALID' color={theme.colors.transactionSent} />
+        <ItemLabel
+          value='INVALID'
+          color={theme.colors.transactionSent}
+        />
       </RowComponent>
     );
   };
@@ -342,10 +355,13 @@ export class SendView extends PureComponent<Props, State> {
     valueSentInUsd,
     toggle,
   }: {
+    /* eslint-disable react/no-unused-prop-types */
     valueSent: string,
     valueSentInUsd: string,
     toggle: () => void,
+    /* eslint-enable react/no-unused-prop-types */
   }) => {
+    // eslint-disable-next-line react/prop-types
     const { operationId, isSending, error } = this.props;
     const { from, to } = this.state;
 
@@ -466,7 +482,7 @@ export class SendView extends PureComponent<Props, State> {
               type='number'
               onChange={this.handleChange('amount')}
               value={String(amount)}
-              placeholder='ZEC 0.0'
+              placeholder='0.0'
               min={0.01}
             />
           </AmountWrapper>
@@ -565,17 +581,17 @@ export class SendView extends PureComponent<Props, State> {
           <ConfirmDialogComponent
             title='Please Confirm Transaction Details'
             onConfirm={this.handleSubmit}
+            showButtons={!isSending && !error && !operationId}
+            onClose={this.reset}
             renderTrigger={toggle => (
               <FormButton
+                onClick={() => this.showModal(toggle)}
                 label='Send'
                 variant='secondary'
                 focused
                 isFluid
-                onClick={this.showModal(toggle)}
               />
             )}
-            showButtons={!isSending && !error && !operationId}
-            onClose={this.reset}
           >
             {toggle => (
               <ModalContent>
@@ -587,7 +603,10 @@ export class SendView extends PureComponent<Props, State> {
               </ModalContent>
             )}
           </ConfirmDialogComponent>
-          <FormButton label='Cancel' variant='secondary' />
+          <FormButton
+            label='Cancel'
+            variant='secondary'
+          />
         </SendWrapper>
       </RowComponent>
     );
