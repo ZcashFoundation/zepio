@@ -24,8 +24,14 @@ jobs:
           command: yarn e2e:serve
           background: true
       - run: yarn wait-on http://localhost:8080 && yarn wait-on http://localhost:18232
-      - run: export DISPLAY=:99
-      - run: xvfb-run --listen-tcp --server-num=99 --auth-file /tmp/xvfb.auth -s "-ac -screen 0 1024x768x24" yarn e2e:run & timeout -s SIGINT 24 ffmpeg -y -f x11grab -video_size 1024x768 -i :99 -codec:v libx264 -r 12 /tmp/e2e-record.mp4
+      - run:
+          command: Xvfb :44 -auth /tmp/xvfb.auth -ac -screen 0 1024x768x24 -listen tcp
+          background: true
+      - run:
+          command: ffmpeg -y -f x11grab -video_size 1024x768 -i :99 -codec:v libx264 -r 12 /tmp/e2e-record.mp4
+          background: true
+      - run: DISPLAY=:44 yarn e2e:run
+      - run: killall -s SIGINT ffmpeg && killall -s SIGTERM Xvfb
       - store_artifacts:
           path: /tmp/e2e-record.mp4
           destination: e2e-record.mp4
