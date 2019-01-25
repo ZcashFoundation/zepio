@@ -1,7 +1,8 @@
 // @flow
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { BigNumber } from 'bignumber.js';
+import { Transition, animated } from 'react-spring';
 
 import FEES from '../constants/fees';
 
@@ -87,7 +88,7 @@ const ShowFeeButton = styled.button`
   outline: none;
   display: flex;
   align-items: center;
-  margin-top: 30px;
+  margin: 30px 0;
   opacity: 0.7;
 
   &:hover {
@@ -105,7 +106,7 @@ const SeeMoreIcon = styled.img`
 
 const FeeWrapper = styled.div`
   background-color: #000;
-  border-radius: 6px;
+  border-radius: 4px;
   padding: 13px 19px;
   margin-bottom: 20px;
 `;
@@ -181,12 +182,28 @@ const ValidateStatusIcon = styled.img`
   margin-right: 7px;
 `;
 
+const RevealsMain = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  & > div {
+    top: 0;
+    right: 0;
+    left: 0;
+  }
+`;
+
 type Props = {
   ...SendState,
   balance: number,
   zecPrice: number,
   addresses: string[],
   sendTransaction: SendTransactionInput => void,
+  loadAddresses: () => void,
   resetSendView: () => void,
   validateAddress: ({ address: string }) => void,
   loadAddresses: () => void,
@@ -229,7 +246,8 @@ export class SendView extends PureComponent<Props, State> {
 
     if (field === 'to') {
       // eslint-disable-next-line max-len
-      this.setState({ [field]: value }, () => validateAddress({ address: value }));
+      this.setState(() => ({ [field]: value }),
+        () => validateAddress({ address: value }));
     } else {
       this.setState(() => ({ [field]: value }));
     }
@@ -237,17 +255,17 @@ export class SendView extends PureComponent<Props, State> {
 
   handleChangeFeeType = (value: string) => {
     if (value === FEES.CUSTOM) {
-      this.setState({
+      this.setState(() => ({
         feeType: FEES.CUSTOM,
         fee: null,
-      });
+      }));
     } else {
       const fee = new BigNumber(value);
 
-      this.setState({
+      this.setState(() => ({
         feeType: fee.toString(),
         fee: fee.toNumber(),
-      });
+      }));
     }
   };
 
@@ -305,12 +323,18 @@ export class SendView extends PureComponent<Props, State> {
     return isToAddressValid ? (
       <RowComponent alignItems='center'>
         <ValidateStatusIcon src={ValidIcon} />
-        <ItemLabel value='VALID' color={theme.colors.transactionReceived} />
+        <ItemLabel
+          value='VALID'
+          color={theme.colors.transactionReceived}
+        />
       </RowComponent>
     ) : (
       <RowComponent alignItems='center'>
         <ValidateStatusIcon src={InvalidIcon} />
-        <ItemLabel value='INVALID' color={theme.colors.transactionSent} />
+        <ItemLabel
+          value='INVALID'
+          color={theme.colors.transactionSent}
+        />
       </RowComponent>
     );
   };
@@ -332,17 +356,23 @@ export class SendView extends PureComponent<Props, State> {
 
     if (isSending) {
       return (
-        <>
+        <Fragment>
           <Loader src={LoadingIcon} />
           <TextComponent value='Processing transaction...' />
-        </>
+        </Fragment>
       );
     }
 
     if (operationId) {
       return (
-        <ColumnComponent width='100%' id='send-success-wrapper'>
-          <TextComponent value={`Transaction ID: ${operationId}`} align='center' />
+        <ColumnComponent
+          width='100%'
+          id='send-success-wrapper'
+        >
+          <TextComponent
+            value={`Transaction ID: ${operationId}`}
+            align='center'
+          />
           <button
             type='button'
             onClick={() => {
@@ -462,40 +492,71 @@ export class SendView extends PureComponent<Props, State> {
           />
           <ShowFeeButton
             id='send-show-additional-options-button'
-            onClick={() => this.setState(state => ({ showFee: !state.showFee }))}
+            onClick={() => this.setState(state => ({
+              showFee: !state.showFee,
+            }))}
           >
-            <SeeMoreIcon src={MenuIcon} alt='Show more icon' />
-            <TextComponent value={`${showFee ? 'Hide' : 'Show'} Additional Options`} />
+            <SeeMoreIcon
+              src={MenuIcon}
+              alt='Show more icon'
+            />
+            <TextComponent
+              value={`${showFee ? 'Hide' : 'Show'} Additional Options`}
+            />
           </ShowFeeButton>
-          {showFee && (
-            <FeeWrapper id='send-fee-wrapper'>
-              <RowComponent alignItems='flex-end' justifyContent='space-between'>
-                <ColumnComponent width='74%'>
-                  <InputLabelComponent value='Fee' marginTop='0px' />
-                  <InputComponent
-                    type='number'
-                    onChange={this.handleChange('fee')}
-                    value={String(fee)}
-                    disabled={feeType !== FEES.CUSTOM}
-                    bgColor={theme.colors.blackTwo}
-                    name='fee'
-                  />
-                </ColumnComponent>
-                <ColumnComponent width='25%'>
-                  <SelectComponent
-                    onChange={this.handleChangeFeeType}
-                    value={String(feeType)}
-                    options={Object.keys(FEES).map(cur => ({
-                      label: cur.toLowerCase(),
-                      value: String(FEES[cur]),
-                    }))}
-                    placement='top'
-                    bgColor={theme.colors.blackTwo}
-                  />
-                </ColumnComponent>
-              </RowComponent>
-            </FeeWrapper>
-          )}
+          <RevealsMain>
+            <Transition
+              native
+              items={showFee}
+              enter={[{
+                height: 'auto',
+                opacity: 1,
+                overflow: 'visible',
+              }]}
+              leave={{ height: 0, opacity: 0 }}
+              from={{
+                position: 'absolute',
+                overflow: 'hidden',
+                opacity: 0,
+                height: 0,
+              }}
+            >
+              {show => show && (props => (
+                <animated.div style={props}>
+                  <FeeWrapper id='send-fee-wrapper'>
+                    <RowComponent
+                      alignItems='flex-end'
+                      justifyContent='space-between'
+                    >
+                      <ColumnComponent width='74%'>
+                        <InputLabelComponent value='Fee' />
+                        <InputComponent
+                          type='number'
+                          onChange={this.handleChange('fee')}
+                          value={String(fee)}
+                          disabled={feeType !== FEES.CUSTOM}
+                          bgColor={theme.colors.blackTwo}
+                          name='fee'
+                        />
+                      </ColumnComponent>
+                      <ColumnComponent width='25%'>
+                        <SelectComponent
+                          placement='top'
+                          value={String(feeType)}
+                          bgColor={theme.colors.blackTwo}
+                          onChange={this.handleChangeFeeType}
+                          options={Object.keys(FEES).map(cur => ({
+                            label: cur.toLowerCase(),
+                            value: String(FEES[cur]),
+                          }))}
+                        />
+                      </ColumnComponent>
+                    </RowComponent>
+                  </FeeWrapper>
+                </animated.div>
+              ))}
+            </Transition>
+          </RevealsMain>
           {feeType === FEES.CUSTOM && (
             <TextComponent value='Custom fees may compromise your privacy since fees are transparent' />
           )}
@@ -517,26 +578,34 @@ export class SendView extends PureComponent<Props, State> {
           <ConfirmDialogComponent
             title='Please Confirm Transaction Details'
             onConfirm={this.handleSubmit}
+            showButtons={!isSending && !error && !operationId}
+            onClose={this.reset}
             renderTrigger={toggle => (
               <FormButton
+                onClick={() => this.showModal(toggle)}
                 id='send-submit-button'
                 label='Send'
                 variant='secondary'
                 focused
-                onClick={() => this.showModal(toggle)}
+                isFluid
                 disabled={!from || !amount || !to || !fee}
               />
             )}
-            showButtons={!isSending && !error && !operationId}
-            onClose={this.reset}
           >
             {toggle => (
               <ModalContent id='send-confirm-transaction-modal'>
-                {this.renderModalContent({ valueSent, valueSentInUsd, toggle })}
+                {this.renderModalContent({
+                  valueSent,
+                  valueSentInUsd,
+                  toggle,
+                })}
               </ModalContent>
             )}
           </ConfirmDialogComponent>
-          <FormButton label='Cancel' variant='secondary' />
+          <FormButton
+            label='Cancel'
+            variant='secondary'
+          />
         </SendWrapper>
       </RowComponent>
     );

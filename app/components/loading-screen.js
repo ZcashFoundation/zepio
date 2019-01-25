@@ -64,12 +64,13 @@ export class LoadingScreen extends PureComponent<Props, State> {
         <Transition
           native
           items={start}
-          enter={[{ height: 'auto' }]}
-          leave={{ height: 0 }}
+          enter={[{ height: 'auto', opacity: 1 }]}
+          leave={{ height: 0, opacity: 0 }}
           from={{
             position: 'absolute',
             overflow: 'hidden',
             height: 0,
+            opacity: 0,
           }}
         >
           {() => props => (
