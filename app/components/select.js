@@ -24,9 +24,7 @@ const SelectWrapper = styled.div`
   position: relative;
 
   ${props => props.isOpen
-    && `border-${props.placement}-left-radius: 0; border-${
-      props.placement
-    }-right-radius: 0;`}
+    && `border-${props.placement}-left-radius: 0; border-${props.placement}-right-radius: 0;`}
 `;
 /* eslint-enable max-len */
 
@@ -70,22 +68,29 @@ const OptionsWrapper = styled.div`
   flex-direction: column;
   position: absolute;
   width: 100%;
-  ${props => `${props.placement}: ${`-${props.optionsAmount * 62}px`}`};
+  ${props => `${props.placement}: ${`-${props.optionsAmount * 40}px`}`};
   overflow-y: auto;
 `;
 
 const Option = styled.button`
   border: none;
   background: none;
-  height: 60px;
-  background-color: ${
-  props => props.bgColor || props.theme.colors.inputBackground};
+  height: 40px;
+  background-color: #5d5d5d;
   cursor: pointer;
   z-index: 99;
   text-transform: capitalize;
+  padding: 5px 10px;
+  border-bottom: 1px solid #4e4b4b;
 
   &:hover {
     background-color: ${props => props.theme.colors.background};
+  }
+
+  &:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom: 1px solid transparent;
   }
 `;
 
@@ -135,10 +140,10 @@ export class SelectComponent extends PureComponent<Props, State> {
     const { isOpen } = this.state;
 
     if (placement === 'top') {
-      return isOpen ? ChevronUp : ChevronDown;
+      return !isOpen ? ChevronUp : ChevronDown;
     }
 
-    return isOpen ? ChevronDown : ChevronUp;
+    return !isOpen ? ChevronDown : ChevronUp;
   };
 
   render() {

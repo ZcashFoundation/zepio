@@ -66,11 +66,7 @@ export const InputComponent = ({
       />
     ),
     textarea: () => (
-      <Textarea
-        onChange={evt => onChange(evt.target.value)}
-        bgColor={bgColor}
-        {...props}
-      />
+      <Textarea onChange={evt => onChange(evt.target.value)} bgColor={bgColor} {...props} />
     ),
   };
 

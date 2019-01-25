@@ -52,8 +52,8 @@ const FormWrapper = styled.div`
 `;
 
 const SendWrapper = styled(ColumnComponent)`
-  margin-top: 60px;
   width: 25%;
+  margin-top: 60px;
 `;
 
 const AmountWrapper = styled.div`
@@ -104,11 +104,10 @@ const SeeMoreIcon = styled.img`
 `;
 
 const FeeWrapper = styled.div`
-  background-color: ${props => props.theme.colors.cardBackgroundColor};
+  background-color: #000;
   border-radius: 6px;
   padding: 13px 19px;
   margin-bottom: 20px;
-  margin-top: 10px;
 `;
 
 const InfoCard = styled.div`
@@ -132,6 +131,7 @@ const InfoCardUSD = styled(TextComponent)`
 `;
 
 const FormButton = styled(Button)`
+  width: 100%;
   margin: 10px 0;
 `;
 
