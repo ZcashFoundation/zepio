@@ -258,7 +258,7 @@ export class SendView extends PureComponent<Props, State> {
     if (field === 'to') {
       // eslint-disable-next-line max-len
       this.setState(() => ({ [field]: value }),
-        () => validateAddress({ address: value }) );
+        () => validateAddress({ address: value }));
     } else {
       this.setState(() => ({ [field]: value }));
     }
@@ -517,16 +517,18 @@ export class SendView extends PureComponent<Props, State> {
             <Transition
               native
               items={showFee}
-              leave={{ height: 0 }}
+              enter={[{
+                height: 'auto',
+                opacity: 1,
+                overflow: 'visible',
+              }]}
+              leave={{ height: 0, opacity: 0 }}
               from={{
                 position: 'absolute',
                 overflow: 'hidden',
+                opacity: 0,
                 height: 0,
               }}
-              enter={[{
-                height: 'auto',
-                width: 'auto',
-              }]}
             >
               {show => show && (props => (
                 <animated.div style={props}>

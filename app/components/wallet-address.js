@@ -67,6 +67,8 @@ const RevealsMain = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
+  height: ${props => (props.isVisible ? '178px' : 0)}
+  transition: all 0.25s ease-in-out;
 
   & > div {
     top: 0;
@@ -92,7 +94,7 @@ export class WalletAddress extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.state = { isVisible: props.isVisible };
+    this.state = { isVisible: Boolean(props.isVisible) };
   }
 
   show = () => this.setState(() => ({ isVisible: true }));
@@ -121,17 +123,20 @@ export class WalletAddress extends PureComponent<Props, State> {
             isVisible={isVisible}
           />
         </AddressWrapper>
-        <RevealsMain>
+        <RevealsMain isVisible={isVisible}>
           <Transition
             native
             items={isVisible}
-            enter={[{ height: 'auto' }]}
-            leave={{ height: 0 }}
+            enter={[{
+              height: 'auto',
+              opacity: 1,
+            }]}
+            leave={{ height: 0, opacity: 0 }}
             from={{
-              // TODO: fix this
-              // position: 'absolute',
-              // overflow: 'hidden',
-              // height: 0,
+              position: 'absolute',
+              overflow: 'hidden',
+              opacity: 0,
+              height: 0,
             }}
           >
             {show => show && (props => (

@@ -53,7 +53,7 @@ const createWindow = () => {
 
   mainWindow = new BrowserWindow({
     width: 1000,
-    height: 600,
+    height: 660,
     transparent: false,
     frame: true,
     resizable: true,

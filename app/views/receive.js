@@ -97,10 +97,7 @@ export class ReceiveView extends PureComponent<Props, State> {
           alignItems='center'
           justifyContent='space-between'
         >
-          <WalletAddress
-            address={address}
-            isVisible
-          />
+          <WalletAddress address={address} />
         </Row>
         <Row>
           <ShowMoreButton
@@ -127,17 +124,14 @@ export class ReceiveView extends PureComponent<Props, State> {
         <Transition
           native
           items={showAdditionalOptions}
-          leave={{ height: 0 }}
+          enter={[{ height: 'auto', opacity: 1 }]}
+          leave={{ height: 0, opacity: 0 }}
           from={{
             position: 'absolute',
-            // TODO: fix this as we need the overflow but need the
-            // overflow: 'hidden',
+            overflow: 'hidden',
             height: 0,
+            opacity: 0,
           }}
-          enter={[{
-            height: 'auto',
-            width: 'auto',
-          }]}
         >
           {show => show && (props => (
             <animated.div style={props}>
