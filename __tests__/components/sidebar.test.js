@@ -1,20 +1,26 @@
 // @flow
 
 import React from 'react';
-import { render } from 'react-testing-library';
+import { render, cleanup } from 'react-testing-library';
 import { MemoryRouter } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 import 'jest-dom/extend-expect';
 
 import { SidebarComponent } from '../../app/components/sidebar';
+import appTheme from '../../app/theme';
 
-describe('<Sidebar />', () => {
+afterEach(cleanup);
+
+describe('<SidebarComponent />', () => {
   describe('render()', () => {
     test('should render correctly', () => {
       // $FlowFixMe
       const { asFragment } = render(
-        <MemoryRouter>
-          <SidebarComponent location={{ pathname: '/', hash: '/', search: '' }} />
-        </MemoryRouter>,
+        <ThemeProvider theme={appTheme}>
+          <MemoryRouter>
+            <SidebarComponent location={{ pathname: '/', hash: '/', search: '' }} />
+          </MemoryRouter>
+        </ThemeProvider>,
       );
 
       expect(asFragment()).toMatchSnapshot();
