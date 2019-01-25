@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run: apt-get -y update
       - run: apt-get -y install libusb-1.0-0-dev graphicsmagick libudev-dev
-      - run: apt-get -y install xvfb libxtst6 libxss1 libgtk2.0-0 libnss3 libasound2 libgconf-2-4 ffmpeg frei0r-plugins
+      - run: apt-get -y install tmux xvfb libxtst6 libxss1 libgtk2.0-0 libnss3 libasound2 libgconf-2-4 ffmpeg frei0r-plugins
       # TODO: Just a quick try
       - run: rm yarn.lock
       - run: yarn install
@@ -23,11 +23,12 @@ jobs:
       - run: yarn wait-on http://localhost:8080 && yarn wait-on http://localhost:18232
       - run: export DISPLAY=:99
       - run:
-          command: xvfb-run --listen-tcp --server-num=99 --auth-file /tmp/xvfb.auth -s "-ac -screen 0 1024x768x24" yarn e2e:run
+          command: |
+            xvfb-run --listen-tcp --server-num=99 --auth-file /tmp/xvfb.auth -s "-ac -screen 0 1024x768x24" yarn e2e:run
+            tmux send-keys -t E2ERecordSession1 q
           background: true
       - run: |
-          (coproc ffmpeg -f x11grab -video_size 1024x768 -i :99 -codec:v libx264 -r 5 /tmp/e2e-record.mp4 & sleep 40)
-          echo 'q' >&"${COPROC[1]}"
+          tmux new-session -d -s E2ERecordSession1 'ffmpeg -f x11grab -video_size 1024x768 -i :99 -codec:v libx264 -r 12 /tmp/e2e-record.mp4'
       - store_artifacts:
           path: /tmp/e2e-record.mp4
           destination: e2e-record.mp4
