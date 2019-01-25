@@ -28,10 +28,10 @@ jobs:
           command: Xvfb :44 -auth /tmp/xvfb.auth -ac -screen 0 1024x768x24 -listen tcp
           background: true
       - run:
-          command: ffmpeg -y -f x11grab -video_size 1024x768 -i :99 -codec:v libx264 -r 12 /tmp/e2e-record.mp4
+          command: ffmpeg -y -f x11grab -video_size 1024x768 -i :44 -codec:v libx264 -r 12 /tmp/e2e-record.mp4
           background: true
       - run: DISPLAY=:44 yarn e2e:run
-      - run: killall -s SIGINT ffmpeg && killall -s SIGTERM Xvfb
+      - run: kill -s SIGINT $(pgrep ffmpeg) && kill -s SIGTERM $(pgrep Xvfb)
       - store_artifacts:
           path: /tmp/e2e-record.mp4
           destination: e2e-record.mp4
