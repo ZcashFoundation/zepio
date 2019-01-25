@@ -23,7 +23,7 @@ jobs:
       - run: yarn wait-on http://localhost:8080 && yarn wait-on http://localhost:18232
       - run: export DISPLAY=:99
       - run: |
-          xvfb-run --listen-tcp --server-num=99 --auth-file /tmp/xvfb.auth -s "-ac -screen 0 1024x768x24" yarn e2e:run & tmux new-session -d -s E2ERecord1 "ffmpeg -f x11grab -video_size 1024x768 -i :99 -codec:v libx264 -r 12 /tmp/e2e-record.mp4" & (sleep 60 && tmux send-keys -t E2ERecord1 "q")
+          xvfb-run --listen-tcp --server-num=99 --auth-file /tmp/xvfb.auth -s "-ac -screen 0 1024x768x24" yarn e2e:run & ffmpeg -f x11grab -video_size 1024x768 -i :99 -codec:v libx264 -r 12 /tmp/e2e-record.mp4 & (sleep 60 && kill "$(pgrep ffmpeg)")
       - store_artifacts:
           path: /tmp/e2e-record.mp4
           destination: e2e-record.mp4
