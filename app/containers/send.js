@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import eres from 'eres';
 import { BigNumber } from 'bignumber.js';
 
+import store from '../../config/electron-store';
 import rpc from '../../services/api';
 import { SendView } from '../views/send';
 
 import {
+  loadZECPrice,
   sendTransaction,
   sendTransactionSuccess,
   sendTransactionError,
@@ -33,10 +35,10 @@ export type SendTransactionInput = {
   memo: string,
 };
 
-const mapStateToProps = ({ walletSummary, sendStatus }: AppState) => ({
+const mapStateToProps = ({ walletSummary, sendStatus, receive }: AppState) => ({
   balance: walletSummary.total,
-  zecPrice: walletSummary.zecPrice,
-  addresses: walletSummary.addresses,
+  zecPrice: sendStatus.zecPrice,
+  addresses: receive.addresses,
   error: sendStatus.error,
   isSending: sendStatus.isSending,
   operationId: sendStatus.operationId,
@@ -145,6 +147,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       }),
     );
   },
+  loadZECPrice: () => dispatch(
+    loadZECPrice({
+      value: store.get('ZEC_DOLLAR_PRICE'),
+    }),
+  ),
 });
 
 // $FlowFixMe

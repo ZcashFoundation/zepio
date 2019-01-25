@@ -52,12 +52,13 @@ const FormWrapper = styled.div`
 `;
 
 const SendWrapper = styled(ColumnComponent)`
-  margin-top: 60px;
   width: 25%;
+  margin-top: 60px;
 `;
 
 const AmountWrapper = styled.div`
   width: 100%;
+
   &:before {
     content: 'ZEC';
     font-family: ${props => props.theme.fontFamily};
@@ -66,27 +67,15 @@ const AmountWrapper = styled.div`
     margin-left: 15px;
     display: block;
     transition: all 0.05s ease-in-out;
-    opacity: ${props => (props.isEmpty ? '0' : '1')};
+    opacity: ${props => (props.isEmpty ? 0.25 : 1)};
     color: #fff;
+    z-index: 20;
   }
 `;
 
 const AmountInput = styled(InputComponent)`
-  padding-left: ${props => (props.isEmpty ? '15' : '50')}px;
+  padding-left: 50px;
 `;
-
-// const ShowFeeButton = styled.button`
-//   align-items: center;
-//   background: none;
-//   border: none;
-//   cursor: pointer;
-//   display: flex;
-//   width: 100%;
-//   color: ${props => props.theme.colors.text};
-//   outline: none;
-//   margin-bottom: 15px;
-//   margin-top: 15px;
-// `;
 
 const ShowFeeButton = styled.button`
   background: none;
@@ -141,6 +130,7 @@ const InfoCardUSD = styled(TextComponent)`
 `;
 
 const FormButton = styled(Button)`
+  width: 100%;
   margin: 10px 0;
   border-color: ${props => (props.focused
     ? props.theme.colors.activeItem
@@ -210,6 +200,8 @@ type Props = {
   sendTransaction: SendTransactionInput => void,
   resetSendView: () => void,
   validateAddress: ({ address: string }) => void,
+  loadAddresses: () => void,
+  loadZECPrice: () => void,
 };
 
 type State = {
@@ -236,9 +228,11 @@ export class SendView extends PureComponent<Props, State> {
   state = initialState;
 
   componentDidMount() {
-    const { resetSendView } = this.props;
+    const { resetSendView, loadAddresses, loadZECPrice } = this.props;
 
     resetSendView();
+    loadAddresses();
+    loadZECPrice();
   }
 
   handleChange = (field: string) => (value: string) => {
@@ -340,7 +334,7 @@ export class SendView extends PureComponent<Props, State> {
     /* eslint-disable react/no-unused-prop-types */
     valueSent: string,
     valueSentInUsd: string,
-    toggle: () => void
+    toggle: () => void,
     /* eslint-enable react/no-unused-prop-types */
   }) => {
     // eslint-disable-next-line react/prop-types
@@ -464,7 +458,7 @@ export class SendView extends PureComponent<Props, State> {
               type='number'
               onChange={this.handleChange('amount')}
               value={String(amount)}
-              placeholder='ZEC 0.0'
+              placeholder='0.0'
               min={0.01}
             />
           </AmountWrapper>
