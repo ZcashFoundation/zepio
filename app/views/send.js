@@ -52,12 +52,13 @@ const FormWrapper = styled.div`
 `;
 
 const SendWrapper = styled(ColumnComponent)`
-  margin-top: 60px;
   width: 25%;
+  margin-top: 60px;
 `;
 
 const AmountWrapper = styled.div`
   width: 100%;
+
   &:before {
     content: 'ZEC';
     font-family: ${props => props.theme.fontFamily};
@@ -66,13 +67,14 @@ const AmountWrapper = styled.div`
     margin-left: 15px;
     display: block;
     transition: all 0.05s ease-in-out;
-    opacity: ${props => (props.isEmpty ? '0' : '1')};
+    opacity: ${props => (props.isEmpty ? 0.25 : 1)};
     color: #fff;
+    z-index: 20;
   }
 `;
 
 const AmountInput = styled(InputComponent)`
-  padding-left: ${props => (props.isEmpty ? '15' : '50')}px;
+  padding-left: 50px;
 `;
 
 const ShowFeeButton = styled.button`
@@ -128,6 +130,7 @@ const InfoCardUSD = styled(TextComponent)`
 `;
 
 const FormButton = styled(Button)`
+  width: 100%;
   margin: 10px 0;
   border-color: ${props => (props.focused
     ? props.theme.colors.activeItem
@@ -455,7 +458,7 @@ export class SendView extends PureComponent<Props, State> {
               type='number'
               onChange={this.handleChange('amount')}
               value={String(amount)}
-              placeholder='ZEC 0.0'
+              placeholder='0.0'
               min={0.01}
             />
           </AmountWrapper>
