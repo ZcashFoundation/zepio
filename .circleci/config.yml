@@ -31,7 +31,10 @@ jobs:
           command: ffmpeg -y -f x11grab -video_size 1024x768 -i :44 -codec:v libx264 -r 12 /tmp/e2e-record.mp4
           background: true
       - run: DISPLAY=:44 yarn e2e:run
-      - run: kill -s SIGINT $(pgrep ffmpeg) && kill -s SIGTERM $(pgrep Xvfb)
+      - run: |
+          kill -s SIGINT $(pgrep ffmpeg)
+          sleep 10
+          kill -s SIGTERM $(pgrep Xvfb)
       - store_artifacts:
           path: /tmp/e2e-record.mp4
           destination: e2e-record.mp4
