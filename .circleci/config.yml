@@ -23,9 +23,7 @@ jobs:
       - run: yarn wait-on http://localhost:8080 && yarn wait-on http://localhost:18232
       - run: export DISPLAY=:99
       - run:
-          command: |
-            xvfb-run --listen-tcp --server-num=99 --auth-file /tmp/xvfb.auth -s "-ac -screen 0 1024x768x24" yarn e2e:run
-            tmux send-keys -t E2ERecordSession1 q
+          command: xvfb-run --listen-tcp --server-num=99 --auth-file /tmp/xvfb.auth -s "-ac -screen 0 1024x768x24" yarn e2e:run && tmux send-keys -t E2ERecordSession1 q
           background: true
       - run: |
           tmux new-session -d -s E2ERecordSession1 'ffmpeg -f x11grab -video_size 1024x768 -i :99 -codec:v libx264 -r 12 /tmp/e2e-record.mp4'
