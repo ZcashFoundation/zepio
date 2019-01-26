@@ -45,4 +45,4 @@ workflows:
       - test:
           filters:
             branches:
-              only: feature/e2e
+              only: develop
