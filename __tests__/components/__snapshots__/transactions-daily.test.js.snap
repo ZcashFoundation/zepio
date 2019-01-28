@@ -9,7 +9,7 @@ exports[`<TransactionDailyComponent /> render() should render user daily transac
       class="sc-ckVGcZ kFpbuU sc-htpNat jxQpDz"
       color="#FFF"
     >
-      2019-01-25T20:38:40.521Z
+      2019-01-28T18:11:27.791Z
     </p>
     <div
       class="sc-dxgOiQ cLfqec"
@@ -33,16 +33,16 @@ exports[`<TransactionDailyComponent /> render() should render user daily transac
               width=""
             >
               <p
-                class="sc-cSHVUG bHGbwE sc-htpNat dkQVQA"
+                class="sc-cSHVUG jLDVvD sc-htpNat dkQVQA"
                 color="#FFF"
               >
-                received
+                receive
               </p>
               <p
                 class="sc-chPdSV hltHrj sc-htpNat jxQpDz"
                 color="#FFF"
               >
-                17:38 PM
+                15:11 PM
               </p>
             </div>
           </div>
@@ -58,16 +58,16 @@ exports[`<TransactionDailyComponent /> render() should render user daily transac
           width=""
         >
           <p
-            class="sc-htpNat jAbxuE"
-            color="#FF6C6C"
+            class="sc-htpNat dztgbW"
+            color="#6AEAC0"
           >
-            -ZEC 1.789
+            +ZEC 1.789
           </p>
           <p
             class="sc-htpNat dhSLjI"
             color="#5d5d65"
           >
-            -USD $0
+            +USD $2.406
           </p>
         </div>
       </div>
@@ -96,13 +96,13 @@ exports[`<TransactionDailyComponent /> render() should render user daily transac
                 class="sc-cSHVUG bHGbwE sc-htpNat dkQVQA"
                 color="#FFF"
               >
-                sent
+                send
               </p>
               <p
                 class="sc-chPdSV hltHrj sc-htpNat jxQpDz"
                 color="#FFF"
               >
-                17:38 PM
+                15:11 PM
               </p>
             </div>
           </div>
@@ -127,7 +127,7 @@ exports[`<TransactionDailyComponent /> render() should render user daily transac
             class="sc-htpNat dhSLjI"
             color="#5d5d65"
           >
-            -USD $0
+            -USD $1.138
           </p>
         </div>
       </div>
