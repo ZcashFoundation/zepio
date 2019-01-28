@@ -22,10 +22,7 @@ import filterObjectNullKeys from '../utils/filterObjectNullKeys';
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
 
-import {
-  loadAddressesSuccess,
-  loadAddressesError,
-} from '../redux/modules/receive';
+import { loadAddressesSuccess, loadAddressesError } from '../redux/modules/receive';
 
 export type SendTransactionInput = {
   from: string,
@@ -47,11 +44,7 @@ const mapStateToProps = ({ walletSummary, sendStatus, receive }: AppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   sendTransaction: async ({
-    from,
-    to,
-    amount,
-    fee,
-    memo,
+    from, to, amount, fee, memo,
   }: SendTransactionInput) => {
     dispatch(sendTransaction());
 
@@ -95,16 +88,12 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
       if (operationStatus && operationStatus.status === 'success') {
         clearInterval(interval);
-        dispatch(
-          sendTransactionSuccess({ operationId: operationStatus.result.txid }),
-        );
+        dispatch(sendTransactionSuccess({ operationId: operationStatus.result.txid }));
       }
 
       if (operationStatus && operationStatus.status === 'failed') {
         clearInterval(interval);
-        dispatch(
-          sendTransactionError({ error: operationStatus.error.message }),
-        );
+        dispatch(sendTransactionError({ error: operationStatus.error.message }));
       }
     }, 2000);
   },
@@ -135,9 +124,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   loadAddresses: async () => {
     const [zAddressesErr, zAddresses] = await eres(rpc.z_listaddresses());
 
-    const [tAddressesErr, transparentAddresses] = await eres(
-      rpc.getaddressesbyaccount(''),
-    );
+    const [tAddressesErr, transparentAddresses] = await eres(rpc.getaddressesbyaccount(''));
 
     if (zAddressesErr || tAddressesErr) return dispatch(loadAddressesError({ error: 'Something went wrong!' }));
 

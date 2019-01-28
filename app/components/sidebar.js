@@ -40,10 +40,10 @@ const StyledLink = styled(Link)`
   transition: all 0.03s ${props => props.theme.colors.transitionEase};
 
   &:hover {
-    color: ${/* eslint-disable-next-line max-len */
-  props => (props.isActive
-    ? props.theme.colors.sidebarItemActive
-    : '#ddd')}
+    color: ${
+  /* eslint-disable-next-line max-len */
+  props => (props.isActive ? props.theme.colors.sidebarItemActive : '#ddd')
+}
     background-color: ${props => props.theme.colors.sidebarHoveredItem};
   }
 `;
@@ -70,16 +70,12 @@ type Props = {
 };
 
 export const SidebarComponent = ({ options, location }: Props) => (
-  <Wrapper>
+  <Wrapper id='sidebar'>
     {(options || []).map((item) => {
       const isActive = location.pathname === item.route;
 
       return (
-        <StyledLink
-          isActive={isActive}
-          key={item.route}
-          to={item.route}
-        >
+        <StyledLink isActive={isActive} key={item.route} to={item.route}>
           <Icon
             isActive={isActive}
             src={item.icon(isActive)}

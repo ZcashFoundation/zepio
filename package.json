@@ -1,6 +1,6 @@
 {
   "name": "zec-react-wallet",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Zcash Reference Wallet",
   "main": "config/main.js",
   "license": "MIT",
@@ -21,8 +21,10 @@
     "docz:dev": "docz dev",
     "docz:build": "docz build",
     "docz:deploy": "yarn docz:build && cd ./.docz/dist && now && now alias zec-docz.now.sh",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "jest --runInBand",
+    "test:watch": "jest --watch",
+    "e2e:serve": "node -r @babel/register ./__tests__/setup/mockAPI.js",
+    "e2e:run": "yarn test e2e"
   },
   "author": {
     "name": "André Neves",
@@ -43,12 +45,13 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "concurrently": "^4.1.0",
+    "create-test-server": "georgelima/create-test-server",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.1",
     "docz": "0.13.4",
     "docz-plugin-css": "^0.11.0",
     "docz-theme-default": "0.13.4",
-    "electron": "^4.0.0",
+    "electron": "^4.0.1",
     "electron-builder": "^20.38.4",
     "electron-compilers": "^5.9.0",
     "electron-icon-maker": "^0.0.4",
@@ -69,6 +72,7 @@
     "html-webpack-plugin": "^3.1.0",
     "jest": "^23.6.0",
     "jest-dom": "^2.1.1",
+    "jest-extended": "^0.11.0",
     "node-sass": "^4.8.3",
     "postcss-loader": "^3.0.0",
     "pre-commit": "^1.2.2",

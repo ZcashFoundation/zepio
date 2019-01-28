@@ -66,7 +66,7 @@ const Status = withSyncStatus(StatusPill);
 export const HeaderComponent = ({ title }: Props) => {
 
   return (
-    <Wrapper>
+    <Wrapper id='header'>
       <LogoWrapper>
         <ZcashLogo />
       </LogoWrapper>

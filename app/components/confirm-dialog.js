@@ -74,6 +74,7 @@ export const ConfirmDialogComponent = ({
 
   return (
     <ModalComponent
+      id='confirm-dialog-modal-wrapper'
       renderTrigger={renderTrigger}
       closeOnBackdropClick={false}
       closeOnEsc={false}
@@ -90,7 +91,12 @@ export const ConfirmDialogComponent = ({
           {children(handleClose(toggle))}
           {showButtons && (
             <>
-              <Btn label='Confirm' onClick={onConfirm} isLoading={isLoading} />
+              <Btn
+                id='confirm-modal-button'
+                label='Confirm'
+                onClick={onConfirm}
+                isLoading={isLoading}
+              />
               <Btn
                 label='Cancel'
                 onClick={handleClose(toggle)}

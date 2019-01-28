@@ -24,9 +24,7 @@ const SelectWrapper = styled.div`
   position: relative;
 
   ${props => props.isOpen
-    && `border-${props.placement}-left-radius: 0; border-${
-      props.placement
-    }-right-radius: 0;`}
+    && `border-${props.placement}-left-radius: 0; border-${props.placement}-right-radius: 0;`}
 `;
 /* eslint-enable max-len */
 
@@ -156,6 +154,7 @@ export class SelectComponent extends PureComponent<Props, State> {
 
     return (
       <SelectWrapper
+        id='select-component'
         isOpen={isOpen}
         placement={placement}
         onClick={() => this.setState(() => ({ isOpen: !isOpen }))}
@@ -177,6 +176,7 @@ export class SelectComponent extends PureComponent<Props, State> {
           >
             {options.map(({ label, value: optionValue }) => (
               <Option
+                id={optionValue}
                 key={label + optionValue}
                 onClick={() => this.onSelect(optionValue)}
                 bgColor={bgColor}

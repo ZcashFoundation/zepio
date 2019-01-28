@@ -38,11 +38,11 @@ const Logo = styled.img`
 
 type Props = {
   progress: number,
-}
+};
 
 type State = {
   start: boolean,
-}
+};
 
 const TIME_DELAY_ANIM = 100;
 
@@ -64,16 +64,17 @@ export class LoadingScreen extends PureComponent<Props, State> {
         <Transition
           native
           items={start}
-          enter={[{ height: 'auto' }]}
-          leave={{ height: 0 }}
+          enter={[{ height: 'auto', opacity: 1 }]}
+          leave={{ height: 0, opacity: 0 }}
           from={{
             position: 'absolute',
             overflow: 'hidden',
             height: 0,
+            opacity: 0,
           }}
         >
           {() => props => (
-            <animated.div style={props}>
+            <animated.div style={props} id='loading-screen'>
               <CircleWrapper>
                 <Logo src={zcashLogo} alt='Zcash logo' />
                 <CircleProgressComponent
