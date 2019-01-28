@@ -14,8 +14,8 @@ import { TransactionDetailsComponent } from './transaction-details';
 
 import theme from '../theme';
 
-import formatNumber from '../utils/formatNumber';
-import truncateAddress from '../utils/truncateAddress';
+import formatNumber from '../utils/format-number';
+import truncateAddress from '../utils/truncate-address';
 
 const Wrapper = styled(RowComponent)`
   background-color: ${props => props.theme.colors.cardBackgroundColor};
@@ -32,12 +32,12 @@ const Icon = styled.img`
   height: 20px;
 `;
 
+/* eslint-disable max-len */
 const TransactionTypeLabel = styled(TextComponent)`
-  color: ${props => (props.isReceived
-    ? props.theme.colors.transactionReceived
-    : props.theme.colors.transactionSent)};
+  color: ${props => (props.isReceived ? props.theme.colors.transactionReceived : props.theme.colors.transactionSent)};
   text-transform: capitalize;
 `;
+/* eslint-enable max-len */
 
 const TransactionAddress = styled(TextComponent)`
   color: #a7a7a7;
@@ -97,16 +97,9 @@ export const TransactionItemComponent = ({
         >
           <RowComponent alignItems='center'>
             <RowComponent alignItems='center'>
-              <Icon
-                src={isReceived ? ReceivedIcon : SentIcon}
-                alt='Transaction Type Icon'
-              />
+              <Icon src={isReceived ? ReceivedIcon : SentIcon} alt='Transaction Type Icon' />
               <TransactionColumn>
-                <TransactionTypeLabel
-                  isReceived={isReceived}
-                  value={type}
-                  isBold
-                />
+                <TransactionTypeLabel isReceived={isReceived} value={type} isBold />
                 <TransactionTime value={transactionTime} />
               </TransactionColumn>
             </RowComponent>
@@ -116,16 +109,9 @@ export const TransactionItemComponent = ({
             <TextComponent
               isBold
               value={transactionValueInZec}
-              color={
-                isReceived
-                  ? theme.colors.transactionReceived
-                  : theme.colors.transactionSent
-              }
+              color={isReceived ? theme.colors.transactionReceived : theme.colors.transactionSent}
             />
-            <TextComponent
-              value={transactionValueInUsd}
-              color={theme.colors.inactiveItem}
-            />
+            <TextComponent value={transactionValueInUsd} color={theme.colors.inactiveItem} />
           </ColumnComponent>
         </Wrapper>
       )}

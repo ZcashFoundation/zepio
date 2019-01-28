@@ -13,7 +13,7 @@ import {
   loadWalletSummarySuccess,
   loadWalletSummaryError,
 } from '../redux/modules/wallet';
-import sortBy from '../utils/sortBy';
+import sortBy from '../utils/sort-by';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
@@ -39,9 +39,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
     const [zAddressesErr, zAddresses] = await eres(rpc.z_listaddresses());
 
-    const [tAddressesErr, transparentAddresses] = await eres(
-      rpc.getaddressesbyaccount(''),
-    );
+    const [tAddressesErr, transparentAddresses] = await eres(rpc.getaddressesbyaccount(''));
 
     // eslint-disable-next-line
     if (zAddressesErr || tAddressesErr) return dispatch(
@@ -53,9 +51,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     const [transactionsErr, transactions] = await eres(rpc.listtransactions());
 
     if (transactionsErr) {
-      return dispatch(
-        loadWalletSummaryError({ error: transactionsErr.message }),
-      );
+      return dispatch(loadWalletSummaryError({ error: transactionsErr.message }));
     }
 
     const formattedTransactions = flow([
@@ -75,9 +71,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     ])(transactions);
 
     if (!zAddresses.length) {
-      const [getNewZAddressErr, newZAddress] = await eres(
-        rpc.z_getnewaddress(),
-      );
+      const [getNewZAddressErr, newZAddress] = await eres(rpc.z_getnewaddress());
 
       if (!getNewZAddressErr && newZAddress) {
         zAddresses.push(newZAddress);

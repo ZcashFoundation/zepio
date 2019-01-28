@@ -16,7 +16,7 @@ import { Divider } from '../components/divider';
 import { Button } from '../components/button';
 import { ConfirmDialogComponent } from '../components/confirm-dialog';
 
-import formatNumber from '../utils/formatNumber';
+import formatNumber from '../utils/format-number';
 
 import type { SendTransactionInput } from '../containers/send';
 import type { State as SendState } from '../redux/modules/send';

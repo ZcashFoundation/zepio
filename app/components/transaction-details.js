@@ -13,8 +13,8 @@ import { ColumnComponent } from './column';
 
 import theme from '../theme';
 
-import formatNumber from '../utils/formatNumber';
-import truncateAddress from '../utils/truncateAddress';
+import formatNumber from '../utils/format-number';
+import truncateAddress from '../utils/truncate-address';
 
 const Wrapper = styled.div`
   width: 460px;
@@ -125,22 +125,13 @@ export const TransactionDetailsComponent = ({
   return (
     <Wrapper>
       <CloseIconWrapper>
-        <CloseIconImg
-          src={CloseIcon}
-          onClick={handleClose}
-        />
+        <CloseIconImg src={CloseIcon} onClick={handleClose} />
       </CloseIconWrapper>
       <TitleWrapper>
-        <TextComponent
-          value='Transaction Details'
-          align='center'
-        />
+        <TextComponent value='Transaction Details' align='center' />
       </TitleWrapper>
       <DetailsWrapper>
-        <Icon
-          src={isReceived ? ReceivedIcon : SentIcon}
-          alt='Transaction Type Icon'
-        />
+        <Icon src={isReceived ? ReceivedIcon : SentIcon} alt='Transaction Type Icon' />
         <TextComponent
           isBold
           size={2.625}
@@ -148,11 +139,7 @@ export const TransactionDetailsComponent = ({
             append: `${isReceived ? '+' : '-'}ZEC `,
             value: amount,
           })}
-          color={
-            isReceived
-              ? theme.colors.transactionReceived
-              : theme.colors.transactionSent
-          }
+          color={isReceived ? theme.colors.transactionReceived : theme.colors.transactionSent}
         />
         <TextComponent
           value={formatNumber({
@@ -169,14 +156,8 @@ export const TransactionDetailsComponent = ({
           <TextComponent value={dateFns.format(date, 'MMMM D, YYYY HH:MMA')} />
         </ColumnComponent>
         <ColumnComponent>
-          <TextComponent
-            value='FEES'
-            isBold
-            color={theme.colors.transactionsDetailsLabel}
-          />
-          <TextComponent
-            value={formatNumber({ value: amount * 0.1, append: 'ZEC ' })}
-          />
+          <TextComponent value='FEES' isBold color={theme.colors.transactionsDetailsLabel} />
+          <TextComponent value={formatNumber({ value: amount * 0.1, append: 'ZEC ' })} />
         </ColumnComponent>
       </InfoRow>
       <Divider />

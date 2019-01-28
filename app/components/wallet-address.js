@@ -7,7 +7,7 @@ import { ColumnComponent } from './column';
 import { Button } from './button';
 import { QRCode } from './qrcode';
 
-import truncateAddress from '../utils/truncateAddress';
+import truncateAddress from '../utils/truncate-address';
 
 import eyeIcon from '../assets/images/eye.png';
 
@@ -35,12 +35,11 @@ const Input = styled.input`
   }
 `;
 
+/* eslint-disable max-len */
 const Btn = styled(Button)`
   border-width: 1px;
   font-weight: ${props => props.theme.fontWeight.regular};
-  border-color: ${props => (props.isVisible
-    ? props.theme.colors.primary : props.theme.colors.buttonBorderColor
-  )};
+  border-color: ${props => (props.isVisible ? props.theme.colors.primary : props.theme.colors.buttonBorderColor)};
   padding: 8px 10px;
   min-width: 260px;
 
@@ -49,6 +48,7 @@ const Btn = styled(Button)`
     width: 20px;
   }
 `;
+/* eslint-enable max-len */
 
 const QRCodeWrapper = styled.div`
   align-items: center;
@@ -89,7 +89,7 @@ type State = {
 export class WalletAddress extends PureComponent<Props, State> {
   static defaultProps = {
     isVisible: false,
-  }
+  };
 
   constructor(props: Props) {
     super(props);
@@ -127,10 +127,12 @@ export class WalletAddress extends PureComponent<Props, State> {
           <Transition
             native
             items={isVisible}
-            enter={[{
-              height: 'auto',
-              opacity: 1,
-            }]}
+            enter={[
+              {
+                height: 'auto',
+                opacity: 1,
+              },
+            ]}
             leave={{ height: 0, opacity: 0 }}
             from={{
               position: 'absolute',
@@ -139,13 +141,15 @@ export class WalletAddress extends PureComponent<Props, State> {
               height: 0,
             }}
           >
-            {show => show && (props => (
-              <animated.div style={props}>
-                <QRCodeWrapper>
-                  <QRCode value={address} />
-                </QRCodeWrapper>
-              </animated.div>
-            ))}
+            {show => show
+              && (props => (
+                <animated.div style={props}>
+                  <QRCodeWrapper>
+                    <QRCode value={address} />
+                  </QRCodeWrapper>
+                </animated.div>
+              ))
+            }
           </Transition>
         </RevealsMain>
       </ColumnComponent>
