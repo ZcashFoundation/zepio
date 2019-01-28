@@ -1,11 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
-import eres from 'eres';
 
 import { TextComponent } from './text';
-
-import rpc from '../../services/api';
 
 import readyIcon from '../assets/images/green_check.png';
 import syncIcon from '../assets/images/sync_icon.png';
@@ -46,70 +43,24 @@ const StatusPillLabel = styled(TextComponent)`
   user-select: none;
 `;
 
-type Props = {};
-
 type State = {
-  type: string,
-  icon: string,
+  type: 'syncing' | 'ready' | 'error',
   progress: number,
-  isSyncing: boolean,
 };
 
-export class StatusPill extends Component<Props, State> {
-  timer: ?IntervalID = null;
+export const StatusPill = ({ type, progress }: State) => {
 
-  state = {
-    type: 'syncing',
-    icon: syncIcon,
-    progress: 0,
-    isSyncing: true,
-  };
+  const isSyncing = type === 'syncing';
 
-  componentDidMount() {
-    this.timer = setInterval(() => {
-      this.getBlockchainStatus();
-    }, 2000);
-  }
+  const icon = type === 'error' ? errorIcon : (isSyncing ? syncIcon : readyIcon);
+  const showPercent = isSyncing ? `(${progress.toFixed(2)}%)` : '';
 
-  componentWillUnmount() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
-    }
-  }
+  return (
+    <Wrapper>
+      <Icon src={icon} animated={isSyncing} />
+      <StatusPillLabel value={`${type} ${showPercent}`} />
+    </Wrapper>
+  );
+};
 
-  getBlockchainStatus = async () => {
-    const [blockchainErr, blockchaininfo] = await eres(
-      rpc.getblockchaininfo(),
-    );
-
-    const newProgress = blockchaininfo.verificationprogress * 100;
-
-    this.setState({
-      progress: newProgress,
-      ...(newProgress > 99.99 ? {
-        type: 'ready',
-        icon: readyIcon,
-        isSyncing: false,
-      } : {}),
-    });
-
-    if (blockchainErr) {
-      this.setState(() => ({ type: 'error', icon: errorIcon }));
-    }
-  }
-
-  render() {
-    const {
-      type, icon, progress, isSyncing,
-    } = this.state;
-    const showPercent = isSyncing ? `(${progress.toFixed(2)}%)` : '';
-
-    return (
-      <Wrapper>
-        <Icon src={icon} animated={isSyncing} />
-        <StatusPillLabel value={`${type} ${showPercent}`} />
-      </Wrapper>
-    );
-  }
-}
+export default StatusPill;
