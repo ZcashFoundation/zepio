@@ -24,7 +24,7 @@ const DefaultButton = styled.button`
   transition: background-color 0.1s ${props => props.theme.colors.transitionEase};
 `;
 
-const Primary = styled<{ theme: Object }>(DefaultButton)`
+const Primary = styled(DefaultButton)`
   background-color: ${props => props.theme.colors.primary};
   color: ${props => props.theme.colors.secondary};
   border: none;
@@ -40,7 +40,7 @@ const Primary = styled<{ theme: Object }>(DefaultButton)`
   }
 `;
 
-const Secondary = styled<{ theme: Object }>(DefaultButton)`
+const Secondary = styled(DefaultButton)`
   background-color: transparent;
   color: ${props => props.theme.colors.secondary};
   border: 2px solid ${props => props.theme.colors.buttonBorderColor};
@@ -76,6 +76,7 @@ type Props = {
   icon?: string | null,
   className?: string,
   isLoading?: boolean,
+  id?: string,
 };
 
 export const Button = ({
@@ -123,4 +124,5 @@ Button.defaultProps = {
   disabled: false,
   className: '',
   isLoading: false,
+  id: '',
 };

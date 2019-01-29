@@ -13,10 +13,9 @@ import truncateAddress from '../utils/truncateAddress';
 
 /* eslint-disable max-len  */
 const MenuWrapper = styled.div`
-  background-image: ${props => `linear-gradient(to right, ${darken(
-    0.05,
-    props.theme.colors.activeItem,
-  )}, ${props.theme.colors.activeItem})`};
+  background-image: ${props => `linear-gradient(to right, ${darken(0.05, props.theme.colors.activeItem)}, ${
+    props.theme.colors.activeItem
+  })`};
   border-radius: ${props => props.theme.boxBorderRadius};
   margin-left: -10px;
   max-width: 400px;
@@ -56,7 +55,7 @@ const MenuItem = styled.button`
 
 const OptionItem = styled(MenuItem)`
   &:hover {
-    background-color: #F9D114;
+    background-color: #f9d114;
   }
 `;
 
@@ -100,9 +99,7 @@ export class DropdownComponent extends Component<Props, State> {
     } = this.props;
 
     const body = [
-      <ClickOutside
-        onClickOutside={() => this.setState(() => ({ isOpen: false }))}
-      >
+      <ClickOutside onClickOutside={() => this.setState(() => ({ isOpen: false }))}>
         <MenuWrapper>
           {label && (
             <MenuItem disabled isGroupLabel>
@@ -126,10 +123,7 @@ export class DropdownComponent extends Component<Props, State> {
         tipSize={7}
         body={body}
       >
-        {renderTrigger(
-          () => this.setState(state => ({ isOpen: !state.isOpen })),
-          isOpen,
-        )}
+        {renderTrigger(() => this.setState(state => ({ isOpen: !state.isOpen })), isOpen)}
       </PopoverWithStyle>
     );
   }
