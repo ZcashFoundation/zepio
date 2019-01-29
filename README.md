@@ -2,6 +2,8 @@
 
 Reference Wallet for the Zcash Network
 
+[![CircleCI](https://circleci.com/gh/andrerfneves/zec-react-wallet.svg?style=svg&circle-token=abde48de664026a5d03d4b806c904c8ce5e45aa0)](https://circleci.com/gh/andrerfneves/zec-react-wallet)
+
 ## Stack Information
 
 - [Electron](https://github.com/electron/electron): desktop application builder
