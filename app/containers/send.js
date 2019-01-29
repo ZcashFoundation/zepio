@@ -17,7 +17,7 @@ import {
   validateAddressError,
 } from '../redux/modules/send';
 
-import filterObjectNullKeys from '../utils/filterObjectNullKeys';
+import { filterObjectNullKeys } from '../utils/filter-object-null-keys';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';

@@ -14,7 +14,7 @@ import {
   loadWalletSummarySuccess,
   loadWalletSummaryError,
 } from '../redux/modules/wallet';
-import sortBy from '../utils/sortBy';
+import { sortBy } from '../utils/sort-by';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';

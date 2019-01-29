@@ -11,13 +11,12 @@ import theme, { GlobalStyle } from './theme';
 
 const store = configureStore({});
 
-export default () => (
+export const App = () => (
   <ThemeProvider theme={theme}>
     <Fragment>
       <GlobalStyle />
       <Provider store={store}>
         <ConnectedRouter history={history}>
-          {/* $FlowFixMe */}
           <Router />
         </ConnectedRouter>
       </Provider>

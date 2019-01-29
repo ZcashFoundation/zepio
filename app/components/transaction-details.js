@@ -2,6 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import dateFns from 'date-fns';
+import { BigNumber } from 'bignumber.js';
 
 import SentIcon from '../assets/images/transaction_sent_icon.svg';
 import ReceivedIcon from '../assets/images/transaction_received_icon.svg';
@@ -13,8 +14,8 @@ import { ColumnComponent } from './column';
 
 import theme from '../theme';
 
-import formatNumber from '../utils/formatNumber';
-import truncateAddress from '../utils/truncateAddress';
+import { formatNumber } from '../utils/format-number';
+import { truncateAddress } from '../utils/truncate-address';
 
 const Wrapper = styled.div`
   width: 460px;
@@ -125,22 +126,13 @@ export const TransactionDetailsComponent = ({
   return (
     <Wrapper>
       <CloseIconWrapper>
-        <CloseIconImg
-          src={CloseIcon}
-          onClick={handleClose}
-        />
+        <CloseIconImg src={CloseIcon} onClick={handleClose} />
       </CloseIconWrapper>
       <TitleWrapper>
-        <TextComponent
-          value='Transaction Details'
-          align='center'
-        />
+        <TextComponent value='Transaction Details' align='center' />
       </TitleWrapper>
       <DetailsWrapper>
-        <Icon
-          src={isReceived ? ReceivedIcon : SentIcon}
-          alt='Transaction Type Icon'
-        />
+        <Icon src={isReceived ? ReceivedIcon : SentIcon} alt='Transaction Type Icon' />
         <TextComponent
           isBold
           size={2.625}
@@ -148,16 +140,12 @@ export const TransactionDetailsComponent = ({
             append: `${isReceived ? '+' : '-'}ZEC `,
             value: amount,
           })}
-          color={
-            isReceived
-              ? theme.colors.transactionReceived
-              : theme.colors.transactionSent
-          }
+          color={isReceived ? theme.colors.transactionReceived : theme.colors.transactionSent}
         />
         <TextComponent
           value={formatNumber({
             append: `${isReceived ? '+' : '-'}USD `,
-            value: amount * zecPrice,
+            value: new BigNumber(amount).times(zecPrice).toNumber(),
           })}
           size={1.5}
           color={theme.colors.transactionsDetailsLabel}
@@ -166,16 +154,15 @@ export const TransactionDetailsComponent = ({
       <InfoRow>
         <ColumnComponent>
           <Label value='DATE' />
-          <TextComponent value={dateFns.format(date, 'MMMM D, YYYY HH:MMA')} />
+          <TextComponent value={dateFns.format(new Date(date), 'MMMM D, YYYY HH:MMA')} />
         </ColumnComponent>
         <ColumnComponent>
+          <TextComponent value='FEES' isBold color={theme.colors.transactionsDetailsLabel} />
           <TextComponent
-            value='FEES'
-            isBold
-            color={theme.colors.transactionsDetailsLabel}
-          />
-          <TextComponent
-            value={formatNumber({ value: amount * 0.1, append: 'ZEC ' })}
+            value={formatNumber({
+              value: new BigNumber(amount).times(0.1).toNumber(),
+              append: 'ZEC ',
+            })}
           />
         </ColumnComponent>
       </InfoRow>
