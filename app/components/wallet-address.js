@@ -7,7 +7,7 @@ import { ColumnComponent } from './column';
 import { Button } from './button';
 import { QRCode } from './qrcode';
 
-import truncateAddress from '../utils/truncateAddress';
+import truncateAddress from '../utils/truncate-address';
 
 import eyeIcon from '../assets/images/eye.png';
 

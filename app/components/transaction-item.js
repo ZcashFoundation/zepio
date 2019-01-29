@@ -14,8 +14,8 @@ import { TransactionDetailsComponent } from './transaction-details';
 
 import theme from '../theme';
 
-import formatNumber from '../utils/formatNumber';
-import truncateAddress from '../utils/truncateAddress';
+import formatNumber from '../utils/format-number';
+import truncateAddress from '../utils/truncate-address';
 
 const Wrapper = styled(RowComponent)`
   background-color: ${props => props.theme.colors.cardBackgroundColor};

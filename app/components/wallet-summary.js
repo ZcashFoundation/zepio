@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { TextComponent } from './text';
 import { RowComponent } from './row';
 
-import formatNumber from '../utils/formatNumber';
+import formatNumber from '../utils/format-number';
 
 import theme from '../theme';
 
