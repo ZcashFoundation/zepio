@@ -7,6 +7,7 @@ import processExists from 'process-exists';
 import isDev from 'electron-is-dev';
 import type { ChildProcess } from 'child_process';
 import eres from 'eres';
+import uuid from 'uuid/v4';
 /* eslint-disable-next-line import/named */
 import { mainWindow } from '../electron';
 
@@ -16,7 +17,6 @@ import getDaemonName from './get-daemon-name';
 import fetchParams from './run-fetch-params';
 import log from './logger';
 import store from '../electron-store';
-import { generateRandomString } from '../../app/utils/generate-random-string';
 
 const getDaemonOptions = ({ username, password }) => {
   /*
@@ -71,8 +71,8 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
       password: store.get('rpcpassword'),
     }
     : {
-      username: generateRandomString(),
-      password: generateRandomString(),
+      username: uuid(),
+      password: uuid(),
     };
 
   if (isDev) log('Rpc Credentials', rpcCredentials);

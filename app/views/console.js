@@ -4,7 +4,7 @@ import React, { Component, Fragment } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ipcRenderer } from 'electron';
 import styled from 'styled-components';
-import { generateRandomString } from '../utils/generate-random-string';
+import uuid from 'uuid/v4';
 import { TextComponent } from '../components/text';
 
 import ConsoleSymbol from '../assets/images/console_zcash.png';
@@ -82,7 +82,7 @@ export class ConsoleView extends Component<Props, State> {
         <Fragment>
           <ConsoleImg src={ConsoleSymbol} alt='Zcashd' />
           {log.split('\n').map((item, idx) => (
-            <Fragment key={generateRandomString()}>
+            <Fragment key={uuid()}>
               <ConsoleText value={item} />
               {breakpoints.includes(idx) ? <br /> : null}
             </Fragment>
