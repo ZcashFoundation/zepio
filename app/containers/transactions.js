@@ -31,14 +31,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   getTransactions: async () => {
     dispatch(loadTransactions());
 
-    const [transactionsErr, transactions = []] = await eres(
-      rpc.listtransactions(),
-    );
+    const [transactionsErr, transactions = []] = await eres(rpc.listtransactions());
 
     if (transactionsErr) {
-      return dispatch(
-        loadTransactionsError({ error: transactionsErr.message }),
-      );
+      return dispatch(loadTransactionsError({ error: transactionsErr.message }));
     }
 
     const formattedTransactions = flow([
@@ -60,7 +56,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(
       loadTransactionsSuccess({
         list: formattedTransactions,
-        zecPrice: store.get('ZEC_DOLLAR_PRICE'),
+        zecPrice: Number(store.get('ZEC_DOLLAR_PRICE')),
       }),
     );
   },

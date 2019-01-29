@@ -1,5 +1,5 @@
 // @flow
-
+/* eslint-disable max-len */
 import React from 'react';
 import styled from 'styled-components';
 import { Link, type Location } from 'react-router-dom';
@@ -17,15 +17,11 @@ const Wrapper = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  color: ${props => (props.isActive
-    ? props.theme.colors.sidebarItemActive
-    : props.theme.colors.sidebarItem)};
+  color: ${props => (props.isActive ? props.theme.colors.sidebarItemActive : props.theme.colors.sidebarItem)};
   font-size: ${props => `${props.theme.fontSize.regular}em`};
   text-decoration: none;
   font-weight: ${props => props.theme.fontWeight.bold};
-  background-color: ${props => (props.isActive
-    ? `${props.theme.colors.sidebarHoveredItem}`
-    : 'transparent')};
+  background-color: ${props => (props.isActive ? `${props.theme.colors.sidebarHoveredItem}` : 'transparent')};
   letter-spacing: 0.25px;
   padding: 25px 20px;
   height: 35px;
@@ -33,9 +29,7 @@ const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
   outline: none;
-  border-right: ${props => (props.isActive
-    ? `3px solid ${props.theme.colors.sidebarItemActive}`
-    : 'none')};
+  border-right: ${props => (props.isActive ? `3px solid ${props.theme.colors.sidebarItemActive}` : 'none')};
   cursor: pointer;
   transition: all 0.03s ${props => props.theme.colors.transitionEase};
 
@@ -76,11 +70,7 @@ export const SidebarComponent = ({ options, location }: Props) => (
 
       return (
         <StyledLink isActive={isActive} key={item.route} to={item.route}>
-          <Icon
-            isActive={isActive}
-            src={item.icon(isActive)}
-            alt={`${item.route}`}
-          />
+          <Icon isActive={isActive} src={item.icon(isActive)} alt={`${item.route}`} />
           {item.label}
         </StyledLink>
       );

@@ -37,25 +37,30 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
     if (err) return dispatch(loadWalletSummaryError({ error: err.message }));
 
-    const [zAddressesErr, zAddresses] = await eres(rpc.z_listaddresses());
+    const [zAddressesErr, zAddresses = []] = await eres(rpc.z_listaddresses());
 
-    const [tAddressesErr, transparentAddresses] = await eres(
-      rpc.getaddressesbyaccount(''),
-    );
+    if (zAddressesErr) {
+      return dispatch(
+        loadWalletSummaryError({
+          error: zAddressesErr.message,
+        }),
+      );
+    }
 
-    // eslint-disable-next-line
-    if (zAddressesErr || tAddressesErr) return dispatch(
-      loadWalletSummaryError({
-        error: zAddressesErr?.message || tAddressesErr?.message,
-      }),
-    );
+    const [tAddressesErr, tAddresses = []] = await eres(rpc.getaddressesbyaccount(''));
+
+    if (tAddressesErr) {
+      return dispatch(
+        loadWalletSummaryError({
+          error: tAddressesErr.message,
+        }),
+      );
+    }
 
     const [transactionsErr, transactions] = await eres(rpc.listtransactions());
 
     if (transactionsErr) {
-      return dispatch(
-        loadWalletSummaryError({ error: transactionsErr.message }),
-      );
+      return dispatch(loadWalletSummaryError({ error: transactionsErr.message }));
     }
 
     const formattedTransactions = flow([
@@ -75,20 +80,18 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     ])(transactions);
 
     if (!zAddresses.length) {
-      const [getNewZAddressErr, newZAddress] = await eres(
-        rpc.z_getnewaddress(),
-      );
+      const [getNewZAddressErr, newZAddress] = await eres(rpc.z_getnewaddress());
 
       if (!getNewZAddressErr && newZAddress) {
         zAddresses.push(newZAddress);
       }
     }
 
-    if (!transparentAddresses.length) {
+    if (!tAddresses.length) {
       const [getNewAddressErr, newAddress] = await eres(rpc.getnewaddress(''));
 
       if (!getNewAddressErr && newAddress) {
-        transparentAddresses.push(newAddress);
+        tAddresses.push(newAddress);
       }
     }
 
@@ -97,9 +100,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
         transparent: walletSummary.transparent,
         total: walletSummary.total,
         shielded: walletSummary.private,
-        addresses: [...zAddresses, ...transparentAddresses],
+        addresses: [...zAddresses, ...tAddresses],
         transactions: formattedTransactions,
-        zecPrice: store.get('ZEC_DOLLAR_PRICE'),
+        zecPrice: Number(store.get('ZEC_DOLLAR_PRICE')),
       }),
     );
   },

@@ -48,6 +48,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }: SendTransactionInput) => {
     dispatch(sendTransaction());
 
+    // $FlowFixMe
     const [sendErr, operationId] = await eres(
       rpc.z_sendmany(
         from,
@@ -136,7 +137,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   loadZECPrice: () => dispatch(
     loadZECPrice({
-      value: store.get('ZEC_DOLLAR_PRICE'),
+      value: Number(store.get('ZEC_DOLLAR_PRICE')),
     }),
   ),
 });
