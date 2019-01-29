@@ -16,7 +16,7 @@ const Text = styled.p`
   text-align: ${props => props.align};
 `;
 
-type Props = {
+export type Props = {
   ...ElementProps<'p'>,
   value: string,
   isBold?: boolean,

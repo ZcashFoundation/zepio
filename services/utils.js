@@ -679,6 +679,7 @@ export type APIMethods = {
       amount: number,
       vout: number,
       fee: number,
+      category: string,
       confirmations: number,
       blockhash: string,
       blockindex: number,
