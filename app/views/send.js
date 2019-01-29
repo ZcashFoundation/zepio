@@ -306,6 +306,8 @@ export class SendView extends PureComponent<Props, State> {
   getFeeText = () => {
     const { fee } = this.state;
 
+    if (!fee) return '0.0';
+
     const feeValue = new BigNumber(fee);
 
     if (feeValue.isEqualTo(FEES.LOW)) return `Low ZEC ${feeValue.toString()}`;
