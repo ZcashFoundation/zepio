@@ -87,7 +87,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   });
 
   childProcess.stdout.on('data', (data) => {
-    if (mainWindow && mainWindow.webContents) mainWindow.webContents.send('zcashd-log', data.toString());
+    if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-log', data.toString());
     if (!resolved) {
       resolve(childProcess);
       resolved = true;
