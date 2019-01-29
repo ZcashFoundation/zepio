@@ -5,11 +5,7 @@ import type { Action } from '../../types/redux';
 export const LOAD_ADDRESSES_SUCCESS = 'LOAD_ADDRESSES_SUCCESS';
 export const LOAD_ADDRESSES_ERROR = 'LOAD_ADDRESSES_ERROR';
 
-export const loadAddressesSuccess = ({
-  addresses,
-}: {
-  addresses: string[],
-}) => ({
+export const loadAddressesSuccess = ({ addresses }: { addresses: string[] }) => ({
   type: LOAD_ADDRESSES_SUCCESS,
   payload: {
     addresses,
@@ -31,6 +27,7 @@ const initialState: State = {
   error: null,
 };
 
+// eslint-disable-next-line
 export default (state: State = initialState, action: Action) => {
   switch (action.type) {
     case LOAD_ADDRESSES_SUCCESS:

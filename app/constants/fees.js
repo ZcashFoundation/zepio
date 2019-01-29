@@ -1,6 +1,6 @@
 // @flow
 
-export default {
+export const FEES = {
   LOW: 0.001,
   MEDIUM: 0.005,
   HIGH: 0.009,

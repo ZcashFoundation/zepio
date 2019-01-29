@@ -65,7 +65,7 @@ const initialState = {
   addresses: [],
   transactions: [],
 };
-
+// eslint-disable-next-line
 export default (state: State = initialState, action: Action) => {
   switch (action.type) {
     case LOAD_WALLET_SUMMARY:

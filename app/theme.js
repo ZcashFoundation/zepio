@@ -105,4 +105,5 @@ export const DoczWrapper = ({ children }) => (
   </ThemeProvider>
 );
 
+// eslint-disable-next-line
 export default appTheme;

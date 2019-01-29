@@ -13,8 +13,8 @@ import { ColumnComponent } from './column';
 
 import theme from '../theme';
 
-import formatNumber from '../utils/format-number';
-import truncateAddress from '../utils/truncate-address';
+import { formatNumber } from '../utils/format-number';
+import { truncateAddress } from '../utils/truncate-address';
 
 const Wrapper = styled.div`
   width: 460px;

@@ -4,7 +4,7 @@ import React, { Component, Fragment } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ipcRenderer } from 'electron';
 import styled from 'styled-components';
-import generateRandomString from '../utils/generate-random-string';
+import { generateRandomString } from '../utils/generate-random-string';
 import { TextComponent } from '../components/text';
 
 import ConsoleSymbol from '../assets/images/console_zcash.png';

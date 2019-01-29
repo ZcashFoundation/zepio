@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { TextComponent } from './text';
 import { RowComponent } from './row';
 
-import formatNumber from '../utils/format-number';
+import { formatNumber } from '../utils/format-number';
 
 import theme from '../theme';
 
@@ -53,16 +53,10 @@ type Props = {
 };
 
 export const WalletSummaryComponent = ({
-  total,
-  shielded,
-  transparent,
-  zecPrice,
+  total, shielded, transparent, zecPrice,
 }: Props) => (
   <Wrapper>
-    <AllAddresses
-      value='ALL ADDRESSES'
-      isBold
-    />
+    <AllAddresses value='ALL ADDRESSES' isBold />
     <ValueBox>
       <TextComponent
         size={theme.fontSize.medium * 2.5}
@@ -76,34 +70,22 @@ export const WalletSummaryComponent = ({
     </ValueBox>
     <RowComponent>
       <ValueBox>
-        <ShieldedValue
-          value='&#9679; SHIELDED'
-          isBold
-          size={theme.fontSize.small}
-        />
+        <ShieldedValue value='&#9679; SHIELDED' isBold size={theme.fontSize.small} />
         <TextComponent
           value={`ZEC ${formatNumber({ value: shielded })}`}
           isBold
           size={theme.fontSize.medium}
         />
-        <USDValue
-          value={`USD $${formatNumber({ value: shielded * zecPrice })}`}
-        />
+        <USDValue value={`USD $${formatNumber({ value: shielded * zecPrice })}`} />
       </ValueBox>
       <ValueBox>
-        <Label
-          value='&#9679; TRANSPARENT'
-          isBold
-          size={theme.fontSize.small}
-        />
+        <Label value='&#9679; TRANSPARENT' isBold size={theme.fontSize.small} />
         <TextComponent
           value={`ZEC ${formatNumber({ value: transparent })}`}
           isBold
           size={theme.fontSize.medium}
         />
-        <USDValue
-          value={`USD $${formatNumber({ value: transparent * zecPrice })}`}
-        />
+        <USDValue value={`USD $${formatNumber({ value: transparent * zecPrice })}`} />
       </ValueBox>
     </RowComponent>
   </Wrapper>

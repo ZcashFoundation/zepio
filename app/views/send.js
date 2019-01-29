@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components';
 import { BigNumber } from 'bignumber.js';
 import { Transition, animated } from 'react-spring';
 
-import FEES from '../constants/fees';
+import { FEES } from '../constants/fees';
 
 import { InputLabelComponent } from '../components/input-label';
 import { InputComponent } from '../components/input';
@@ -16,7 +16,7 @@ import { Divider } from '../components/divider';
 import { Button } from '../components/button';
 import { ConfirmDialogComponent } from '../components/confirm-dialog';
 
-import formatNumber from '../utils/format-number';
+import { formatNumber } from '../utils/format-number';
 
 import type { SendTransactionInput } from '../containers/send';
 import type { State as SendState } from '../redux/modules/send';
@@ -246,8 +246,7 @@ export class SendView extends PureComponent<Props, State> {
 
     if (field === 'to') {
       // eslint-disable-next-line max-len
-      this.setState(() => ({ [field]: value }),
-        () => validateAddress({ address: value }));
+      this.setState(() => ({ [field]: value }), () => validateAddress({ address: value }));
     } else {
       this.setState(() => ({ [field]: value }));
     }
@@ -323,18 +322,12 @@ export class SendView extends PureComponent<Props, State> {
     return isToAddressValid ? (
       <RowComponent alignItems='center'>
         <ValidateStatusIcon src={ValidIcon} />
-        <ItemLabel
-          value='VALID'
-          color={theme.colors.transactionReceived}
-        />
+        <ItemLabel value='VALID' color={theme.colors.transactionReceived} />
       </RowComponent>
     ) : (
       <RowComponent alignItems='center'>
         <ValidateStatusIcon src={InvalidIcon} />
-        <ItemLabel
-          value='INVALID'
-          color={theme.colors.transactionSent}
-        />
+        <ItemLabel value='INVALID' color={theme.colors.transactionSent} />
       </RowComponent>
     );
   };
@@ -365,14 +358,8 @@ export class SendView extends PureComponent<Props, State> {
 
     if (operationId) {
       return (
-        <ColumnComponent
-          width='100%'
-          id='send-success-wrapper'
-        >
-          <TextComponent
-            value={`Transaction ID: ${operationId}`}
-            align='center'
-          />
+        <ColumnComponent width='100%' id='send-success-wrapper'>
+          <TextComponent value={`Transaction ID: ${operationId}`} align='center' />
           <button
             type='button'
             onClick={() => {
@@ -494,25 +481,23 @@ export class SendView extends PureComponent<Props, State> {
             id='send-show-additional-options-button'
             onClick={() => this.setState(state => ({
               showFee: !state.showFee,
-            }))}
+            }))
+            }
           >
-            <SeeMoreIcon
-              src={MenuIcon}
-              alt='Show more icon'
-            />
-            <TextComponent
-              value={`${showFee ? 'Hide' : 'Show'} Additional Options`}
-            />
+            <SeeMoreIcon src={MenuIcon} alt='Show more icon' />
+            <TextComponent value={`${showFee ? 'Hide' : 'Show'} Additional Options`} />
           </ShowFeeButton>
           <RevealsMain>
             <Transition
               native
               items={showFee}
-              enter={[{
-                height: 'auto',
-                opacity: 1,
-                overflow: 'visible',
-              }]}
+              enter={[
+                {
+                  height: 'auto',
+                  opacity: 1,
+                  overflow: 'visible',
+                },
+              ]}
               leave={{ height: 0, opacity: 0 }}
               from={{
                 position: 'absolute',
@@ -521,40 +506,39 @@ export class SendView extends PureComponent<Props, State> {
                 height: 0,
               }}
             >
-              {show => show && (props => (
-                <animated.div style={props}>
-                  <FeeWrapper id='send-fee-wrapper'>
-                    <RowComponent
-                      alignItems='flex-end'
-                      justifyContent='space-between'
-                    >
-                      <ColumnComponent width='74%'>
-                        <InputLabelComponent value='Fee' />
-                        <InputComponent
-                          type='number'
-                          onChange={this.handleChange('fee')}
-                          value={String(fee)}
-                          disabled={feeType !== FEES.CUSTOM}
-                          bgColor={theme.colors.blackTwo}
-                          name='fee'
-                        />
-                      </ColumnComponent>
-                      <ColumnComponent width='25%'>
-                        <SelectComponent
-                          placement='top'
-                          value={String(feeType)}
-                          bgColor={theme.colors.blackTwo}
-                          onChange={this.handleChangeFeeType}
-                          options={Object.keys(FEES).map(cur => ({
-                            label: cur.toLowerCase(),
-                            value: String(FEES[cur]),
-                          }))}
-                        />
-                      </ColumnComponent>
-                    </RowComponent>
-                  </FeeWrapper>
-                </animated.div>
-              ))}
+              {show => show
+                && (props => (
+                  <animated.div style={props}>
+                    <FeeWrapper id='send-fee-wrapper'>
+                      <RowComponent alignItems='flex-end' justifyContent='space-between'>
+                        <ColumnComponent width='74%'>
+                          <InputLabelComponent value='Fee' />
+                          <InputComponent
+                            type='number'
+                            onChange={this.handleChange('fee')}
+                            value={String(fee)}
+                            disabled={feeType !== FEES.CUSTOM}
+                            bgColor={theme.colors.blackTwo}
+                            name='fee'
+                          />
+                        </ColumnComponent>
+                        <ColumnComponent width='25%'>
+                          <SelectComponent
+                            placement='top'
+                            value={String(feeType)}
+                            bgColor={theme.colors.blackTwo}
+                            onChange={this.handleChangeFeeType}
+                            options={Object.keys(FEES).map(cur => ({
+                              label: cur.toLowerCase(),
+                              value: String(FEES[cur]),
+                            }))}
+                          />
+                        </ColumnComponent>
+                      </RowComponent>
+                    </FeeWrapper>
+                  </animated.div>
+                ))
+              }
             </Transition>
           </RevealsMain>
           {feeType === FEES.CUSTOM && (
@@ -602,10 +586,7 @@ export class SendView extends PureComponent<Props, State> {
               </ModalContent>
             )}
           </ConfirmDialogComponent>
-          <FormButton
-            label='Cancel'
-            variant='secondary'
-          />
+          <FormButton label='Cancel' variant='secondary' />
         </SendWrapper>
       </RowComponent>
     );
