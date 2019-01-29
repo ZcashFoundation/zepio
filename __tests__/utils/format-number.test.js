@@ -2,7 +2,7 @@
 import { BigNumber } from 'bignumber.js';
 import 'jest-dom/extend-expect';
 
-import formatNumber from '../../app/utils/formatNumber';
+import formatNumber from '../../app/utils/format-number';
 
 describe('formatNumber', () => {
   test('should append ZEC in balance amount', () => {

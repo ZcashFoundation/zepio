@@ -1,8 +1,7 @@
 // @flow
-import { BigNumber } from 'bignumber.js';
 import 'jest-dom/extend-expect';
 
-import truncateAddress from '../../app/utils/truncateAddress';
+import truncateAddress from '../../app/utils/truncate-address';
 
 describe('truncateAddress', () => {
   test('should truncate ZEC address', () => {
