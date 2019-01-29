@@ -1,5 +1,5 @@
 // @flow
-
+/* eslint-disable max-len */
 import React from 'react';
 import styled from 'styled-components';
 import type { Location, RouterHistory } from 'react-router-dom';

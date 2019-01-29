@@ -1,9 +1,11 @@
 // @flow
 
 /* eslint-disable import/no-extraneous-dependencies */
-import { globalShortcut } from 'electron';
+import { globalShortcut, typeof BrowserWindow, typeof app as ElectronApp } from 'electron';
 
-export const registerDebugShortcut = (app: Object, mainWindow: Object) => globalShortcut.register('CommandOrControl+Option+B', () => {
+export const registerDebugShortcut = (app: ElectronApp, mainWindow: BrowserWindow) => globalShortcut.register('CommandOrControl+Option+B', () => {
+  // $FlowFixMe
   app.dock.show();
+  // $FlowFixMe
   mainWindow.webContents.openDevTools();
 });

@@ -5,11 +5,9 @@ import dotenv from 'dotenv';
 import path from 'path';
 
 /* eslint-disable import/no-extraneous-dependencies */
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, typeof BrowserWindow as BrowserWindowType } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import isDev from 'electron-is-dev';
-/* eslint-enable import/no-extraneous-dependencies */
-import type { BrowserWindow as BrowserWindowType } from 'electron';
 import eres from 'eres';
 import { registerDebugShortcut } from '../utils/debug-shortcut';
 import runDaemon from './daemon/zcashd-child-process';
@@ -26,10 +24,12 @@ let zcashDaemon;
 const showStatus = (text) => {
   if (text === 'Update downloaded') updateAvailable = true;
 
-  mainWindow.webContents.send('update', {
-    updateAvailable,
-    updateInfo: text,
-  });
+  if (mainWindow) {
+    mainWindow.webContents.send('update', {
+      updateAvailable,
+      updateInfo: text,
+    });
+  }
 };
 
 const createWindow = () => {
@@ -42,9 +42,9 @@ const createWindow = () => {
 
   autoUpdater.on('download-progress', progress => showStatus(
     /* eslint-disable-next-line max-len */
-    `Download speed: ${progress.bytesPerSecond} - Downloaded ${
-      progress.percent
-    }% (${progress.transferred}/${progress.total})`,
+    `Download speed: ${progress.bytesPerSecond} - Downloaded ${progress.percent}% (${
+      progress.transferred
+    }/${progress.total})`,
   ));
   autoUpdater.on('update-downloaded', () => {
     updateAvailable = true;
@@ -64,16 +64,14 @@ const createWindow = () => {
   });
 
   getZecPrice().then((obj) => {
-    store.set('ZEC_DOLLAR_PRICE', obj.USD);
+    store.set('ZEC_DOLLAR_PRICE', String(obj.USD));
   });
 
   mainWindow.setVisibleOnAllWorkspaces(true);
   registerDebugShortcut(app, mainWindow);
 
   mainWindow.loadURL(
-    isDev
-      ? 'http://0.0.0.0:8080/'
-      : `file://${path.join(__dirname, '../build/index.html')}`,
+    isDev ? 'http://0.0.0.0:8080/' : `file://${path.join(__dirname, '../build/index.html')}`,
   );
 
   exports.app = app;

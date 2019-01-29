@@ -56,7 +56,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispatch(
       loadTransactionsSuccess({
         list: formattedTransactions,
-        zecPrice: store.get('ZEC_DOLLAR_PRICE'),
+        zecPrice: new BigNumber(store.get('ZEC_DOLLAR_PRICE')).toNumber(),
       }),
     );
   },

@@ -76,6 +76,7 @@ type Props = {
   icon?: string | null,
   className?: string,
   isLoading?: boolean,
+  id?: string,
 };
 
 export const Button = ({
@@ -123,4 +124,5 @@ Button.defaultProps = {
   disabled: false,
   className: '',
   isLoading: false,
+  id: '',
 };
