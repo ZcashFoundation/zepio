@@ -1,7 +1,9 @@
 // @flow
 
 import React from 'react';
-import { Route, Switch, type Location } from 'react-router-dom';
+import {
+  Route, Switch, type Location, type RouterHistory,
+} from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ScrollTopComponent } from './scroll-top';
@@ -43,28 +45,27 @@ const getTitle = (path: string) => {
   return path.replace('/', '');
 };
 
-export const RouterComponent = ({ location }: { location: Location }) => (
+export const RouterComponent = ({
+  location,
+  history,
+}: {
+  location: Location,
+  history: RouterHistory,
+}) => (
   <FullWrapper>
     <HeaderComponent title={getTitle(location.pathname)} />
     <ContentWrapper>
-      <SidebarContainer location={location} />
+      <SidebarContainer location={location} history={history} />
       {/* $FlowFixMe */}
       <LayoutComponent>
         <ScrollTopComponent>
           <Switch>
-            <Route
-              exact
-              path={DASHBOARD_ROUTE}
-              component={DashboardContainer}
-            />
+            <Route exact path={DASHBOARD_ROUTE} component={DashboardContainer} />
             <Route path={SEND_ROUTE} component={SendContainer} />
             <Route path={RECEIVE_ROUTE} component={ReceiveContainer} />
             <Route path={SETTINGS_ROUTE} component={SettingsContainer} />
             <Route path={CONSOLE_ROUTE} component={ConsoleView} />
-            <Route
-              path={TRANSACTIONS_ROUTE}
-              component={TransactionsContainer}
-            />
+            <Route path={TRANSACTIONS_ROUTE} component={TransactionsContainer} />
             <Route component={NotFoundView} />
           </Switch>
         </ScrollTopComponent>

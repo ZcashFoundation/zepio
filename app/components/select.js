@@ -38,9 +38,7 @@ const ValueWrapper = styled.div`
   text-overflow: ellipsis;
 `;
 
-const SelectMenuButtonWrapper = styled.button`
-  cursor: pointer;
-  outline: none;
+const SelectMenuButtonWrapper = styled.div`
   border: none;
   background-color: transparent;
   width: 50px;

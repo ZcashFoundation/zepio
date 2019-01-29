@@ -70,6 +70,10 @@ export class ConsoleView extends Component<Props, State> {
     });
   }
 
+  componentWillUnmount() {
+    ipcRenderer.removeAllListeners('zcashd-log');
+  }
+
   render() {
     const { log } = this.state;
 
