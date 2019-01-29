@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import { TextComponent } from './text';
@@ -12,7 +12,6 @@ const rotate = keyframes`
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
   }
@@ -43,24 +42,41 @@ const StatusPillLabel = styled(TextComponent)`
   user-select: none;
 `;
 
-type State = {
+type Props = {
   type: 'syncing' | 'ready' | 'error',
   progress: number,
 };
 
-export const StatusPill = ({ type, progress }: State) => {
-
-  const isSyncing = type === 'syncing';
-
-  const icon = type === 'error' ? errorIcon : (isSyncing ? syncIcon : readyIcon);
-  const showPercent = isSyncing ? `(${progress.toFixed(2)}%)` : '';
-
-  return (
-    <Wrapper>
-      <Icon src={icon} animated={isSyncing} />
-      <StatusPillLabel value={`${type} ${showPercent}`} />
-    </Wrapper>
-  );
+type State = {
+  withError: boolean,
 };
 
-export default StatusPill;
+export class StatusPill extends React.PureComponent<Props, State> {
+  state = {
+    withError: false,
+  };
+
+  componentDidMount() {
+    const { type } = this.props;
+    if (type === 'error') {
+      this.setState(() => ({ withError: false }));
+    }
+  }
+
+  render() {
+    const { type, progress } = this.props;
+    const { withError } = this.state;
+
+    const isSyncing = type === 'syncing';
+
+    const icon = isSyncing ? syncIcon : readyIcon;
+    const showPercent = isSyncing ? `(${progress.toFixed(2)}%)` : '';
+
+    return (
+      <Wrapper>
+        <Icon src={withError ? errorIcon : icon} animated={isSyncing} />
+        <StatusPillLabel value={`${type} ${showPercent}`} />
+      </Wrapper>
+    );
+  }
+}
