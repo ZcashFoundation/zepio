@@ -5,6 +5,7 @@ import eres from 'eres';
 import flow from 'lodash.flow';
 import groupBy from 'lodash.groupby';
 import dateFns from 'date-fns';
+import { BigNumber } from 'bignumber.js';
 import { DashboardView } from '../views/dashboard';
 import rpc from '../../services/api';
 import store from '../../config/electron-store';
@@ -33,34 +34,17 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   getSummary: async () => {
     dispatch(loadWalletSummary());
 
-    const [err, walletSummary] = await eres(rpc.z_gettotalbalance());
-
-    if (err) return dispatch(loadWalletSummaryError({ error: err.message }));
-
+    const [walletErr, walletSummary] = await eres(rpc.z_gettotalbalance());
     const [zAddressesErr, zAddresses = []] = await eres(rpc.z_listaddresses());
-
-    if (zAddressesErr) {
-      return dispatch(
-        loadWalletSummaryError({
-          error: zAddressesErr.message,
-        }),
-      );
-    }
-
     const [tAddressesErr, tAddresses = []] = await eres(rpc.getaddressesbyaccount(''));
-
-    if (tAddressesErr) {
-      return dispatch(
-        loadWalletSummaryError({
-          error: tAddressesErr.message,
-        }),
-      );
-    }
-
     const [transactionsErr, transactions] = await eres(rpc.listtransactions());
 
-    if (transactionsErr) {
-      return dispatch(loadWalletSummaryError({ error: transactionsErr.message }));
+    if (walletErr || zAddressesErr || tAddressesErr || transactionsErr) {
+      return dispatch(
+        loadWalletSummaryError({
+          error: 'Something went wrong!',
+        }),
+      );
     }
 
     const formattedTransactions = flow([
@@ -80,19 +64,15 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     ])(transactions);
 
     if (!zAddresses.length) {
-      const [getNewZAddressErr, newZAddress] = await eres(rpc.z_getnewaddress());
+      const [, newZAddress] = await eres(rpc.z_getnewaddress());
 
-      if (!getNewZAddressErr && newZAddress) {
-        zAddresses.push(newZAddress);
-      }
+      if (newZAddress) zAddresses.push(newZAddress);
     }
 
     if (!tAddresses.length) {
-      const [getNewAddressErr, newAddress] = await eres(rpc.getnewaddress(''));
+      const [, newTAddress] = await eres(rpc.getnewaddress(''));
 
-      if (!getNewAddressErr && newAddress) {
-        tAddresses.push(newAddress);
-      }
+      if (newTAddress) tAddresses.push(newTAddress);
     }
 
     dispatch(
@@ -102,7 +82,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
         shielded: walletSummary.private,
         addresses: [...zAddresses, ...tAddresses],
         transactions: formattedTransactions,
-        zecPrice: Number(store.get('ZEC_DOLLAR_PRICE')),
+        zecPrice: new BigNumber(store.get('ZEC_DOLLAR_PRICE')).toNumber(),
       }),
     );
   },
