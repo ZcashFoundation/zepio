@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 import React from 'react';
 import styled from 'styled-components';
-import { Link, type Location } from 'react-router-dom';
+import type { Location, RouterHistory } from 'react-router-dom';
 import { MENU_OPTIONS } from '../constants/sidebar';
 
 const Wrapper = styled.div`
@@ -15,8 +15,8 @@ const Wrapper = styled.div`
   padding-top: 15px;
   position: relative;
 `;
-
-const StyledLink = styled(Link)`
+/* eslint-disable max-len */
+const StyledLink = styled.a`
   color: ${props => (props.isActive ? props.theme.colors.sidebarItemActive : props.theme.colors.sidebarItem)};
   font-size: ${props => `${props.theme.fontSize.regular}em`};
   text-decoration: none;
@@ -34,10 +34,7 @@ const StyledLink = styled(Link)`
   transition: all 0.03s ${props => props.theme.colors.transitionEase};
 
   &:hover {
-    color: ${
-  /* eslint-disable-next-line max-len */
-  props => (props.isActive ? props.theme.colors.sidebarItemActive : '#ddd')
-}
+    color: ${props => (props.isActive ? props.theme.colors.sidebarItemActive : '#ddd')}
     background-color: ${props => props.theme.colors.sidebarHoveredItem};
   }
 `;
@@ -59,17 +56,22 @@ type MenuItem = {
 };
 
 type Props = {
+  history: RouterHistory,
   options?: MenuItem[],
   location: Location,
 };
 
-export const SidebarComponent = ({ options, location }: Props) => (
+export const SidebarComponent = ({ options, location, history }: Props) => (
   <Wrapper id='sidebar'>
     {(options || []).map((item) => {
       const isActive = location.pathname === item.route;
 
       return (
-        <StyledLink isActive={isActive} key={item.route} to={item.route}>
+        <StyledLink
+          isActive={isActive}
+          key={item.route}
+          onClick={() => (isActive ? {} : history.push(item.route))}
+        >
           <Icon isActive={isActive} src={item.icon(isActive)} alt={`${item.route}`} />
           {item.label}
         </StyledLink>

@@ -37,6 +37,7 @@ export class TransactionsView extends PureComponent<Props> {
               transactionsDate={day}
               transactions={list}
               zecPrice={zecPrice}
+              key={day}
             />
           ))
         )}
