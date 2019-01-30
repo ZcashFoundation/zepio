@@ -2,7 +2,7 @@
 
 Reference Wallet for the Zcash Network
 
-[![CircleCI](https://circleci.com/gh/andrerfneves/zec-react-wallet.svg?style=svg&circle-token=abde48de664026a5d03d4b806c904c8ce5e45aa0)](https://circleci.com/gh/andrerfneves/zec-react-wallet)
+[![CircleCI](https://circleci.com/gh/andrerfneves/zec-react-wallet.svg?style=svg&circle-token=abde48de664026a5d03d4b806c904c8ce5e45aa0)](https://circleci.com/gh/andrerfneves/zec-react-wallet) ![Flow Coverage](./public/flow-coverage-badge.svg)
 
 ## Stack Information
 

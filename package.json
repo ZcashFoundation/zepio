@@ -12,6 +12,7 @@
     "flow:precommit": "glow",
     "flow:coverage": "flow-coverage-report --config ./coverage.json",
     "flow:report": "yarn flow:coverage && cd ./flow-coverage && open index.html",
+    "flow:generate-coverage-badge": "flow-coverage-report -i \"app/**/*.js\" \"config/**/*.js\" \"services/**/*.js\" \"utils/**/*.js\" -t 'badge' -o public/ && git add public/flow-coverage-badge.svg public/flow-badge.svg",
     "electron:dev": "electron -r @babel/register .",
     "electron:prepare": "yarn icon:build && rm -rf dist && mkdir dist",
     "electron:pack": "yarn electron:prepare && electron-builder --dir",
@@ -125,6 +126,7 @@
     "uuid": "^3.3.2"
   },
   "pre-commit": [
+    "flow:generate-coverage-badge",
     "lint:precommit",
     "flow:precommit"
   ],
