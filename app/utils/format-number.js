@@ -1,3 +1,3 @@
 // @flow
 
-export default ({ value, append = '' }: { value: number, append?: string }) => `${append}${(value || 0).toLocaleString()}`;
+export const formatNumber = ({ value, append = '' }: { value: number, append?: string }) => `${append}${(value || 0).toLocaleString()}`;

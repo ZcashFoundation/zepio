@@ -7,6 +7,7 @@ import processExists from 'process-exists';
 import isDev from 'electron-is-dev';
 import type { ChildProcess } from 'child_process';
 import eres from 'eres';
+import uuid from 'uuid/v4';
 /* eslint-disable-next-line import/named */
 import { mainWindow } from '../electron';
 
@@ -16,7 +17,6 @@ import getDaemonName from './get-daemon-name';
 import fetchParams from './run-fetch-params';
 import log from './logger';
 import store from '../electron-store';
-import generateRandomString from '../../app/utils/generate-random-string';
 
 const getDaemonOptions = ({ username, password }) => {
   /*
@@ -38,20 +38,14 @@ const getDaemonOptions = ({ username, password }) => {
     '-testnet',
     '-addnode=testnet.z.cash',
   ];
-  return isDev
-    ? defaultOptions.concat(['-testnet', '-addnode=testnet.z.cash'])
-    : defaultOptions;
+  return isDev ? defaultOptions.concat(['-testnet', '-addnode=testnet.z.cash']) : defaultOptions;
 };
 
 let resolved = false;
 
 // eslint-disable-next-line
 const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve, reject) => {
-  const processName = path.join(
-    getBinariesPath(),
-    getOsFolder(),
-    getDaemonName(),
-  );
+  const processName = path.join(getBinariesPath(), getOsFolder(), getDaemonName());
 
   const [err] = await eres(fetchParams());
 
@@ -77,8 +71,8 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
       password: store.get('rpcpassword'),
     }
     : {
-      username: generateRandomString(),
-      password: generateRandomString(),
+      username: uuid(),
+      password: uuid(),
     };
 
   if (isDev) log('Rpc Credentials', rpcCredentials);
@@ -88,16 +82,12 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     store.set('rpcpassword', rpcCredentials.password);
   }
 
-  const childProcess = cp.spawn(
-    processName,
-    getDaemonOptions(rpcCredentials),
-    {
-      stdio: ['ignore', 'pipe', 'pipe'],
-    },
-  );
+  const childProcess = cp.spawn(processName, getDaemonOptions(rpcCredentials), {
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
 
   childProcess.stdout.on('data', (data) => {
-    if (mainWindow && mainWindow.webContents) mainWindow.webContents.send('zcashd-log', data.toString());
+    if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-log', data.toString());
     if (!resolved) {
       resolve(childProcess);
       resolved = true;

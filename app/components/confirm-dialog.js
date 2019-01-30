@@ -80,7 +80,7 @@ export const ConfirmDialogComponent = ({
       closeOnEsc={false}
     >
       {toggle => (
-        <Wrapper width={width}>
+        <Wrapper width={Number(width)}>
           <CloseIconWrapper>
             <CloseIconImg src={CloseIcon} onClick={handleClose(toggle)} />
           </CloseIconWrapper>

@@ -1,8 +1,7 @@
 // @flow
 
-import React from 'react';
+import React, { type Node, type ElementProps } from 'react';
 import styled from 'styled-components';
-import type { Node, ElementProps } from 'react';
 
 const Flex = styled.div`
   display: flex;
@@ -22,7 +21,7 @@ type Props = {
 };
 
 export const ColumnComponent = ({ children, ...props }: Props) => (
-  <Flex {...props}>{React.Children.map(children, ch => ch)}</Flex>
+  <Flex {...props}>{React.Children.map(children, (ch: Node) => ch)}</Flex>
 );
 
 ColumnComponent.defaultProps = {

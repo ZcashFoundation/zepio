@@ -71,9 +71,7 @@ const downloadFile = ({ file, pathToSave }): Promise<*> => new Promise((resolve,
           log(`SHA256 validation for file ${file.name} succeeded!`);
           resolve(file.name);
         } else {
-          reject(
-            new Error(`SHA256 validation failed for file: ${file.name}`),
-          );
+          reject(new Error(`SHA256 validation failed for file: ${file.name}`));
         }
       });
     })
@@ -84,9 +82,7 @@ const downloadFile = ({ file, pathToSave }): Promise<*> => new Promise((resolve,
 let missingDownloadParam = false;
 
 export default (): Promise<*> => new Promise((resolve, reject) => {
-  const firstRunProcess = cp.spawn(
-    path.join(getBinariesPath(), 'win', 'first-run.bat'),
-  );
+  const firstRunProcess = cp.spawn(path.join(getBinariesPath(), 'win', 'first-run.bat'));
   firstRunProcess.stdout.on('data', data => log(data.toString()));
   firstRunProcess.stderr.on('data', data => reject(data.toString()));
 
@@ -95,12 +91,7 @@ export default (): Promise<*> => new Promise((resolve, reject) => {
 
     await Promise.all(
       FILES.map(async (file) => {
-        const pathToSave = path.join(
-          app.getPath('userData'),
-          '..',
-          'ZcashParams',
-          file.name,
-        );
+        const pathToSave = path.join(app.getPath('userData'), '..', 'ZcashParams', file.name);
 
         const [cannotAccess] = await eres(
           util.promisify(fs.access)(pathToSave, fs.constants.F_OK),
@@ -115,11 +106,7 @@ export default (): Promise<*> => new Promise((resolve, reject) => {
           if (isValid) {
             log(`${file.name} already is in ${pathToSave}...`);
           } else {
-            log(
-              `File: ${
-                file.name
-              } failed in the SHASUM validation, downloading again...`,
-            );
+            log(`File: ${file.name} failed in the SHASUM validation, downloading again...`);
             queue.add(() => {
               // eslint-disable-next-line max-len
               downloadFile({ file, pathToSave }).then(() => log(`Download ${file.name} finished!`));
