@@ -9,6 +9,9 @@ import { TextComponent } from '../components/text';
 import { WalletAddress } from '../components/wallet-address';
 
 import MenuIcon from '../assets/images/menu_icon.svg';
+import PlusIcon from '../assets/images/plus_icon.svg';
+
+import type { addressType } from '../redux/modules/receive';
 
 const Row = styled(RowComponent)`
   margin-bottom: 10px;
@@ -22,7 +25,7 @@ const Label = styled(InputLabelComponent)`
   margin-bottom: 5px;
 `;
 
-const ShowMoreButton = styled.button`
+const ActionButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
@@ -39,12 +42,13 @@ const ShowMoreButton = styled.button`
   }
 `;
 
-const ShowMoreIcon = styled.img`
+const ActionIcon = styled.img`
   width: 25px;
   height: 25px;
   border: 1px solid ${props => props.theme.colors.text};
   border-radius: 100%;
   margin-right: 11.5px;
+  padding: 5px;
 `;
 
 const RevealsMain = styled.div`
@@ -65,6 +69,7 @@ const RevealsMain = styled.div`
 type Props = {
   addresses: Array<string>,
   loadAddresses: () => void,
+  getNewAddress: ({ type: addressType }) => void,
 };
 
 type State = {
@@ -97,10 +102,18 @@ export class ReceiveView extends PureComponent<Props, State> {
           <WalletAddress address={address} />
         </Row>
         <Row>
-          <ShowMoreButton onClick={this.toggleAdditionalOptions} isActive={showAdditionalOptions}>
-            <ShowMoreIcon isActive={showAdditionalOptions} src={MenuIcon} alt='More Options' />
+          <ActionButton onClick={this.toggleAdditionalOptions} isActive={showAdditionalOptions}>
+            <ActionIcon isActive={showAdditionalOptions} src={MenuIcon} alt='More Options' />
             <TextComponent value={buttonText} />
-          </ShowMoreButton>
+          </ActionButton>
+          <ActionButton onClick={() => this.generateNewAddress('shielded')}>
+            <ActionIcon src={PlusIcon} alt='New Shielded Address' />
+            <TextComponent value='New Shielded Address' />
+          </ActionButton>
+          <ActionButton onClick={() => this.generateNewAddress('transparent')}>
+            <ActionIcon src={PlusIcon} alt='New Transparent Address' />
+            <TextComponent value='New Transparent Address' />
+          </ActionButton>
         </Row>
       </Fragment>
     );
@@ -108,6 +121,8 @@ export class ReceiveView extends PureComponent<Props, State> {
 
   renderTransparentAddresses = (address: string) => {
     const { showAdditionalOptions } = this.state;
+
+    console.log(address);
 
     return (
       <RevealsMain key={address}>
@@ -138,15 +153,20 @@ export class ReceiveView extends PureComponent<Props, State> {
     );
   };
 
+  generateNewAddress = (type: addressType) => {
+    const { getNewAddress } = this.props;
+
+    getNewAddress({ type });
+  };
+
   render() {
     const { addresses } = this.props;
 
     return (
       <div>
-        {(addresses || []).map((address, index) => {
-          if (index === 0) return this.renderShieldedAddresses(address);
-          return this.renderTransparentAddresses(address);
-        })}
+        {(addresses || []).map((address, index) => (index === 0
+          ? this.renderShieldedAddresses(address)
+          : this.renderTransparentAddresses(address)))}
       </div>
     );
   }

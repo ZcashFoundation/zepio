@@ -7,6 +7,9 @@ import { ReceiveView } from '../views/receive';
 import {
   loadAddressesSuccess,
   loadAddressesError,
+  getNewAddressSuccess,
+  getNewAddressError,
+  type addressType,
 } from '../redux/modules/receive';
 
 import rpc from '../../services/api';
@@ -22,9 +25,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   loadAddresses: async () => {
     const [zAddressesErr, zAddresses] = await eres(rpc.z_listaddresses());
 
-    const [tAddressesErr, transparentAddresses] = await eres(
-      rpc.getaddressesbyaccount(''),
-    );
+    const [tAddressesErr, transparentAddresses] = await eres(rpc.getaddressesbyaccount(''));
 
     if (zAddressesErr || tAddressesErr) return dispatch(loadAddressesError({ error: 'Something went wrong!' }));
 
@@ -33,6 +34,15 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
         addresses: [...zAddresses, ...transparentAddresses],
       }),
     );
+  },
+  getNewAddress: async ({ type }: { type: addressType }) => {
+    const [error, address] = await eres(
+      type === 'shielded' ? rpc.z_getnewaddress() : rpc.getnewaddress(''),
+    );
+
+    if (error || !address) return getNewAddressError({ error: 'Unable to generate a new address' });
+
+    getNewAddressSuccess({ address });
   },
 });
 
