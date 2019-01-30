@@ -1,7 +1,7 @@
 // @flow
 import 'jest-dom/extend-expect';
 
-import filterObjectNullKeys from '../../app/utils/filter-object-null-keys';
+import { filterObjectNullKeys } from '../../app/utils/filter-object-null-keys';
 
 describe('filterObjectNullKeys', () => {
   test('should filter null keys from object', () => {

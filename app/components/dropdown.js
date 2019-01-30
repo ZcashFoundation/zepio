@@ -9,7 +9,7 @@ import ClickOutside from 'react-click-outside';
 
 import { TextComponent } from './text';
 
-import truncateAddress from '../utils/truncate-address';
+import { truncateAddress } from '../utils/truncate-address';
 
 /* eslint-disable max-len  */
 const MenuWrapper = styled.div`

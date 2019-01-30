@@ -1,7 +1,7 @@
 // @flow
 import 'jest-dom/extend-expect';
 
-import truncateAddress from '../../app/utils/truncate-address';
+import { truncateAddress } from '../../app/utils/truncate-address';
 
 describe('truncateAddress', () => {
   test('should truncate ZEC address', () => {
