@@ -16,7 +16,7 @@ import { Divider } from '../components/divider';
 import { Button } from '../components/button';
 import { ConfirmDialogComponent } from '../components/confirm-dialog';
 
-import formatNumber from '../utils/format-number';
+import { formatNumber } from '../utils/format-number';
 
 import type { SendTransactionInput } from '../containers/send';
 import type { State as SendState } from '../redux/modules/send';
@@ -425,7 +425,7 @@ export class SendView extends PureComponent<Props, State> {
 
     const isEmpty = amount === '';
 
-    const fixedAmount = isEmpty ? '0.00' : amount;
+    const fixedAmount = isEmpty ? 0.00 : amount;
 
     const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
     const zecBalanceInUsd = formatNumber({

@@ -999,10 +999,10 @@ x.toFormat(3, BigNumber.ROUND_UP, fmt)    // '12.34.56.789,124'
     roundingMode: BigNumber$RoundingMode,
     format?: BigNumber$Format,
   ): string;
-  toFormat(decimalPlaces: number, roundingMode?: BigNumber$RoundingMode): string;
-  toFormat(decimalPlaces?: number): string;
-  toFormat(decimalPlaces: number, format: BigNumber$Format): string;
-  toFormat(format: BigNumber$Format): string;
+  toFormat(decimalPlaces: number, roundingMode?: BigNumber$RoundingMode): number;
+  toFormat(decimalPlaces?: number): number;
+  toFormat(decimalPlaces: number, format: BigNumber$Format): number;
+  toFormat(format: BigNumber$Format): number;
 
   /**
  * Returns an array of two BigNumbers representing the value of this BigNumber as a simple
