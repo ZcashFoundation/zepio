@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import dateFns from 'date-fns';
 import { BigNumber } from 'bignumber.js';
 
+import { ZCASH_EXPLORER_BASE_URL } from '../constants/explorer';
+
 import SentIcon from '../assets/images/transaction_sent_icon.svg';
 import ReceivedIcon from '../assets/images/transaction_received_icon.svg';
 import CloseIcon from '../assets/images/close_icon.svg';
@@ -16,6 +18,7 @@ import theme from '../theme';
 
 import { formatNumber } from '../utils/format-number';
 import { truncateAddress } from '../utils/truncate-address';
+import { openExternal } from '../utils/open-external';
 
 const Wrapper = styled.div`
   width: 460px;
@@ -100,6 +103,20 @@ const Ellipsis = styled(TextComponent)`
   width: 100%;
 `;
 
+const TransactionId = styled.button`
+  width: 100%;
+  color: ${props => props.theme.colors.text};
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 type Props = {
   amount: number,
   type: 'send' | 'receive',
@@ -170,7 +187,9 @@ export const TransactionDetailsComponent = ({
       <InfoRow>
         <ColumnComponent width='100%'>
           <Label value='TRANSACTION ID' />
-          <Ellipsis value={transactionId} />
+          <TransactionId onClick={() => openExternal(ZCASH_EXPLORER_BASE_URL + transactionId)}>
+            <Ellipsis value={transactionId} />
+          </TransactionId>
         </ColumnComponent>
       </InfoRow>
       <Divider />
