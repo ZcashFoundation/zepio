@@ -8,7 +8,7 @@ export const LOAD_WALLET_SUMMARY_SUCCESS = 'LOAD_WALLET_SUMMARY_SUCCESS';
 export const LOAD_WALLET_SUMMARY_ERROR = 'LOAD_WALLET_SUMMARY_ERROR';
 
 // Actions Creators
-export const loadWalletSummary = () => ({
+export const loadWalletSummary: () => Action = () => ({
   type: LOAD_WALLET_SUMMARY,
   payload: {},
 });
@@ -65,7 +65,7 @@ const initialState = {
   addresses: [],
   transactions: [],
 };
-
+// eslint-disable-next-line
 export default (state: State = initialState, action: Action) => {
   switch (action.type) {
     case LOAD_WALLET_SUMMARY:

@@ -69,7 +69,7 @@ type Props = {
 
 type State = {
   showAdditionalOptions: boolean,
-}
+};
 
 export class ReceiveView extends PureComponent<Props, State> {
   state = {
@@ -91,36 +91,26 @@ export class ReceiveView extends PureComponent<Props, State> {
     const buttonText = `${showAdditionalOptions ? 'Hide' : 'Show'} Other Address Types`;
 
     return (
-      <Fragment>
+      <Fragment key={address}>
         <Label value='Shielded Address' />
-        <Row
-          alignItems='center'
-          justifyContent='space-between'
-        >
+        <Row alignItems='center' justifyContent='space-between'>
           <WalletAddress address={address} />
         </Row>
         <Row>
-          <ShowMoreButton
-            onClick={this.toggleAdditionalOptions}
-            isActive={showAdditionalOptions}
-          >
-            <ShowMoreIcon
-              isActive={showAdditionalOptions}
-              src={MenuIcon}
-              alt='More Options'
-            />
+          <ShowMoreButton onClick={this.toggleAdditionalOptions} isActive={showAdditionalOptions}>
+            <ShowMoreIcon isActive={showAdditionalOptions} src={MenuIcon} alt='More Options' />
             <TextComponent value={buttonText} />
           </ShowMoreButton>
         </Row>
       </Fragment>
     );
-  }
+  };
 
   renderTransparentAddresses = (address: string) => {
     const { showAdditionalOptions } = this.state;
 
     return (
-      <RevealsMain>
+      <RevealsMain key={address}>
         <Transition
           native
           items={showAdditionalOptions}
@@ -133,22 +123,20 @@ export class ReceiveView extends PureComponent<Props, State> {
             opacity: 0,
           }}
         >
-          {show => show && (props => (
-            <animated.div style={props}>
-              <Label value='Transparent Address (not private)' />
-              <Row
-                key={address}
-                alignItems='center'
-                justifyContent='space-between'
-              >
-                <WalletAddress address={address} />
-              </Row>
-            </animated.div>
-          ))}
+          {show => show
+            && (props => (
+              <animated.div style={props}>
+                <Label value='Transparent Address (not private)' />
+                <Row key={address} alignItems='center' justifyContent='space-between'>
+                  <WalletAddress address={address} />
+                </Row>
+              </animated.div>
+            ))
+          }
         </Transition>
       </RevealsMain>
     );
-  }
+  };
 
   render() {
     const { addresses } = this.props;

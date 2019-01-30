@@ -1,0 +1,8 @@
+{
+  "concurrentFiles": 1,
+  "globExcludePatterns": ["node_modules/**", "dist/*.js"],
+  "flowCommandPath": "./node_modules/.bin/flow",
+  "globIncludePatterns": ["app/**/*.js", "config/**/*.js", "services/**/*.js", "utils/**/*.js"],
+  "threshold": 70,
+  "reportTypes": ["html", "badge"]
+}

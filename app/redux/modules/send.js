@@ -14,11 +14,7 @@ export const sendTransaction = () => ({
   payload: {},
 });
 
-export const sendTransactionSuccess = ({
-  operationId,
-}: {
-  operationId: string,
-}) => ({
+export const sendTransactionSuccess = ({ operationId }: { operationId: string }) => ({
   type: SEND_TRANSACTION_SUCCESS,
   payload: {
     operationId,
@@ -71,7 +67,7 @@ const initialState: State = {
   isToAddressValid: false,
   zecPrice: 0,
 };
-
+// eslint-disable-next-line
 export default (state: State = initialState, action: Action): State => {
   switch (action.type) {
     case SEND_TRANSACTION:

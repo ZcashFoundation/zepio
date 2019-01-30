@@ -170,6 +170,7 @@ export class SettingsView extends PureComponent<Props, State> {
     )}.dat`;
 
     electron.remote.dialog.showSaveDialog(
+      undefined,
       { defaultPath: backupFileName },
       async (pathToSave) => {
         if (!pathToSave) return;
@@ -182,19 +183,13 @@ export class SettingsView extends PureComponent<Props, State> {
         /* eslint-disable no-alert */
 
         if (cannotAccess) {
-          alert(
-            "Couldn't backup the wallet.dat file. You need to back it up manually.",
-          );
+          alert("Couldn't backup the wallet.dat file. You need to back it up manually.");
         }
 
-        const [error] = await eres(
-          promisify(fs.copyFile)(walletDatPath, pathToSave),
-        );
+        const [error] = await eres(promisify(fs.copyFile)(walletDatPath, pathToSave));
 
         if (error) {
-          alert(
-            "Couldn't backup the wallet.dat file. You need to back it up manually.",
-          );
+          alert("Couldn't backup the wallet.dat file. You need to back it up manually.");
         }
       },
     );
@@ -307,16 +302,12 @@ export class SettingsView extends PureComponent<Props, State> {
               <InputLabelComponent value='Please paste your private keys here, one per line. The keys will be imported into your zcashd node' />
               <InputComponent
                 value={importedPrivateKeys}
-                onChange={value => this.setState({ importedPrivateKeys: value })
-                }
+                onChange={value => this.setState({ importedPrivateKeys: value })}
                 inputType='textarea'
                 rows={10}
               />
               {successImportPrivateKeys && (
-                <TextComponent
-                  value='Private keys imported in your node'
-                  align='center'
-                />
+                <TextComponent value='Private keys imported in your node' align='center' />
               )}
               {error && <TextComponent value={error} align='center' />}
             </ModalContent>
