@@ -122,7 +122,6 @@ export class ReceiveView extends PureComponent<Props, State> {
   renderTransparentAddresses = (address: string) => {
     const { showAdditionalOptions } = this.state;
 
-    console.log(address);
 
     return (
       <RevealsMain key={address}>
