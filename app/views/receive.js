@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Transition, animated } from 'react-spring';
 
@@ -58,12 +58,6 @@ const RevealsMain = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-
-  & > div {
-    top: 0;
-    right: 0;
-    left: 0;
-  }
 `;
 
 type Props = {
@@ -91,16 +85,26 @@ export class ReceiveView extends PureComponent<Props, State> {
     showAdditionalOptions: !prevState.showAdditionalOptions,
   }));
 
-  renderShieldedAddresses = (address: string) => {
+  generateNewAddress = (type: addressType) => {
+    const { getNewAddress } = this.props;
+
+    getNewAddress({ type });
+  };
+
+  render() {
+    const { addresses } = this.props;
     const { showAdditionalOptions } = this.state;
     const buttonText = `${showAdditionalOptions ? 'Hide' : 'Show'} Other Address Types`;
 
+    const shieldedAddresses = addresses.filter(addr => addr.startsWith('z'));
+    const transparentAddresses = addresses.filter(addr => addr.startsWith('t'));
+
     return (
-      <Fragment key={address}>
+      <div>
         <Label value='Shielded Address' />
-        <Row alignItems='center' justifyContent='space-between'>
-          <WalletAddress address={address} />
-        </Row>
+        {shieldedAddresses.map(addr => (
+          <WalletAddress key={addr} address={addr} />
+        ))}
         <Row>
           <ActionButton onClick={this.toggleAdditionalOptions} isActive={showAdditionalOptions}>
             <ActionIcon isActive={showAdditionalOptions} src={MenuIcon} alt='More Options' />
@@ -115,57 +119,31 @@ export class ReceiveView extends PureComponent<Props, State> {
             <TextComponent value='New Transparent Address' />
           </ActionButton>
         </Row>
-      </Fragment>
-    );
-  };
-
-  renderTransparentAddresses = (address: string) => {
-    const { showAdditionalOptions } = this.state;
-
-
-    return (
-      <RevealsMain key={address}>
-        <Transition
-          native
-          items={showAdditionalOptions}
-          enter={[{ height: 'auto', opacity: 1 }]}
-          leave={{ height: 0, opacity: 0 }}
-          from={{
-            position: 'absolute',
-            overflow: 'hidden',
-            height: 0,
-            opacity: 0,
-          }}
-        >
-          {show => show
-            && (props => (
-              <animated.div style={props}>
-                <Label value='Transparent Address (not private)' />
-                <Row key={address} alignItems='center' justifyContent='space-between'>
-                  <WalletAddress address={address} />
-                </Row>
-              </animated.div>
-            ))
-          }
-        </Transition>
-      </RevealsMain>
-    );
-  };
-
-  generateNewAddress = (type: addressType) => {
-    const { getNewAddress } = this.props;
-
-    getNewAddress({ type });
-  };
-
-  render() {
-    const { addresses } = this.props;
-
-    return (
-      <div>
-        {(addresses || []).map((address, index) => (index === 0
-          ? this.renderShieldedAddresses(address)
-          : this.renderTransparentAddresses(address)))}
+        <RevealsMain>
+          <Transition
+            native
+            items={showAdditionalOptions}
+            enter={[{ opacity: 1 }]}
+            leave={{ height: 0, opacity: 0 }}
+            from={{
+              position: 'absolute',
+              overflow: 'hidden',
+              height: 0,
+              opacity: 0,
+            }}
+          >
+            {show => show
+              && (props => (
+                <animated.div style={{ ...props, width: '100%', height: 'auto' }}>
+                  <Label value='Transparent Address (not private)' />
+                  {transparentAddresses.map(addr => (
+                    <WalletAddress key={addr} address={addr} />
+                  ))}
+                </animated.div>
+              ))
+            }
+          </Transition>
+        </RevealsMain>
       </div>
     );
   }
