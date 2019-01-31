@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TextComponent /> should render correctly 1`] = `
+<div>
+  <p
+    class="sc-bdVaJa fMeavL"
+    color="#FFF"
+  >
+    ZEC React Wallet
+  </p>
+</div>
+`;

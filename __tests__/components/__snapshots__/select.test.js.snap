@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SelectComponent /> should generate snapshot correctly 1`] = `
+<div>
+  <div
+    class="sc-bwzfXH laILya"
+    data-testid="Select"
+    id="select-component"
+  >
+    <div
+      class="sc-htpNat iHFWUy"
+    >
+      Select a address
+    </div>
+    <div
+      class="sc-bxivhb fUvjwK"
+    >
+      <button
+        class="sc-ifAKCX JHqFU"
+      >
+        <img
+          class="sc-EHOje fcnlsf"
+          src="[object Object]"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;

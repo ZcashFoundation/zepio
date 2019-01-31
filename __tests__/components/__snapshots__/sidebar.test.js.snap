@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Sidebar /> render() should render correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="sc-bdVaJa igFjJZ"
+    id="sidebar"
+  >
+    <a
+      class="sc-bwzfXH kBVjXq"
+    >
+      <img
+        alt="/"
+        class="sc-htpNat kwYHDD"
+        src="[object Object]"
+      />
+      Dashboard
+    </a>
+    <a
+      class="sc-bwzfXH cYKDCP"
+    >
+      <img
+        alt="/send"
+        class="sc-htpNat eZYlLl"
+        src="[object Object]"
+      />
+      Send
+    </a>
+    <a
+      class="sc-bwzfXH cYKDCP"
+    >
+      <img
+        alt="/receive"
+        class="sc-htpNat eZYlLl"
+        src="[object Object]"
+      />
+      Receive
+    </a>
+    <a
+      class="sc-bwzfXH cYKDCP"
+    >
+      <img
+        alt="/transactions"
+        class="sc-htpNat eZYlLl"
+        src="[object Object]"
+      />
+      Transactions
+    </a>
+    <a
+      class="sc-bwzfXH cYKDCP"
+    >
+      <img
+        alt="/settings"
+        class="sc-htpNat eZYlLl"
+        src="[object Object]"
+      />
+      Settings
+    </a>
+    <a
+      class="sc-bwzfXH cYKDCP"
+    >
+      <img
+        alt="/console"
+        class="sc-htpNat eZYlLl"
+        src="[object Object]"
+      />
+      Console
+    </a>
+  </div>
+</DocumentFragment>
+`;

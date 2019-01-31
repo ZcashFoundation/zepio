@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Divider /> should render correctly 1`] = `
+<div>
+  <div
+    class="sc-bdVaJa kRTFg"
+    width=""
+  >
+    <h3>
+      ZEC
+    </h3>
+    <h3>
+      React
+    </h3>
+    <h3>
+      Wallet
+    </h3>
+  </div>
+</div>
+`;
