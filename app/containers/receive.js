@@ -40,9 +40,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       type === 'shielded' ? rpc.z_getnewaddress() : rpc.getnewaddress(''),
     );
 
-    if (error || !address) return getNewAddressError({ error: 'Unable to generate a new address' });
+    if (error || !address) return dispatch(getNewAddressError({ error: 'Unable to generate a new address' }));
 
-    getNewAddressSuccess({ address });
+    dispatch(getNewAddressSuccess({ address }));
   },
 });
 
