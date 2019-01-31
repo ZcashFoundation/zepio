@@ -23,4 +23,15 @@ describe('formatNumber', () => {
 
     expect(myBalanceInUsd).toEqual(expectedState);
   });
+
+  test('should multiply decimal ZEC balance and show it in USD', () => {
+    const myBalanceInUsd = formatNumber({
+      value: new BigNumber(0.1).times(0.2).toNumber(),
+      append: 'USD $',
+    });
+
+    const expectedState = 'USD $0.02';
+
+    expect(myBalanceInUsd).toEqual(expectedState);
+  });
 })
