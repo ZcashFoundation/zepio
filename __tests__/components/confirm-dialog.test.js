@@ -9,19 +9,31 @@ import { ConfirmDialogComponent } from '../../app/components/confirm-dialog';
 afterEach(cleanup);
 
 describe('<ConfirmDialogComponent />', () => {
-  describe('render()', () => {
-    test('should render confirm dialog correctly', () => {
-      const { container } = render(
-        <ConfirmDialogComponent
-          title="Confirm example"
-          onConfirm={() => alert('Confirm')}
-          renderTrigger={toggle => <button onClick={toggle}> Open! </button>}
-        >
-          {toggle => <div>Confirm content</div>}
-        </ConfirmDialogComponent>,
-      );
+  test('should render confirm dialog correctly', () => {
+    const { queryByTestId } = render(
+      <ConfirmDialogComponent
+        title="Confirm example"
+        onConfirm={() => alert('Confirm')}
+        renderTrigger={toggle => <button onClick={toggle}> Open! </button>}
+      >
+        {toggle => <div>Confirm content</div>}
+      </ConfirmDialogComponent>,
+    );
 
-      expect(container).toMatchSnapshot();
-    });
+    expect(queryByTestId('ConfirmDialog')).toMatchSnapshot();
+  });
+
+  test('should render confirm dialog trigger', () => {
+    const { queryByTestId } = render(
+      <ConfirmDialogComponent
+        title="Confirm example"
+        onConfirm={() => alert('Confirm')}
+        renderTrigger={toggle => <button data-testid='ConfirmDialogTrigger' onClick={toggle}> Open! </button>}
+      >
+        {toggle => <div>Confirm content</div>}
+      </ConfirmDialogComponent>,
+    );
+
+    expect(queryByTestId('ConfirmDialogTrigger')).toBeInTheDocument();
   });
 });

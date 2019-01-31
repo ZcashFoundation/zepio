@@ -11,15 +11,24 @@ import appTheme from '../../app/theme';
 afterEach(cleanup);
 
 describe('<Clipboard />', () => {
-  describe('render()', () => {
-    test('should render clipboard component correctly', () => {
-      const { container } = render(
-        <ThemeProvider theme={appTheme}>
-          <Clipboard text='Click me!' />
-        </ThemeProvider>,
-      );
+  test('should render clipboard component correctly', () => {
+    const { queryByTestId } = render(
+      <ThemeProvider theme={appTheme}>
+        <Clipboard text='Click me!' />
+      </ThemeProvider>,
+    );
 
-      expect(container).toMatchSnapshot();
-    });
+    expect(queryByTestId('Clipboard')).toBeInTheDocument();
   });
+
+  test('should render clipboard button correctly', () => {
+    const { queryByTestId } = render(
+      <ThemeProvider theme={appTheme}>
+        <Clipboard text='Click me!' />
+      </ThemeProvider>,
+    );
+
+    expect(queryByTestId('PrimaryButton')).toBeInTheDocument();
+  });
+
 });

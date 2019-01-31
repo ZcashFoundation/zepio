@@ -11,18 +11,32 @@ import appTheme from '../../app/theme';
 afterEach(cleanup);
 
 describe('<Button />', () => {
-  describe('render()', () => {
-    test('should render button correctly', () => {
-      const { container } = render(
-        <ThemeProvider theme={appTheme}>
-          <Button
-            label='Click me!'
-            onClick={() => alert('Clicked')}
-          />
-        </ThemeProvider>
-      );
+  test('should render primary button correctly', () => {
+    const { queryByTestId } = render(
+      <ThemeProvider theme={appTheme}>
+        <Button
+          label='Click me!'
+          onClick={() => alert('Clicked')}
+          variant='primary' 
+        />
+      </ThemeProvider>
+    );
 
-      expect(container).toMatchSnapshot();
-    });
+    expect(queryByTestId('PrimaryButton')).toBeInTheDocument();
   });
+
+  test('should render secondary button correctly', () => {
+    const { queryByTestId } = render(
+      <ThemeProvider theme={appTheme}>
+        <Button
+          label='Click me!'
+          onClick={() => alert('Clicked')}
+          variant='secondary' 
+        />
+      </ThemeProvider>
+    );
+
+    expect(queryByTestId('SecondaryButton')).toBeInTheDocument();
+  });
+
 });

@@ -12,29 +12,53 @@ import appTheme from '../../app/theme';
 afterEach(cleanup);
 
 describe('<DropdownComponent />', () => {
-  describe('render()', () => {
-    test('should render dropdown correctly', () => {
-      const { container } = render(
-        <ThemeProvider theme={appTheme}>
-          <div style={{ height: '500px' }}>
-            <DropdownComponent
-              label='Addresses'
-              renderTrigger={toggleVisibility => (
-                <Button
-                  label='Show Dropdown'
-                  onClick={toggleVisibility}
-                />
-              )}
-              options={[
-                { label: 'asbh1yeasbdh23848asdasd', onClick: console.log },
-                { label: 'urtyruhjr374hbfdjdhuh', onClick: console.log },
-              ]}
-            />
-          </div>
-        </ThemeProvider>,
-      );
+  test('should render dropdown correctly', () => {
+    const { queryByTestId } = render(
+      <ThemeProvider theme={appTheme}>
+        <div style={{ height: '500px' }} data-testid='DropdownWrapper'>
+          <DropdownComponent
+            label='Addresses'
+            renderTrigger={toggleVisibility => (
+              <Button
+                label='Show Dropdown'
+                onClick={toggleVisibility}
+              />
+            )}
+            options={[
+              { label: 'asbh1yeasbdh23848asdasd', onClick: console.log },
+              { label: 'urtyruhjr374hbfdjdhuh', onClick: console.log },
+            ]}
+          />
+        </div>
+      </ThemeProvider>,
+    );
 
-      expect(container).toMatchSnapshot();
-    });
+    expect(queryByTestId('DropdownWrapper')).toBeInTheDocument();
   });
+
+  test('should render dropdown button trigger correctly', () => {
+    const { queryByTestId } = render(
+      <ThemeProvider theme={appTheme}>
+        <div style={{ height: '500px' }}>
+          <DropdownComponent
+            label='Addresses'
+            renderTrigger={toggleVisibility => (
+              <Button
+                label='Show Dropdown'
+                data-testid='DropdownAddressesWrapper'
+                onClick={toggleVisibility}
+              />
+            )}
+            options={[
+              { label: 'asbh1yeasbdh23848asdasd', onClick: console.log },
+              { label: 'urtyruhjr374hbfdjdhuh', onClick: console.log },
+            ]}
+          />
+        </div>
+      </ThemeProvider>,
+    );
+
+    expect(queryByTestId('PrimaryButton')).toBeInTheDocument();
+  });
+
 });

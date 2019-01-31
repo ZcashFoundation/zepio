@@ -9,28 +9,27 @@ import { ModalComponent } from '../../app/components/modal';
 afterEach(cleanup);
 
 describe('<ModalComponent />', () => {
-  describe('render()', () => {
-    test('should render modal correctly', () => {
-      const { container } = render(
-        <ModalComponent
-          renderTrigger={toggleVisibility => (
+  test('should render modal trigger correctly', () => {
+    const { queryByTestId } = render(
+      <ModalComponent
+        renderTrigger={toggleVisibility => (
+          <button type="button" data-testid='ModalTrigger' onClick={toggleVisibility}>
+            Open Modal
+          </button>
+        )}
+      >
+        {toggleVisibility => (
+          <div style={{ padding: '50px', backgroundColor: 'white' }}>
+            Modal Content
             <button type="button" onClick={toggleVisibility}>
-              Open Modal
+              Close Modal
             </button>
-          )}
-        >
-          {toggleVisibility => (
-            <div style={{ padding: '50px', backgroundColor: 'white' }}>
-              Modal Content
-              <button type="button" onClick={toggleVisibility}>
-                Close Modal
-              </button>
-            </div>
-          )}
-        </ModalComponent>,
-      );
+          </div>
+        )}
+      </ModalComponent>,
+    );
 
-      expect(container).toMatchSnapshot();
-    });
+    expect(queryByTestId('ModalTrigger')).toBeInTheDocument();
   });
+
 });

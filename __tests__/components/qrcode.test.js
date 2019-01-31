@@ -9,13 +9,11 @@ import { QRCode } from '../../app/components/qrcode';
 afterEach(cleanup);
 
 describe('<QRCode />', () => {
-  describe('render()', () => {
-    test('should render qrcode component correctly', () => {
-      const { container } = render(
-        <QRCode value='https://z.cash.foundation' />,
-      );
+  test('should render qrcode component correctly', () => {
+    const { queryByTestId } = render(
+      <QRCode value='https://z.cash.foundation' />,
+    );
 
-      expect(container).toMatchSnapshot();
-    });
+    expect(queryByTestId('QRCode')).toBeInTheDocument();
   });
 });

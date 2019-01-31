@@ -1,8 +1,7 @@
 // @flow
 
 import React from 'react';
-import { render, cleanup } from 'react-testing-library';
-import { MemoryRouter } from 'react-router-dom';
+import { render, cleanup, queryByText } from 'react-testing-library';
 import { ThemeProvider } from 'styled-components';
 import 'jest-dom/extend-expect';
 
@@ -12,18 +11,44 @@ import appTheme from '../../app/theme';
 afterEach(cleanup);
 
 describe('<StatusPill />', () => {
-  describe('render()', () => {
-    test('should render visual component status correctly', () => {
-      // $FlowFixMe
-      const { asFragment } = render(
-        <ThemeProvider theme={appTheme}>
-          <MemoryRouter>
-            <StatusPill progress={83.} type='syncing' />
-          </MemoryRouter>
-        </ThemeProvider>,
-      );
+  test('should render status pill correctly', () => {
+    const { queryByTestId } = render(
+      <ThemeProvider theme={appTheme}>
+        <StatusPill progress={83.} type='syncing' />
+      </ThemeProvider>,
+    );
 
-      expect(asFragment()).toMatchSnapshot();
-    });
+    expect(queryByTestId('StatusPill')).toBeInTheDocument();
+  });
+
+  test('should show percentage on status pill syncing', () => {
+    const { container } = render(
+      <ThemeProvider theme={appTheme}>
+        <StatusPill progress={56.} type='syncing' />
+      </ThemeProvider>,
+    );
+
+    expect(queryByText(container, /%/i)).toBeInTheDocument();
+  });
+
+  test('should hide percentage on status pill', () => {
+    const { container } = render(
+      <ThemeProvider theme={appTheme}>
+        <StatusPill progress={100.} type='ready' />
+      </ThemeProvider>,
+    );
+
+    expect(queryByText(container, /%/i)).not.toBeInTheDocument();
+  });
+
+  test('should show error string and hide percentage on status pill', () => {
+    const { container } = render(
+      <ThemeProvider theme={appTheme}>
+        <StatusPill progress={0.} type='error' />
+      </ThemeProvider>,
+    );
+
+    expect(queryByText(container, /%/i)).not.toBeInTheDocument();
+    expect(queryByText(container, /error/i)).toBeInTheDocument();
   });
 });
