@@ -81,6 +81,8 @@ export class StatusPill extends Component<Props, State> {
   getBlockchainStatus = async () => {
     const [blockchainErr, blockchaininfo] = await eres(rpc.getblockchaininfo());
 
+    if (blockchainErr || !blockchaininfo) return;
+
     const newProgress = blockchaininfo.verificationprogress * 100;
 
     this.setState({
