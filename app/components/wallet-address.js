@@ -109,7 +109,7 @@ export class WalletAddress extends PureComponent<Props, State> {
 
     return (
       <ColumnComponent width='100%'>
-        <AddressWrapper>
+        <AddressWrapper data-testid='Address'>
           <Input
             value={isVisible ? address : truncateAddress(address)}
             onChange={() => {}}

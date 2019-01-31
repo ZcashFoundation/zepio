@@ -102,12 +102,12 @@ export const Button = ({
   const buttonLabel = isLoading ? 'Loading...' : label;
 
   const component = variant === 'primary' ? (
-    <Primary {...props}>
+    <Primary {...props} data-testid='PrimaryButton'>
       {icon ? <Icon src={icon} /> : null}
       {buttonLabel}
     </Primary>
   ) : (
-    <Secondary {...props}>
+    <Secondary {...props} data-testid='SecondaryButton'>
       {icon ? <Icon src={icon} /> : null}
       {buttonLabel}
     </Secondary>

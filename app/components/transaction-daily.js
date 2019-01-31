@@ -39,7 +39,7 @@ export const TransactionDailyComponent = ({
   transactions,
   zecPrice,
 }: Props) => (
-  <Wrapper>
+  <Wrapper data-testid='TransactionsDaily'>
     <Day value={transactionsDate} />
     <TransactionsWrapper>
       {transactions.map(

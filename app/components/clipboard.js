@@ -39,12 +39,14 @@ export class Clipboard extends PureComponent<Props, State> {
     const { copied } = this.state;
 
     return (
-      <Button
-        label={copied ? 'Copied!' : 'Copy!'}
-        className={className}
-        onClick={this.handleClick}
-        disabled={copied}
-      />
+      <div data-testid='Clipboard'>
+        <Button
+          label={copied ? 'Copied!' : 'Copy!'}
+          className={className}
+          onClick={this.handleClick}
+          disabled={copied}
+        />
+      </div>
     );
   }
 }

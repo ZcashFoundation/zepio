@@ -73,7 +73,7 @@ export class StatusPill extends React.PureComponent<Props, State> {
     const showPercent = isSyncing ? `(${progress.toFixed(2)}%)` : '';
 
     return (
-      <Wrapper>
+      <Wrapper data-testid='StatusPill'>
         <Icon src={withError ? errorIcon : icon} animated={isSyncing} />
         <StatusPillLabel value={`${type} ${showPercent}`} />
       </Wrapper>
