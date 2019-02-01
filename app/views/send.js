@@ -425,7 +425,7 @@ export class SendView extends PureComponent<Props, State> {
 
     const isEmpty = amount === '';
 
-    const fixedAmount = isEmpty ? '0.00' : amount;
+    const fixedAmount = isEmpty ? 0.0 : amount;
 
     const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
     const zecBalanceInUsd = formatNumber({
