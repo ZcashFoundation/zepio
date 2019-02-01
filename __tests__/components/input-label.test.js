@@ -18,7 +18,9 @@ describe('<InputLabelComponent />', () => {
       </ThemeProvider>,
     );
 
-    expect(container).toMatchSnapshot();
+    const label = container.querySelector('p');
+    
+    expect(label).toBeVisible();
   });
 
   test('should render input label string', () => {

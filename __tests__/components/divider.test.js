@@ -19,6 +19,9 @@ describe('<Divider />', () => {
       </ThemeProvider>,
     );
 
-    expect(container).toMatchSnapshot();
+    const divider = container.querySelector('div');
+
+    expect(divider).toBeVisible();
+    expect(divider).toHaveStyle('opacity: 0.3');
   });
 });

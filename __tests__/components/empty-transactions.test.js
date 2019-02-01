@@ -12,13 +12,13 @@ afterEach(cleanup);
 
 describe('<EmptyTransactions />', () => {
   test('should render correctly', () => {
-    const { container } = render(
+    const { queryByTestId } = render(
       <ThemeProvider theme={appTheme}>
         <EmptyTransactionsComponent />
       </ThemeProvider>,
     );
 
-    expect(container).toMatchSnapshot();
+    expect(queryByTestId('NoTransactions')).toBeInTheDocument();
   });
 
   test('should show label correctly', () => {

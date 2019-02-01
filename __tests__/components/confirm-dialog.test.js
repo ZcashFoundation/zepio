@@ -10,7 +10,7 @@ afterEach(cleanup);
 
 describe('<ConfirmDialogComponent />', () => {
   test('should render confirm dialog correctly', () => {
-    const { queryByTestId } = render(
+    const { container } = render(
       <ConfirmDialogComponent
         title="Confirm example"
         onConfirm={() => alert('Confirm')}
@@ -20,7 +20,7 @@ describe('<ConfirmDialogComponent />', () => {
       </ConfirmDialogComponent>,
     );
 
-    expect(queryByTestId('ConfirmDialog')).toMatchSnapshot();
+    expect(container).toBeVisible();
   });
 
   test('should render confirm dialog trigger', () => {

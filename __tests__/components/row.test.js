@@ -22,6 +22,6 @@ describe('<RowComponent />', () => {
       </ThemeProvider>,
     );
 
-    expect(container).toMatchSnapshot();
+    expect(container).toBeVisible();
   });
 });

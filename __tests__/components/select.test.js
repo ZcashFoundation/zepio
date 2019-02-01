@@ -26,7 +26,7 @@ describe('<SelectComponent />', () => {
       </ThemeProvider>,
     );
 
-    expect(container).toMatchSnapshot();
+    expect(container).toBeVisible();
   });
 
   test('should render correctly', () => {

@@ -18,7 +18,7 @@ describe('<TextComponent />', () => {
       </ThemeProvider>,
     );
 
-    expect(container).toMatchSnapshot();
+    expect(container).toBeVisible();
   });
 
   test('should render input label string', () => {
