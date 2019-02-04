@@ -19,8 +19,7 @@ import log from './logger';
 import store from '../electron-store';
 import { parseZcashConf } from './parse-zcash-conf';
 
-const getDaemonOptions = async ({ username, password }) => {
-  const [, optionsFromZcashConf = []] = await eres(parseZcashConf());
+const getDaemonOptions = ({ username, password, optionsFromZcashConf }) => {
   /*
     -showmetrics
         Show metrics on stdout
@@ -42,6 +41,8 @@ const getDaemonOptions = async ({ username, password }) => {
     // Overwriting the settings with values taken from "zcash.conf"
     ...optionsFromZcashConf,
   ];
+
+  log(defaultOptions);
 
   return isDev ? defaultOptions.concat(['-testnet', '-addnode=testnet.z.cash']) : defaultOptions;
 };
@@ -68,6 +69,8 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     return resolve();
   }
 
+  const [, optionsFromZcashConf = []] = await eres(parseZcashConf());
+
   const hasCredentials = store.has('rpcuser') && store.has('rpcpassword');
 
   const rpcCredentials = hasCredentials
@@ -87,9 +90,13 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     store.set('rpcpassword', rpcCredentials.password);
   }
 
-  const childProcess = cp.spawn(processName, await getDaemonOptions(rpcCredentials), {
-    stdio: ['ignore', 'pipe', 'pipe'],
-  });
+  const childProcess = cp.spawn(
+    processName,
+    await getDaemonOptions({ ...rpcCredentials, optionsFromZcashConf }),
+    {
+      stdio: ['ignore', 'pipe', 'pipe'],
+    },
+  );
 
   childProcess.stdout.on('data', (data) => {
     if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-log', data.toString());
