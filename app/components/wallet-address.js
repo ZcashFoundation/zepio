@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Transition, animated } from 'react-spring';
 
-import { ColumnComponent } from './column';
 import { Button } from './button';
 import { QRCode } from './qrcode';
 
@@ -18,6 +17,7 @@ const AddressWrapper = styled.div`
   border-radius: 6px;
   padding: 7px 13px;
   width: 100%;
+  margin-bottom: 5px;
 `;
 
 const Input = styled.input`
@@ -56,7 +56,6 @@ const QRCodeWrapper = styled.div`
   background-color: #000;
   border-radius: 6px;
   padding: 20px;
-  margin-top: 10px;
   width: 100%;
 `;
 
@@ -108,7 +107,7 @@ export class WalletAddress extends PureComponent<Props, State> {
     const buttonLabel = `${isVisible ? 'Hide' : 'Show'} details and QR Code`;
 
     return (
-      <ColumnComponent width='100%'>
+      <div>
         <AddressWrapper>
           <Input
             value={isVisible ? address : truncateAddress(address)}
@@ -152,7 +151,7 @@ export class WalletAddress extends PureComponent<Props, State> {
             }
           </Transition>
         </RevealsMain>
-      </ColumnComponent>
+      </div>
     );
   }
 }
