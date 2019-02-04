@@ -17,8 +17,10 @@ import getDaemonName from './get-daemon-name';
 import fetchParams from './run-fetch-params';
 import log from './logger';
 import store from '../electron-store';
+import { parseZcashConf } from './parse-zcash-conf';
 
-const getDaemonOptions = ({ username, password }) => {
+const getDaemonOptions = async ({ username, password }) => {
+  const [, optionsFromZcashConf = []] = await eres(parseZcashConf());
   /*
     -showmetrics
         Show metrics on stdout
@@ -37,7 +39,10 @@ const getDaemonOptions = ({ username, password }) => {
     // TODO: For test purposes only
     '-testnet',
     '-addnode=testnet.z.cash',
+    // Overwriting the settings with values taken from "zcash.conf"
+    ...optionsFromZcashConf,
   ];
+
   return isDev ? defaultOptions.concat(['-testnet', '-addnode=testnet.z.cash']) : defaultOptions;
 };
 
@@ -82,7 +87,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     store.set('rpcpassword', rpcCredentials.password);
   }
 
-  const childProcess = cp.spawn(processName, getDaemonOptions(rpcCredentials), {
+  const childProcess = cp.spawn(processName, await getDaemonOptions(rpcCredentials), {
     stdio: ['ignore', 'pipe', 'pipe'],
   });
 
