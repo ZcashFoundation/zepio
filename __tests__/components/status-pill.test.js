@@ -14,7 +14,7 @@ describe('<StatusPill />', () => {
   test('should render status pill correctly', () => {
     const { queryByTestId } = render(
       <ThemeProvider theme={appTheme}>
-        <StatusPill progress={83.} type='syncing' />
+        <StatusPill progress={83.0} type='syncing' />
       </ThemeProvider>,
     );
 
@@ -24,7 +24,7 @@ describe('<StatusPill />', () => {
   test('should show percentage on status pill syncing', () => {
     const { container } = render(
       <ThemeProvider theme={appTheme}>
-        <StatusPill progress={56.} type='syncing' />
+        <StatusPill progress={56.0} type='syncing' />
       </ThemeProvider>,
     );
 
@@ -34,7 +34,7 @@ describe('<StatusPill />', () => {
   test('should hide percentage on status pill', () => {
     const { container } = render(
       <ThemeProvider theme={appTheme}>
-        <StatusPill progress={100.} type='ready' />
+        <StatusPill progress={100.0} type='ready' />
       </ThemeProvider>,
     );
 
@@ -44,7 +44,7 @@ describe('<StatusPill />', () => {
   test('should show error string and hide percentage on status pill', () => {
     const { container } = render(
       <ThemeProvider theme={appTheme}>
-        <StatusPill progress={0.} type='error' />
+        <StatusPill progress={0.0} type='error' />
       </ThemeProvider>,
     );
 

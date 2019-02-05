@@ -105,11 +105,12 @@ export class StatusPill extends Component<Props, State> {
       type, icon, progress, isSyncing,
     } = this.state;
     const showPercent = isSyncing ? `(${progress.toFixed(2)}%)` : '';
+    const typeText = (type === 'ready') ? 'Synced' : type;
 
     return (
       <Wrapper id='status-pill'>
         <Icon src={icon} animated={isSyncing} />
-        <StatusPillLabel value={`${type} ${showPercent}`} />
+        <StatusPillLabel value={`${typeText} ${showPercent}`} />
       </Wrapper>
     );
   }
