@@ -9,6 +9,8 @@ import { Divider } from './divider';
 import { RowComponent } from './row';
 import { StatusPill } from './status-pill';
 
+import { withSyncStatus } from '../../services/sync-status';
+
 const Wrapper = styled.div`
   height: ${props => props.theme.headerHeight};
   width: 100vw;
@@ -59,6 +61,8 @@ type Props = {
   title: string,
 };
 
+const Status = withSyncStatus(StatusPill);
+
 export const HeaderComponent = ({ title }: Props) => (
   <Wrapper id='header'>
     <LogoWrapper>
@@ -67,7 +71,7 @@ export const HeaderComponent = ({ title }: Props) => (
     <TitleWrapper>
       <TitleRow alignItems='center' justifyContent='space-around'>
         <Title value={title} />
-        <StatusPill />
+        <Status type='syncing' progress={0} />
       </TitleRow>
       <Divider opacity={0.1} />
     </TitleWrapper>

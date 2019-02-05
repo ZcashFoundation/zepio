@@ -99,6 +99,7 @@ export class ModalComponent extends PureComponent<Props, State> {
           ? createPortal(
             <ModalWrapper
               id='modal-portal-wrapper'
+              data-testid='Modal'
               onClick={(event) => {
                 if (
                   closeOnBackdropClick

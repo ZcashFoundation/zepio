@@ -1,4 +1,5 @@
 // @flow
+
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Transition, animated } from 'react-spring';
@@ -107,8 +108,8 @@ export class WalletAddress extends PureComponent<Props, State> {
     const buttonLabel = `${isVisible ? 'Hide' : 'Show'} details and QR Code`;
 
     return (
-      <div>
-        <AddressWrapper>
+      <ColumnComponent width='100%'>
+        <AddressWrapper data-testid='Address'>
           <Input
             value={isVisible ? address : truncateAddress(address)}
             onChange={() => {}}
