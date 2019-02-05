@@ -20,6 +20,7 @@ const client = got.extend({
   auth: `${RPC.user}:${RPC.password}`,
 });
 
+// $FlowFixMe
 const api: APIMethods = METHODS.reduce(
   (obj, method) => ({
     ...obj,
@@ -33,9 +34,7 @@ const api: APIMethods = METHODS.reduce(
         },
       })
       .then(data => Promise.resolve(data.body && data.body.result))
-      .catch(payload => Promise.reject(
-        new Error(payload.body?.error.message || 'Something went wrong'),
-      )),
+      .catch(payload => Promise.reject(new Error(payload.body?.error.message || 'Something went wrong'))),
   }),
   {},
 );

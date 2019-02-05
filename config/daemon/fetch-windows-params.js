@@ -13,11 +13,11 @@ import got from 'got';
 import Queue from 'p-queue';
 
 // eslint-disable-next-line
-import { app } from '../electron';
+import { app, mainWindow } from '../electron';
 import getBinariesPath from './get-binaries-path';
 import log from './logger';
 
-const queue = new Queue({ concurrency: 1, autoStart: false });
+const queue = new Queue({ concurrency: 2, autoStart: false });
 
 const httpClient = got.extend({
   baseUrl: 'https://z.cash/downloads/',
@@ -61,19 +61,22 @@ const checkSha256 = (pathToFile: string, expectedHash: string) => new Promise((r
 
 // eslint-disable-next-line max-len
 const downloadFile = ({ file, pathToSave }): Promise<*> => new Promise((resolve, reject) => {
+  if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', `Downloading ${file.name}...`);
   log(`Downloading ${file.name}...`);
 
   httpClient
     .stream(file.name)
     .on('end', () => {
-      checkSha256(pathToSave, file.hash).then((isValid) => {
-        if (isValid) {
-          log(`SHA256 validation for file ${file.name} succeeded!`);
-          resolve(file.name);
-        } else {
-          reject(new Error(`SHA256 validation failed for file: ${file.name}`));
-        }
-      });
+      checkSha256(pathToSave, file.hash)
+        .then((isValid) => {
+          if (isValid) {
+            log(`SHA256 validation for file ${file.name} succeeded!`);
+            resolve(file.name);
+          } else {
+            reject(new Error(`SHA256 validation failed for file: ${file.name}`));
+          }
+        })
+        .catch(resolve);
     })
     .on('error', err => reject(new Error(err)))
     .pipe(fs.createWriteStream(pathToSave));
@@ -118,7 +121,16 @@ export default (): Promise<*> => new Promise((resolve, reject) => {
 
     if (!missingDownloadParam) return resolve();
 
-    queue.onEmpty(resolve);
+    /*
+      Manual approach to check the end of the queue
+      onIdle/onEmpty was not working
+    */
+    const interval = setInterval(() => {
+      if (queue.size === 0 && queue.pending === 0) {
+        clearInterval(interval);
+        resolve();
+      }
+    }, 500);
     queue.start();
   });
 });

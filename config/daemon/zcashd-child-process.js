@@ -17,8 +17,9 @@ import getDaemonName from './get-daemon-name';
 import fetchParams from './run-fetch-params';
 import log from './logger';
 import store from '../electron-store';
+import { parseZcashConf } from './parse-zcash-conf';
 
-const getDaemonOptions = ({ username, password }) => {
+const getDaemonOptions = ({ username, password, optionsFromZcashConf }) => {
   /*
     -showmetrics
         Show metrics on stdout
@@ -37,7 +38,10 @@ const getDaemonOptions = ({ username, password }) => {
     // TODO: For test purposes only
     '-testnet',
     '-addnode=testnet.z.cash',
+    // Overwriting the settings with values taken from "zcash.conf"
+    ...optionsFromZcashConf,
   ];
+
   return isDev ? defaultOptions.concat(['-testnet', '-addnode=testnet.z.cash']) : defaultOptions;
 };
 
@@ -47,6 +51,8 @@ let resolved = false;
 const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve, reject) => {
   const processName = path.join(getBinariesPath(), getOsFolder(), getDaemonName());
 
+  if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', 'Fetching params...');
+
   const [err] = await eres(fetchParams());
 
   if (err) {
@@ -54,6 +60,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     return reject(new Error(err));
   }
 
+  if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', 'ZEC Wallet Starting');
   log('Fetch Params finished!');
 
   const [, isRunning] = await eres(processExists(processName));
@@ -62,6 +69,8 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     log('Already is running!');
     return resolve();
   }
+
+  const [, optionsFromZcashConf = []] = await eres(parseZcashConf());
 
   const hasCredentials = store.has('rpcuser') && store.has('rpcpassword');
 
@@ -82,9 +91,13 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     store.set('rpcpassword', rpcCredentials.password);
   }
 
-  const childProcess = cp.spawn(processName, getDaemonOptions(rpcCredentials), {
-    stdio: ['ignore', 'pipe', 'pipe'],
-  });
+  const childProcess = cp.spawn(
+    processName,
+    await getDaemonOptions({ ...rpcCredentials, optionsFromZcashConf }),
+    {
+      stdio: ['ignore', 'pipe', 'pipe'],
+    },
+  );
 
   childProcess.stdout.on('data', (data) => {
     if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-log', data.toString());
