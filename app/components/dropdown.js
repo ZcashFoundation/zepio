@@ -107,7 +107,7 @@ export class DropdownComponent extends Component<Props, State> {
             </MenuItem>
           )}
           {options.map(({ label: optionLabel, onClick }) => (
-            <OptionItem onClick={onClick} key={optionLabel}>
+            <OptionItem onClick={onClick} key={optionLabel} data-testid='DropdownOption'>
               <Option value={truncate ? truncateAddress(optionLabel) : optionLabel} />
             </OptionItem>
           ))}
