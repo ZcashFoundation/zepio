@@ -2,6 +2,8 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Transition, animated } from 'react-spring';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ipcRenderer } from 'electron';
 
 import CircleProgressComponent from 'react-circle';
 import { TextComponent } from './text';
@@ -42,21 +44,30 @@ type Props = {
 
 type State = {
   start: boolean,
+  message: string,
 };
 
 const TIME_DELAY_ANIM = 100;
 
 export class LoadingScreen extends PureComponent<Props, State> {
-  state = { start: false };
+  state = { start: false, message: 'ZEC Wallet Starting' };
 
   componentDidMount() {
     setTimeout(() => {
       this.setState(() => ({ start: true }));
     }, TIME_DELAY_ANIM);
+
+    ipcRenderer.on('zcashd-params-download', (event, message) => {
+      this.setState(() => ({ message }));
+    });
+  }
+
+  componentWillUnmount() {
+    ipcRenderer.removeAllListeners('zcashd-log');
   }
 
   render() {
-    const { start } = this.state;
+    const { start, message } = this.state;
     const { progress } = this.props;
 
     return (
@@ -74,18 +85,28 @@ export class LoadingScreen extends PureComponent<Props, State> {
           }}
         >
           {() => props => (
-            <animated.div style={props} id='loading-screen'>
+            <animated.div
+              style={{
+                ...props,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              id='loading-screen'
+            >
               <CircleWrapper>
                 <Logo src={zcashLogo} alt='Zcash logo' />
                 <CircleProgressComponent
                   progress={progress}
+                  s
                   responsive
                   showPercentage={false}
                   progressColor={theme.colors.activeItem}
                   bgColor={theme.colors.inactiveItem}
                 />
               </CircleWrapper>
-              <TextComponent value='ZEC Wallet Starting' />
+              <TextComponent value={message} />
             </animated.div>
           )}
         </Transition>

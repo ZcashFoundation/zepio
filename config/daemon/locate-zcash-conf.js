@@ -13,6 +13,5 @@ export const locateZcashConf = () => {
     return path.join(app.getPath('home'), '.zcash', 'zcash.conf');
   }
 
-  // TODO: Need to test on windows
   return path.join(app.getPath('appData'), 'Zcash', 'zcash.conf');
 };

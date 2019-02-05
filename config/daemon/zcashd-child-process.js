@@ -42,8 +42,6 @@ const getDaemonOptions = ({ username, password, optionsFromZcashConf }) => {
     ...optionsFromZcashConf,
   ];
 
-  log(defaultOptions);
-
   return isDev ? defaultOptions.concat(['-testnet', '-addnode=testnet.z.cash']) : defaultOptions;
 };
 
@@ -53,6 +51,8 @@ let resolved = false;
 const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve, reject) => {
   const processName = path.join(getBinariesPath(), getOsFolder(), getDaemonName());
 
+  if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', 'Fetching params...');
+
   const [err] = await eres(fetchParams());
 
   if (err) {
@@ -60,6 +60,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     return reject(new Error(err));
   }
 
+  if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', 'ZEC Wallet Starting');
   log('Fetch Params finished!');
 
   const [, isRunning] = await eres(processExists(processName));
