@@ -60,7 +60,7 @@ export class LoadingScreen extends PureComponent<Props, State> {
     const { progress } = this.props;
 
     return (
-      <Wrapper>
+      <Wrapper data-testid='LoadingScreen'>
         <Transition
           native
           items={start}

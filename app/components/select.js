@@ -152,6 +152,7 @@ export class SelectComponent extends PureComponent<Props, State> {
 
     return (
       <SelectWrapper
+        data-testid='Select'
         id='select-component'
         isOpen={isOpen}
         placement={placement}

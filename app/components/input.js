@@ -62,11 +62,12 @@ export const InputComponent = ({
         onChange={evt => onChange(evt.target.value)}
         withRightElement={Boolean(rightElement)}
         bgColor={bgColor}
+        data-testid='Input'
         {...props}
       />
     ),
     textarea: () => (
-      <Textarea onChange={evt => onChange(evt.target.value)} bgColor={bgColor} {...props} />
+      <Textarea onChange={evt => onChange(evt.target.value)} bgColor={bgColor} data-testid='Textarea' {...props} />
     ),
   };
 

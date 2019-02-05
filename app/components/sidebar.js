@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   width: ${props => props.theme.sidebarWidth};
   height: ${props => `calc(100vh - ${props.theme.headerHeight})`};
-  font-family: ${props => props.theme.fontFamily}
+  font-family: ${props => props.theme.fontFamily};
   background-color: ${props => props.theme.colors.sidebarBg};
   padding-top: 15px;
   position: relative;
