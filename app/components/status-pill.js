@@ -1,8 +1,11 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
+import eres from 'eres';
 
 import { TextComponent } from './text';
+
+import rpc from '../../services/api';
 
 import readyIcon from '../assets/images/green_check.png';
 import syncIcon from '../assets/images/sync_icon.png';
@@ -42,39 +45,70 @@ const StatusPillLabel = styled(TextComponent)`
   user-select: none;
 `;
 
-type Props = {
-  type: 'syncing' | 'ready' | 'error',
-  progress: number,
-};
+type Props = {};
 
 type State = {
-  withError: boolean,
+  type: string,
+  icon: string,
+  progress: number,
+  isSyncing: boolean,
 };
 
-export class StatusPill extends React.PureComponent<Props, State> {
+export class StatusPill extends Component<Props, State> {
+  timer: ?IntervalID = null;
+
   state = {
-    withError: false,
+    type: 'syncing',
+    icon: syncIcon,
+    progress: 0,
+    isSyncing: true,
   };
 
   componentDidMount() {
-    const { type } = this.props;
-    if (type === 'error') {
-      this.setState(() => ({ withError: false }));
+    this.timer = setInterval(() => {
+      this.getBlockchainStatus();
+    }, 2000);
+  }
+
+  componentWillUnmount() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
     }
   }
 
+  getBlockchainStatus = async () => {
+    const [blockchainErr, blockchaininfo] = await eres(rpc.getblockchaininfo());
+
+    if (blockchainErr || !blockchaininfo) return;
+
+    const newProgress = blockchaininfo.verificationprogress * 100;
+
+    this.setState({
+      progress: newProgress,
+      ...(newProgress > 99.99
+        ? {
+          type: 'ready',
+          icon: readyIcon,
+          isSyncing: false,
+        }
+        : {}),
+    });
+
+    if (blockchainErr) {
+      this.setState(() => ({ type: 'error', icon: errorIcon }));
+    }
+  };
+
   render() {
-    const { type, progress } = this.props;
-    const { withError } = this.state;
-
-    const isSyncing = type === 'syncing';
-
-    const icon = isSyncing ? syncIcon : readyIcon;
+    const {
+      type, icon, progress, isSyncing,
+    } = this.state;
     const showPercent = isSyncing ? `(${progress.toFixed(2)}%)` : '';
 
     return (
-      <Wrapper data-testid='StatusPill'>
-        <Icon src={withError ? errorIcon : icon} animated={isSyncing} />
+      <Wrapper id='status-pill'>
+        <Icon src={icon} animated={isSyncing} />
         <StatusPillLabel value={`${type} ${showPercent}`} />
       </Wrapper>
     );

@@ -15,7 +15,7 @@ import { ReceiveContainer } from '../containers/receive';
 import { SettingsContainer } from '../containers/settings';
 import { NotFoundView } from '../views/not-found';
 import { ConsoleView } from '../views/console';
-import { LayoutComponent } from '../components/layout';
+import { AppContainer as LayoutComponent } from '../containers/app';
 import { HeaderComponent } from '../components/header';
 
 import {
