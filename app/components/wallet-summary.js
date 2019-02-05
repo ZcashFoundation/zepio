@@ -1,4 +1,5 @@
 // @flow
+
 import React from 'react';
 import styled from 'styled-components';
 
@@ -70,22 +71,34 @@ export const WalletSummaryComponent = ({
     </ValueBox>
     <RowComponent>
       <ValueBox>
-        <ShieldedValue value='&#9679; SHIELDED' isBold size={theme.fontSize.small} />
+        <ShieldedValue
+          value='&#9679; SHIELDED'
+          isBold
+          size={theme.fontSize.small}
+        />
         <TextComponent
           value={`ZEC ${formatNumber({ value: shielded })}`}
           isBold
           size={theme.fontSize.medium}
         />
-        <USDValue value={`USD $${formatNumber({ value: shielded * zecPrice })}`} />
+        <USDValue
+          value={`USD $${formatNumber({ value: shielded * zecPrice })}`}
+        />
       </ValueBox>
       <ValueBox>
-        <Label value='&#9679; TRANSPARENT' isBold size={theme.fontSize.small} />
+        <Label
+          value='&#9679; TRANSPARENT'
+          isBold
+          size={theme.fontSize.small}
+        />
         <TextComponent
           value={`ZEC ${formatNumber({ value: transparent })}`}
           isBold
           size={theme.fontSize.medium}
         />
-        <USDValue value={`USD $${formatNumber({ value: transparent * zecPrice })}`} />
+        <USDValue
+          value={`USD $${formatNumber({ value: transparent * zecPrice })}`}
+        />
       </ValueBox>
     </RowComponent>
   </Wrapper>

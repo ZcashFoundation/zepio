@@ -1,4 +1,5 @@
 // @flow
+
 import { connect } from 'react-redux';
 import { closeErrorModal } from '../redux/modules/app';
 

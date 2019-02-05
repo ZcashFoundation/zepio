@@ -1,4 +1,5 @@
 // @flow
+
 import path from 'path';
 import os from 'os';
 

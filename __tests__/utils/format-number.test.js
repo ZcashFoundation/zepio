@@ -1,4 +1,5 @@
 // @flow
+
 import { BigNumber } from 'bignumber.js';
 import 'jest-dom/extend-expect';
 
@@ -34,4 +35,4 @@ describe('formatNumber', () => {
 
     expect(myBalanceInUsd).toEqual(expectedState);
   });
-})
+});

@@ -55,17 +55,39 @@ export const RouterComponent = ({
   <FullWrapper>
     <HeaderComponent title={getTitle(location.pathname)} />
     <ContentWrapper>
-      <SidebarContainer location={location} history={history} />
+      <SidebarContainer
+        location={location}
+        history={history}
+      />
       {/* $FlowFixMe */}
       <LayoutComponent>
         <ScrollTopComponent>
           <Switch>
-            <Route exact path={DASHBOARD_ROUTE} component={DashboardContainer} />
-            <Route path={SEND_ROUTE} component={SendContainer} />
-            <Route path={RECEIVE_ROUTE} component={ReceiveContainer} />
-            <Route path={SETTINGS_ROUTE} component={SettingsContainer} />
-            <Route path={CONSOLE_ROUTE} component={ConsoleView} />
-            <Route path={TRANSACTIONS_ROUTE} component={TransactionsContainer} />
+            <Route
+              exact
+              path={DASHBOARD_ROUTE}
+              component={DashboardContainer}
+            />
+            <Route
+              path={SEND_ROUTE}
+              component={SendContainer}
+            />
+            <Route
+              path={RECEIVE_ROUTE}
+              component={ReceiveContainer}
+            />
+            <Route
+              path={SETTINGS_ROUTE}
+              component={SettingsContainer}
+            />
+            <Route
+              path={CONSOLE_ROUTE}
+              component={ConsoleView}
+            />
+            <Route
+              path={TRANSACTIONS_ROUTE}
+              component={TransactionsContainer}
+            />
             <Route component={NotFoundView} />
           </Switch>
         </ScrollTopComponent>

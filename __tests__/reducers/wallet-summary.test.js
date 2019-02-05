@@ -1,4 +1,5 @@
 // @flow
+
 import walletSummaryReducer, {
   LOAD_WALLET_SUMMARY,
   LOAD_WALLET_SUMMARY_SUCCESS,
@@ -80,7 +81,7 @@ describe('WalletSummary Reducer', () => {
       isLoading: false,
       addresses: [],
       transactions: [],
-      zecPrice: 0
+      zecPrice: 0,
     };
 
     expect(walletSummaryReducer(undefined, action)).toEqual(expectedState);

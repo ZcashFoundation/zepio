@@ -19,7 +19,7 @@ describe('<InputLabelComponent />', () => {
     );
 
     const label = container.querySelector('p');
-    
+
     expect(label).toBeVisible();
   });
 

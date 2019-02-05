@@ -1,4 +1,5 @@
 // @flow
+
 /* eslint-disable import/no-extraneous-dependencies */
 import fs from 'fs';
 import { promisify } from 'util';

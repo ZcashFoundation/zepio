@@ -1,4 +1,5 @@
 // @flow
+
 import DashboardIcon from '../assets/images/dashboard_icon.svg';
 import DashboardIconActive from '../assets/images/dashboard_icon_active.svg';
 import ConsoleIcon from '../assets/images/console_icon.svg';

@@ -1,4 +1,5 @@
 // @flow
+
 import isDev from 'electron-is-dev';
 
 export const ZCASH_EXPLORER_BASE_URL = isDev

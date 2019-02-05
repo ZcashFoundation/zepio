@@ -1,4 +1,5 @@
 // @flow
+
 import got from 'got';
 /* eslint-disable-next-line */
 import isDev from 'electron-is-dev';
@@ -20,7 +21,6 @@ const client = got.extend({
   auth: `${RPC.user}:${RPC.password}`,
 });
 
-// $FlowFixMe
 const api: APIMethods = METHODS.reduce(
   (obj, method) => ({
     ...obj,
@@ -39,4 +39,5 @@ const api: APIMethods = METHODS.reduce(
   {},
 );
 
+// eslint-disable-next-line
 export default api;

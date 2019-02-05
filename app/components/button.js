@@ -1,13 +1,12 @@
 // @flow
 
-import React from 'react';
+import React, { type ElementProps } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable max-len */
 // $FlowFixMe
 import { darken } from 'polished';
-import type { ElementProps } from 'react';
 
 const DefaultButton = styled.button`
   align-items: center;
@@ -102,12 +101,18 @@ export const Button = ({
   const buttonLabel = isLoading ? 'Loading...' : label;
 
   const component = variant === 'primary' ? (
-    <Primary {...props} data-testid='PrimaryButton'>
+    <Primary
+      {...props}
+      data-testid='PrimaryButton'
+    >
       {icon ? <Icon src={icon} /> : null}
       {buttonLabel}
     </Primary>
   ) : (
-    <Secondary {...props} data-testid='SecondaryButton'>
+    <Secondary
+      {...props}
+      data-testid='SecondaryButton'
+    >
       {icon ? <Icon src={icon} /> : null}
       {buttonLabel}
     </Secondary>

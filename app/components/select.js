@@ -1,4 +1,5 @@
 // @flow
+
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
@@ -46,6 +47,7 @@ const SelectMenuButtonWrapper = styled.div`
   padding: 13px;
   border-left: ${props => `1px solid ${props.theme.colors.background}`};
 `;
+
 /* eslint-disable max-len */
 const SelectMenuButton = styled.button`
   padding: 3px 7px;
@@ -100,6 +102,7 @@ type Props = {
   placement?: 'top' | 'bottom',
   bgColor?: string,
 };
+
 type State = {
   isOpen: boolean,
 };
@@ -123,7 +126,10 @@ export class SelectComponent extends PureComponent<Props, State> {
 
   handleClickOutside = (event: Object) => {
     const { isOpen } = this.state;
-    if (isOpen && event.target.id !== 'select-options-wrapper') this.setState(() => ({ isOpen: false }));
+
+    if (isOpen && event.target.id !== 'select-options-wrapper') {
+      this.setState(() => ({ isOpen: false }));
+    }
   };
 
   getSelectedLabel = (value: string) => {
@@ -145,10 +151,10 @@ export class SelectComponent extends PureComponent<Props, State> {
   };
 
   render() {
+    const { isOpen } = this.state;
     const {
       value, options, placeholder, placement, bgColor,
     } = this.props;
-    const { isOpen } = this.state;
 
     return (
       <SelectWrapper

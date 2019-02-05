@@ -13,7 +13,11 @@ describe('<ModalComponent />', () => {
     const { queryByTestId } = render(
       <ModalComponent
         renderTrigger={toggleVisibility => (
-          <button type="button" data-testid='ModalTrigger' onClick={toggleVisibility}>
+          <button
+            type='button'
+            data-testid='ModalTrigger'
+            onClick={toggleVisibility}
+          >
             Open Modal
           </button>
         )}
@@ -21,7 +25,10 @@ describe('<ModalComponent />', () => {
         {toggleVisibility => (
           <div style={{ padding: '50px', backgroundColor: 'white' }}>
             Modal Content
-            <button type="button" onClick={toggleVisibility}>
+            <button
+              type='button'
+              onClick={toggleVisibility}
+            >
               Close Modal
             </button>
           </div>
@@ -31,5 +38,4 @@ describe('<ModalComponent />', () => {
 
     expect(queryByTestId('ModalTrigger')).toBeInTheDocument();
   });
-
 });

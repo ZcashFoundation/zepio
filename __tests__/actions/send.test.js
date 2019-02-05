@@ -36,7 +36,7 @@ describe('Send Actions', () => {
 
   test('should create an action to send transaction with success', () => {
     const payload = {
-      operationId: '0b9ii4590ab-1d012klfo'
+      operationId: '0b9ii4590ab-1d012klfo',
     };
 
     store.dispatch(sendTransactionSuccess(payload));
@@ -76,7 +76,7 @@ describe('Send Actions', () => {
 
   test('should validate a address with success', () => {
     const payload = {
-      isValid: true
+      isValid: true,
     };
 
     store.dispatch(validateAddressSuccess(payload));
@@ -101,7 +101,7 @@ describe('Send Actions', () => {
 
   test('should load ZEC price', () => {
     const payload = {
-      value: 1.35
+      value: 1.35,
     };
 
     store.dispatch(loadZECPrice(payload));
@@ -109,7 +109,7 @@ describe('Send Actions', () => {
     expect(store.getActions()[0]).toEqual(
       expect.objectContaining({
         type: LOAD_ZEC_PRICE,
-        payload
+        payload,
       }),
     );
   });

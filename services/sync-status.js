@@ -1,4 +1,5 @@
 // @flow
+
 import React, { type ComponentType, Component } from 'react';
 import eres from 'eres';
 
@@ -55,8 +56,8 @@ export const withSyncStatus = <PassedProps: {}>(
     }
 
     render() {
-      const { type, progress} = this.state;
-  
+      const { type, progress } = this.state;
+
       return <WrappedComponent {...this.props} {...this.state} type={type} progress={progress} />;
     }
   };

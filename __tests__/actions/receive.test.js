@@ -18,7 +18,7 @@ describe('Receive Actions', () => {
     const payload = {
       addresses: [
         'tm0a9si0ds09gj02jj',
-        'smas098gk02jf0kskk'
+        'smas098gk02jf0kskk',
       ],
     };
 

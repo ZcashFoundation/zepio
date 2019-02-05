@@ -12,11 +12,18 @@ describe('<ConfirmDialogComponent />', () => {
   test('should render confirm dialog correctly', () => {
     const { container } = render(
       <ConfirmDialogComponent
-        title="Confirm example"
-        onConfirm={() => alert('Confirm')}
-        renderTrigger={toggle => <button onClick={toggle}> Open! </button>}
+        title='Confirm example'
+        onConfirm={() => alert('Confirm')} // eslint-disable-line
+        renderTrigger={toggle => (
+          <button
+            onClick={toggle}
+            type='button'
+          >
+            Open!
+          </button>
+        )}
       >
-        {toggle => <div>Confirm content</div>}
+        {(/* toggle */) => <div>Confirm content</div>}
       </ConfirmDialogComponent>,
     );
 
@@ -26,11 +33,19 @@ describe('<ConfirmDialogComponent />', () => {
   test('should render confirm dialog trigger', () => {
     const { queryByTestId } = render(
       <ConfirmDialogComponent
-        title="Confirm example"
-        onConfirm={() => alert('Confirm')}
-        renderTrigger={toggle => <button data-testid='ConfirmDialogTrigger' onClick={toggle}> Open! </button>}
+        title='Confirm example'
+        onConfirm={() => alert('Confirm')} // eslint-disable-line
+        renderTrigger={toggle => (
+          <button
+            data-testid='ConfirmDialogTrigger'
+            onClick={toggle}
+            type='button'
+          >
+            Open!
+          </button>
+        )}
       >
-        {toggle => <div>Confirm content</div>}
+        {(/* toggle */) => <div>Confirm content</div>}
       </ConfirmDialogComponent>,
     );
 

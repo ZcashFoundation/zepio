@@ -1,4 +1,5 @@
 // @flow
+
 import React, { Fragment, PureComponent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { BigNumber } from 'bignumber.js';

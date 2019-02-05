@@ -17,9 +17,9 @@ describe('<InputComponent />', () => {
         <InputComponent
           inputType='input'
           value='Hello World!'
-          onChange={console.log}
+          onChange={console.log} // eslint-disable-line
         />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     expect(queryByTestId('Input')).toBeInTheDocument();
@@ -31,10 +31,10 @@ describe('<InputComponent />', () => {
         <InputComponent
           inputType='textarea'
           value='I am Zcash Electron Wallet'
-          onChange={console.log}
+          onChange={console.log} // eslint-disable-line
           rows={10}
         />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     expect(queryByTestId('Textarea')).toBeInTheDocument();

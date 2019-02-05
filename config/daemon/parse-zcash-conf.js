@@ -1,4 +1,5 @@
 // @flow
+
 import fs from 'fs';
 
 import { locateZcashConf } from './locate-zcash-conf';

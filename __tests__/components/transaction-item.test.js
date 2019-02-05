@@ -22,10 +22,9 @@ describe('<TransactionItem />', () => {
           date={new Date().toISOString()}
           zecPrice={2.94}
         />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     expect(container).toMatchSnapshot();
   });
-
 });

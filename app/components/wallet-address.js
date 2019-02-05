@@ -1,4 +1,5 @@
 // @flow
+
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
@@ -57,18 +58,9 @@ export class WalletAddress extends Component<Props, State> {
     isVisible: false,
   };
 
-  show = () => {
-    this.setState(
-      () => ({ isVisible: true }),
-    );
-  };
+  show = () => this.setState(() => ({ isVisible: true }));
 
-  hide = () => {
-    this.setState(
-      () => ({ isVisible: false }),
-    );
-  };
-
+  hide = () => this.setState(() => ({ isVisible: false }));
 
   render() {
     const { address } = this.props;
@@ -90,13 +82,11 @@ export class WalletAddress extends Component<Props, State> {
             variant='secondary'
           />
         </AddressWrapper>
-        {isVisible
-          ? (
-            <QRCodeWrapper>
-              <QRCode value={address} />
-            </QRCodeWrapper>
-          )
-          : null}
+        {!isVisible ? null : (
+          <QRCodeWrapper>
+            <QRCode value={address} />
+          </QRCodeWrapper>
+        )}
       </ColumnComponent>
     );
   }

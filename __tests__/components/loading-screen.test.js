@@ -14,7 +14,7 @@ describe('<LoadingScreen />', () => {
   test('should render status pill correctly', () => {
     const { queryByTestId } = render(
       <ThemeProvider theme={appTheme}>
-        <LoadingScreen progress={83.} />
+        <LoadingScreen progress={83.0} />
       </ThemeProvider>,
     );
 

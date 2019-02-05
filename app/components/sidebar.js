@@ -1,4 +1,5 @@
 // @flow
+
 /* eslint-disable max-len */
 import React from 'react';
 import styled from 'styled-components';
@@ -15,6 +16,7 @@ const Wrapper = styled.div`
   padding-top: 15px;
   position: relative;
 `;
+
 /* eslint-disable max-len */
 const StyledLink = styled.a`
   color: ${props => (props.isActive ? props.theme.colors.sidebarItemActive : props.theme.colors.sidebarItem)};
@@ -72,7 +74,11 @@ export const SidebarComponent = ({ options, location, history }: Props) => (
           key={item.route}
           onClick={() => (isActive ? {} : history.push(item.route))}
         >
-          <Icon isActive={isActive} src={item.icon(isActive)} alt={`${item.route}`} />
+          <Icon
+            isActive={isActive}
+            src={item.icon(isActive)}
+            Alt={`${item.route}`}
+          />
           {item.label}
         </StyledLink>
       );

@@ -1,7 +1,9 @@
+// @flow
+
 const path = require('path');
 
 module.exports = {
-  process(filename) {
-    return 'module.exports = ' + JSON.stringify(path.basename(filename)) + ';';
+  process(filename: any) {
+    return `module.exports = ${JSON.stringify(path.basename(filename))};`;
   },
 };

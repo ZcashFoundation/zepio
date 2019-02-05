@@ -49,7 +49,10 @@ const FILES: Array<{ name: string, hash: string }> = [
 ];
 
 // eslint-disable-next-line max-len
-const checkSha256 = (pathToFile: string, expectedHash: string) => new Promise((resolve, reject) => {
+const checkSha256 = (
+  pathToFile: string,
+  expectedHash: string,
+) => new Promise((resolve, reject) => {
   fs.readFile(pathToFile, (err, file) => {
     if (err) return reject(new Error(err));
 
@@ -60,7 +63,10 @@ const checkSha256 = (pathToFile: string, expectedHash: string) => new Promise((r
 });
 
 // eslint-disable-next-line max-len
-const downloadFile = ({ file, pathToSave }): Promise<*> => new Promise((resolve, reject) => {
+const downloadFile = ({
+  file,
+  pathToSave,
+}): Promise<*> => new Promise((resolve, reject) => {
   if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', `Downloading ${file.name}...`);
   log(`Downloading ${file.name}...`);
 
@@ -84,6 +90,7 @@ const downloadFile = ({ file, pathToSave }): Promise<*> => new Promise((resolve,
 
 let missingDownloadParam = false;
 
+// eslint-disable-next-line
 export default (): Promise<*> => new Promise((resolve, reject) => {
   const firstRunProcess = cp.spawn(path.join(getBinariesPath(), 'win', 'first-run.bat'));
   firstRunProcess.stdout.on('data', data => log(data.toString()));

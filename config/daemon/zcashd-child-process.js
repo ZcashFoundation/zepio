@@ -1,4 +1,5 @@
 // @flow
+
 import cp from 'child_process';
 import path from 'path';
 import os from 'os';
@@ -120,4 +121,5 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   }
 });
 
+// eslint-disable-next-line
 export default runDaemon;

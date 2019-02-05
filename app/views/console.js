@@ -38,7 +38,7 @@ const defaultState = `
   Thank you for running a Zcash node!
   You're helping to strengthen the network and contributing to a social good :)
   In order to ensure you are adequately protecting your privacy when using Zcash, please see <https://z.cash/support/security/>.
-  
+
   Block height | 0
   Connections | 0
   Network solution rate | 0 Sol/s
@@ -80,7 +80,10 @@ export class ConsoleView extends Component<Props, State> {
     return (
       <Wrapper id='console-wrapper'>
         <Fragment>
-          <ConsoleImg src={ConsoleSymbol} alt='Zcashd' />
+          <ConsoleImg
+            src={ConsoleSymbol}
+            alt='Zcashd'
+          />
           {log.split('\n').map((item, idx) => (
             <Fragment key={uuid()}>
               <ConsoleText value={item} />

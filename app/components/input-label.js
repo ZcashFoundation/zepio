@@ -1,4 +1,5 @@
 //  @flow
+
 import styled from 'styled-components';
 
 import { TextComponent } from './text';

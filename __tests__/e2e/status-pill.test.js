@@ -1,4 +1,5 @@
 // @flow
+
 import { getApp } from '../setup/utils';
 
 const app = getApp();

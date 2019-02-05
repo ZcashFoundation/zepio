@@ -1,4 +1,5 @@
 // @flow
+
 import 'jest-dom/extend-expect';
 
 import { truncateAddress } from '../../app/utils/truncate-address';
@@ -11,4 +12,4 @@ describe('truncateAddress', () => {
 
     expect(myAddress).toEqual(expectedState);
   });
-})
+});

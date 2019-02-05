@@ -1,4 +1,5 @@
 // @flow
+
 import React, { type Element } from 'react';
 import styled from 'styled-components';
 
@@ -55,7 +56,6 @@ export const InputComponent = ({
   ...props
 }: Props) => {
   const rightElement = renderRight();
-
   const inputTypes = {
     input: () => (
       <Input

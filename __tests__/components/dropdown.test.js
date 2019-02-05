@@ -15,7 +15,10 @@ describe('<DropdownComponent />', () => {
   test('should render dropdown correctly', () => {
     const { queryByTestId } = render(
       <ThemeProvider theme={appTheme}>
-        <div style={{ height: '500px' }} data-testid='DropdownWrapper'>
+        <div
+          style={{ height: '500px' }}
+          data-testid='DropdownWrapper'
+        >
           <DropdownComponent
             label='Addresses'
             renderTrigger={toggleVisibility => (
@@ -60,5 +63,4 @@ describe('<DropdownComponent />', () => {
 
     expect(queryByTestId('PrimaryButton')).toBeInTheDocument();
   });
-
 });

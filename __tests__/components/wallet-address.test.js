@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { render, cleanup, queryByText } from 'react-testing-library';
+import { render, cleanup } from 'react-testing-library';
 import { ThemeProvider } from 'styled-components';
 import 'jest-dom/extend-expect';
 

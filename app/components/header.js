@@ -1,6 +1,6 @@
 // @flow
-import React from 'react';
 
+import React from 'react';
 import styled from 'styled-components';
 
 import { ZcashLogo } from './zcash-logo';
@@ -69,9 +69,15 @@ export const HeaderComponent = ({ title }: Props) => (
       <ZcashLogo />
     </LogoWrapper>
     <TitleWrapper>
-      <TitleRow alignItems='center' justifyContent='space-around'>
+      <TitleRow
+        alignItems='center'
+        justifyContent='space-around'
+      >
         <Title value={title} />
-        <Status type='syncing' progress={0} />
+        <Status
+          type='syncing'
+          progress={0}
+        />
       </TitleRow>
       <Divider opacity={0.1} />
     </TitleWrapper>

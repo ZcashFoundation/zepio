@@ -1,4 +1,5 @@
 // @flow
+
 import type { Action } from '../../types/redux';
 
 // Actions

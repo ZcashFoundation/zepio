@@ -1,6 +1,7 @@
 // @flow
-import { connect } from 'react-redux';
+
 import eres from 'eres';
+import { connect } from 'react-redux';
 import { BigNumber } from 'bignumber.js';
 
 import store from '../../config/electron-store';
@@ -22,7 +23,10 @@ import { filterObjectNullKeys } from '../utils/filter-object-null-keys';
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
 
-import { loadAddressesSuccess, loadAddressesError } from '../redux/modules/receive';
+import {
+  loadAddressesSuccess,
+  loadAddressesError,
+} from '../redux/modules/receive';
 
 export type SendTransactionInput = {
   from: string,

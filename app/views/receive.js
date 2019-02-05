@@ -1,4 +1,5 @@
 // @flow
+
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Transition, animated } from 'react-spring';
@@ -106,16 +107,33 @@ export class ReceiveView extends PureComponent<Props, State> {
           <WalletAddress key={addr} address={addr} />
         ))}
         <Row>
-          <ActionButton onClick={this.toggleAdditionalOptions} isActive={showAdditionalOptions}>
-            <ActionIcon isActive={showAdditionalOptions} src={MenuIcon} alt='More Options' />
+          <ActionButton
+            onClick={this.toggleAdditionalOptions}
+            isActive={showAdditionalOptions}
+          >
+            <ActionIcon
+              isActive={showAdditionalOptions}
+              src={MenuIcon}
+              alt='More Options'
+            />
             <TextComponent value={buttonText} />
           </ActionButton>
-          <ActionButton onClick={() => this.generateNewAddress('shielded')}>
-            <ActionIcon src={PlusIcon} alt='New Shielded Address' />
+          <ActionButton
+            onClick={() => this.generateNewAddress('shielded')}
+          >
+            <ActionIcon
+              src={PlusIcon}
+              alt='New Shielded Address'
+            />
             <TextComponent value='New Shielded Address' />
           </ActionButton>
-          <ActionButton onClick={() => this.generateNewAddress('transparent')}>
-            <ActionIcon src={PlusIcon} alt='New Transparent Address' />
+          <ActionButton
+            onClick={() => this.generateNewAddress('transparent')}
+          >
+            <ActionIcon
+              src={PlusIcon}
+              alt='New Transparent Address'
+            />
             <TextComponent value='New Transparent Address' />
           </ActionButton>
         </Row>
@@ -134,10 +152,19 @@ export class ReceiveView extends PureComponent<Props, State> {
           >
             {show => show
               && (props => (
-                <animated.div style={{ ...props, width: '100%', height: 'auto' }}>
+                <animated.div
+                  style={{
+                    ...props,
+                    width: '100%',
+                    height: 'auto',
+                  }}
+                >
                   <Label value='Transparent Address (not private)' />
                   {transparentAddresses.map(addr => (
-                    <WalletAddress key={addr} address={addr} />
+                    <WalletAddress
+                      key={addr}
+                      address={addr}
+                    />
                   ))}
                 </animated.div>
               ))

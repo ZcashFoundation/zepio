@@ -1,6 +1,7 @@
 // @flow
-import { connect } from 'react-redux';
+
 import eres from 'eres';
+import { connect } from 'react-redux';
 import flow from 'lodash.flow';
 import groupBy from 'lodash.groupby';
 import dateFns from 'date-fns';

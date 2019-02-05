@@ -15,7 +15,7 @@ describe('<SelectComponent />', () => {
     const { container } = render(
       <ThemeProvider theme={appTheme}>
         <SelectComponent
-          onChange={console.log}
+          onChange={console.log} // eslint-disable-line
           value='asbh1yeasbdh23848asdasd'
           placeholder='Select a address'
           options={[

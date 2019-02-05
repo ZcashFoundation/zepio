@@ -1,4 +1,5 @@
 // @flow
+
 /* eslint-disable import/no-extraneous-dependencies */
 // $FlowFixMe
 import { net } from 'electron';
@@ -11,6 +12,7 @@ type Payload = {
   WARNING:
   Just a super fast way to get the zec price
 */
+// eslint-disable-next-line
 export default (currencies: string[] = ['USD']): Promise<Payload> => new Promise((resolve, reject) => {
   const ENDPOINT = `https://min-api.cryptocompare.com/data/price?fsym=ZEC&tsyms=${currencies.join(
     ',',

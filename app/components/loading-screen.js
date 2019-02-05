@@ -1,4 +1,5 @@
 // @flow
+
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Transition, animated } from 'react-spring';
@@ -86,6 +87,7 @@ export class LoadingScreen extends PureComponent<Props, State> {
         >
           {() => props => (
             <animated.div
+              id='loading-screen'
               style={{
                 ...props,
                 display: 'flex',
@@ -93,13 +95,15 @@ export class LoadingScreen extends PureComponent<Props, State> {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
-              id='loading-screen'
             >
               <CircleWrapper>
-                <Logo src={zcashLogo} alt='Zcash logo' />
+                <Logo
+                  src={zcashLogo}
+                  alt='Zcash Logo'
+                />
                 <CircleProgressComponent
                   progress={progress}
-                  s
+                  s // TODO: check if this has any effect
                   responsive
                   showPercentage={false}
                   progressColor={theme.colors.activeItem}

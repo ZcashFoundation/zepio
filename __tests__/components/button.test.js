@@ -16,10 +16,10 @@ describe('<Button />', () => {
       <ThemeProvider theme={appTheme}>
         <Button
           label='Click me!'
-          onClick={() => alert('Clicked')}
-          variant='primary' 
+          onClick={() => alert('Clicked')} // eslint-disable-line
+          variant='primary'
         />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     expect(queryByTestId('PrimaryButton')).toBeInTheDocument();
@@ -30,13 +30,12 @@ describe('<Button />', () => {
       <ThemeProvider theme={appTheme}>
         <Button
           label='Click me!'
-          onClick={() => alert('Clicked')}
-          variant='secondary' 
+          onClick={() => alert('Clicked')} // eslint-disable-line
+          variant='secondary'
         />
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     expect(queryByTestId('SecondaryButton')).toBeInTheDocument();
   });
-
 });

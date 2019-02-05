@@ -67,6 +67,7 @@ const initialState: State = {
   isToAddressValid: false,
   zecPrice: 0,
 };
+
 // eslint-disable-next-line
 export default (state: State = initialState, action: Action): State => {
   switch (action.type) {

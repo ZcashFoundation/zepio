@@ -1,5 +1,6 @@
 // @flow
-import React, { type Element } from 'react';
+
+import React, { Fragment, type Element } from 'react';
 import styled from 'styled-components';
 
 import { TextComponent } from './text';
@@ -82,15 +83,21 @@ export const ConfirmDialogComponent = ({
       {toggle => (
         <Wrapper width={Number(width)}>
           <CloseIconWrapper>
-            <CloseIconImg src={CloseIcon} onClick={handleClose(toggle)} />
+            <CloseIconImg
+              src={CloseIcon}
+              onClick={handleClose(toggle)}
+            />
           </CloseIconWrapper>
           <TitleWrapper>
-            <TextComponent value={title} align='center' />
+            <TextComponent
+              value={title}
+              align='center'
+            />
           </TitleWrapper>
           <Divider opacity={0.3} />
           {children(handleClose(toggle))}
           {showButtons && (
-            <>
+            <Fragment>
               <Btn
                 id='confirm-modal-button'
                 label='Confirm'
@@ -103,7 +110,7 @@ export const ConfirmDialogComponent = ({
                 variant='secondary'
                 disabled={isLoading}
               />
-            </>
+            </Fragment>
           )}
         </Wrapper>
       )}

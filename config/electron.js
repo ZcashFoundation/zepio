@@ -1,4 +1,5 @@
 // @flow
+
 import '@babel/polyfill';
 import dotenv from 'dotenv';
 
@@ -8,7 +9,6 @@ import path from 'path';
 import { app, BrowserWindow, typeof BrowserWindow as BrowserWindowType } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import isDev from 'electron-is-dev';
-import eres from 'eres';
 import { registerDebugShortcut } from '../utils/debug-shortcut';
 import runDaemon from './daemon/zcashd-child-process';
 import zcashLog from './daemon/logger';
@@ -46,6 +46,7 @@ const createWindow = () => {
       progress.transferred
     }/${progress.total})`,
   ));
+
   autoUpdater.on('update-downloaded', () => {
     updateAvailable = true;
     showStatus('Update downloaded');

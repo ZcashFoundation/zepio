@@ -30,5 +30,4 @@ describe('<Clipboard />', () => {
 
     expect(queryByTestId('PrimaryButton')).toBeInTheDocument();
   });
-
 });

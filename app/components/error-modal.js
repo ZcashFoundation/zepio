@@ -1,4 +1,5 @@
 // @flow
+
 import React, { PureComponent } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
@@ -78,17 +79,21 @@ export class ErrorModalComponent extends PureComponent<Props> {
   render() {
     const { isVisible, message, onRequestClose } = this.props;
 
-    return isVisible
-      ? createPortal(
-        <ModalWrapper id='error-modal-portal-wrapper'>
-          <ChildrenWrapper>
-            <ErrorImage src={ErrorIcon} alt='Error Icon' />
-            <Message value={message} />
-            <Button label='Ok!' onClick={onRequestClose} />
-          </ChildrenWrapper>
-        </ModalWrapper>,
-        this.element,
-      )
-      : null;
+    return !isVisible ? null : createPortal(
+      <ModalWrapper id='error-modal-portal-wrapper'>
+        <ChildrenWrapper>
+          <ErrorImage
+            src={ErrorIcon}
+            alt='Error Icon'
+          />
+          <Message value={message} />
+          <Button
+            label='Ok!'
+            onClick={onRequestClose}
+          />
+        </ChildrenWrapper>
+      </ModalWrapper>,
+      this.element,
+    );
   }
 }
