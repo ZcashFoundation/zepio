@@ -13,17 +13,17 @@ import theme from '../theme';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${props => props.theme.colors.cardBackgroundColor};
-  border-radius: ${props => props.theme.boxBorderRadius};
+  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.cardBackgroundColor};
+  border-radius: ${(props: PropsWithTheme<>) => props.theme.boxBorderRadius};
   padding: 37px 45px;
   min-height: 250px;
   position: relative;
-  margin-top: ${props => props.theme.layoutContentPaddingTop};
+  margin-top: ${(props: PropsWithTheme<>) => props.theme.layoutContentPaddingTop};
 `;
 
 const AllAddresses = styled(TextComponent)`
   margin-bottom: 2.5px;
-  font-size: ${props => `${props.theme.fontSize.small}em`};
+  font-size: ${(props: PropsWithTheme<>) => `${props.theme.fontSize.small}em`};
 `;
 
 const ValueBox = styled.div`
@@ -39,11 +39,11 @@ const Label = styled(TextComponent)`
 
 const USDValue = styled(TextComponent)`
   opacity: 0.5;
-  font-weight: ${props => props.theme.fontWeight.light};
+  font-weight: ${(props: PropsWithTheme<>) => String(props.theme.fontWeight.light)};
 `;
 
 const ShieldedValue = styled(Label)`
-  color: ${props => props.theme.colors.activeItem};
+  color: ${(props: PropsWithTheme<>) => props.theme.colors.activeItem};
 `;
 
 type Props = {
@@ -71,34 +71,22 @@ export const WalletSummaryComponent = ({
     </ValueBox>
     <RowComponent>
       <ValueBox>
-        <ShieldedValue
-          value='&#9679; SHIELDED'
-          isBold
-          size={theme.fontSize.small}
-        />
+        <ShieldedValue value='&#9679; SHIELDED' isBold size={theme.fontSize.small} />
         <TextComponent
           value={`ZEC ${formatNumber({ value: shielded })}`}
           isBold
           size={theme.fontSize.medium}
         />
-        <USDValue
-          value={`USD $${formatNumber({ value: shielded * zecPrice })}`}
-        />
+        <USDValue value={`USD $${formatNumber({ value: shielded * zecPrice })}`} />
       </ValueBox>
       <ValueBox>
-        <Label
-          value='&#9679; TRANSPARENT'
-          isBold
-          size={theme.fontSize.small}
-        />
+        <Label value='&#9679; TRANSPARENT' isBold size={theme.fontSize.small} />
         <TextComponent
           value={`ZEC ${formatNumber({ value: transparent })}`}
           isBold
           size={theme.fontSize.medium}
         />
-        <USDValue
-          value={`USD $${formatNumber({ value: transparent * zecPrice })}`}
-        />
+        <USDValue value={`USD $${formatNumber({ value: transparent * zecPrice })}`} />
       </ValueBox>
     </RowComponent>
   </Wrapper>

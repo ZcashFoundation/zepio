@@ -21,14 +21,14 @@ const AddressWrapper = styled.div`
 `;
 
 const Input = styled.input`
-  border-radius: ${props => props.theme.boxBorderRadius};
+  border-radius: ${(props: PropsWithTheme<>) => props.theme.boxBorderRadius};
   border: none;
-  background-color: ${props => props.theme.colors.inputBackground};
-  color: ${props => props.theme.colors.text};
+  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.inputBackground};
+  color: ${(props: PropsWithTheme<>) => props.theme.colors.text};
   padding: 15px;
   width: 100%;
   outline: none;
-  font-family: ${props => props.theme.fontFamily};
+  font-family: ${(props: PropsWithTheme<>) => props.theme.fontFamily};
 
   ::placeholder {
     opacity: 0.5;
@@ -72,7 +72,7 @@ export class WalletAddress extends Component<Props, State> {
         <AddressWrapper>
           <Input
             value={isVisible ? address : truncateAddress(address)}
-            onChange={() => { }}
+            onChange={() => {}}
             onFocus={event => event.currentTarget.select()}
           />
           <Button

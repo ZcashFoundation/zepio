@@ -2,11 +2,18 @@
 
 import styled from 'styled-components';
 
+type Props = PropsWithTheme<{
+  color: ?string,
+  opacity: number,
+  marginBottom: string,
+  marginTop: string,
+}>;
+
 export const Divider = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${props => props.color || props.theme.colors.text};
-  opacity: ${props => props.opacity || 1};
-  margin-bottom: ${props => props.marginBottom || 0};
-  margin-top: ${props => props.marginTop || 0};
+  background-color: ${(props: Props) => props.color || props.theme.colors.text};
+  opacity: ${(props: Props) => String(props.opacity || 1)};
+  margin-bottom: ${(props: Props) => props.marginBottom || '0'};
+  margin-top: ${(props: Props) => props.marginTop || '0'};
 `;

@@ -3,37 +3,33 @@
 import React, { type ElementProps } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable max-len */
-// $FlowFixMe
-import { darken } from 'polished';
 
 const DefaultButton = styled.button`
   align-items: center;
   display: flex;
   justify-content: center;
   padding: 10px 30px;
-  font-family: ${props => props.theme.fontFamily};
-  font-weight: ${props => props.theme.fontWeight.bold};
-  font-size: ${props => `${props.theme.fontSize.regular}em`};
+  font-family: ${(props: PropsWithTheme<>) => props.theme.fontFamily};
+  font-weight: ${(props: PropsWithTheme<>) => String(props.theme.fontWeight.bold)};
+  font-size: ${(props: PropsWithTheme<>) => `${props.theme.fontSize.regular}em`};
   cursor: pointer;
   outline: none;
   min-width: 100px;
   border-radius: 100px;
-  transition: background-color 0.1s ${props => props.theme.colors.transitionEase};
+  transition: background-color 0.1s ${(props: PropsWithTheme<>) => props.theme.transitionEase};
 `;
 
 const Primary = styled(DefaultButton)`
-  background-color: ${props => props.theme.colors.primary};
-  color: ${props => props.theme.colors.secondary};
+  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.primary};
+  color: ${(props: PropsWithTheme<>) => props.theme.colors.secondary};
   border: none;
 
   &:hover {
-    background-color: ${props => darken(0.1, props.theme.colors.primary(props))};
+    opacity: 0.9;
   }
 
   &:disabled {
-    background-color: ${props => props.theme.colors.buttonBorderColor};
+    background-color: ${(props: PropsWithTheme<>) => props.theme.colors.buttonBorderColor};
     cursor: not-allowed;
     opacity: 0.8;
   }
@@ -41,20 +37,20 @@ const Primary = styled(DefaultButton)`
 
 const Secondary = styled(DefaultButton)`
   background-color: transparent;
-  color: ${props => props.theme.colors.secondary};
-  border: 2px solid ${props => props.theme.colors.buttonBorderColor};
+  color: ${(props: PropsWithTheme<>) => props.theme.colors.secondary};
+  border: 2px solid ${(props: PropsWithTheme<>) => props.theme.colors.buttonBorderColor};
 
   &:hover {
-    border-color: ${props => props.theme.colors.primary};
+    border-color: ${(props: PropsWithTheme<>) => props.theme.colors.primary};
   }
 
   &:disabled {
     background-color: Transparent;
     cursor: not-allowed;
-    color: ${props => props.theme.colors.buttonBorderColor};
+    color: ${(props: PropsWithTheme<>) => props.theme.colors.buttonBorderColor};
 
     &:hover {
-      border-color: ${props => props.theme.colors.buttonBorderColor};
+      border-color: ${(props: PropsWithTheme<>) => props.theme.colors.buttonBorderColor};
     }
   }
 `;
@@ -101,18 +97,12 @@ export const Button = ({
   const buttonLabel = isLoading ? 'Loading...' : label;
 
   const component = variant === 'primary' ? (
-    <Primary
-      {...props}
-      data-testid='PrimaryButton'
-    >
+    <Primary {...props} data-testid='PrimaryButton'>
       {icon ? <Icon src={icon} /> : null}
       {buttonLabel}
     </Primary>
   ) : (
-    <Secondary
-      {...props}
-      data-testid='SecondaryButton'
-    >
+    <Secondary {...props} data-testid='SecondaryButton'>
       {icon ? <Icon src={icon} /> : null}
       {buttonLabel}
     </Secondary>

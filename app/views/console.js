@@ -12,9 +12,9 @@ import ConsoleSymbol from '../assets/images/console_zcash.png';
 const Wrapper = styled.div`
   max-height: 100%;
   overflow-y: auto;
-  background-color: ${props => props.theme.colors.cardBackgroundColor};
-  margin-top: ${props => props.theme.layoutContentPaddingTop};
-  border-radius: ${props => props.theme.boxBorderRadius};
+  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.cardBackgroundColor};
+  margin-top: ${(props: PropsWithTheme<>) => props.theme.layoutContentPaddingTop};
+  border-radius: ${(props: PropsWithTheme<>) => props.theme.boxBorderRadius};
   padding: 38px 33.5px;
 `;
 
@@ -65,7 +65,7 @@ export class ConsoleView extends Component<Props, State> {
   };
 
   componentDidMount() {
-    ipcRenderer.on('zcashd-log', (event, message) => {
+    ipcRenderer.on('zcashd-log', (event: empty, message: string) => {
       this.setState(() => ({ log: initialLog + message }));
     });
   }
@@ -80,10 +80,7 @@ export class ConsoleView extends Component<Props, State> {
     return (
       <Wrapper id='console-wrapper'>
         <Fragment>
-          <ConsoleImg
-            src={ConsoleSymbol}
-            alt='Zcashd'
-          />
+          <ConsoleImg src={ConsoleSymbol} alt='Zcashd' />
           {log.split('\n').map((item, idx) => (
             <Fragment key={uuid()}>
               <ConsoleText value={item} />

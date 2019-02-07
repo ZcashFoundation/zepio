@@ -10,29 +10,36 @@ import ChevronDown from '../assets/images/chevron-down.svg';
 import theme from '../theme';
 
 /* eslint-disable max-len */
+type SelectWrapperProps = PropsWithTheme<{
+  bgColor: ?string,
+  isOpen: boolean,
+  placement: string,
+}>;
+
 const SelectWrapper = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
-  border-radius: ${props => props.theme.boxBorderRadius};
+  border-radius: ${(props: SelectWrapperProps) => props.theme.boxBorderRadius};
   border: none;
-  background-color: ${props => props.bgColor || props.theme.colors.inputBackground};
-  color: ${props => props.theme.colors.text};
+  background-color: ${(props: SelectWrapperProps) => props.bgColor || props.theme.colors.inputBackground};
+  color: ${(props: SelectWrapperProps) => props.theme.colors.text};
   width: 100%;
   outline: none;
-  font-family: ${props => props.theme.fontFamily};
+  font-family: ${(props: SelectWrapperProps) => props.theme.fontFamily};
   cursor: pointer;
   position: relative;
 
-  ${props => props.isOpen
-    && `border-${props.placement}-left-radius: 0; border-${props.placement}-right-radius: 0;`}
+  ${(props: SelectWrapperProps) => (props.isOpen
+    ? `border-${props.placement}-left-radius: 0; border-${props.placement}-right-radius: 0;`
+    : '')}
 `;
 /* eslint-enable max-len */
 
 const ValueWrapper = styled.div`
   width: 95%;
   padding: 13px;
-  opacity: ${props => (props.hasValue ? '1' : '0.2')};
+  opacity: ${(props: PropsWithTheme<{ hasValue: boolean }>) => (props.hasValue ? '1' : '0.2')};
   text-transform: capitalize;
   white-space: nowrap;
   overflow: hidden;
@@ -45,7 +52,7 @@ const SelectMenuButtonWrapper = styled.div`
   width: 50px;
   height: 100%;
   padding: 13px;
-  border-left: ${props => `1px solid ${props.theme.colors.background}`};
+  border-left: ${(props: PropsWithTheme<>) => `1px solid ${props.theme.colors.background}`};
 `;
 
 /* eslint-disable max-len */
@@ -53,10 +60,10 @@ const SelectMenuButton = styled.button`
   padding: 3px 7px;
   outline: none;
   background-color: transparent;
-  border: 1px solid ${props => (props.isOpen ? props.theme.colors.primary : '#29292D')};
+  border: 1px solid
+    ${(props: PropsWithTheme<{ isOpen: boolean }>) => (props.isOpen ? props.theme.colors.primary : '#29292D')};
   border-radius: 100%;
 `;
-/* eslint-enable max-len */
 
 const Icon = styled.img`
   width: 10px;
@@ -68,7 +75,7 @@ const OptionsWrapper = styled.div`
   flex-direction: column;
   position: absolute;
   width: 100%;
-  ${props => `${props.placement}: ${`-${props.optionsAmount * 40}px`}`};
+  ${(props: PropsWithTheme<{ placement: string, optionsAmount: number }>) => `${props.placement}: ${`-${props.optionsAmount * 40}px`}`};
   overflow-y: auto;
 `;
 
@@ -84,7 +91,7 @@ const Option = styled.button`
   border-bottom: 1px solid #4e4b4b;
 
   &:hover {
-    background-color: ${props => props.theme.colors.background};
+    background-color: ${(props: PropsWithTheme<>) => props.theme.colors.background};
   }
 
   &:last-child {

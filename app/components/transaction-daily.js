@@ -12,9 +12,9 @@ const Wrapper = styled.div`
 `;
 
 const TransactionsWrapper = styled.div`
-  border-radius: ${props => props.theme.boxBorderRadius};
+  border-radius: ${(props: PropsWithTheme<>) => props.theme.boxBorderRadius};
   overflow: hidden;
-  background-color: ${props => props.theme.colors.cardBackgroundColor};
+  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.cardBackgroundColor};
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -23,9 +23,9 @@ const TransactionsWrapper = styled.div`
 
 const Day = styled(TextComponent)`
   text-transform: uppercase;
-  color: ${props => props.theme.colors.transactionsDate};
-  font-size: ${props => `${props.theme.fontSize.regular * 0.9}em`};
-  font-weight: ${props => props.theme.fontWeight.bold};
+  color: ${(props: PropsWithTheme<>) => props.theme.colors.transactionsDate};
+  font-size: ${(props: PropsWithTheme<>) => `${props.theme.fontSize.regular * 0.9}em`};
+  font-weight: ${(props: PropsWithTheme<>) => String(props.theme.fontWeight.bold)};
   margin-bottom: 5px;
 `;
 
@@ -35,31 +35,25 @@ type Props = {
   zecPrice: number,
 };
 
-export const TransactionDailyComponent = ({
-  transactionsDate,
-  transactions,
-  zecPrice,
-}: Props) => (
+export const TransactionDailyComponent = ({ transactionsDate, transactions, zecPrice }: Props) => (
   <Wrapper data-testid='TransactionsDaily'>
     <Day value={transactionsDate} />
     <TransactionsWrapper>
-      {transactions.map(
-        ({
-          date, type, address, amount, transactionId,
-        }, idx) => (
-          <Fragment key={`${address}-${type}-${amount}-${date}`}>
-            <TransactionItemComponent
-              transactionId={transactionId}
-              type={type}
-              date={date}
-              address={address || ''}
-              amount={amount}
-              zecPrice={zecPrice}
-            />
-            {idx < transactions.length - 1 && <Divider />}
-          </Fragment>
-        ),
-      )}
+      {transactions.map(({
+        date, type, address, amount, transactionId,
+      }, idx) => (
+        <Fragment key={`${address}-${type}-${amount}-${date}`}>
+          <TransactionItemComponent
+            transactionId={transactionId}
+            type={type}
+            date={date}
+            address={address || ''}
+            amount={amount}
+            zecPrice={zecPrice}
+          />
+          {idx < transactions.length - 1 && <Divider />}
+        </Fragment>
+      ))}
     </TransactionsWrapper>
   </Wrapper>
 );

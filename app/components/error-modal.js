@@ -23,7 +23,7 @@ const ModalWrapper = styled.div`
 
 const ChildrenWrapper = styled.div`
   width: 350px;
-  background-color: ${props => props.theme.colors.background};
+  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.background};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -79,21 +79,17 @@ export class ErrorModalComponent extends PureComponent<Props> {
   render() {
     const { isVisible, message, onRequestClose } = this.props;
 
-    return !isVisible ? null : createPortal(
-      <ModalWrapper id='error-modal-portal-wrapper'>
-        <ChildrenWrapper>
-          <ErrorImage
-            src={ErrorIcon}
-            alt='Error Icon'
-          />
-          <Message value={message} />
-          <Button
-            label='Ok!'
-            onClick={onRequestClose}
-          />
-        </ChildrenWrapper>
-      </ModalWrapper>,
-      this.element,
-    );
+    return !isVisible
+      ? null
+      : createPortal(
+        <ModalWrapper id='error-modal-portal-wrapper'>
+          <ChildrenWrapper>
+            <ErrorImage src={ErrorIcon} alt='Error Icon' />
+            <Message value={message} />
+            <Button label='Ok!' onClick={onRequestClose} />
+          </ChildrenWrapper>
+        </ModalWrapper>,
+        this.element,
+      );
   }
 }

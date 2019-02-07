@@ -49,7 +49,7 @@ const Loader = styled.img`
 `;
 
 const FormWrapper = styled.div`
-  margin-top: ${props => props.theme.layoutContentPaddingTop};
+  margin-top: ${(props: PropsWithTheme<>) => props.theme.layoutContentPaddingTop};
   width: 71%;
 `;
 
@@ -58,26 +58,31 @@ const SendWrapper = styled(ColumnComponent)`
   margin-top: 60px;
 `;
 
+type AmountProps =
+  | {
+      isEmpty: boolean,
+    }
+  | Object;
 const AmountWrapper = styled.div`
   width: 100%;
   position: relative;
 
   &:before {
     content: 'ZEC';
-    font-family: ${props => props.theme.fontFamily};
+    font-family: ${(props: PropsWithTheme<>) => props.theme.fontFamily};
     position: absolute;
     margin-top: 15px;
     margin-left: 15px;
     display: block;
     transition: all 0.05s ease-in-out;
-    opacity: ${props => (props.isEmpty ? '0' : '1')};
+    opacity: ${(props: AmountProps) => (props.isEmpty ? '0' : '1')};
     color: #fff;
     z-index: 10;
   }
 `;
 
 const AmountInput = styled(InputComponent)`
-  padding-left: ${props => (props.isEmpty ? '15' : '50')}px;
+  padding-left: ${(props: AmountProps) => (props.isEmpty ? '15' : '50')}px;
 `;
 
 const ShowFeeButton = styled.button`
@@ -85,7 +90,7 @@ const ShowFeeButton = styled.button`
   border: none;
   cursor: pointer;
   width: 100%;
-  color: ${props => props.theme.colors.text};
+  color: ${(props: PropsWithTheme<>) => props.theme.colors.text};
   outline: none;
   display: flex;
   align-items: center;
@@ -100,7 +105,7 @@ const ShowFeeButton = styled.button`
 const SeeMoreIcon = styled.img`
   width: 25px;
   height: 25px;
-  border: 1px solid ${props => props.theme.colors.text};
+  border: 1px solid ${(props: PropsWithTheme<>) => props.theme.colors.text};
   border-radius: 100%;
   margin-right: 11.5px;
 `;
@@ -114,8 +119,8 @@ const FeeWrapper = styled.div`
 
 const InfoCard = styled.div`
   width: 100%;
-  background-color: ${props => props.theme.colors.cardBackgroundColor};
-  border-radius: ${props => props.theme.boxBorderRadius};
+  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.cardBackgroundColor};
+  border-radius: ${(props: PropsWithTheme<>) => props.theme.boxBorderRadius};
 `;
 
 const InfoContent = styled.div`
@@ -152,23 +157,29 @@ const ConfirmItemWrapper = styled(RowComponent)`
   width: 100%;
 `;
 
+type ItemLabelProps =
+  | {
+      color: string,
+    }
+  | Object;
+/* eslint-disable max-len */
 const ItemLabel = styled(TextComponent)`
-  font-weight: ${props => props.theme.fontWeight.bold};
-  font-size: ${props => props.theme.fontSize.small};
-  color: ${props => props.color || props.theme.colors.modalItemLabel};
+  font-weight: ${(props: PropsWithTheme<ItemLabelProps>) => String(props.theme.fontWeight.bold)};
+  font-size: ${(props: PropsWithTheme<ItemLabelProps>) => String(props.theme.fontSize.small)};
+  color: ${(props: PropsWithTheme<ItemLabelProps>) => props.color || props.theme.colors.modalItemLabel};
   margin-bottom: 3.5px;
 `;
 
 const SendZECValue = styled(TextComponent)`
-  color: ${props => props.theme.colors.transactionSent};
-  font-size: ${props => `${props.theme.fontSize.large}em`};
-  font-weight: ${props => props.theme.fontWeight.bold};
+  color: ${(props: PropsWithTheme<>) => props.theme.colors.transactionSent};
+  font-size: ${(props: PropsWithTheme<>) => `${props.theme.fontSize.large}em`};
+  font-weight: ${(props: PropsWithTheme<>) => String(props.theme.fontWeight.bold)};
 `;
 
 const SendUSDValue = styled(TextComponent)`
   opacity: 0.5;
-  font-weight: ${props => props.theme.fontWeight.light};
-  font-size: ${props => `${props.theme.fontSize.medium}em`};
+  font-weight: ${(props: PropsWithTheme<>) => String(props.theme.fontWeight.light)};
+  font-size: ${(props: PropsWithTheme<>) => `${props.theme.fontSize.medium}em`};
 `;
 
 const Icon = styled.img`
@@ -509,8 +520,8 @@ export class SendView extends PureComponent<Props, State> {
                 height: 0,
               }}
             >
-              {show => show
-                && (props => (
+              {(show: boolean) => show
+                && ((props: Object) => (
                   <animated.div style={props}>
                     <FeeWrapper id='send-fee-wrapper'>
                       <RowComponent alignItems='flex-end' justifyContent='space-between'>
