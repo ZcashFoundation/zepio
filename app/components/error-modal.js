@@ -23,7 +23,7 @@ const ModalWrapper = styled.div`
 
 const ChildrenWrapper = styled.div`
   width: 350px;
-  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.background};
+  background-color: ${props => props.theme.colors.background};
   display: flex;
   flex-direction: column;
   align-items: center;

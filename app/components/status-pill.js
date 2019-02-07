@@ -40,8 +40,8 @@ const Icon = styled.img`
 `;
 
 const StatusPillLabel = styled(TextComponent)`
-  color: ${(props: PropsWithTheme<>) => props.theme.colors.statusPillLabel};
-  font-weight: ${(props: PropsWithTheme<>) => String(props.theme.fontWeight.bold)};
+  color: ${props => props.theme.colors.statusPillLabel};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
   text-transform: uppercase;
   font-size: 10px;
   padding-top: 1px;

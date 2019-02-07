@@ -55,8 +55,7 @@ type AppTheme = {
 };
 
 // =(
-declare type PropsWithTheme<T = {}> =
-  | Object
-  | ({
-      theme: AppTheme,
-    } & (T | Object));
+declare type PropsWithTheme<T = {}> = {
+  ...T,
+  theme: AppTheme,
+};

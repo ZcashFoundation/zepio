@@ -12,9 +12,9 @@ const Wrapper = styled.div`
 `;
 
 const TransactionsWrapper = styled.div`
-  border-radius: ${(props: PropsWithTheme<>) => props.theme.boxBorderRadius};
+  border-radius: ${props => props.theme.boxBorderRadius};
   overflow: hidden;
-  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.cardBackgroundColor};
+  background-color: ${props => props.theme.colors.cardBackgroundColor};
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -23,9 +23,9 @@ const TransactionsWrapper = styled.div`
 
 const Day = styled(TextComponent)`
   text-transform: uppercase;
-  color: ${(props: PropsWithTheme<>) => props.theme.colors.transactionsDate};
-  font-size: ${(props: PropsWithTheme<>) => `${props.theme.fontSize.regular * 0.9}em`};
-  font-weight: ${(props: PropsWithTheme<>) => String(props.theme.fontWeight.bold)};
+  color: ${props => props.theme.colors.transactionsDate};
+  font-size: ${props => `${props.theme.fontSize.regular * 0.9}em`};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
   margin-bottom: 5px;
 `;
 

@@ -23,7 +23,7 @@ import rpc from '../../services/api';
 const HOME_DIR = electron.remote.app.getPath('home');
 
 const Wrapper = styled.div`
-  margin-top: ${(props: PropsWithTheme<>) => props.theme.layoutContentPaddingTop};
+  margin-top: ${props => props.theme.layoutContentPaddingTop};
 `;
 
 const ModalContent = styled.div`
@@ -43,7 +43,7 @@ const Btn = styled(Button)`
 
 const ClipboardButton = styled(Clipboard)`
   width: 50px;
-  border-radius: ${(props: PropsWithTheme<>) => props.theme.boxBorderRadius};
+  border-radius: ${props => props.theme.boxBorderRadius};
   height: 45px;
   margin-left: 5px;
 `;
@@ -56,9 +56,9 @@ const SettingsWrapper = styled.div`
 
 const SettingsTitle = styled(TextComponent)`
   text-transform: uppercase;
-  color: ${(props: PropsWithTheme<>) => props.theme.colors.transactionsDate};
-  font-size: ${(props: PropsWithTheme<>) => `${props.theme.fontSize.regular * 0.9}em`};
-  font-weight: ${(props: PropsWithTheme<>) => String(props.theme.fontWeight.bold)};
+  color: ${props => props.theme.colors.transactionsDate};
+  font-size: ${props => `${props.theme.fontSize.regular * 0.9}em`};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
   margin-bottom: 5px;
 `;
 

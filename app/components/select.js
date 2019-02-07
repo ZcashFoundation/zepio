@@ -31,7 +31,9 @@ const SelectWrapper = styled.div`
   position: relative;
 
   ${(props: SelectWrapperProps) => (props.isOpen
-    ? `border-${props.placement}-left-radius: 0; border-${props.placement}-right-radius: 0;`
+    ? `border-${String(props.placement)}-left-radius: 0; border-${String(
+      props.placement,
+    )}-right-radius: 0;`
     : '')}
 `;
 /* eslint-enable max-len */
@@ -52,7 +54,7 @@ const SelectMenuButtonWrapper = styled.div`
   width: 50px;
   height: 100%;
   padding: 13px;
-  border-left: ${(props: PropsWithTheme<>) => `1px solid ${props.theme.colors.background}`};
+  border-left: ${props => `1px solid ${props.theme.colors.background}`};
 `;
 
 /* eslint-disable max-len */
@@ -75,7 +77,7 @@ const OptionsWrapper = styled.div`
   flex-direction: column;
   position: absolute;
   width: 100%;
-  ${(props: PropsWithTheme<{ placement: string, optionsAmount: number }>) => `${props.placement}: ${`-${props.optionsAmount * 40}px`}`};
+  ${(props: PropsWithTheme<{ placement: string, optionsAmount: number }>) => `${String(props.placement)}: ${`-${String((props.optionsAmount || 0) * 40)}px`}`};
   overflow-y: auto;
 `;
 
@@ -91,7 +93,7 @@ const Option = styled.button`
   border-bottom: 1px solid #4e4b4b;
 
   &:hover {
-    background-color: ${(props: PropsWithTheme<>) => props.theme.colors.background};
+    background-color: ${props => props.theme.colors.background};
   }
 
   &:last-child {

@@ -13,17 +13,17 @@ import theme from '../theme';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.cardBackgroundColor};
-  border-radius: ${(props: PropsWithTheme<>) => props.theme.boxBorderRadius};
+  background-color: ${props => props.theme.colors.cardBackgroundColor};
+  border-radius: ${props => props.theme.boxBorderRadius};
   padding: 37px 45px;
   min-height: 250px;
   position: relative;
-  margin-top: ${(props: PropsWithTheme<>) => props.theme.layoutContentPaddingTop};
+  margin-top: ${props => props.theme.layoutContentPaddingTop};
 `;
 
 const AllAddresses = styled(TextComponent)`
   margin-bottom: 2.5px;
-  font-size: ${(props: PropsWithTheme<>) => `${props.theme.fontSize.small}em`};
+  font-size: ${props => `${props.theme.fontSize.small}em`};
 `;
 
 const ValueBox = styled.div`
@@ -39,11 +39,11 @@ const Label = styled(TextComponent)`
 
 const USDValue = styled(TextComponent)`
   opacity: 0.5;
-  font-weight: ${(props: PropsWithTheme<>) => String(props.theme.fontWeight.light)};
+  font-weight: ${props => String(props.theme.fontWeight.light)};
 `;
 
 const ShieldedValue = styled(Label)`
-  color: ${(props: PropsWithTheme<>) => props.theme.colors.activeItem};
+  color: ${props => props.theme.colors.activeItem};
 `;
 
 type Props = {

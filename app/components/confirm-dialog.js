@@ -12,8 +12,8 @@ import CloseIcon from '../assets/images/close_icon.svg';
 
 const Wrapper = styled.div`
   display: flex;
-  width: ${(props: PropsWithTheme<{ width: number }>) => `${props.width}px`};
-  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.background};
+  width: ${(props: PropsWithTheme<{ width: number }>) => `${String(props.width)}px`};
+  background-color: ${props => props.theme.colors.background};
   flex-direction: column;
   align-items: center;
   border-radius: 6px;

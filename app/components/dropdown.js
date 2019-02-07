@@ -14,10 +14,10 @@ import { truncateAddress } from '../utils/truncate-address';
 
 /* eslint-disable max-len  */
 const MenuWrapper = styled.div`
-  background-image: ${(props: PropsWithTheme<>) => `linear-gradient(to right, ${darken(0.05, props.theme.colors.activeItem)}, ${
+  background-image: ${props => `linear-gradient(to right, ${darken(0.05, props.theme.colors.activeItem)}, ${
     props.theme.colors.activeItem
   })`};
-  border-radius: ${(props: PropsWithTheme<>) => props.theme.boxBorderRadius};
+  border-radius: ${props => props.theme.boxBorderRadius};
   margin-left: -10px;
   max-width: 400px;
   overflow: hidden;
@@ -28,7 +28,7 @@ const MenuItem = styled.button`
   background-color: transparent;
   border: none;
   border-bottom-style: solid;
-  border-bottom-color: ${(props: PropsWithTheme<>) => props.theme.colors.text};
+  border-bottom-color: ${props => props.theme.colors.text};
   border-bottom-width: 1px;
   padding: 15px;
   cursor: pointer;
@@ -68,7 +68,7 @@ const Option = styled(TextComponent)`
 
 const PopoverWithStyle = styled(Popover)`
   & > .Popover-tip {
-    fill: ${(props: PropsWithTheme<>) => props.theme.colors.activeItem};
+    fill: ${props => props.theme.colors.activeItem};
   }
 `;
 

@@ -49,7 +49,7 @@ const Loader = styled.img`
 `;
 
 const FormWrapper = styled.div`
-  margin-top: ${(props: PropsWithTheme<>) => props.theme.layoutContentPaddingTop};
+  margin-top: ${props => props.theme.layoutContentPaddingTop};
   width: 71%;
 `;
 
@@ -69,7 +69,7 @@ const AmountWrapper = styled.div`
 
   &:before {
     content: 'ZEC';
-    font-family: ${(props: PropsWithTheme<>) => props.theme.fontFamily};
+    font-family: ${props => props.theme.fontFamily};
     position: absolute;
     margin-top: 15px;
     margin-left: 15px;
@@ -90,7 +90,7 @@ const ShowFeeButton = styled.button`
   border: none;
   cursor: pointer;
   width: 100%;
-  color: ${(props: PropsWithTheme<>) => props.theme.colors.text};
+  color: ${props => props.theme.colors.text};
   outline: none;
   display: flex;
   align-items: center;
@@ -105,7 +105,7 @@ const ShowFeeButton = styled.button`
 const SeeMoreIcon = styled.img`
   width: 25px;
   height: 25px;
-  border: 1px solid ${(props: PropsWithTheme<>) => props.theme.colors.text};
+  border: 1px solid ${props => props.theme.colors.text};
   border-radius: 100%;
   margin-right: 11.5px;
 `;
@@ -119,8 +119,8 @@ const FeeWrapper = styled.div`
 
 const InfoCard = styled.div`
   width: 100%;
-  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.cardBackgroundColor};
-  border-radius: ${(props: PropsWithTheme<>) => props.theme.boxBorderRadius};
+  background-color: ${props => props.theme.colors.cardBackgroundColor};
+  border-radius: ${props => props.theme.boxBorderRadius};
 `;
 
 const InfoContent = styled.div`
@@ -171,15 +171,15 @@ const ItemLabel = styled(TextComponent)`
 `;
 
 const SendZECValue = styled(TextComponent)`
-  color: ${(props: PropsWithTheme<>) => props.theme.colors.transactionSent};
-  font-size: ${(props: PropsWithTheme<>) => `${props.theme.fontSize.large}em`};
-  font-weight: ${(props: PropsWithTheme<>) => String(props.theme.fontWeight.bold)};
+  color: ${props => props.theme.colors.transactionSent};
+  font-size: ${props => `${props.theme.fontSize.large}em`};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
 `;
 
 const SendUSDValue = styled(TextComponent)`
   opacity: 0.5;
-  font-weight: ${(props: PropsWithTheme<>) => String(props.theme.fontWeight.light)};
-  font-size: ${(props: PropsWithTheme<>) => `${props.theme.fontSize.medium}em`};
+  font-weight: ${props => String(props.theme.fontWeight.light)};
+  font-size: ${props => `${props.theme.fontSize.medium}em`};
 `;
 
 const Icon = styled.img`

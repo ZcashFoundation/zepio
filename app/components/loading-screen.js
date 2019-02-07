@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.cardBackgroundColor};
+  background-color: ${props => props.theme.colors.cardBackgroundColor};
 `;
 
 const CircleWrapper = styled.div`

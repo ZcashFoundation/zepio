@@ -20,9 +20,9 @@ const Row = styled(RowComponent)`
 
 const Label = styled(InputLabelComponent)`
   text-transform: uppercase;
-  color: ${(props: PropsWithTheme<>) => props.theme.colors.transactionsDate};
-  font-size: ${(props: PropsWithTheme<>) => `${props.theme.fontSize.regular * 0.9}em`};
-  font-weight: ${(props: PropsWithTheme<>) => String(props.theme.fontWeight.bold)};
+  color: ${props => props.theme.colors.transactionsDate};
+  font-size: ${props => `${props.theme.fontSize.regular * 0.9}em`};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
   margin-bottom: 5px;
 `;
 
@@ -31,7 +31,7 @@ const ActionButton = styled.button`
   border: none;
   cursor: pointer;
   width: 100%;
-  color: ${(props: PropsWithTheme<>) => props.theme.colors.text};
+  color: ${props => props.theme.colors.text};
   outline: none;
   display: flex;
   align-items: center;
@@ -46,7 +46,7 @@ const ActionButton = styled.button`
 const ActionIcon = styled.img`
   width: 25px;
   height: 25px;
-  border: 1px solid ${(props: PropsWithTheme<>) => props.theme.colors.text};
+  border: 1px solid ${props => props.theme.colors.text};
   border-radius: 100%;
   margin-right: 11.5px;
   padding: 5px;

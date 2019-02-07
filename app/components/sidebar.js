@@ -9,10 +9,10 @@ import { MENU_OPTIONS } from '../constants/sidebar';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: ${(props: PropsWithTheme<>) => props.theme.sidebarWidth};
-  height: ${(props: PropsWithTheme<>) => `calc(100vh - ${props.theme.headerHeight})`};
-  font-family: ${(props: PropsWithTheme<>) => props.theme.fontFamily};
-  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.sidebarBg};
+  width: ${props => props.theme.sidebarWidth};
+  height: ${props => `calc(100vh - ${props.theme.headerHeight})`};
+  font-family: ${props => props.theme.fontFamily};
+  background-color: ${props => props.theme.colors.sidebarBg};
   padding-top: 15px;
   position: relative;
 `;

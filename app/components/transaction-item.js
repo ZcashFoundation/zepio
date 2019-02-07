@@ -19,7 +19,7 @@ import { formatNumber } from '../utils/format-number';
 import { truncateAddress } from '../utils/truncate-address';
 
 const Wrapper = styled(RowComponent)`
-  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.cardBackgroundColor};
+  background-color: ${props => props.theme.colors.cardBackgroundColor};
   padding: 15px 17px;
   cursor: pointer;
 
@@ -49,7 +49,7 @@ const TransactionAddress = styled(TextComponent)`
 `;
 
 const TransactionTime = styled(TextComponent)`
-  color: ${(props: PropsWithTheme<>) => props.theme.colors.inactiveItem};
+  color: ${props => props.theme.colors.inactiveItem};
 `;
 
 const TransactionColumn = styled(ColumnComponent)`

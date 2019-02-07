@@ -9,19 +9,19 @@ const DefaultButton = styled.button`
   display: flex;
   justify-content: center;
   padding: 10px 30px;
-  font-family: ${(props: PropsWithTheme<>) => props.theme.fontFamily};
-  font-weight: ${(props: PropsWithTheme<>) => String(props.theme.fontWeight.bold)};
-  font-size: ${(props: PropsWithTheme<>) => `${props.theme.fontSize.regular}em`};
+  font-family: ${props => props.theme.fontFamily};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
+  font-size: ${props => `${props.theme.fontSize.regular}em`};
   cursor: pointer;
   outline: none;
   min-width: 100px;
   border-radius: 100px;
-  transition: background-color 0.1s ${(props: PropsWithTheme<>) => props.theme.transitionEase};
+  transition: background-color 0.1s ${props => props.theme.transitionEase};
 `;
 
 const Primary = styled(DefaultButton)`
-  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.primary};
-  color: ${(props: PropsWithTheme<>) => props.theme.colors.secondary};
+  background-color: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.secondary};
   border: none;
 
   &:hover {
@@ -29,7 +29,7 @@ const Primary = styled(DefaultButton)`
   }
 
   &:disabled {
-    background-color: ${(props: PropsWithTheme<>) => props.theme.colors.buttonBorderColor};
+    background-color: ${props => props.theme.colors.buttonBorderColor};
     cursor: not-allowed;
     opacity: 0.8;
   }
@@ -37,20 +37,20 @@ const Primary = styled(DefaultButton)`
 
 const Secondary = styled(DefaultButton)`
   background-color: transparent;
-  color: ${(props: PropsWithTheme<>) => props.theme.colors.secondary};
-  border: 2px solid ${(props: PropsWithTheme<>) => props.theme.colors.buttonBorderColor};
+  color: ${props => props.theme.colors.secondary};
+  border: 2px solid ${props => props.theme.colors.buttonBorderColor};
 
   &:hover {
-    border-color: ${(props: PropsWithTheme<>) => props.theme.colors.primary};
+    border-color: ${props => props.theme.colors.primary};
   }
 
   &:disabled {
     background-color: Transparent;
     cursor: not-allowed;
-    color: ${(props: PropsWithTheme<>) => props.theme.colors.buttonBorderColor};
+    color: ${props => props.theme.colors.buttonBorderColor};
 
     &:hover {
-      border-color: ${(props: PropsWithTheme<>) => props.theme.colors.buttonBorderColor};
+      border-color: ${props => props.theme.colors.buttonBorderColor};
     }
   }
 `;

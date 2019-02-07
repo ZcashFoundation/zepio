@@ -23,7 +23,7 @@ import { openExternal } from '../utils/open-external';
 
 const Wrapper = styled.div`
   width: 460px;
-  background-color: ${(props: PropsWithTheme<>) => props.theme.colors.background};
+  background-color: ${props => props.theme.colors.background};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -91,8 +91,8 @@ const Divider = styled.div`
 `;
 
 const Label = styled(TextComponent)`
-  font-weight: ${(props: PropsWithTheme<>) => String(props.theme.fontWeight.bold)};
-  color: ${(props: PropsWithTheme<>) => props.theme.colors.transactionsDetailsLabel};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
+  color: ${props => props.theme.colors.transactionsDetailsLabel};
   margin-bottom: 5px;
   letter-spacing: 0.25px;
 `;
@@ -106,7 +106,7 @@ const Ellipsis = styled(TextComponent)`
 
 const TransactionId = styled.button`
   width: 100%;
-  color: ${(props: PropsWithTheme<>) => props.theme.colors.text};
+  color: ${props => props.theme.colors.text};
   padding: 0;
   background: none;
   border: none;
