@@ -220,6 +220,7 @@ type Props = {
   validateAddress: ({ address: string }) => void,
   loadAddresses: () => void,
   loadZECPrice: () => void,
+  getAddressBalance: ({ address: string }) => void,
 };
 
 type State = {
@@ -254,17 +255,31 @@ export class SendView extends PureComponent<Props, State> {
   }
 
   handleChange = (field: string) => (value: string) => {
-    const { validateAddress } = this.props;
+    const { validateAddress, getAddressBalance, balance } = this.props;
+    const { fee, amount } = this.state;
 
     if (field === 'to') {
-      // eslint-disable-next-line max-len
       this.setState(() => ({ [field]: value }), () => validateAddress({ address: value }));
+    } else if (field === 'amount') {
+      const amountWithFee = new BigNumber(value).plus(fee || 0);
+
+      const validAmount = amountWithFee.isGreaterThan(balance)
+        ? new BigNumber(balance).minus(fee || 0).toNumber()
+        : value;
+
+      this.setState(() => ({ [field]: validAmount }));
     } else {
-      this.setState(() => ({ [field]: value }));
+      if (field === 'from') getAddressBalance({ address: value });
+
+      this.setState(() => ({ [field]: value }), () => {
+        if (field === 'fee') this.handleChange('amount')(amount);
+      });
     }
   };
 
   handleChangeFeeType = (value: string) => {
+    const { amount } = this.state;
+
     if (value === FEES.CUSTOM) {
       this.setState(() => ({
         feeType: FEES.CUSTOM,
@@ -273,10 +288,13 @@ export class SendView extends PureComponent<Props, State> {
     } else {
       const fee = new BigNumber(value);
 
-      this.setState(() => ({
-        feeType: fee.toString(),
-        fee: fee.toNumber(),
-      }));
+      this.setState(
+        () => ({
+          feeType: fee.toString(),
+          fee: fee.toNumber(),
+        }),
+        () => this.handleChange('amount')(amount),
+      );
     }
   };
 
@@ -474,6 +492,7 @@ export class SendView extends PureComponent<Props, State> {
               placeholder='ZEC 0.0'
               min={0.01}
               name='amount'
+              disabled={!from}
             />
           </AmountWrapper>
           <InputLabelComponent value='To' />
