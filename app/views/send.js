@@ -456,12 +456,13 @@ export class SendView extends PureComponent<Props, State> {
     return (
       <RowComponent id='send-wrapper' justifyContent='space-between'>
         <FormWrapper>
-          <InputLabelComponent value='From' />
+          <InputLabelComponent value='From an address' />
           <SelectComponent
             onChange={this.handleChange('from')}
             value={from}
             placeholder='Select a address'
             options={addresses.map(addr => ({ value: addr, label: addr }))}
+            capitalize={false}
           />
           <InputLabelComponent value='Amount' />
           <AmountWrapper isEmpty={isEmpty}>
