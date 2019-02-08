@@ -16,17 +16,17 @@ import {
   resetSendTransaction,
   validateAddressSuccess,
   validateAddressError,
+  loadAddressBalanceSuccess,
+  loadAddressBalanceError,
 } from '../redux/modules/send';
 
 import { filterObjectNullKeys } from '../utils/filter-object-null-keys';
+import { ascii2hex } from '../utils/ascii-to-hexadecimal';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
 
-import {
-  loadAddressesSuccess,
-  loadAddressesError,
-} from '../redux/modules/receive';
+import { loadAddressesSuccess, loadAddressesError } from '../redux/modules/receive';
 
 export type SendTransactionInput = {
   from: string,
@@ -36,8 +36,8 @@ export type SendTransactionInput = {
   memo: string,
 };
 
-const mapStateToProps = ({ walletSummary, sendStatus, receive }: AppState) => ({
-  balance: walletSummary.total,
+const mapStateToProps = ({ sendStatus, receive }: AppState) => ({
+  balance: sendStatus.addressBalance,
   zecPrice: sendStatus.zecPrice,
   addresses: receive.addresses,
   error: sendStatus.error,
@@ -61,7 +61,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
           filterObjectNullKeys({
             address: to,
             amount: new BigNumber(amount).toNumber(),
-            memo,
+            memo: ascii2hex(memo),
           }),
         ],
         1,
@@ -144,6 +144,13 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       value: Number(store.get('ZEC_DOLLAR_PRICE')),
     }),
   ),
+  getAddressBalance: async ({ address }: { address: string }) => {
+    const [err, balance] = await eres(rpc.z_getbalance(address));
+
+    if (err) return dispatch(loadAddressBalanceError({ error: "Can't load your balance address" }));
+
+    return dispatch(loadAddressBalanceSuccess({ balance }));
+  },
 });
 
 // $FlowFixMe
