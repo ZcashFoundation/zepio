@@ -126,7 +126,7 @@ export class SelectComponent extends PureComponent<Props, State> {
     placeholder: '',
     placement: 'bottom',
     bgColor: theme.colors.inputBackground,
-    capitalize: false,
+    capitalize: true,
   };
 
   onSelect = (value: string) => {
