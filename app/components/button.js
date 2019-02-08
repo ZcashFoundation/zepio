@@ -3,10 +3,6 @@
 import React, { type ElementProps } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable max-len */
-// $FlowFixMe
-import { darken } from 'polished';
 
 const DefaultButton = styled.button`
   align-items: center;
@@ -14,13 +10,13 @@ const DefaultButton = styled.button`
   justify-content: center;
   padding: 10px 30px;
   font-family: ${props => props.theme.fontFamily};
-  font-weight: ${props => props.theme.fontWeight.bold};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
   font-size: ${props => `${props.theme.fontSize.regular}em`};
   cursor: pointer;
   outline: none;
   min-width: 100px;
   border-radius: 100px;
-  transition: background-color 0.1s ${props => props.theme.colors.transitionEase};
+  transition: background-color 0.1s ${props => props.theme.transitionEase};
 `;
 
 const Primary = styled(DefaultButton)`
@@ -29,7 +25,7 @@ const Primary = styled(DefaultButton)`
   border: none;
 
   &:hover {
-    background-color: ${props => darken(0.1, props.theme.colors.primary(props))};
+    opacity: 0.9;
   }
 
   &:disabled {
@@ -101,18 +97,12 @@ export const Button = ({
   const buttonLabel = isLoading ? 'Loading...' : label;
 
   const component = variant === 'primary' ? (
-    <Primary
-      {...props}
-      data-testid='PrimaryButton'
-    >
+    <Primary {...props} data-testid='PrimaryButton'>
       {icon ? <Icon src={icon} /> : null}
       {buttonLabel}
     </Primary>
   ) : (
-    <Secondary
-      {...props}
-      data-testid='SecondaryButton'
-    >
+    <Secondary {...props} data-testid='SecondaryButton'>
       {icon ? <Icon src={icon} /> : null}
       {buttonLabel}
     </Secondary>

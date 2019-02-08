@@ -58,7 +58,7 @@ const SettingsTitle = styled(TextComponent)`
   text-transform: uppercase;
   color: ${props => props.theme.colors.transactionsDate};
   font-size: ${props => `${props.theme.fontSize.regular * 0.9}em`};
-  font-weight: ${props => props.theme.fontWeight.bold};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
   margin-bottom: 5px;
 `;
 
@@ -173,7 +173,7 @@ export class SettingsView extends PureComponent<Props, State> {
     electron.remote.dialog.showSaveDialog(
       undefined,
       { defaultPath: backupFileName },
-      async (pathToSave) => {
+      async (pathToSave: string) => {
         if (!pathToSave) return;
 
         const zcashDir = isDev ? `${HOME_DIR}/.zcash/testnet3` : HOME_DIR;

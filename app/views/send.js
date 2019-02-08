@@ -58,6 +58,11 @@ const SendWrapper = styled(ColumnComponent)`
   margin-top: 60px;
 `;
 
+type AmountProps =
+  | {
+      isEmpty: boolean,
+    }
+  | Object;
 const AmountWrapper = styled.div`
   width: 100%;
   position: relative;
@@ -70,14 +75,14 @@ const AmountWrapper = styled.div`
     margin-left: 15px;
     display: block;
     transition: all 0.05s ease-in-out;
-    opacity: ${props => (props.isEmpty ? '0' : '1')};
+    opacity: ${(props: AmountProps) => (props.isEmpty ? '0' : '1')};
     color: #fff;
     z-index: 10;
   }
 `;
 
 const AmountInput = styled(InputComponent)`
-  padding-left: ${props => (props.isEmpty ? '15' : '50')}px;
+  padding-left: ${(props: AmountProps) => (props.isEmpty ? '15' : '50')}px;
 `;
 
 const ShowFeeButton = styled.button`
@@ -152,22 +157,28 @@ const ConfirmItemWrapper = styled(RowComponent)`
   width: 100%;
 `;
 
+type ItemLabelProps =
+  | {
+      color: string,
+    }
+  | Object;
+/* eslint-disable max-len */
 const ItemLabel = styled(TextComponent)`
-  font-weight: ${props => props.theme.fontWeight.bold};
-  font-size: ${props => props.theme.fontSize.small};
-  color: ${props => props.color || props.theme.colors.modalItemLabel};
+  font-weight: ${(props: PropsWithTheme<ItemLabelProps>) => String(props.theme.fontWeight.bold)};
+  font-size: ${(props: PropsWithTheme<ItemLabelProps>) => String(props.theme.fontSize.small)};
+  color: ${(props: PropsWithTheme<ItemLabelProps>) => props.color || props.theme.colors.modalItemLabel};
   margin-bottom: 3.5px;
 `;
 
 const SendZECValue = styled(TextComponent)`
   color: ${props => props.theme.colors.transactionSent};
   font-size: ${props => `${props.theme.fontSize.large}em`};
-  font-weight: ${props => props.theme.fontWeight.bold};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
 `;
 
 const SendUSDValue = styled(TextComponent)`
   opacity: 0.5;
-  font-weight: ${props => props.theme.fontWeight.light};
+  font-weight: ${props => String(props.theme.fontWeight.light)};
   font-size: ${props => `${props.theme.fontSize.medium}em`};
 `;
 
@@ -509,8 +520,8 @@ export class SendView extends PureComponent<Props, State> {
                 height: 0,
               }}
             >
-              {show => show
-                && (props => (
+              {(show: boolean) => show
+                && ((props: Object) => (
                   <animated.div style={props}>
                     <FeeWrapper id='send-fee-wrapper'>
                       <RowComponent alignItems='flex-end' justifyContent='space-between'>

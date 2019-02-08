@@ -65,7 +65,7 @@ export class ConsoleView extends Component<Props, State> {
   };
 
   componentDidMount() {
-    ipcRenderer.on('zcashd-log', (event, message) => {
+    ipcRenderer.on('zcashd-log', (event: empty, message: string) => {
       this.setState(() => ({ log: initialLog + message }));
     });
   }
@@ -80,10 +80,7 @@ export class ConsoleView extends Component<Props, State> {
     return (
       <Wrapper id='console-wrapper'>
         <Fragment>
-          <ConsoleImg
-            src={ConsoleSymbol}
-            alt='Zcashd'
-          />
+          <ConsoleImg src={ConsoleSymbol} alt='Zcashd' />
           {log.split('\n').map((item, idx) => (
             <Fragment key={uuid()}>
               <ConsoleText value={item} />

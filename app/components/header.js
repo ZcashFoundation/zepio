@@ -54,7 +54,7 @@ const Title = styled(TextComponent)`
   margin-bottom: 10px;
   text-transform: capitalize;
   letter-spacing: 0.25px;
-  font-weight: ${props => props.theme.fontWeight.bold};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
 `;
 
 type Props = {
@@ -69,15 +69,9 @@ export const HeaderComponent = ({ title }: Props) => (
       <ZcashLogo />
     </LogoWrapper>
     <TitleWrapper>
-      <TitleRow
-        alignItems='center'
-        justifyContent='space-around'
-      >
+      <TitleRow alignItems='center' justifyContent='space-around'>
         <Title value={title} />
-        <Status
-          type='syncing'
-          progress={0}
-        />
+        <Status type='syncing' progress={0} />
       </TitleRow>
       <Divider opacity={0.1} />
     </TitleWrapper>

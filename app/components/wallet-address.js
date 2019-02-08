@@ -72,7 +72,7 @@ export class WalletAddress extends Component<Props, State> {
         <AddressWrapper>
           <Input
             value={isVisible ? address : truncateAddress(address)}
-            onChange={() => { }}
+            onChange={() => {}}
             onFocus={event => event.currentTarget.select()}
           />
           <Button

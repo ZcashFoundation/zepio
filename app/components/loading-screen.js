@@ -58,7 +58,7 @@ export class LoadingScreen extends PureComponent<Props, State> {
       this.setState(() => ({ start: true }));
     }, TIME_DELAY_ANIM);
 
-    ipcRenderer.on('zcashd-params-download', (event, message) => {
+    ipcRenderer.on('zcashd-params-download', (event: Object, message: string) => {
       this.setState(() => ({ message }));
     });
   }
@@ -85,7 +85,7 @@ export class LoadingScreen extends PureComponent<Props, State> {
             opacity: 0,
           }}
         >
-          {() => props => (
+          {() => (props: Object) => (
             <animated.div
               id='loading-screen'
               style={{
@@ -97,10 +97,7 @@ export class LoadingScreen extends PureComponent<Props, State> {
               }}
             >
               <CircleWrapper>
-                <Logo
-                  src={zcashLogo}
-                  alt='Zcash Logo'
-                />
+                <Logo src={zcashLogo} alt='Zcash Logo' />
                 <CircleProgressComponent
                   progress={progress}
                   s // TODO: check if this has any effect

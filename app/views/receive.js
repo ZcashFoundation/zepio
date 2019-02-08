@@ -22,7 +22,7 @@ const Label = styled(InputLabelComponent)`
   text-transform: uppercase;
   color: ${props => props.theme.colors.transactionsDate};
   font-size: ${props => `${props.theme.fontSize.regular * 0.9}em`};
-  font-weight: ${props => props.theme.fontWeight.bold};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
   margin-bottom: 5px;
 `;
 
@@ -107,33 +107,16 @@ export class ReceiveView extends PureComponent<Props, State> {
           <WalletAddress key={addr} address={addr} />
         ))}
         <Row>
-          <ActionButton
-            onClick={this.toggleAdditionalOptions}
-            isActive={showAdditionalOptions}
-          >
-            <ActionIcon
-              isActive={showAdditionalOptions}
-              src={MenuIcon}
-              alt='More Options'
-            />
+          <ActionButton onClick={this.toggleAdditionalOptions} isActive={showAdditionalOptions}>
+            <ActionIcon isActive={showAdditionalOptions} src={MenuIcon} alt='More Options' />
             <TextComponent value={buttonText} />
           </ActionButton>
-          <ActionButton
-            onClick={() => this.generateNewAddress('shielded')}
-          >
-            <ActionIcon
-              src={PlusIcon}
-              alt='New Shielded Address'
-            />
+          <ActionButton onClick={() => this.generateNewAddress('shielded')}>
+            <ActionIcon src={PlusIcon} alt='New Shielded Address' />
             <TextComponent value='New Shielded Address' />
           </ActionButton>
-          <ActionButton
-            onClick={() => this.generateNewAddress('transparent')}
-          >
-            <ActionIcon
-              src={PlusIcon}
-              alt='New Transparent Address'
-            />
+          <ActionButton onClick={() => this.generateNewAddress('transparent')}>
+            <ActionIcon src={PlusIcon} alt='New Transparent Address' />
             <TextComponent value='New Transparent Address' />
           </ActionButton>
         </Row>
@@ -150,8 +133,8 @@ export class ReceiveView extends PureComponent<Props, State> {
               opacity: 0,
             }}
           >
-            {show => show
-              && (props => (
+            {(show: boolean) => show
+              && ((props: Object) => (
                 <animated.div
                   style={{
                     ...props,
@@ -161,10 +144,7 @@ export class ReceiveView extends PureComponent<Props, State> {
                 >
                   <Label value='Transparent Address (not private)' />
                   {transparentAddresses.map(addr => (
-                    <WalletAddress
-                      key={addr}
-                      address={addr}
-                    />
+                    <WalletAddress key={addr} address={addr} />
                   ))}
                 </animated.div>
               ))

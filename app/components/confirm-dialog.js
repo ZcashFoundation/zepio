@@ -12,7 +12,7 @@ import CloseIcon from '../assets/images/close_icon.svg';
 
 const Wrapper = styled.div`
   display: flex;
-  width: ${props => `${props.width}px`};
+  width: ${(props: PropsWithTheme<{ width: number }>) => `${String(props.width)}px`};
   background-color: ${props => props.theme.colors.background};
   flex-direction: column;
   align-items: center;
@@ -83,16 +83,10 @@ export const ConfirmDialogComponent = ({
       {toggle => (
         <Wrapper width={Number(width)}>
           <CloseIconWrapper>
-            <CloseIconImg
-              src={CloseIcon}
-              onClick={handleClose(toggle)}
-            />
+            <CloseIconImg src={CloseIcon} onClick={handleClose(toggle)} />
           </CloseIconWrapper>
           <TitleWrapper>
-            <TextComponent
-              value={title}
-              align='center'
-            />
+            <TextComponent value={title} align='center' />
           </TitleWrapper>
           <Divider opacity={0.3} />
           {children(handleClose(toggle))}

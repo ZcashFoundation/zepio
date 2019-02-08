@@ -79,21 +79,17 @@ export class ErrorModalComponent extends PureComponent<Props> {
   render() {
     const { isVisible, message, onRequestClose } = this.props;
 
-    return !isVisible ? null : createPortal(
-      <ModalWrapper id='error-modal-portal-wrapper'>
-        <ChildrenWrapper>
-          <ErrorImage
-            src={ErrorIcon}
-            alt='Error Icon'
-          />
-          <Message value={message} />
-          <Button
-            label='Ok!'
-            onClick={onRequestClose}
-          />
-        </ChildrenWrapper>
-      </ModalWrapper>,
-      this.element,
-    );
+    return !isVisible
+      ? null
+      : createPortal(
+        <ModalWrapper id='error-modal-portal-wrapper'>
+          <ChildrenWrapper>
+            <ErrorImage src={ErrorIcon} alt='Error Icon' />
+            <Message value={message} />
+            <Button label='Ok!' onClick={onRequestClose} />
+          </ChildrenWrapper>
+        </ModalWrapper>,
+        this.element,
+      );
   }
 }

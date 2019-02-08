@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment } from 'react';
+import React, { Fragment, type Node } from 'react';
 import theme from 'styled-theming';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 // $FlowFixMe
@@ -31,7 +31,7 @@ const selectButtonShadow = 'rgba(238,201,76,0.65)';
 const statusPillLabel = '#727272';
 const transactionsDetailsLabel = transactionsDate;
 
-const appTheme = {
+const appTheme: AppTheme = {
   mode: DARK,
   fontFamily: 'Roboto',
   fontWeight: {
@@ -46,10 +46,12 @@ const appTheme = {
     small: 0.667,
   },
   colors: {
+    // $FlowFixMe
     primary: theme('mode', {
       light: lightOne,
       dark: darkOne,
     }),
+    // $FlowFixMe
     secondary: theme('mode', {
       light: darkOne,
       dark: lightOne,
@@ -95,9 +97,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 `;
 
-/* eslint-disable react/prop-types */
-// $FlowFixMe
-export const DoczWrapper = ({ children }) => (
+export const DoczWrapper = ({ children }: { children: () => Node<*> }) => (
   <ThemeProvider theme={appTheme}>
     <Fragment>
       <GlobalStyle />

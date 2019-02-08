@@ -91,7 +91,7 @@ const Divider = styled.div`
 `;
 
 const Label = styled(TextComponent)`
-  font-weight: ${props => props.theme.fontWeight.bold};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
   color: ${props => props.theme.colors.transactionsDetailsLabel};
   margin-bottom: 5px;
   letter-spacing: 0.25px;
@@ -144,22 +144,13 @@ export const TransactionDetailsComponent = ({
   return (
     <Wrapper>
       <CloseIconWrapper>
-        <CloseIconImg
-          src={CloseIcon}
-          onClick={handleClose}
-        />
+        <CloseIconImg src={CloseIcon} onClick={handleClose} />
       </CloseIconWrapper>
       <TitleWrapper>
-        <TextComponent
-          value='Transaction Details'
-          align='center'
-        />
+        <TextComponent value='Transaction Details' align='center' />
       </TitleWrapper>
       <DetailsWrapper>
-        <Icon
-          src={isReceived ? ReceivedIcon : SentIcon}
-          alt='Transaction Type Icon'
-        />
+        <Icon src={isReceived ? ReceivedIcon : SentIcon} alt='Transaction Type Icon' />
         <TextComponent
           isBold
           size={2.625}
@@ -181,16 +172,10 @@ export const TransactionDetailsComponent = ({
       <InfoRow>
         <ColumnComponent>
           <Label value='DATE' />
-          <TextComponent
-            value={dateFns.format(new Date(date), 'MMMM D, YYYY HH:MMA')}
-          />
+          <TextComponent value={dateFns.format(new Date(date), 'MMMM D, YYYY HH:MMA')} />
         </ColumnComponent>
         <ColumnComponent>
-          <TextComponent
-            value='FEES'
-            isBold
-            color={theme.colors.transactionsDetailsLabel}
-          />
+          <TextComponent value='FEES' isBold color={theme.colors.transactionsDetailsLabel} />
           <TextComponent
             value={formatNumber({
               value: new BigNumber(amount).times(0.1).toNumber(),
@@ -203,9 +188,7 @@ export const TransactionDetailsComponent = ({
       <InfoRow>
         <ColumnComponent width='100%'>
           <Label value='TRANSACTION ID' />
-          <TransactionId
-            onClick={() => openExternal(ZCASH_EXPLORER_BASE_URL + transactionId)}
-          >
+          <TransactionId onClick={() => openExternal(ZCASH_EXPLORER_BASE_URL + transactionId)}>
             <Ellipsis value={transactionId} />
           </TransactionId>
         </ColumnComponent>
