@@ -17,8 +17,11 @@ import { InputComponent } from '../components/input';
 import { InputLabelComponent } from '../components/input-label';
 import { RowComponent } from '../components/row';
 import { Clipboard } from '../components/clipboard';
+import { SelectComponent } from '../components/select';
 
 import rpc from '../../services/api';
+import { DARK, LIGHT } from '../constants/themes';
+import electronStore from '../../config/electron-store';
 
 const HOME_DIR = electron.remote.app.getPath('home');
 
@@ -65,6 +68,10 @@ const SettingsTitle = styled(TextComponent)`
 const SettingsContent = styled(TextComponent)`
   margin-bottom: 20px;
   margin-top: 10px;
+`;
+
+const ThemeSelectWrapper = styled.div`
+  margin-bottom: 20px;
 `;
 
 type Key = {
@@ -210,6 +217,23 @@ export class SettingsView extends PureComponent<Props, State> {
 
     return (
       <Wrapper>
+        <ThemeSelectWrapper>
+          <SettingsTitle value='Theme' />
+          <SelectComponent
+            onChange={newMode => electronStore.set('THEME_MODE', newMode)}
+            options={[
+              {
+                label: 'Dark',
+                value: DARK,
+              },
+              {
+                label: 'Light',
+                value: LIGHT,
+              },
+            ]}
+            value={electronStore.get('THEME_MODE')}
+          />
+        </ThemeSelectWrapper>
         <ConfirmDialogComponent
           title='Export view keys'
           renderTrigger={toggleVisibility => (
