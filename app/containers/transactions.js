@@ -16,7 +16,7 @@ import {
 import rpc from '../../services/api';
 import store from '../../config/electron-store';
 
-import sortBy from '../utils/sort-by';
+import { sortBy } from '../utils/sort-by';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
