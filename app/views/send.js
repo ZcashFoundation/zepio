@@ -28,6 +28,7 @@ import MenuIcon from '../assets/images/menu_icon.svg';
 import ValidIcon from '../assets/images/green_check.png';
 import InvalidIcon from '../assets/images/error_icon.png';
 import LoadingIcon from '../assets/images/sync_icon.png';
+import ArrowUpIcon from '../assets/images/arrow_up.png';
 
 import theme from '../theme';
 
@@ -217,6 +218,28 @@ const Checkbox = styled.input.attrs({
   margin-right: 10px;
 `;
 
+const MaxAvailableAmount = styled.button`
+  margin-top: -15px;
+  margin-right: -15px;
+  width: 45px;
+  height: 48px;
+  border: none;
+  background: none;
+  color: white;
+  cursor: pointer;
+  border-left: ${props => `1px solid ${props.theme.colors.background}`};
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const MaxAvailableAmountImg = styled.img`
+  width: 20px;
+  height: 20px;
+`;
+
 type Props = {
   ...SendState,
   balance: number,
@@ -264,12 +287,12 @@ export class SendView extends PureComponent<Props, State> {
     loadZECPrice();
   }
 
-  handleChange = (field: string) => (value: string) => {
+  handleChange = (field: string) => (value: string | number) => {
     const { validateAddress, getAddressBalance, balance } = this.props;
     const { fee, amount } = this.state;
 
     if (field === 'to') {
-      this.setState(() => ({ [field]: value }), () => validateAddress({ address: value }));
+      this.setState(() => ({ [field]: value }), () => validateAddress({ address: String(value) }));
     } else if (field === 'amount') {
       const amountWithFee = new BigNumber(value).plus(fee || 0);
 
@@ -279,7 +302,7 @@ export class SendView extends PureComponent<Props, State> {
 
       this.setState(() => ({ [field]: validAmount }));
     } else {
-      if (field === 'from') getAddressBalance({ address: value });
+      if (field === 'from') getAddressBalance({ address: String(value) });
 
       this.setState(
         () => ({ [field]: value }),
@@ -476,7 +499,7 @@ export class SendView extends PureComponent<Props, State> {
       append: 'USD $',
     });
     const valueSent = formatNumber({
-      value: new BigNumber(fixedAmount).toFormat(2),
+      value: new BigNumber(fixedAmount).toFormat(4),
       append: 'ZEC ',
     });
     const valueSentInUsd = formatNumber({
@@ -498,6 +521,14 @@ export class SendView extends PureComponent<Props, State> {
           <InputLabelComponent value='Amount' />
           <AmountWrapper isEmpty={isEmpty}>
             <AmountInput
+              renderRight={() => (
+                <MaxAvailableAmount
+                  onClick={() => this.handleChange('amount')(balance)}
+                  disabled={!from}
+                >
+                  <MaxAvailableAmountImg src={ArrowUpIcon} />
+                </MaxAvailableAmount>
+              )}
               isEmpty={isEmpty}
               type='number'
               onChange={this.handleChange('amount')}
