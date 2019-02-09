@@ -21,7 +21,6 @@ import {
 } from '../redux/modules/send';
 
 import { filterObjectNullKeys } from '../utils/filter-object-null-keys';
-import { ascii2hex } from '../utils/ascii-to-hexadecimal';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
@@ -61,7 +60,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
           filterObjectNullKeys({
             address: to,
             amount: new BigNumber(amount).toNumber(),
-            memo: ascii2hex(memo),
+            memo,
           }),
         ],
         1,

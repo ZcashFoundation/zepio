@@ -18,6 +18,7 @@ import { Button } from '../components/button';
 import { ConfirmDialogComponent } from '../components/confirm-dialog';
 
 import { formatNumber } from '../utils/format-number';
+import { ascii2hex } from '../utils/ascii-to-hexadecimal';
 
 import type { SendTransactionInput } from '../containers/send';
 import type { State as SendState } from '../redux/modules/send';
@@ -209,6 +210,13 @@ const RevealsMain = styled.div`
   }
 `;
 
+// $FlowFixMe
+const Checkbox = styled.input.attrs({
+  type: 'checkbox',
+})`
+  margin-right: 10px;
+`;
+
 type Props = {
   ...SendState,
   balance: number,
@@ -231,6 +239,7 @@ type State = {
   feeType: string | number,
   fee: number | null,
   memo: string,
+  isHexMemo: boolean,
 };
 
 const initialState = {
@@ -241,6 +250,7 @@ const initialState = {
   feeType: FEES.LOW,
   fee: FEES.LOW,
   memo: '',
+  isHexMemo: false,
 };
 
 export class SendView extends PureComponent<Props, State> {
@@ -271,9 +281,12 @@ export class SendView extends PureComponent<Props, State> {
     } else {
       if (field === 'from') getAddressBalance({ address: value });
 
-      this.setState(() => ({ [field]: value }), () => {
-        if (field === 'fee') this.handleChange('amount')(amount);
-      });
+      this.setState(
+        () => ({ [field]: value }),
+        () => {
+          if (field === 'fee') this.handleChange('amount')(amount);
+        },
+      );
     }
   };
 
@@ -300,7 +313,7 @@ export class SendView extends PureComponent<Props, State> {
 
   handleSubmit = () => {
     const {
-      from, amount, to, memo, fee,
+      from, amount, to, memo, fee, isHexMemo,
     } = this.state;
     const { sendTransaction } = this.props;
 
@@ -311,7 +324,7 @@ export class SendView extends PureComponent<Props, State> {
       to,
       amount,
       fee,
-      memo,
+      memo: isHexMemo ? memo : ascii2hex(memo),
     });
   };
 
@@ -511,6 +524,10 @@ export class SendView extends PureComponent<Props, State> {
             placeholder='Enter a text here'
             name='memo'
           />
+          <RowComponent justifyContent='flex-end'>
+            <Checkbox onChange={event => this.setState({ isHexMemo: event.target.checked })} />
+            <TextComponent value='Hexadecimal memo' />
+          </RowComponent>
           <ShowFeeButton
             id='send-show-additional-options-button'
             onClick={() => this.setState(state => ({
