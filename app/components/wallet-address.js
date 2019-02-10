@@ -1,13 +1,10 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 import { ColumnComponent } from './column';
-import { Button } from './button';
 import { QRCode } from './qrcode';
-
-import { truncateAddress } from '../utils/truncate-address';
 
 import eyeIcon from '../assets/images/eye.png';
 
@@ -45,44 +42,60 @@ const QRCodeWrapper = styled.div`
   width: 100%;
 `;
 
+const IconButton = styled.button`
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+`;
+
+const IconImage = styled.img`
+  max-width: 15px;
+`;
+
 type Props = {
   address: string,
 };
 
 type State = {
-  isVisible: boolean,
+  showQRCode: boolean,
 };
 
-export class WalletAddress extends Component<Props, State> {
+export class WalletAddress extends PureComponent<Props, State> {
   state = {
-    isVisible: false,
+    showQRCode: false,
   };
 
-  show = () => this.setState(() => ({ isVisible: true }));
+  show = () => this.setState(() => ({ showQRCode: true }));
 
-  hide = () => this.setState(() => ({ isVisible: false }));
+  hide = () => this.setState(() => ({ showQRCode: false }));
 
   render() {
     const { address } = this.props;
-    const { isVisible } = this.state;
-    const toggleVisibility = isVisible ? this.hide : this.show;
+    const { showQRCode } = this.state;
+    const toggleVisibility = showQRCode ? this.hide : this.show;
 
     return (
       <ColumnComponent width='100%'>
         <AddressWrapper>
           <Input
-            value={isVisible ? address : truncateAddress(address)}
+            value={address}
             onChange={() => {}}
             onFocus={event => event.currentTarget.select()}
           />
-          <Button
-            icon={eyeIcon}
-            label={`${isVisible ? 'Hide' : 'Show'} full address and QR Code`}
-            onClick={toggleVisibility}
-            variant='secondary'
-          />
+          <IconButton onClick={toggleVisibility}>
+            <IconImage
+              src={eyeIcon}
+              alt='See QRCode'
+            />
+          </IconButton>
+          <IconButton onClick={() => {}}>
+            <IconImage
+              src={eyeIcon}
+              alt='Copy Address'
+            />
+          </IconButton>
         </AddressWrapper>
-        {!isVisible ? null : (
+        {!showQRCode ? null : (
           <QRCodeWrapper>
             <QRCode value={address} />
           </QRCodeWrapper>
