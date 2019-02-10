@@ -42,7 +42,7 @@ const ValueWrapper = styled.div`
   width: 95%;
   padding: 13px;
   opacity: ${(props: PropsWithTheme<{ hasValue: boolean }>) => (props.hasValue ? '1' : '0.2')};
-  text-transform: capitalize;
+  text-transform: ${(props: PropsWithTheme<{ capitalize: boolean }>) => (props.capitalize ? 'capitalize' : 'none')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -88,7 +88,7 @@ const Option = styled.button`
   background-color: #5d5d5d;
   cursor: pointer;
   z-index: 99;
-  text-transform: capitalize;
+  text-transform: ${(props: PropsWithTheme<{ capitalize: boolean }>) => (props.capitalize ? 'capitalize' : 'none')};
   padding: 5px 10px;
   border-bottom: 1px solid #4e4b4b;
 
@@ -110,6 +110,7 @@ type Props = {
   onChange: string => void,
   placement?: 'top' | 'bottom',
   bgColor?: string,
+  capitalize?: boolean,
 };
 
 type State = {
@@ -125,6 +126,7 @@ export class SelectComponent extends PureComponent<Props, State> {
     placeholder: '',
     placement: 'bottom',
     bgColor: theme.colors.inputBackground,
+    capitalize: true,
   };
 
   onSelect = (value: string) => {
@@ -162,7 +164,7 @@ export class SelectComponent extends PureComponent<Props, State> {
   render() {
     const { isOpen } = this.state;
     const {
-      value, options, placeholder, placement, bgColor,
+      value, options, placeholder, placement, bgColor, capitalize,
     } = this.props;
 
     return (
@@ -174,7 +176,7 @@ export class SelectComponent extends PureComponent<Props, State> {
         onClick={() => this.setState(() => ({ isOpen: !isOpen }))}
         bgColor={bgColor}
       >
-        <ValueWrapper hasValue={Boolean(value)}>
+        <ValueWrapper hasValue={Boolean(value)} capitalize={capitalize}>
           {this.getSelectedLabel(value) || placeholder}
         </ValueWrapper>
         <SelectMenuButtonWrapper>
@@ -194,6 +196,7 @@ export class SelectComponent extends PureComponent<Props, State> {
                 key={label + optionValue}
                 onClick={() => this.onSelect(optionValue)}
                 bgColor={bgColor}
+                capitalize={capitalize}
               >
                 <TextComponent value={label} />
               </Option>
