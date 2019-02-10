@@ -1,3 +1,5 @@
+// @flow
+
 import { ThemeSet } from 'styled-theming';
 
 type Colors = {
@@ -26,6 +28,17 @@ type Colors = {
   modalItemLabel: ThemeSet,
   blackTwo: ThemeSet,
   buttonBorderColor: ThemeSet,
+  divider: ThemeSet,
+  sidebarBg: ThemeSet,
+  headerTitle: ThemeSet,
+  statusPillBg: ThemeSet,
+  walletSummaryBg: ThemeSet,
+  walletSummaryBorder: ThemeSet,
+  consoleBg: ThemeSet,
+  sidebarBorderRight: ThemeSet,
+  buttonPrimaryText: ThemeSet,
+  buttonSecondaryText: ThemeSet,
+  statusPillBorder: ThemeSet,
 };
 
 type FontSize = {
@@ -42,17 +55,26 @@ type FontWeight = {
 };
 
 type AppTheme = {
+  // General
   mode: string,
+
+  // Typography
   fontFamily: string,
   fontWeight: FontWeight,
   fontSize: FontSize,
+
+  // Colors
   colors: Colors,
+
+  // Spacing
   sidebarWidth: string,
   headerHeight: string,
   layoutPaddingLeft: string,
   layoutPaddingRight: string,
   layoutContentPaddingTop: string,
   boxBorderRadius: string,
+
+  // Misc
   transitionEase: string,
 };
 

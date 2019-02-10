@@ -1,25 +1,64 @@
 // @flow
 
+const white = '#ffffff';
+const text = '#142533';
+const brand = '#5684eb';
+const brand2 = '#1e5fef';
+const error = '#FF6C6C';
+const success = '#6AEAC0';
+
 export const LIGHT_COLORS = {
-  darkOne: '#F4B728',
+  // General
+  background: '#f9f9f9',
+  darkOne: brand,
   blackTwo: '#171717',
-  lightOne: '#ffffff',
+  lightOne: white,
   brandOne: '#000',
   brandThree: '#5d5d65',
   buttonBorderColor: '#3e3c42',
-  activeItem: '#F4B728',
-  text: '#FFF',
+  activeItem: brand,
+  text,
+
+  // Buttons
+  buttonPrimaryText: white,
+  buttonSecondaryText: text,
+
+  // Card
   cardBackgroundColor: '#000',
-  sidebarLogoGradientBegin: '#F4B728',
-  sidebarLogoGradientEnd: '#FFE240',
-  sidebarHoveredItem: '#1C1C1C',
+
+  // Sidebar
+  sidebarLogoGradientBegin: brand,
+  sidebarLogoGradientEnd: brand2,
+  sidebarHoveredItem: '#f9f9f9',
   sidebarHoveredItemLabel: '#8e8e96',
-  background: '#fff',
-  transactionSent: '#FF6C6C',
-  transactionReceived: '#6AEAC0',
+  sidebarBg: white,
+  sidebarBorderRight: '#ddd',
+
+  // Transactions
+  transactionSent: error,
+  transactionReceived: success,
   transactionsDate: '#777777',
   transactionsItemHovered: '#222222',
-  selectButtonShadow: 'rgba(238,201,76,0.65)',
-  statusPillLabel: '#727272',
   transactionsDetailsLabel: '#777777',
+
+  // Select
+  selectButtonShadow: 'rgba(238,201,76,0.65)',
+
+  // Status
+  statusPillLabel: text,
+  statusPillBg: '#f2f2f2',
+  statusPillBorder: '#ddd',
+
+  // Header
+  headerTitle: text,
+
+  // Wallet Summary
+  walletSummaryBg: white,
+  walletSummaryBorder: '#ddd',
+
+  // Console
+  consoleBg: white,
+
+  // Misc
+  divider: '#aaa',
 };

@@ -24,7 +24,8 @@ const rotate = keyframes`
 const Wrapper = styled.div`
   align-items: center;
   display: flex;
-  background-color: #000;
+  background: ${props => props.theme.colors.statusPillBg};
+  border: 1px solid ${props => props.theme.colors.statusPillBorder}
   border-radius: 27px;
   padding: 8px 16px;
 `;

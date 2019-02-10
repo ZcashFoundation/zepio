@@ -12,7 +12,7 @@ import ConsoleSymbol from '../assets/images/console_zcash.png';
 const Wrapper = styled.div`
   max-height: 100%;
   overflow-y: auto;
-  background-color: ${props => props.theme.colors.cardBackgroundColor};
+  background-color: ${props => props.theme.colors.consoleBg};
   margin-top: ${props => props.theme.layoutContentPaddingTop};
   border-radius: ${props => props.theme.boxBorderRadius};
   padding: 38px 33.5px;

@@ -34,9 +34,13 @@ export const appTheme: AppTheme = {
       [LIGHT]: LIGHT_COLORS.darkOne,
       [DARK]: DARK_COLORS.darkOne,
     }),
+    divider: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.divider,
+      [DARK]: DARK_COLORS.divider,
+    }),
     sidebarBg: theme('mode', {
-      [LIGHT]: LIGHT_COLORS.brandOne,
-      [DARK]: DARK_COLORS.brandOne,
+      [LIGHT]: LIGHT_COLORS.sidebarBg,
+      [DARK]: DARK_COLORS.sidebarBg,
     }),
     sidebarItem: theme('mode', {
       [LIGHT]: LIGHT_COLORS.brandThree,
@@ -125,6 +129,42 @@ export const appTheme: AppTheme = {
     buttonBorderColor: theme('mode', {
       [LIGHT]: LIGHT_COLORS.buttonBorderColor,
       [DARK]: DARK_COLORS.buttonBorderColor,
+    }),
+    headerTitle: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.headerTitle,
+      [DARK]: DARK_COLORS.headerTitle,
+    }),
+    statusPillBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.statusPillBg,
+      [DARK]: DARK_COLORS.statusPillBg,
+    }),
+    walletSummaryBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.walletSummaryBg,
+      [DARK]: DARK_COLORS.walletSummaryBg,
+    }),
+    walletSummaryBorder: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.walletSummaryBorder,
+      [DARK]: DARK_COLORS.walletSummaryBorder,
+    }),
+    consoleBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.consoleBg,
+      [DARK]: DARK_COLORS.consoleBg,
+    }),
+    sidebarBorderRight: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.sidebarBorderRight,
+      [DARK]: DARK_COLORS.sidebarBorderRight,
+    }),
+    buttonSecondaryText: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.buttonSecondaryText,
+      [DARK]: DARK_COLORS.buttonSecondaryText,
+    }),
+    buttonPrimaryText: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.buttonPrimaryText,
+      [DARK]: DARK_COLORS.buttonPrimaryText,
+    }),
+    statusPillBorder: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.statusPillBorder,
+      [DARK]: DARK_COLORS.statusPillBorder,
     }),
   },
 };

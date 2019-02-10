@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   height: ${props => `calc(100vh - ${props.theme.headerHeight})`};
   font-family: ${props => props.theme.fontFamily};
   background-color: ${props => props.theme.colors.sidebarBg};
+  border-right: 1px solid ${props => props.theme.colors.sidebarBorderRight};
   padding-top: 15px;
   position: relative;
 `;
@@ -20,11 +21,17 @@ const Wrapper = styled.div`
 /* eslint-disable max-len */
 type StyledLinkProps = PropsWithTheme<{ isActive: boolean }>;
 const StyledLink = styled.a`
-  color: ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarItemActive : props.theme.colors.sidebarItem)};
+  color: ${(props: StyledLinkProps) => (props.isActive
+    ? props.theme.colors.sidebarItemActive
+    : props.theme.colors.sidebarItem
+  )};
   font-size: ${(props: StyledLinkProps) => `${props.theme.fontSize.regular}em`};
   text-decoration: none;
   font-weight: ${(props: StyledLinkProps) => String(props.theme.fontWeight.bold)};
-  background-color: ${(props: StyledLinkProps) => (props.isActive ? `${props.theme.colors.sidebarHoveredItem}` : 'transparent')};
+  background-color: ${(props: StyledLinkProps) => (props.isActive
+    ? `${props.theme.colors.sidebarHoveredItem}`
+    : 'transparent'
+  )};
   letter-spacing: 0.25px;
   padding: 25px 20px;
   height: 35px;
@@ -37,8 +44,11 @@ const StyledLink = styled.a`
   transition: all 0.03s ${(props: StyledLinkProps) => props.theme.transitionEase};
 
   &:hover {
-    color: ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarItemActive : '#ddd')}
     background-color: ${(props: StyledLinkProps) => props.theme.colors.sidebarHoveredItem};
+    color: ${(props: StyledLinkProps) => (props.isActive
+    ? props.theme.colors.sidebarItemActive
+    : '#ddd'
+  )}
   }
 `;
 

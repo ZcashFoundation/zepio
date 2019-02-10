@@ -13,7 +13,8 @@ import { appTheme } from '../theme';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${props => props.theme.colors.cardBackgroundColor};
+  background-color: ${props => props.theme.colors.walletSummaryBg};
+  border: 1px solid ${props => props.theme.colors.walletSummaryBorder};
   border-radius: ${props => props.theme.boxBorderRadius};
   padding: 37px 45px;
   min-height: 250px;

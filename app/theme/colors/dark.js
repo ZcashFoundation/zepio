@@ -1,25 +1,57 @@
 // @flow
 
+const text = '#ffffff';
+const brand = '#F4B728';
+const brand2 = '#FFE240';
+const black = '#000000';
+const error = '#FF6C6C';
+const success = '#6AEAC0';
+
 export const DARK_COLORS = {
-  darkOne: '#F4B728',
+  darkOne: brand,
   blackTwo: '#171717',
-  lightOne: '#ffffff',
-  brandOne: '#000',
+  lightOne: text,
+  brandOne: black,
   brandThree: '#5d5d65',
   buttonBorderColor: '#3e3c42',
-  activeItem: '#F4B728',
-  text: '#FFF',
-  cardBackgroundColor: '#000',
-  sidebarLogoGradientBegin: '#F4B728',
-  sidebarLogoGradientEnd: '#FFE240',
-  sidebarHoveredItem: '#1C1C1C',
-  sidebarHoveredItemLabel: '#8e8e96',
+  activeItem: brand,
+  text,
+  cardBackgroundColor: black,
   background: '#212124',
-  transactionSent: '#FF6C6C',
-  transactionReceived: '#6AEAC0',
+
+  // Buttons
+  buttonPrimaryText: text,
+  buttonSecondaryText: black,
+
+  // Transactions
+  transactionSent: error,
+  transactionReceived: success,
   transactionsDate: '#777777',
   transactionsItemHovered: '#222222',
-  selectButtonShadow: 'rgba(238,201,76,0.65)',
-  statusPillLabel: '#727272',
   transactionsDetailsLabel: '#777777',
+
+  // Status Pill
+  statusPillLabel: '#727272',
+  statusPillBg: black,
+  statusPillBorder: black,
+
+  // Sidebar
+  sidebarBg: black,
+  sidebarBorderRight: '#212124',
+  sidebarLogoGradientBegin: brand,
+  sidebarLogoGradientEnd: brand2,
+  sidebarHoveredItem: '#1C1C1C',
+  sidebarHoveredItemLabel: '#8e8e96',
+
+  // Misc
+  divider: black,
+  headerTitle: text,
+  selectButtonShadow: 'rgba(238,201,76,0.65)',
+
+  // Wallet Summary
+  walletSummaryBg: black,
+  walletSummaryBorder: black,
+
+  // Console
+  consoleBg: black,
 };

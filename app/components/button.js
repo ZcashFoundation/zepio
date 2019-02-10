@@ -15,13 +15,13 @@ const DefaultButton = styled.button`
   cursor: pointer;
   outline: none;
   min-width: 100px;
-  border-radius: 100px;
+  border-radius: 3px;
   transition: background-color 0.1s ${props => props.theme.transitionEase};
 `;
 
 const Primary = styled(DefaultButton)`
   background-color: ${props => props.theme.colors.primary};
-  color: ${props => props.theme.colors.secondary};
+  color: ${props => props.theme.colors.buttonPrimaryText};
   border: none;
 
   &:hover {
@@ -37,7 +37,7 @@ const Primary = styled(DefaultButton)`
 
 const Secondary = styled(DefaultButton)`
   background-color: transparent;
-  color: ${props => props.theme.colors.secondary};
+  color: ${props => props.theme.colors.buttonSecondaryText};
   border: 2px solid ${props => props.theme.colors.buttonBorderColor};
 
   &:hover {
