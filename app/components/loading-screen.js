@@ -11,7 +11,7 @@ import { TextComponent } from './text';
 
 import zcashLogo from '../assets/images/zcash-simple-icon.svg';
 
-import theme from '../theme';
+import { appTheme } from '../theme';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -103,8 +103,8 @@ export class LoadingScreen extends PureComponent<Props, State> {
                   s // TODO: check if this has any effect
                   responsive
                   showPercentage={false}
-                  progressColor={theme.colors.activeItem}
-                  bgColor={theme.colors.inactiveItem}
+                  progressColor={appTheme.colors.activeItem}
+                  bgColor={appTheme.colors.inactiveItem}
                 />
               </CircleWrapper>
               <TextComponent value={message} />

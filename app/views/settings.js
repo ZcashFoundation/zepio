@@ -20,7 +20,7 @@ import { Clipboard } from '../components/clipboard';
 import { SelectComponent } from '../components/select';
 
 import rpc from '../../services/api';
-import { DARK, LIGHT } from '../constants/themes';
+import { DARK, LIGHT, THEME_MODE } from '../constants/themes';
 import electronStore from '../../config/electron-store';
 
 const HOME_DIR = electron.remote.app.getPath('home');
@@ -215,23 +215,19 @@ export class SettingsView extends PureComponent<Props, State> {
       error,
     } = this.state;
 
+    const themeOptions = [
+      { label: 'Dark', value: DARK },
+      { label: 'Light', value: LIGHT },
+    ];
+
     return (
       <Wrapper>
         <ThemeSelectWrapper>
           <SettingsTitle value='Theme' />
           <SelectComponent
-            onChange={newMode => electronStore.set('THEME_MODE', newMode)}
-            options={[
-              {
-                label: 'Dark',
-                value: DARK,
-              },
-              {
-                label: 'Light',
-                value: LIGHT,
-              },
-            ]}
-            value={electronStore.get('THEME_MODE')}
+            onChange={newMode => electronStore.set(THEME_MODE, newMode)}
+            value={electronStore.get(THEME_MODE)}
+            options={themeOptions}
           />
         </ThemeSelectWrapper>
         <ConfirmDialogComponent

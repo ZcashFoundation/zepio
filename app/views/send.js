@@ -30,7 +30,7 @@ import InvalidIcon from '../assets/images/error_icon.png';
 import LoadingIcon from '../assets/images/sync_icon.png';
 import ArrowUpIcon from '../assets/images/arrow_up.png';
 
-import theme from '../theme';
+import { appTheme } from '../theme';
 
 const rotate = keyframes`
   from {
@@ -390,12 +390,12 @@ export class SendView extends PureComponent<Props, State> {
     return isToAddressValid ? (
       <RowComponent alignItems='center'>
         <ValidateStatusIcon src={ValidIcon} />
-        <ItemLabel value='VALID' color={theme.colors.transactionReceived} />
+        <ItemLabel value='VALID' color={appTheme.colors.transactionReceived} />
       </RowComponent>
     ) : (
       <RowComponent alignItems='center'>
         <ValidateStatusIcon src={InvalidIcon} />
-        <ItemLabel value='INVALID' color={theme.colors.transactionSent} />
+        <ItemLabel value='INVALID' color={appTheme.colors.transactionSent} />
       </RowComponent>
     );
   };
@@ -600,7 +600,7 @@ export class SendView extends PureComponent<Props, State> {
                             onChange={this.handleChange('fee')}
                             value={String(fee)}
                             disabled={feeType !== FEES.CUSTOM}
-                            bgColor={theme.colors.blackTwo}
+                            bgColor={appTheme.colors.blackTwo}
                             name='fee'
                           />
                         </ColumnComponent>
@@ -608,7 +608,7 @@ export class SendView extends PureComponent<Props, State> {
                           <SelectComponent
                             placement='top'
                             value={String(feeType)}
-                            bgColor={theme.colors.blackTwo}
+                            bgColor={appTheme.colors.blackTwo}
                             onChange={this.handleChangeFeeType}
                             options={Object.keys(FEES).map(cur => ({
                               label: cur.toLowerCase(),

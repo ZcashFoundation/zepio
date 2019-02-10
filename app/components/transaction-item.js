@@ -13,7 +13,7 @@ import { TextComponent } from './text';
 import { ModalComponent } from './modal';
 import { TransactionDetailsComponent } from './transaction-details';
 
-import theme from '../theme';
+import { appTheme } from '../theme';
 
 import { formatNumber } from '../utils/format-number';
 import { truncateAddress } from '../utils/truncate-address';
@@ -110,9 +110,12 @@ export const TransactionItemComponent = ({
             <TextComponent
               isBold
               value={transactionValueInZec}
-              color={isReceived ? theme.colors.transactionReceived : theme.colors.transactionSent}
+              color={isReceived
+                ? appTheme.colors.transactionReceived
+                : appTheme.colors.transactionSent
+              }
             />
-            <TextComponent value={transactionValueInUsd} color={theme.colors.inactiveItem} />
+            <TextComponent value={transactionValueInUsd} color={appTheme.colors.inactiveItem} />
           </ColumnComponent>
         </Wrapper>
       )}

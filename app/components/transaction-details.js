@@ -15,7 +15,7 @@ import { TextComponent } from './text';
 import { RowComponent } from './row';
 import { ColumnComponent } from './column';
 
-import theme from '../theme';
+import { appTheme } from '../theme';
 
 import { formatNumber } from '../utils/format-number';
 import { truncateAddress } from '../utils/truncate-address';
@@ -158,7 +158,7 @@ export const TransactionDetailsComponent = ({
             append: `${isReceived ? '+' : '-'}ZEC `,
             value: amount,
           })}
-          color={isReceived ? theme.colors.transactionReceived : theme.colors.transactionSent}
+          color={isReceived ? appTheme.colors.transactionReceived : appTheme.colors.transactionSent}
         />
         <TextComponent
           value={formatNumber({
@@ -166,7 +166,7 @@ export const TransactionDetailsComponent = ({
             value: new BigNumber(amount).times(zecPrice).toNumber(),
           })}
           size={1.5}
-          color={theme.colors.transactionsDetailsLabel}
+          color={appTheme.colors.transactionsDetailsLabel}
         />
       </DetailsWrapper>
       <InfoRow>
@@ -175,7 +175,7 @@ export const TransactionDetailsComponent = ({
           <TextComponent value={dateFns.format(new Date(date), 'MMMM D, YYYY HH:MMA')} />
         </ColumnComponent>
         <ColumnComponent>
-          <TextComponent value='FEES' isBold color={theme.colors.transactionsDetailsLabel} />
+          <TextComponent value='FEES' isBold color={appTheme.colors.transactionsDetailsLabel} />
           <TextComponent
             value={formatNumber({
               value: new BigNumber(amount).times(0.1).toNumber(),

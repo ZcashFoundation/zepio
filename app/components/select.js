@@ -7,7 +7,7 @@ import { TextComponent } from './text';
 import ChevronUp from '../assets/images/chevron-up.svg';
 import ChevronDown from '../assets/images/chevron-down.svg';
 
-import theme from '../theme';
+import { appTheme } from '../theme';
 
 /* eslint-disable max-len */
 type SelectWrapperProps = PropsWithTheme<{
@@ -125,7 +125,7 @@ export class SelectComponent extends PureComponent<Props, State> {
   static defaultProps = {
     placeholder: '',
     placement: 'bottom',
-    bgColor: theme.colors.inputBackground,
+    bgColor: appTheme.colors.inputBackground,
     capitalize: true,
   };
 

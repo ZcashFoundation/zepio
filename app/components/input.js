@@ -3,7 +3,7 @@
 import React, { type Element } from 'react';
 import styled from 'styled-components';
 
-import theme from '../theme';
+import { appTheme } from '../theme';
 
 type Props = {
   inputType?: 'input' | 'textarea',
@@ -104,5 +104,5 @@ InputComponent.defaultProps = {
   onChange: () => {},
   onFocus: () => {},
   step: 1,
-  bgColor: theme.colors.inputBackground,
+  bgColor: appTheme.colors.inputBackground,
 };

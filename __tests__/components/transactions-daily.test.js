@@ -6,7 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import 'jest-dom/extend-expect';
 
 import { TransactionDailyComponent } from '../../app/components/transaction-daily';
-import appTheme from '../../app/theme';
+import { appTheme } from '../../app/theme';
 
 afterEach(cleanup);
 

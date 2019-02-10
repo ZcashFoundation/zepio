@@ -6,7 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import 'jest-dom/extend-expect';
 
 import { SelectComponent } from '../../app/components/select';
-import appTheme from '../../app/theme';
+import { appTheme } from '../../app/theme';
 
 afterEach(cleanup);
 
@@ -33,7 +33,7 @@ describe('<SelectComponent />', () => {
     const { queryByTestId } = render(
       <ThemeProvider theme={appTheme}>
         <SelectComponent
-          onChange={console.log}
+          onChange={console.log} // eslint-disable-line
           value='asbh1yeasbdh23848asdasd'
           placeholder='Select a address'
           options={[
@@ -51,7 +51,7 @@ describe('<SelectComponent />', () => {
     const { container } = render(
       <ThemeProvider theme={appTheme}>
         <SelectComponent
-          onChange={console.log}
+          onChange={console.log} // eslint-disable-line
           value='asbh1yeasbdh23848asdasd'
           placeholder='Select a address'
           options={[

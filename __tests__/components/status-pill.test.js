@@ -6,7 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import 'jest-dom/extend-expect';
 
 import { StatusPill } from '../../app/components/status-pill';
-import appTheme from '../../app/theme';
+import { appTheme } from '../../app/theme';
 
 afterEach(cleanup);
 

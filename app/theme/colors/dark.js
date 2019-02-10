@@ -1,0 +1,25 @@
+// @flow
+
+export const DARK_COLORS = {
+  darkOne: '#F4B728',
+  blackTwo: '#171717',
+  lightOne: '#ffffff',
+  brandOne: '#000',
+  brandThree: '#5d5d65',
+  buttonBorderColor: '#3e3c42',
+  activeItem: '#F4B728',
+  text: '#FFF',
+  cardBackgroundColor: '#000',
+  sidebarLogoGradientBegin: '#F4B728',
+  sidebarLogoGradientEnd: '#FFE240',
+  sidebarHoveredItem: '#1C1C1C',
+  sidebarHoveredItemLabel: '#8e8e96',
+  background: '#212124',
+  transactionSent: '#FF6C6C',
+  transactionReceived: '#6AEAC0',
+  transactionsDate: '#777777',
+  transactionsItemHovered: '#222222',
+  selectButtonShadow: 'rgba(238,201,76,0.65)',
+  statusPillLabel: '#727272',
+  transactionsDetailsLabel: '#777777',
+};
