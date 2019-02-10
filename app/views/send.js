@@ -18,6 +18,7 @@ import { Button } from '../components/button';
 import { ConfirmDialogComponent } from '../components/confirm-dialog';
 
 import { formatNumber } from '../utils/format-number';
+import { ascii2hex } from '../utils/ascii-to-hexadecimal';
 
 import type { SendTransactionInput } from '../containers/send';
 import type { State as SendState } from '../redux/modules/send';
@@ -27,6 +28,7 @@ import MenuIcon from '../assets/images/menu_icon.svg';
 import ValidIcon from '../assets/images/green_check.png';
 import InvalidIcon from '../assets/images/error_icon.png';
 import LoadingIcon from '../assets/images/sync_icon.png';
+import ArrowUpIcon from '../assets/images/arrow_up.png';
 
 import theme from '../theme';
 
@@ -209,6 +211,35 @@ const RevealsMain = styled.div`
   }
 `;
 
+// $FlowFixMe
+const Checkbox = styled.input.attrs({
+  type: 'checkbox',
+})`
+  margin-right: 10px;
+`;
+
+const MaxAvailableAmount = styled.button`
+  margin-top: -15px;
+  margin-right: -15px;
+  width: 45px;
+  height: 48px;
+  border: none;
+  background: none;
+  color: white;
+  cursor: pointer;
+  border-left: ${props => `1px solid ${props.theme.colors.background}`};
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const MaxAvailableAmountImg = styled.img`
+  width: 20px;
+  height: 20px;
+`;
+
 type Props = {
   ...SendState,
   balance: number,
@@ -220,6 +251,7 @@ type Props = {
   validateAddress: ({ address: string }) => void,
   loadAddresses: () => void,
   loadZECPrice: () => void,
+  getAddressBalance: ({ address: string }) => void,
 };
 
 type State = {
@@ -230,6 +262,7 @@ type State = {
   feeType: string | number,
   fee: number | null,
   memo: string,
+  isHexMemo: boolean,
 };
 
 const initialState = {
@@ -240,6 +273,7 @@ const initialState = {
   feeType: FEES.LOW,
   fee: FEES.LOW,
   memo: '',
+  isHexMemo: false,
 };
 
 export class SendView extends PureComponent<Props, State> {
@@ -253,18 +287,35 @@ export class SendView extends PureComponent<Props, State> {
     loadZECPrice();
   }
 
-  handleChange = (field: string) => (value: string) => {
-    const { validateAddress } = this.props;
+  handleChange = (field: string) => (value: string | number) => {
+    const { validateAddress, getAddressBalance, balance } = this.props;
+    const { fee, amount } = this.state;
 
     if (field === 'to') {
-      // eslint-disable-next-line max-len
-      this.setState(() => ({ [field]: value }), () => validateAddress({ address: value }));
+      this.setState(() => ({ [field]: value }), () => validateAddress({ address: String(value) }));
+    } else if (field === 'amount') {
+      const amountWithFee = new BigNumber(value).plus(fee || 0);
+
+      const validAmount = amountWithFee.isGreaterThan(balance)
+        ? new BigNumber(balance).minus(fee || 0).toNumber()
+        : value;
+
+      this.setState(() => ({ [field]: validAmount }));
     } else {
-      this.setState(() => ({ [field]: value }));
+      if (field === 'from') getAddressBalance({ address: String(value) });
+
+      this.setState(
+        () => ({ [field]: value }),
+        () => {
+          if (field === 'fee') this.handleChange('amount')(amount);
+        },
+      );
     }
   };
 
   handleChangeFeeType = (value: string) => {
+    const { amount } = this.state;
+
     if (value === FEES.CUSTOM) {
       this.setState(() => ({
         feeType: FEES.CUSTOM,
@@ -273,16 +324,19 @@ export class SendView extends PureComponent<Props, State> {
     } else {
       const fee = new BigNumber(value);
 
-      this.setState(() => ({
-        feeType: fee.toString(),
-        fee: fee.toNumber(),
-      }));
+      this.setState(
+        () => ({
+          feeType: fee.toString(),
+          fee: fee.toNumber(),
+        }),
+        () => this.handleChange('amount')(amount),
+      );
     }
   };
 
   handleSubmit = () => {
     const {
-      from, amount, to, memo, fee,
+      from, amount, to, memo, fee, isHexMemo,
     } = this.state;
     const { sendTransaction } = this.props;
 
@@ -293,7 +347,7 @@ export class SendView extends PureComponent<Props, State> {
       to,
       amount,
       fee,
-      memo,
+      memo: isHexMemo ? memo : ascii2hex(memo),
     });
   };
 
@@ -445,7 +499,7 @@ export class SendView extends PureComponent<Props, State> {
       append: 'USD $',
     });
     const valueSent = formatNumber({
-      value: new BigNumber(fixedAmount).toFormat(2),
+      value: new BigNumber(fixedAmount).toFormat(4),
       append: 'ZEC ',
     });
     const valueSentInUsd = formatNumber({
@@ -456,16 +510,25 @@ export class SendView extends PureComponent<Props, State> {
     return (
       <RowComponent id='send-wrapper' justifyContent='space-between'>
         <FormWrapper>
-          <InputLabelComponent value='From' />
+          <InputLabelComponent value='From an address' />
           <SelectComponent
             onChange={this.handleChange('from')}
             value={from}
             placeholder='Select a address'
             options={addresses.map(addr => ({ value: addr, label: addr }))}
+            capitalize={false}
           />
           <InputLabelComponent value='Amount' />
           <AmountWrapper isEmpty={isEmpty}>
             <AmountInput
+              renderRight={() => (
+                <MaxAvailableAmount
+                  onClick={() => this.handleChange('amount')(balance)}
+                  disabled={!from}
+                >
+                  <MaxAvailableAmountImg src={ArrowUpIcon} />
+                </MaxAvailableAmount>
+              )}
               isEmpty={isEmpty}
               type='number'
               onChange={this.handleChange('amount')}
@@ -473,6 +536,7 @@ export class SendView extends PureComponent<Props, State> {
               placeholder='ZEC 0.0'
               min={0.01}
               name='amount'
+              disabled={!from}
             />
           </AmountWrapper>
           <InputLabelComponent value='To' />
@@ -491,6 +555,10 @@ export class SendView extends PureComponent<Props, State> {
             placeholder='Enter a text here'
             name='memo'
           />
+          <RowComponent justifyContent='flex-end'>
+            <Checkbox onChange={event => this.setState({ isHexMemo: event.target.checked })} />
+            <TextComponent value='Hexadecimal memo' />
+          </RowComponent>
           <ShowFeeButton
             id='send-show-additional-options-button'
             onClick={() => this.setState(state => ({
