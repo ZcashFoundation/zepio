@@ -95,6 +95,10 @@ createTestServer({
         return res.send({
           result: [{ id: 'operation-id-1', status: 'success', result: { txid: 'txid-1' } }],
         });
+      case 'z_getbalance':
+        return res.send({
+          result: 5,
+        });
       default:
         return null;
     }
