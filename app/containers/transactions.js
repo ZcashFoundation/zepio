@@ -17,7 +17,7 @@ import rpc from '../../services/api';
 import { listShieldedTransactions } from '../../services/shielded-transactions';
 import store from '../../config/electron-store';
 
-import { sortByDescend } from '../utils/sort-by';
+import { sortByDescend } from '../utils/sort-by-descend';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
