@@ -8,13 +8,14 @@ import dateFns from 'date-fns';
 import { BigNumber } from 'bignumber.js';
 import { DashboardView } from '../views/dashboard';
 import rpc from '../../services/api';
+import { listShieldedTransactions } from '../../services/shielded-transactions';
 import store from '../../config/electron-store';
 import {
   loadWalletSummary,
   loadWalletSummarySuccess,
   loadWalletSummaryError,
 } from '../redux/modules/wallet';
-import { sortBy } from '../utils/sort-by';
+import { sortByDescend } from '../utils/sort-by';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
@@ -47,7 +48,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       );
     }
 
-    const formattedTransactions = flow([
+    const formattedTransactions: Array<Object> = flow([
       arr => arr.map(transaction => ({
         transactionId: transaction.txid,
         type: transaction.category,
@@ -58,10 +59,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       arr => groupBy(arr, obj => dateFns.format(obj.date, 'MMM DD, YYYY')),
       obj => Object.keys(obj).map(day => ({
         day,
-        list: sortBy('date')(obj[day]),
+        jsDay: new Date(day),
+        list: sortByDescend('date')(obj[day]),
       })),
-      sortBy('day'),
-    ])(transactions);
+      sortByDescend('jsDay'),
+    ])([...transactions, ...listShieldedTransactions()]);
 
     if (!zAddresses.length) {
       const [, newZAddress] = await eres(rpc.z_getnewaddress());
