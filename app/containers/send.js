@@ -21,6 +21,7 @@ import {
 } from '../redux/modules/send';
 
 import { filterObjectNullKeys } from '../utils/filter-object-null-keys';
+import { saveShieldedTransaction } from '../../services/shielded-transactions';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
@@ -92,6 +93,15 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
       if (operationStatus && operationStatus.status === 'success') {
         clearInterval(interval);
+        if (from.startsWith('z')) {
+          saveShieldedTransaction({
+            category: 'send',
+            time: Date.now() / 1000,
+            address: '(Shielded)',
+            amount: new BigNumber(amount).toNumber(),
+            memo,
+          });
+        }
         dispatch(sendTransactionSuccess({ operationId: operationStatus.result.txid }));
       }
 

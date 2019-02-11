@@ -32,7 +32,7 @@ const StyledLink = styled.a`
   display: flex;
   align-items: center;
   outline: none;
-  border-right: ${(props: StyledLinkProps) => (props.isActive ? `3px solid ${props.theme.colors.sidebarItemActive}` : 'none')};
+  border-right: ${(props: StyledLinkProps) => (props.isActive ? `3px solid ${props.theme.colors.sidebarItemActive(props)}` : 'none')};
   cursor: pointer;
   transition: all 0.03s ${(props: StyledLinkProps) => props.theme.transitionEase};
 

@@ -14,9 +14,10 @@ import {
   loadTransactionsError,
 } from '../redux/modules/transactions';
 import rpc from '../../services/api';
+import { listShieldedTransactions } from '../../services/shielded-transactions';
 import store from '../../config/electron-store';
 
-import { sortBy } from '../utils/sort-by';
+import { sortByDescend } from '../utils/sort-by-descend';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
@@ -32,7 +33,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   getTransactions: async () => {
     dispatch(loadTransactions());
 
-    const [transactionsErr, transactions = []] = await eres(rpc.listtransactions());
+    const [transactionsErr, transactions = []] = await eres(rpc.listtransactions('', 200));
 
     if (transactionsErr) {
       return dispatch(loadTransactionsError({ error: transactionsErr.message }));
@@ -49,10 +50,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       arr => groupBy(arr, obj => dateFns.format(obj.date, 'MMM DD, YYYY')),
       obj => Object.keys(obj).map(day => ({
         day,
-        list: sortBy('date')(obj[day]),
+        jsDay: new Date(day),
+        list: sortByDescend('date')(obj[day]),
       })),
-      sortBy('day'),
-    ])(transactions);
+      sortByDescend('jsDay'),
+    ])([...transactions, ...listShieldedTransactions()]);
 
     dispatch(
       loadTransactionsSuccess({
