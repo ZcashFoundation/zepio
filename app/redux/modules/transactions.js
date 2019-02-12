@@ -1,5 +1,5 @@
 // @flow
-
+import uniq from 'lodash.uniq';
 import type { Action } from '../../types/redux';
 import type { Transaction } from '../../components/transaction-item';
 
@@ -7,6 +7,7 @@ import type { Transaction } from '../../components/transaction-item';
 export const LOAD_TRANSACTIONS = 'LOAD_TRANSACTIONS';
 export const LOAD_TRANSACTIONS_SUCCESS = 'LOAD_TRANSACTIONS_SUCCESS';
 export const LOAD_TRANSACTIONS_ERROR = 'LOAD_TRANSACTIONS_ERROR';
+export const RESET_TRANSACTIONS_LIST = 'RESET_TRANSACTIONS_LIST';
 
 export type TransactionsList = { day: string, list: Transaction[] }[];
 
@@ -18,14 +19,17 @@ export const loadTransactions = () => ({
 export const loadTransactionsSuccess = ({
   list,
   zecPrice,
+  hasNextPage,
 }: {
-  list: TransactionsList,
+  list: Transaction[],
   zecPrice: number,
+  hasNextPage: boolean,
 }) => ({
   type: LOAD_TRANSACTIONS_SUCCESS,
   payload: {
     list,
     zecPrice,
+    hasNextPage,
   },
 });
 
@@ -34,11 +38,17 @@ export const loadTransactionsError = ({ error }: { error: string }) => ({
   payload: { error },
 });
 
+export const resetTransactionsList = () => ({
+  type: RESET_TRANSACTIONS_LIST,
+  payload: {},
+});
+
 export type State = {
   isLoading: boolean,
   error: string | null,
-  list: TransactionsList,
+  list: Transaction[],
   zecPrice: number,
+  hasNextPage: boolean,
 };
 
 const initialState = {
@@ -46,6 +56,7 @@ const initialState = {
   list: [],
   error: null,
   isLoading: false,
+  hasNextPage: true,
 };
 
 // eslint-disable-next-line
@@ -61,6 +72,7 @@ export default (state: State = initialState, action: Action) => {
       return {
         ...state,
         ...action.payload,
+        list: uniq(state.list.concat(action.payload.list)),
         isLoading: false,
         error: null,
       };
@@ -69,6 +81,13 @@ export default (state: State = initialState, action: Action) => {
         ...state,
         isLoading: false,
         error: action.payload.error,
+      };
+    case RESET_TRANSACTIONS_LIST:
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        list: [],
       };
     default:
       return state;
