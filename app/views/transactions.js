@@ -124,7 +124,7 @@ export class TransactionsView extends PureComponent<Props> {
 
   renderRow = ({ index, key, style }: { index: number, key: string, style: Object }) => (
     <div key={key} style={style}>
-      {!this.isRowLoaded({ index }) ? 'Loading...' : this.renderTransactions({ index })}
+      {this.isRowLoaded({ index }) ? this.renderTransactions({ index }) : 'Loading...'}
     </div>
   );
 
