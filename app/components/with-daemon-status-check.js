@@ -11,6 +11,7 @@ type Props = {};
 type State = {
   isRunning: boolean,
   progress: number,
+  message: string,
 };
 
 /* eslint-disable max-len */
@@ -22,6 +23,7 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
     state = {
       isRunning: false,
       progress: 0,
+      message: 'ZEC Wallet Starting',
     };
 
     componentDidMount() {
@@ -53,21 +55,23 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
             }
           }
         })
-        .catch(() => {
+        .catch((error) => {
+          const statusMessage = error.message === 'Something went wrong' ? 'ZEC Wallet Starting' : error.message;
+
           this.setState((state) => {
             const newProgress = state.progress > 70 ? state.progress + 2.5 : state.progress + 5;
-            return { progress: newProgress > 95 ? 95 : newProgress };
+            return { progress: newProgress > 95 ? 95 : newProgress, message: statusMessage };
           });
         });
     };
 
     render() {
-      const { isRunning, progress } = this.state;
+      const { isRunning, progress, message } = this.state;
 
       if (isRunning) {
         return <WrappedComponent {...this.props} {...this.state} />;
       }
 
-      return <LoadingScreen progress={progress} />;
+      return <LoadingScreen progress={progress} message={message} />;
     }
   };
