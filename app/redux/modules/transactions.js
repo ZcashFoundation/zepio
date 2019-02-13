@@ -1,5 +1,5 @@
 // @flow
-import uniq from 'lodash.uniq';
+import uniqBy from 'lodash.uniqby';
 import type { Action } from '../../types/redux';
 import type { Transaction } from '../../components/transaction-item';
 
@@ -72,7 +72,7 @@ export default (state: State = initialState, action: Action) => {
       return {
         ...state,
         ...action.payload,
-        list: uniq(state.list.concat(action.payload.list)),
+        list: uniqBy(state.list.concat(action.payload.list), tr => tr.transactionId + tr.type),
         isLoading: false,
         error: null,
       };
