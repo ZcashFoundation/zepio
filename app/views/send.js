@@ -4,6 +4,7 @@ import React, { Fragment, PureComponent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { BigNumber } from 'bignumber.js';
 import { Transition, animated } from 'react-spring';
+import { type Match } from 'react-router-dom';
 
 import { FEES } from '../constants/fees';
 
@@ -20,8 +21,7 @@ import { ConfirmDialogComponent } from '../components/confirm-dialog';
 import { formatNumber } from '../utils/format-number';
 import { ascii2hex } from '../utils/ascii-to-hexadecimal';
 
-import type { SendTransactionInput } from '../containers/send';
-import type { State as SendState } from '../redux/modules/send';
+import type { MapDispatchToProps, MapStateToProps } from '../containers/send';
 
 import SentIcon from '../assets/images/transaction_sent_icon.svg';
 import MenuIcon from '../assets/images/menu_icon.svg';
@@ -238,19 +238,7 @@ const MaxAvailableAmountImg = styled.img`
   height: 20px;
 `;
 
-type Props = {
-  ...SendState,
-  balance: number,
-  zecPrice: number,
-  addresses: string[],
-  sendTransaction: SendTransactionInput => void,
-  loadAddresses: () => void,
-  resetSendView: () => void,
-  validateAddress: ({ address: string }) => void,
-  loadAddresses: () => void,
-  loadZECPrice: () => void,
-  getAddressBalance: ({ address: string }) => void,
-};
+type Props = { match: Match } & MapStateToProps & MapDispatchToProps;
 
 type State = {
   showFee: boolean,
@@ -278,11 +266,24 @@ export class SendView extends PureComponent<Props, State> {
   state = initialState;
 
   componentDidMount() {
-    const { resetSendView, loadAddresses, loadZECPrice } = this.props;
+    const {
+      resetSendView, loadAddresses, loadZECPrice, match,
+    } = this.props;
 
     resetSendView();
     loadAddresses();
     loadZECPrice();
+
+    if (match.params.to) {
+      this.handleChange('to')(match.params.to);
+    }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    const previousToAddress = prevProps.match.params.to;
+    const toAddress = this.props.match.params.to; // eslint-disable-line
+
+    if (toAddress && previousToAddress !== toAddress) this.handleChange('to')(toAddress);
   }
 
   handleChange = (field: string) => (value: string | number) => {
