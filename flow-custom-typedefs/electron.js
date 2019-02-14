@@ -118,10 +118,11 @@ type electron$app = {
   getName(): string,
   setName(name: string): void,
   getLocale(): string,
-  makeSingleInstance(callback: (argv: Array<string>, workingDirectory: string) => void): boolean,
+  requestSingleInstanceLock(): boolean,
+  setAsDefaultProtocolClient(schema: string): void,
   releaseSingleInstance(): void,
   disableHardwareAcceleration(): void,
-  on(event: string, callback: () => any): void,
+  on(event: string, callback: Function): void,
 };
 
 /**
