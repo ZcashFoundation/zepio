@@ -14,6 +14,7 @@ import runDaemon from './daemon/zcashd-child-process';
 import zcashLog from './daemon/logger';
 import getZecPrice from '../services/zec-price';
 import store from './electron-store';
+import { handleDeeplink } from './handle-deeplink';
 
 dotenv.config();
 
@@ -78,6 +79,35 @@ const createWindow = () => {
   exports.app = app;
   exports.mainWindow = mainWindow;
 };
+
+app.setAsDefaultProtocolClient('zcash');
+
+const instanceLock = app.requestSingleInstanceLock();
+if (instanceLock) {
+  app.on('second-instance', (event: Object, argv: string[]) => {
+    handleDeeplink({
+      app,
+      mainWindow,
+      argv,
+      listenOpenUrl: false,
+    });
+
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+      }
+
+      mainWindow.focus();
+    }
+  });
+} else {
+  app.quit();
+}
+
+app.on('will-finish-launching', () => handleDeeplink({
+  app,
+  mainWindow,
+}));
 
 /* eslint-disable-next-line consistent-return */
 app.on('ready', async () => {
