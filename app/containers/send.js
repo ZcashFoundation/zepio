@@ -36,7 +36,17 @@ export type SendTransactionInput = {
   memo: string,
 };
 
-const mapStateToProps = ({ sendStatus, receive }: AppState) => ({
+export type MapStateToProps = {|
+  balance: number,
+  zecPrice: number,
+  addresses: string[],
+  error: string | null,
+  isSending: boolean,
+  operationId: string | null,
+  isToAddressValid: boolean,
+|};
+
+const mapStateToProps = ({ sendStatus, receive }: AppState): MapStateToProps => ({
   balance: sendStatus.addressBalance,
   zecPrice: sendStatus.zecPrice,
   addresses: receive.addresses,
@@ -46,10 +56,19 @@ const mapStateToProps = ({ sendStatus, receive }: AppState) => ({
   isToAddressValid: sendStatus.isToAddressValid,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+export type MapDispatchToProps = {|
+  sendTransaction: SendTransactionInput => Promise<void>,
+  loadAddresses: () => Promise<void>,
+  resetSendView: () => void,
+  validateAddress: ({ address: string }) => Promise<void>,
+  loadZECPrice: () => void,
+  getAddressBalance: ({ address: string }) => Promise<void>,
+|};
+
+const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
   sendTransaction: async ({
     from, to, amount, fee, memo,
-  }: SendTransactionInput) => {
+  }) => {
     dispatch(sendTransaction());
 
     // $FlowFixMe
@@ -142,7 +161,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
     if (zAddressesErr || tAddressesErr) return dispatch(loadAddressesError({ error: 'Something went wrong!' }));
 
-    dispatch(
+    return dispatch(
       loadAddressesSuccess({
         addresses: [...zAddresses, ...transparentAddresses],
       }),
