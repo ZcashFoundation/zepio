@@ -1,27 +1,40 @@
 // @flow
 import React, { type ComponentType, Component } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { ipcRenderer } from 'electron';
-import { type RouterHistory } from 'react-router-dom';
+import { ipcRenderer, remote } from 'electron';
+import { type RouterHistory, type Location } from 'react-router-dom';
+import { searchUriInArgv } from '../../config/handle-deeplink';
 
-export const withDeepLink = <PassedProps: { history: RouterHistory }>(
+type PassedProps = {
+  history: RouterHistory,
+  location: Location,
+  isRunning: boolean,
+};
+
+export const withDeepLink = (
   WrappedComponent: ComponentType<PassedProps>,
 ): ComponentType<$Diff<PassedProps, {}>> => class extends Component<PassedProps> {
-    timer: ?IntervalID = null;
+  componentDidMount() {
+    const arg = searchUriInArgv(remote.process.argv);
 
-    componentDidMount() {
-      const { history } = this.props;
+    if (arg) this.redirect(arg);
 
-      ipcRenderer.on('on-deep-link', (event: Object, message: string) => {
-        history.replace(`/send/${message.replace(/zcash:(\/\/)?/, '')}`);
-      });
-    }
+    ipcRenderer.on('on-deep-link', (event: Object, message: string) => {
+      this.redirect(message);
+    });
+  }
 
-    componentWillUnmount() {
-      ipcRenderer.removeAllListeners('on-deep-link');
-    }
+  componentWillUnmount() {
+    ipcRenderer.removeAllListeners('on-deep-link');
+  }
 
-    render() {
-      return <WrappedComponent {...this.props} {...this.state} />;
-    }
-  };
+  redirect(message: string) {
+    const { history } = this.props;
+
+    history.replace(`/send/${message.replace(/zcash:(\/\/)?/, '')}`);
+  }
+
+  render() {
+    return <WrappedComponent {...this.props} {...this.state} />;
+  }
+};
