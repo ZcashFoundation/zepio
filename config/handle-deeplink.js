@@ -11,6 +11,11 @@ const sendMessage = (mainWindow, url) => {
   }
 };
 
+export const searchUriInArgv = (argv: string[]): ?string => {
+  const argIndex = argv.findIndex(item => /zcash:(\/\/)?/.test(item));
+  return argv[argIndex];
+};
+
 export const handleDeeplink = ({
   app,
   mainWindow,
@@ -30,7 +35,10 @@ export const handleDeeplink = ({
   }
 
   if (process.platform === 'win32' || process.platform === 'linux') {
-    const argIndex = argv.findIndex(item => /zcash:(\/\/)?/.test(item));
-    if (argIndex !== -1) sendMessage(mainWindow, argv[argIndex]);
+    const arg = searchUriInArgv(argv);
+
+    if (arg) {
+      sendMessage(mainWindow, arg);
+    }
   }
 };
