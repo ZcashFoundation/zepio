@@ -1,6 +1,9 @@
 // @flow
-import React from 'react';
+
+import React, { type Element } from 'react';
 import styled from 'styled-components';
+
+import { ErrorModalComponent } from './error-modal';
 
 const Layout = styled.div`
   display: flex;
@@ -14,12 +17,25 @@ const Layout = styled.div`
 `;
 
 type Props = {
-  chidren: any, // eslint-disable-line
+  children: Element<*>,
+  closeErrorModal: () => void,
+  isErrorModalVisible: boolean,
+  error: string,
 };
 
 export const LayoutComponent = (props: Props) => {
-  // $FlowFixMe
-  const { children } = props; // eslint-disable-line
+  const {
+    children, error, isErrorModalVisible, closeErrorModal,
+  } = props;
 
-  return <Layout id='layout'>{children}</Layout>;
+  return (
+    <Layout id='layout'>
+      {children}
+      <ErrorModalComponent
+        message={error}
+        isVisible={isErrorModalVisible}
+        onRequestClose={closeErrorModal}
+      />
+    </Layout>
+  );
 };

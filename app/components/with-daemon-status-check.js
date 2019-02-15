@@ -1,4 +1,5 @@
 // @flow
+
 import React, { type ComponentType, Component } from 'react';
 
 import { LoadingScreen } from './loading-screen';

@@ -1,4 +1,5 @@
 // @flow
+
 import React from 'react';
 import styled from 'styled-components';
 import dateFns from 'date-fns';
@@ -90,7 +91,7 @@ const Divider = styled.div`
 `;
 
 const Label = styled(TextComponent)`
-  font-weight: ${props => props.theme.fontWeight.bold};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
   color: ${props => props.theme.colors.transactionsDetailsLabel};
   margin-bottom: 5px;
   letter-spacing: 0.25px;

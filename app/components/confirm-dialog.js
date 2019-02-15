@@ -1,5 +1,6 @@
 // @flow
-import React, { type Element } from 'react';
+
+import React, { Fragment, type Element } from 'react';
 import styled from 'styled-components';
 
 import { TextComponent } from './text';
@@ -11,7 +12,7 @@ import CloseIcon from '../assets/images/close_icon.svg';
 
 const Wrapper = styled.div`
   display: flex;
-  width: ${props => `${props.width}px`};
+  width: ${(props: PropsWithTheme<{ width: number }>) => `${String(props.width)}px`};
   background-color: ${props => props.theme.colors.background};
   flex-direction: column;
   align-items: center;
@@ -90,7 +91,7 @@ export const ConfirmDialogComponent = ({
           <Divider opacity={0.3} />
           {children(handleClose(toggle))}
           {showButtons && (
-            <>
+            <Fragment>
               <Btn
                 id='confirm-modal-button'
                 label='Confirm'
@@ -103,7 +104,7 @@ export const ConfirmDialogComponent = ({
                 variant='secondary'
                 disabled={isLoading}
               />
-            </>
+            </Fragment>
           )}
         </Wrapper>
       )}

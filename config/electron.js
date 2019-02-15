@@ -1,4 +1,5 @@
 // @flow
+
 import '@babel/polyfill';
 import dotenv from 'dotenv';
 
@@ -8,7 +9,6 @@ import path from 'path';
 import { app, BrowserWindow, typeof BrowserWindow as BrowserWindowType } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import isDev from 'electron-is-dev';
-import eres from 'eres';
 import { registerDebugShortcut } from '../utils/debug-shortcut';
 import runDaemon from './daemon/zcashd-child-process';
 import zcashLog from './daemon/logger';
@@ -46,6 +46,7 @@ const createWindow = () => {
       progress.transferred
     }/${progress.total})`,
   ));
+
   autoUpdater.on('update-downloaded', () => {
     updateAvailable = true;
     showStatus('Update downloaded');
@@ -71,7 +72,7 @@ const createWindow = () => {
   registerDebugShortcut(app, mainWindow);
 
   mainWindow.loadURL(
-    isDev ? 'http://0.0.0.0:8080/' : `file://${path.join(__dirname, '../build/index.html')}`,
+    isDev ? 'http://localhost:8080/' : `file://${path.join(__dirname, '../build/index.html')}`,
   );
 
   exports.app = app;
@@ -87,14 +88,14 @@ app.on('ready', async () => {
     return;
   }
 
-  const [err, proc] = await eres(runDaemon());
-
-  if (err || !proc) return zcashLog(err);
-
-  /* eslint-disable-next-line */
-  zcashLog(`Zcash Daemon running. PID: ${proc.pid}`);
-
-  zcashDaemon = proc;
+  runDaemon()
+    .then((proc) => {
+      if (proc) {
+        zcashLog(`Zcash Daemon running. PID: ${proc.pid}`);
+        zcashDaemon = proc;
+      }
+    })
+    .catch(zcashLog);
 });
 app.on('activate', () => {
   if (mainWindow === null) createWindow();

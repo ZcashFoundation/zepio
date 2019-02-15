@@ -38,7 +38,7 @@ const defaultState = `
   Thank you for running a Zcash node!
   You're helping to strengthen the network and contributing to a social good :)
   In order to ensure you are adequately protecting your privacy when using Zcash, please see <https://z.cash/support/security/>.
-  
+
   Block height | 0
   Connections | 0
   Network solution rate | 0 Sol/s
@@ -65,7 +65,7 @@ export class ConsoleView extends Component<Props, State> {
   };
 
   componentDidMount() {
-    ipcRenderer.on('zcashd-log', (event, message) => {
+    ipcRenderer.on('zcashd-log', (event: empty, message: string) => {
       this.setState(() => ({ log: initialLog + message }));
     });
   }

@@ -1,7 +1,10 @@
 // @flow
+
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Transition, animated } from 'react-spring';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ipcRenderer } from 'electron';
 
 import CircleProgressComponent from 'react-circle';
 import { TextComponent } from './text';
@@ -42,25 +45,34 @@ type Props = {
 
 type State = {
   start: boolean,
+  message: string,
 };
 
 const TIME_DELAY_ANIM = 100;
 
 export class LoadingScreen extends PureComponent<Props, State> {
-  state = { start: false };
+  state = { start: false, message: 'ZEC Wallet Starting' };
 
   componentDidMount() {
     setTimeout(() => {
       this.setState(() => ({ start: true }));
     }, TIME_DELAY_ANIM);
+
+    ipcRenderer.on('zcashd-params-download', (event: Object, message: string) => {
+      this.setState(() => ({ message }));
+    });
+  }
+
+  componentWillUnmount() {
+    ipcRenderer.removeAllListeners('zcashd-log');
   }
 
   render() {
-    const { start } = this.state;
+    const { start, message } = this.state;
     const { progress } = this.props;
 
     return (
-      <Wrapper>
+      <Wrapper data-testid='LoadingScreen'>
         <Transition
           native
           items={start}
@@ -73,19 +85,29 @@ export class LoadingScreen extends PureComponent<Props, State> {
             opacity: 0,
           }}
         >
-          {() => props => (
-            <animated.div style={props} id='loading-screen'>
+          {() => (props: Object) => (
+            <animated.div
+              id='loading-screen'
+              style={{
+                ...props,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
               <CircleWrapper>
-                <Logo src={zcashLogo} alt='Zcash logo' />
+                <Logo src={zcashLogo} alt='Zcash Logo' />
                 <CircleProgressComponent
                   progress={progress}
+                  s // TODO: check if this has any effect
                   responsive
                   showPercentage={false}
                   progressColor={theme.colors.activeItem}
                   bgColor={theme.colors.inactiveItem}
                 />
               </CircleWrapper>
-              <TextComponent value='ZEC Wallet Starting' />
+              <TextComponent value={message} />
             </animated.div>
           )}
         </Transition>

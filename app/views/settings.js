@@ -1,4 +1,5 @@
 // @flow
+
 /* eslint-disable import/no-extraneous-dependencies */
 import fs from 'fs';
 import { promisify } from 'util';
@@ -16,8 +17,11 @@ import { InputComponent } from '../components/input';
 import { InputLabelComponent } from '../components/input-label';
 import { RowComponent } from '../components/row';
 import { Clipboard } from '../components/clipboard';
+import { SelectComponent } from '../components/select';
 
 import rpc from '../../services/api';
+import { DARK, LIGHT } from '../constants/themes';
+import electronStore from '../../config/electron-store';
 
 const HOME_DIR = electron.remote.app.getPath('home');
 
@@ -57,13 +61,17 @@ const SettingsTitle = styled(TextComponent)`
   text-transform: uppercase;
   color: ${props => props.theme.colors.transactionsDate};
   font-size: ${props => `${props.theme.fontSize.regular * 0.9}em`};
-  font-weight: ${props => props.theme.fontWeight.bold};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
   margin-bottom: 5px;
 `;
 
 const SettingsContent = styled(TextComponent)`
   margin-bottom: 20px;
   margin-top: 10px;
+`;
+
+const ThemeSelectWrapper = styled.div`
+  margin-bottom: 20px;
 `;
 
 type Key = {
@@ -172,7 +180,7 @@ export class SettingsView extends PureComponent<Props, State> {
     electron.remote.dialog.showSaveDialog(
       undefined,
       { defaultPath: backupFileName },
-      async (pathToSave) => {
+      async (pathToSave: string) => {
         if (!pathToSave) return;
 
         const zcashDir = isDev ? `${HOME_DIR}/.zcash/testnet3` : HOME_DIR;
@@ -209,6 +217,23 @@ export class SettingsView extends PureComponent<Props, State> {
 
     return (
       <Wrapper>
+        <ThemeSelectWrapper>
+          <SettingsTitle value='Theme' />
+          <SelectComponent
+            onChange={newMode => electronStore.set('THEME_MODE', newMode)}
+            options={[
+              {
+                label: 'Dark',
+                value: DARK,
+              },
+              {
+                label: 'Light',
+                value: LIGHT,
+              },
+            ]}
+            value={electronStore.get('THEME_MODE')}
+          />
+        </ThemeSelectWrapper>
         <ConfirmDialogComponent
           title='Export view keys'
           renderTrigger={toggleVisibility => (

@@ -1,4 +1,5 @@
 // @flow
+
 import React, { PureComponent, Fragment } from 'react';
 
 import { TransactionDailyComponent } from '../components/transaction-daily';

@@ -67,7 +67,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.12.4",
     "file-loader": "^2.0.0",
-    "flow-bin": "^0.91.0",
+    "flow-bin": "^0.92.1",
     "flow-coverage-report": "^0.6.1",
     "flow-typed": "^2.5.1",
     "glow": "^1.2.2",
@@ -182,7 +182,10 @@
     "setupTestFrameworkScriptFile": "<rootDir>/__tests__/setup/jest.js",
     "testPathIgnorePatterns": [
       "<rootDir>/__tests__/setup/"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__tests__/setup/assetTransformer.js"
+    }
   },
   "resolutions": {
     "babel-core": "7.0.0-bridge.0"

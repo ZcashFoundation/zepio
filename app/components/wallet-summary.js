@@ -1,4 +1,5 @@
 // @flow
+
 import React from 'react';
 import styled from 'styled-components';
 
@@ -38,7 +39,7 @@ const Label = styled(TextComponent)`
 
 const USDValue = styled(TextComponent)`
   opacity: 0.5;
-  font-weight: ${props => props.theme.fontWeight.light};
+  font-weight: ${props => String(props.theme.fontWeight.light)};
 `;
 
 const ShieldedValue = styled(Label)`

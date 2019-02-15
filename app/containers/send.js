@@ -1,6 +1,7 @@
 // @flow
-import { connect } from 'react-redux';
+
 import eres from 'eres';
+import { connect } from 'react-redux';
 import { BigNumber } from 'bignumber.js';
 
 import store from '../../config/electron-store';
@@ -15,9 +16,12 @@ import {
   resetSendTransaction,
   validateAddressSuccess,
   validateAddressError,
+  loadAddressBalanceSuccess,
+  loadAddressBalanceError,
 } from '../redux/modules/send';
 
 import { filterObjectNullKeys } from '../utils/filter-object-null-keys';
+import { saveShieldedTransaction } from '../../services/shielded-transactions';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
@@ -32,8 +36,8 @@ export type SendTransactionInput = {
   memo: string,
 };
 
-const mapStateToProps = ({ walletSummary, sendStatus, receive }: AppState) => ({
-  balance: walletSummary.total,
+const mapStateToProps = ({ sendStatus, receive }: AppState) => ({
+  balance: sendStatus.addressBalance,
   zecPrice: sendStatus.zecPrice,
   addresses: receive.addresses,
   error: sendStatus.error,
@@ -89,6 +93,15 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
       if (operationStatus && operationStatus.status === 'success') {
         clearInterval(interval);
+        if (from.startsWith('z')) {
+          saveShieldedTransaction({
+            category: 'send',
+            time: Date.now() / 1000,
+            address: '(Shielded)',
+            amount: new BigNumber(amount).toNumber(),
+            memo,
+          });
+        }
         dispatch(sendTransactionSuccess({ operationId: operationStatus.result.txid }));
       }
 
@@ -140,6 +153,13 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       value: Number(store.get('ZEC_DOLLAR_PRICE')),
     }),
   ),
+  getAddressBalance: async ({ address }: { address: string }) => {
+    const [err, balance] = await eres(rpc.z_getbalance(address));
+
+    if (err) return dispatch(loadAddressBalanceError({ error: "Can't load your balance address" }));
+
+    return dispatch(loadAddressBalanceSuccess({ balance }));
+  },
 });
 
 // $FlowFixMe

@@ -1,6 +1,6 @@
 // @flow
-import React from 'react';
 
+import React from 'react';
 import styled from 'styled-components';
 
 import { ZcashLogo } from './zcash-logo';
@@ -8,6 +8,8 @@ import { TextComponent } from './text';
 import { Divider } from './divider';
 import { RowComponent } from './row';
 import { StatusPill } from './status-pill';
+
+import { withSyncStatus } from '../../services/sync-status';
 
 const Wrapper = styled.div`
   height: ${props => props.theme.headerHeight};
@@ -52,12 +54,14 @@ const Title = styled(TextComponent)`
   margin-bottom: 10px;
   text-transform: capitalize;
   letter-spacing: 0.25px;
-  font-weight: ${props => props.theme.fontWeight.bold};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
 `;
 
 type Props = {
   title: string,
 };
+
+const Status = withSyncStatus(StatusPill);
 
 export const HeaderComponent = ({ title }: Props) => (
   <Wrapper id='header'>
@@ -67,7 +71,7 @@ export const HeaderComponent = ({ title }: Props) => (
     <TitleWrapper>
       <TitleRow alignItems='center' justifyContent='space-around'>
         <Title value={title} />
-        <StatusPill />
+        <Status type='syncing' progress={0} />
       </TitleRow>
       <Divider opacity={0.1} />
     </TitleWrapper>

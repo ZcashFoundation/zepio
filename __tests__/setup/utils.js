@@ -1,4 +1,5 @@
 // @flow
+
 /* eslint-disable import/no-extraneous-dependencies */
 import electron from 'electron';
 import { Application } from 'spectron';

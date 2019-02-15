@@ -1,4 +1,5 @@
 // @flow
+
 import React from 'react';
 import styled from 'styled-components';
 import dateFns from 'date-fns';
@@ -34,7 +35,7 @@ const Icon = styled.img`
 
 /* eslint-disable max-len */
 const TransactionTypeLabel = styled(TextComponent)`
-  color: ${props => (props.isReceived ? props.theme.colors.transactionReceived : props.theme.colors.transactionSent)};
+  color: ${(props: PropsWithTheme<{ isReceived: boolean }>) => (props.isReceived ? props.theme.colors.transactionReceived : props.theme.colors.transactionSent)};
   text-transform: capitalize;
 `;
 /* eslint-enable max-len */
@@ -42,7 +43,7 @@ const TransactionTypeLabel = styled(TextComponent)`
 const TransactionAddress = styled(TextComponent)`
   color: #a7a7a7;
 
-  ${Wrapper}:hover & {
+  ${String(Wrapper)}:hover & {
     color: #fff;
   }
 `;

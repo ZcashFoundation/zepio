@@ -1,4 +1,5 @@
 // @flow
+
 // eslint-disable-next-line
 import electron from 'electron';
 

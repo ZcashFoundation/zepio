@@ -1,4 +1,5 @@
 // @flow
+
 import DashboardIcon from '../assets/images/dashboard_icon.svg';
 import DashboardIconActive from '../assets/images/dashboard_icon_active.svg';
 import ConsoleIcon from '../assets/images/console_icon.svg';
@@ -25,8 +26,7 @@ export const MENU_OPTIONS = [
   {
     label: 'Dashboard',
     route: DASHBOARD_ROUTE,
-    // eslint-disable-next-line
-    icon: (isActive: boolean) => isActive ? DashboardIconActive : DashboardIcon,
+    icon: (isActive: boolean) => (isActive ? DashboardIconActive : DashboardIcon),
   },
   {
     label: 'Send',
@@ -41,8 +41,7 @@ export const MENU_OPTIONS = [
   {
     label: 'Transactions',
     route: TRANSACTIONS_ROUTE,
-    // eslint-disable-next-line
-    icon: (isActive: boolean) => isActive ? TransactionsIconActive : TransactionsIcon,
+    icon: (isActive: boolean) => (isActive ? TransactionsIconActive : TransactionsIcon),
   },
   {
     label: 'Settings',

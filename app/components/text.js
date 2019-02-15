@@ -1,20 +1,11 @@
 // @flow
+
 /* eslint-disable max-len */
 import React from 'react';
 import styled from 'styled-components';
 import type { ElementProps } from 'react';
 
 import theme from '../theme';
-
-const Text = styled.p`
-  font-family: ${props => props.theme.fontFamily};
-  font-size: ${props => props.size};
-  color: ${props => props.color || props.theme.colors.text};
-  margin: 0;
-  padding: 0;
-  font-weight: ${props => (props.isBold ? props.theme.fontWeight.bold : props.theme.fontWeight.default)};
-  text-align: ${props => props.align};
-`;
 
 export type Props = {
   ...ElementProps<'p'>,
@@ -25,6 +16,16 @@ export type Props = {
   size?: string | number,
   align?: string,
 };
+
+const Text = styled.p`
+  font-family: ${(props: PropsWithTheme<Props>) => props.theme.fontFamily};
+  font-size: ${(props: PropsWithTheme<Props>) => String(props.size)};
+  color: ${(props: PropsWithTheme<Props>) => props.color || props.theme.colors.text};
+  margin: 0;
+  padding: 0;
+  font-weight: ${(props: PropsWithTheme<Props>) => String(props.isBold ? props.theme.fontWeight.bold : props.theme.fontWeight.default)};
+  text-align: ${(props: PropsWithTheme<Props>) => props.align || 'left'};
+`;
 
 export const TextComponent = ({
   value, isBold, color, className, size, align, id,

@@ -1,4 +1,5 @@
 // @flow
+
 import React, { type Node, Component } from 'react';
 import styled from 'styled-components';
 /* eslint-disable import/no-extraneous-dependencies */
@@ -107,7 +108,7 @@ export class DropdownComponent extends Component<Props, State> {
             </MenuItem>
           )}
           {options.map(({ label: optionLabel, onClick }) => (
-            <OptionItem onClick={onClick} key={optionLabel}>
+            <OptionItem onClick={onClick} key={optionLabel} data-testid='DropdownOption'>
               <Option value={truncate ? truncateAddress(optionLabel) : optionLabel} />
             </OptionItem>
           ))}
@@ -123,7 +124,12 @@ export class DropdownComponent extends Component<Props, State> {
         tipSize={7}
         body={body}
       >
-        {renderTrigger(() => this.setState(state => ({ isOpen: !state.isOpen })), isOpen)}
+        {renderTrigger(
+          () => this.setState(state => ({
+            isOpen: !state.isOpen,
+          })),
+          isOpen,
+        )}
       </PopoverWithStyle>
     );
   }

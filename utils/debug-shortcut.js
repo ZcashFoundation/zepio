@@ -6,6 +6,5 @@ import { globalShortcut, typeof BrowserWindow, typeof app as ElectronApp } from 
 export const registerDebugShortcut = (app: ElectronApp, mainWindow: BrowserWindow) => globalShortcut.register('CommandOrControl+Option+B', () => {
   // $FlowFixMe
   app.dock.show();
-  // $FlowFixMe
   mainWindow.webContents.openDevTools();
 });

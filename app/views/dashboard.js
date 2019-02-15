@@ -22,8 +22,8 @@ type Props = {
 
 export class DashboardView extends PureComponent<Props> {
   componentDidMount() {
-    /* eslint-disable-next-line */
-    this.props.getSummary();
+    const { getSummary } = this.props;
+    getSummary();
   }
 
   render() {

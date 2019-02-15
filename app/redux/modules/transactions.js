@@ -1,4 +1,5 @@
 // @flow
+
 import type { Action } from '../../types/redux';
 import type { Transaction } from '../../components/transaction-item';
 
@@ -46,6 +47,7 @@ const initialState = {
   error: null,
   isLoading: false,
 };
+
 // eslint-disable-next-line
 export default (state: State = initialState, action: Action) => {
   switch (action.type) {

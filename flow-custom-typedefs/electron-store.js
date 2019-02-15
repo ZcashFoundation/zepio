@@ -1,4 +1,6 @@
 declare module 'electron-store' {
+  declare function callback(string, string): void;
+
   declare class ElectronStore {
     constructor({
       defaults?: Object,
@@ -8,12 +10,13 @@ declare module 'electron-store' {
       fileExtension?: string,
     }): ElectronStore;
 
-    set(key: string, value: string): void;
+    set(key: string, value: any): void;
     set(payload: Object): void;
-    get(key: string): string;
+    get(key: string): any;
     has(key: string): boolean;
     delete(key: string): void;
     clear(): void;
+    onDidChange(key: string, cb: typeof callback): void;
     size: number;
     store: Object;
     path: string;

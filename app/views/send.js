@@ -1,4 +1,5 @@
 // @flow
+
 import React, { Fragment, PureComponent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { BigNumber } from 'bignumber.js';
@@ -17,6 +18,7 @@ import { Button } from '../components/button';
 import { ConfirmDialogComponent } from '../components/confirm-dialog';
 
 import { formatNumber } from '../utils/format-number';
+import { ascii2hex } from '../utils/ascii-to-hexadecimal';
 
 import type { SendTransactionInput } from '../containers/send';
 import type { State as SendState } from '../redux/modules/send';
@@ -26,6 +28,7 @@ import MenuIcon from '../assets/images/menu_icon.svg';
 import ValidIcon from '../assets/images/green_check.png';
 import InvalidIcon from '../assets/images/error_icon.png';
 import LoadingIcon from '../assets/images/sync_icon.png';
+import ArrowUpIcon from '../assets/images/arrow_up.png';
 
 import theme from '../theme';
 
@@ -57,6 +60,11 @@ const SendWrapper = styled(ColumnComponent)`
   margin-top: 60px;
 `;
 
+type AmountProps =
+  | {
+      isEmpty: boolean,
+    }
+  | Object;
 const AmountWrapper = styled.div`
   width: 100%;
   position: relative;
@@ -69,14 +77,14 @@ const AmountWrapper = styled.div`
     margin-left: 15px;
     display: block;
     transition: all 0.05s ease-in-out;
-    opacity: ${props => (props.isEmpty ? '0' : '1')};
+    opacity: ${(props: AmountProps) => (props.isEmpty ? '0' : '1')};
     color: #fff;
     z-index: 10;
   }
 `;
 
 const AmountInput = styled(InputComponent)`
-  padding-left: ${props => (props.isEmpty ? '15' : '50')}px;
+  padding-left: ${(props: AmountProps) => (props.isEmpty ? '15' : '50')}px;
 `;
 
 const ShowFeeButton = styled.button`
@@ -151,22 +159,26 @@ const ConfirmItemWrapper = styled(RowComponent)`
   width: 100%;
 `;
 
+type ItemLabelProps = {
+  color: string,
+};
+/* eslint-disable max-len */
 const ItemLabel = styled(TextComponent)`
-  font-weight: ${props => props.theme.fontWeight.bold};
-  font-size: ${props => props.theme.fontSize.small};
-  color: ${props => props.color || props.theme.colors.modalItemLabel};
+  font-weight: ${(props: PropsWithTheme<ItemLabelProps>) => String(props.theme.fontWeight.bold)};
+  font-size: ${(props: PropsWithTheme<ItemLabelProps>) => String(props.theme.fontSize.small)};
+  color: ${(props: PropsWithTheme<ItemLabelProps>) => props.color || props.theme.colors.modalItemLabel};
   margin-bottom: 3.5px;
 `;
 
 const SendZECValue = styled(TextComponent)`
   color: ${props => props.theme.colors.transactionSent};
   font-size: ${props => `${props.theme.fontSize.large}em`};
-  font-weight: ${props => props.theme.fontWeight.bold};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
 `;
 
 const SendUSDValue = styled(TextComponent)`
   opacity: 0.5;
-  font-weight: ${props => props.theme.fontWeight.light};
+  font-weight: ${props => String(props.theme.fontWeight.light)};
   font-size: ${props => `${props.theme.fontSize.medium}em`};
 `;
 
@@ -197,6 +209,35 @@ const RevealsMain = styled.div`
   }
 `;
 
+// $FlowFixMe
+const Checkbox = styled.input.attrs({
+  type: 'checkbox',
+})`
+  margin-right: 10px;
+`;
+
+const MaxAvailableAmount = styled.button`
+  margin-top: -15px;
+  margin-right: -15px;
+  width: 45px;
+  height: 48px;
+  border: none;
+  background: none;
+  color: white;
+  cursor: pointer;
+  border-left: ${props => `1px solid ${props.theme.colors.background(props)}`};
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const MaxAvailableAmountImg = styled.img`
+  width: 20px;
+  height: 20px;
+`;
+
 type Props = {
   ...SendState,
   balance: number,
@@ -208,6 +249,7 @@ type Props = {
   validateAddress: ({ address: string }) => void,
   loadAddresses: () => void,
   loadZECPrice: () => void,
+  getAddressBalance: ({ address: string }) => void,
 };
 
 type State = {
@@ -218,6 +260,7 @@ type State = {
   feeType: string | number,
   fee: number | null,
   memo: string,
+  isHexMemo: boolean,
 };
 
 const initialState = {
@@ -228,6 +271,7 @@ const initialState = {
   feeType: FEES.LOW,
   fee: FEES.LOW,
   memo: '',
+  isHexMemo: false,
 };
 
 export class SendView extends PureComponent<Props, State> {
@@ -241,18 +285,35 @@ export class SendView extends PureComponent<Props, State> {
     loadZECPrice();
   }
 
-  handleChange = (field: string) => (value: string) => {
-    const { validateAddress } = this.props;
+  handleChange = (field: string) => (value: string | number) => {
+    const { validateAddress, getAddressBalance, balance } = this.props;
+    const { fee, amount } = this.state;
 
     if (field === 'to') {
-      // eslint-disable-next-line max-len
-      this.setState(() => ({ [field]: value }), () => validateAddress({ address: value }));
+      this.setState(() => ({ [field]: value }), () => validateAddress({ address: String(value) }));
+    } else if (field === 'amount') {
+      const amountWithFee = new BigNumber(value).plus(fee || 0);
+
+      const validAmount = amountWithFee.isGreaterThan(balance)
+        ? new BigNumber(balance).minus(fee || 0).toNumber()
+        : value;
+
+      this.setState(() => ({ [field]: validAmount }));
     } else {
-      this.setState(() => ({ [field]: value }));
+      if (field === 'from') getAddressBalance({ address: String(value) });
+
+      this.setState(
+        () => ({ [field]: value }),
+        () => {
+          if (field === 'fee') this.handleChange('amount')(amount);
+        },
+      );
     }
   };
 
   handleChangeFeeType = (value: string) => {
+    const { amount } = this.state;
+
     if (value === FEES.CUSTOM) {
       this.setState(() => ({
         feeType: FEES.CUSTOM,
@@ -261,16 +322,19 @@ export class SendView extends PureComponent<Props, State> {
     } else {
       const fee = new BigNumber(value);
 
-      this.setState(() => ({
-        feeType: fee.toString(),
-        fee: fee.toNumber(),
-      }));
+      this.setState(
+        () => ({
+          feeType: fee.toString(),
+          fee: fee.toNumber(),
+        }),
+        () => this.handleChange('amount')(amount),
+      );
     }
   };
 
   handleSubmit = () => {
     const {
-      from, amount, to, memo, fee,
+      from, amount, to, memo, fee, isHexMemo,
     } = this.state;
     const { sendTransaction } = this.props;
 
@@ -281,7 +345,7 @@ export class SendView extends PureComponent<Props, State> {
       to,
       amount,
       fee,
-      memo,
+      memo: isHexMemo ? memo : ascii2hex(memo),
     });
   };
 
@@ -425,7 +489,7 @@ export class SendView extends PureComponent<Props, State> {
 
     const isEmpty = amount === '';
 
-    const fixedAmount = isEmpty ? '0.00' : amount;
+    const fixedAmount = isEmpty ? 0.0 : amount;
 
     const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
     const zecBalanceInUsd = formatNumber({
@@ -433,7 +497,7 @@ export class SendView extends PureComponent<Props, State> {
       append: 'USD $',
     });
     const valueSent = formatNumber({
-      value: new BigNumber(fixedAmount).toFormat(2),
+      value: new BigNumber(fixedAmount).toFormat(4),
       append: 'ZEC ',
     });
     const valueSentInUsd = formatNumber({
@@ -444,16 +508,25 @@ export class SendView extends PureComponent<Props, State> {
     return (
       <RowComponent id='send-wrapper' justifyContent='space-between'>
         <FormWrapper>
-          <InputLabelComponent value='From' />
+          <InputLabelComponent value='From an address' />
           <SelectComponent
             onChange={this.handleChange('from')}
             value={from}
             placeholder='Select a address'
             options={addresses.map(addr => ({ value: addr, label: addr }))}
+            capitalize={false}
           />
           <InputLabelComponent value='Amount' />
           <AmountWrapper isEmpty={isEmpty}>
             <AmountInput
+              renderRight={() => (
+                <MaxAvailableAmount
+                  onClick={() => this.handleChange('amount')(balance)}
+                  disabled={!from}
+                >
+                  <MaxAvailableAmountImg src={ArrowUpIcon} />
+                </MaxAvailableAmount>
+              )}
               isEmpty={isEmpty}
               type='number'
               onChange={this.handleChange('amount')}
@@ -461,6 +534,7 @@ export class SendView extends PureComponent<Props, State> {
               placeholder='ZEC 0.0'
               min={0.01}
               name='amount'
+              disabled={!from}
             />
           </AmountWrapper>
           <InputLabelComponent value='To' />
@@ -479,6 +553,10 @@ export class SendView extends PureComponent<Props, State> {
             placeholder='Enter a text here'
             name='memo'
           />
+          <RowComponent justifyContent='flex-end'>
+            <Checkbox onChange={event => this.setState({ isHexMemo: event.target.checked })} />
+            <TextComponent value='Hexadecimal memo' />
+          </RowComponent>
           <ShowFeeButton
             id='send-show-additional-options-button'
             onClick={() => this.setState(state => ({
@@ -508,8 +586,8 @@ export class SendView extends PureComponent<Props, State> {
                 height: 0,
               }}
             >
-              {show => show
-                && (props => (
+              {(show: boolean) => show
+                && ((props: Object) => (
                   <animated.div style={props}>
                     <FeeWrapper id='send-fee-wrapper'>
                       <RowComponent alignItems='flex-end' justifyContent='space-between'>

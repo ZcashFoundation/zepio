@@ -1,4 +1,5 @@
 // @flow
+
 import React, { Component } from 'react';
 import styled, { keyframes } from 'styled-components';
 import eres from 'eres';
@@ -15,7 +16,6 @@ const rotate = keyframes`
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
   }
@@ -34,12 +34,14 @@ const Icon = styled.img`
   height: 12px;
   margin-right: 8px;
   animation: 2s linear infinite;
-  animation-name: ${props => (props.animated ? rotate : 'none')};
+
+  animation-name: ${/** $FlowFixMe */
+  (props: PropsWithTheme<{ animated: boolean }>) => (props.animated ? rotate : 'none')};
 `;
 
 const StatusPillLabel = styled(TextComponent)`
   color: ${props => props.theme.colors.statusPillLabel};
-  font-weight: ${props => props.theme.fontWeight.bold};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
   text-transform: uppercase;
   font-size: 10px;
   padding-top: 1px;
@@ -81,6 +83,8 @@ export class StatusPill extends Component<Props, State> {
   getBlockchainStatus = async () => {
     const [blockchainErr, blockchaininfo] = await eres(rpc.getblockchaininfo());
 
+    if (blockchainErr || !blockchaininfo) return;
+
     const newProgress = blockchaininfo.verificationprogress * 100;
 
     this.setState({
@@ -104,11 +108,12 @@ export class StatusPill extends Component<Props, State> {
       type, icon, progress, isSyncing,
     } = this.state;
     const showPercent = isSyncing ? `(${progress.toFixed(2)}%)` : '';
+    const typeText = type === 'ready' ? 'Synced' : type;
 
     return (
       <Wrapper id='status-pill'>
         <Icon src={icon} animated={isSyncing} />
-        <StatusPillLabel value={`${type} ${showPercent}`} />
+        <StatusPillLabel value={`${typeText} ${showPercent}`} />
       </Wrapper>
     );
   }

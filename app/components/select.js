@@ -1,4 +1,5 @@
 // @flow
+
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
@@ -9,30 +10,39 @@ import ChevronDown from '../assets/images/chevron-down.svg';
 import theme from '../theme';
 
 /* eslint-disable max-len */
+type SelectWrapperProps = PropsWithTheme<{
+  bgColor: ?string,
+  isOpen: boolean,
+  placement: string,
+}>;
+
 const SelectWrapper = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
-  border-radius: ${props => props.theme.boxBorderRadius};
+  border-radius: ${(props: SelectWrapperProps) => props.theme.boxBorderRadius};
   border: none;
-  background-color: ${props => props.bgColor || props.theme.colors.inputBackground};
-  color: ${props => props.theme.colors.text};
+  background-color: ${(props: SelectWrapperProps) => props.bgColor || props.theme.colors.inputBackground};
+  color: ${(props: SelectWrapperProps) => props.theme.colors.text};
   width: 100%;
   outline: none;
-  font-family: ${props => props.theme.fontFamily};
+  font-family: ${(props: SelectWrapperProps) => props.theme.fontFamily};
   cursor: pointer;
   position: relative;
 
-  ${props => props.isOpen
-    && `border-${props.placement}-left-radius: 0; border-${props.placement}-right-radius: 0;`}
+  ${(props: SelectWrapperProps) => (props.isOpen
+    ? `border-${String(props.placement)}-left-radius: 0; border-${String(
+      props.placement,
+    )}-right-radius: 0;`
+    : '')}
 `;
 /* eslint-enable max-len */
 
 const ValueWrapper = styled.div`
   width: 95%;
   padding: 13px;
-  opacity: ${props => (props.hasValue ? '1' : '0.2')};
-  text-transform: capitalize;
+  opacity: ${(props: PropsWithTheme<{ hasValue: boolean }>) => (props.hasValue ? '1' : '0.2')};
+  text-transform: ${(props: PropsWithTheme<{ capitalize: boolean }>) => (props.capitalize ? 'capitalize' : 'none')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -46,15 +56,16 @@ const SelectMenuButtonWrapper = styled.div`
   padding: 13px;
   border-left: ${props => `1px solid ${props.theme.colors.background}`};
 `;
+
 /* eslint-disable max-len */
 const SelectMenuButton = styled.button`
   padding: 3px 7px;
   outline: none;
   background-color: transparent;
-  border: 1px solid ${props => (props.isOpen ? props.theme.colors.primary : '#29292D')};
+  border: 1px solid
+    ${(props: PropsWithTheme<{ isOpen: boolean }>) => (props.isOpen ? props.theme.colors.primary : '#29292D')};
   border-radius: 100%;
 `;
-/* eslint-enable max-len */
 
 const Icon = styled.img`
   width: 10px;
@@ -66,7 +77,7 @@ const OptionsWrapper = styled.div`
   flex-direction: column;
   position: absolute;
   width: 100%;
-  ${props => `${props.placement}: ${`-${props.optionsAmount * 40}px`}`};
+  ${(props: PropsWithTheme<{ placement: string, optionsAmount: number }>) => `${String(props.placement)}: ${`-${String((props.optionsAmount || 0) * 40)}px`}`};
   overflow-y: auto;
 `;
 
@@ -77,7 +88,7 @@ const Option = styled.button`
   background-color: #5d5d5d;
   cursor: pointer;
   z-index: 99;
-  text-transform: capitalize;
+  text-transform: ${(props: PropsWithTheme<{ capitalize: boolean }>) => (props.capitalize ? 'capitalize' : 'none')};
   padding: 5px 10px;
   border-bottom: 1px solid #4e4b4b;
 
@@ -99,7 +110,9 @@ type Props = {
   onChange: string => void,
   placement?: 'top' | 'bottom',
   bgColor?: string,
+  capitalize?: boolean,
 };
+
 type State = {
   isOpen: boolean,
 };
@@ -113,6 +126,7 @@ export class SelectComponent extends PureComponent<Props, State> {
     placeholder: '',
     placement: 'bottom',
     bgColor: theme.colors.inputBackground,
+    capitalize: true,
   };
 
   onSelect = (value: string) => {
@@ -123,7 +137,10 @@ export class SelectComponent extends PureComponent<Props, State> {
 
   handleClickOutside = (event: Object) => {
     const { isOpen } = this.state;
-    if (isOpen && event.target.id !== 'select-options-wrapper') this.setState(() => ({ isOpen: false }));
+
+    if (isOpen && event.target.id !== 'select-options-wrapper') {
+      this.setState(() => ({ isOpen: false }));
+    }
   };
 
   getSelectedLabel = (value: string) => {
@@ -145,20 +162,21 @@ export class SelectComponent extends PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      value, options, placeholder, placement, bgColor,
-    } = this.props;
     const { isOpen } = this.state;
+    const {
+      value, options, placeholder, placement, bgColor, capitalize,
+    } = this.props;
 
     return (
       <SelectWrapper
+        data-testid='Select'
         id='select-component'
         isOpen={isOpen}
         placement={placement}
         onClick={() => this.setState(() => ({ isOpen: !isOpen }))}
         bgColor={bgColor}
       >
-        <ValueWrapper hasValue={Boolean(value)}>
+        <ValueWrapper hasValue={Boolean(value)} capitalize={capitalize}>
           {this.getSelectedLabel(value) || placeholder}
         </ValueWrapper>
         <SelectMenuButtonWrapper>
@@ -178,6 +196,7 @@ export class SelectComponent extends PureComponent<Props, State> {
                 key={label + optionValue}
                 onClick={() => this.onSelect(optionValue)}
                 bgColor={bgColor}
+                capitalize={capitalize}
               >
                 <TextComponent value={label} />
               </Option>
