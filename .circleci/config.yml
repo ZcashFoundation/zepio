@@ -1,19 +1,32 @@
 version: 2
 
 jobs:
+  install_deps:
+    docker:
+      - image: circleci/node
+    steps:
+      - checkout
+      - run: yarn config delete proxy
+      - run: yarn install
+      - save_cache:
+          key: zec-dependencies-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - /usr/local/share/.cache/yarn/v2
+            - ./node_modules
+
   test:
     docker:
       - image: electronuserland/builder:wine-chrome
     steps:
       - checkout
+      - restore_cache:
+          key: zec-dependencies-cache-{{ checksum "yarn.lock" }}
       - run: apt-get -y update
       - run: apt install -y software-properties-common
       - run: add-apt-repository ppa:jonathonf/ffmpeg-4
       - run: apt-get -y update
       - run: apt-get -y install libusb-1.0-0-dev graphicsmagick libudev-dev
       - run: apt-get -y install tmux xvfb libxtst6 libxss1 libgtk2.0-0 libnss3 libasound2 libgconf-2-4 ffmpeg frei0r-plugins
-      - run: yarn config delete proxy
-      - run: yarn install
       - run:
           name: Run Webpack
           command: yarn dev
@@ -37,11 +50,7 @@ jobs:
       - store_artifacts:
           path: /tmp/e2e-record.mp4
           destination: e2e-record.mp4
-      - save_cache:
-          key: zec-dependencies-cache-{{ checksum "yarn.lock" }}
-          paths:
-            - /usr/local/share/.cache/yarn/v2
-            - ./node_modules
+
   build_linux:
     docker:
       - image: electronuserland/builder:wine-chrome
@@ -49,18 +58,19 @@ jobs:
       - checkout
       - restore_cache:
           key: zec-dependencies-cache-{{ checksum "yarn.lock" }}
-      - run: apt-get -y update
-      - run: apt-get -y install libusb-1.0-0-dev icnsutils graphicsmagick libudev-dev
-      - run: yarn config delete proxy
       - run: yarn electron:dist -l
       - store_artifacts:
           path: ./dist/zec-react-wallet_0.3.0_amd64.deb
           destination: zec-react-wallet_0.3.0_amd64.deb
+
 workflows:
   version: 2
-  build_test:
+  test_build:
     jobs:
-      - test
+      - install_deps
+      - test:
+          requires:
+            - install_deps
       - build_linux:
           requires:
             - test
