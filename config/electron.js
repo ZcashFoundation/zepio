@@ -113,6 +113,8 @@ app.on('will-finish-launching', () => handleDeeplink({
 app.on('ready', async () => {
   createWindow();
 
+  console.log('[Process Argv]', process.argv); // eslint-disable-line
+
   if (process.env.NODE_ENV === 'test') {
     zcashLog('Not running daemon, please run the mock API');
     return;
