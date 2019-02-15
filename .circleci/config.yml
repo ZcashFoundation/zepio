@@ -73,9 +73,9 @@ workflows:
   test_build:
     jobs:
       - install_deps
-      # - test:
-      #     requires:
-      #       - install_deps
-      - build_linux:
+      - test:
           requires:
             - install_deps
+      - build_linux:
+          requires:
+            - test
