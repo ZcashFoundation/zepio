@@ -8,6 +8,6 @@ import { withDeepLink } from '../components/with-deeplink';
 
 export const Router = compose(
   withRouter,
-  withDeepLink,
   withDaemonStatusCheck,
+  withDeepLink,
 )(RouterComponent);
