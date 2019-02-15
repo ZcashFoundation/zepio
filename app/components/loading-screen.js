@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { Transition, animated } from 'react-spring';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ipcRenderer } from 'electron';
@@ -10,8 +10,6 @@ import CircleProgressComponent from 'react-circle';
 import { TextComponent } from './text';
 
 import zcashLogo from '../assets/images/zcash-simple-icon.svg';
-
-import theme from '../theme';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -41,6 +39,7 @@ const Logo = styled.img`
 
 type Props = {
   progress: number,
+  theme: AppTheme,
 };
 
 type State = {
@@ -50,7 +49,7 @@ type State = {
 
 const TIME_DELAY_ANIM = 100;
 
-export class LoadingScreen extends PureComponent<Props, State> {
+export class Component extends PureComponent<Props, State> {
   state = { start: false, message: 'ZEC Wallet Starting' };
 
   componentDidMount() {
@@ -69,7 +68,7 @@ export class LoadingScreen extends PureComponent<Props, State> {
 
   render() {
     const { start, message } = this.state;
-    const { progress } = this.props;
+    const { progress, theme } = this.props;
 
     return (
       <Wrapper data-testid='LoadingScreen'>
@@ -100,11 +99,10 @@ export class LoadingScreen extends PureComponent<Props, State> {
                 <Logo src={zcashLogo} alt='Zcash Logo' />
                 <CircleProgressComponent
                   progress={progress}
-                  s // TODO: check if this has any effect
                   responsive
                   showPercentage={false}
-                  progressColor={theme.colors.activeItem}
-                  bgColor={theme.colors.inactiveItem}
+                  progressColor={theme.colors.activeItem(this.props)}
+                  bgColor={theme.colors.inactiveItem(this.props)}
                 />
               </CircleWrapper>
               <TextComponent value={message} />
@@ -115,3 +113,5 @@ export class LoadingScreen extends PureComponent<Props, State> {
     );
   }
 }
+
+export const LoadingScreen = withTheme(Component);
