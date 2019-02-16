@@ -42,11 +42,17 @@ export const DARK_COLORS = {
   sidebarLogoGradientEnd: brand2,
   sidebarHoveredItem: '#1C1C1C',
   sidebarHoveredItemLabel: '#8e8e96',
+  sidebarActiveItemBorder: 'red',
+
 
   // Misc
   divider: black,
+  qrCodeWrapperBg: black,
   headerTitle: text,
   selectButtonShadow: 'rgba(238,201,76,0.65)',
+
+  // Forms
+  inputBg: black,
 
   // Wallet Summary
   walletSummaryBg: black,

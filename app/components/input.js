@@ -28,7 +28,7 @@ type DefaultStylesProps = PropsWithTheme<{
 const getDefaultStyles: ($PropertyType<Props, 'inputType'>) => Element<*> = t => styled[t]`
   border-radius: ${(props: DefaultStylesProps) => props.theme.boxBorderRadius};
   border: none;
-  background-color: ${(props: DefaultStylesProps) => props.bgColor || props.theme.colors.inputBackground};
+  background-color: ${(props: DefaultStylesProps) => props.bgColor || props.theme.colors.inputBg};
   color: ${(props: DefaultStylesProps) => props.theme.colors.text};
   padding: 15px;
   padding-right: ${(props: DefaultStylesProps) => (props.withRightElement ? '85px' : '15px')};
@@ -104,5 +104,5 @@ InputComponent.defaultProps = {
   onChange: () => {},
   onFocus: () => {},
   step: 1,
-  bgColor: appTheme.colors.inputBackground,
+  bgColor: appTheme.colors.inputBg,
 };

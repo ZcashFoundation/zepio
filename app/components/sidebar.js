@@ -25,23 +25,23 @@ const StyledLink = styled.a`
     ? props.theme.colors.sidebarItemActive
     : props.theme.colors.sidebarItem
   )};
-  font-size: ${(props: StyledLinkProps) => `${props.theme.fontSize.regular}em`};
-  text-decoration: none;
-  font-weight: ${(props: StyledLinkProps) => String(props.theme.fontWeight.bold)};
   background-color: ${(props: StyledLinkProps) => (props.isActive
     ? `${props.theme.colors.sidebarHoveredItem}`
     : 'transparent'
   )};
+  font-size: ${(props: StyledLinkProps) => `${props.theme.fontSize.regular}em`};
+  text-decoration: none;
+  font-weight: ${(props: StyledLinkProps) => String(props.theme.fontWeight.bold)};
   letter-spacing: 0.25px;
   padding: 25px 20px;
   height: 35px;
   width: 100%;
   display: flex;
   align-items: center;
-  outline: none;
-  border-right: ${(props: StyledLinkProps) => (props.isActive ? `3px solid ${props.theme.colors.sidebarItemActive}` : 'none')};
   cursor: pointer;
+  outline: none;
   transition: all 0.03s ${(props: StyledLinkProps) => props.theme.transitionEase};
+  border-right: ${(props: StyledLinkProps) => (props.isActive ? `3px solid ${props.theme.colors.sidebarActiveItemBorder}` : 'none')};
 
   &:hover {
     background-color: ${(props: StyledLinkProps) => props.theme.colors.sidebarHoveredItem};
@@ -85,7 +85,11 @@ export const SidebarComponent = ({ options, location, history }: Props) => (
           key={item.route}
           onClick={() => (isActive ? {} : history.push(item.route))}
         >
-          <Icon isActive={isActive} src={item.icon(isActive)} Alt={`${item.route}`} />
+          <Icon
+            isActive={isActive}
+            src={item.icon(isActive)}
+            Alt={`${item.route}`}
+          />
           {item.label}
         </StyledLink>
       );

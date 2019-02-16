@@ -1,64 +1,79 @@
 // @flow
 
-const white = '#ffffff';
+const white = '#FFFFFF';
+const offWhite = '#F9F9F9';
+const black = '#000000';
 const text = '#142533';
-const brand = '#5684eb';
-const brand2 = '#1e5fef';
+const secondaryText = '#777777';
+const brand = '#5684EB';
 const error = '#FF6C6C';
 const success = '#6AEAC0';
+const logo = '#F4B728';
+const logo2 = '#FFE240';
+const border = '#DDDDDD';
 
 export const LIGHT_COLORS = {
   // General
-  background: '#f9f9f9',
+  background: offWhite,
+  text,
   darkOne: brand,
   blackTwo: '#171717',
   lightOne: white,
   brandOne: '#000',
-  brandThree: '#5d5d65',
-  buttonBorderColor: '#3e3c42',
+  brandThree: '#5D5D65',
+  buttonBorderColor: '#3E3C42',
   activeItem: brand,
-  text,
 
   // Buttons
   buttonPrimaryText: white,
   buttonSecondaryText: text,
 
   // Card
-  cardBackgroundColor: '#000',
+  cardBackgroundColor: black,
 
   // Sidebar
-  sidebarLogoGradientBegin: brand,
-  sidebarLogoGradientEnd: brand2,
-  sidebarHoveredItem: '#f9f9f9',
-  sidebarHoveredItemLabel: '#8e8e96',
   sidebarBg: white,
-  sidebarBorderRight: '#ddd',
+  sidebarBorderRight: border,
+  sidebarLogoGradientBegin: logo,
+  sidebarLogoGradientEnd: logo2,
+  sidebarHoveredItem: offWhite,
+  sidebarHoveredItemLabel: '#8E8E96',
+  sidebarItem: offWhite,
+  sidebarItemLabel: '#8E8E96',
+  sidebarActiveItem: 'red',
+  sidebarActiveItemLabel: '#8E8E96',
+  sidebarActiveItemBorder: 'red',
 
   // Transactions
   transactionSent: error,
   transactionReceived: success,
-  transactionsDate: '#777777',
+  transactionsDate: secondaryText,
   transactionsItemHovered: '#222222',
-  transactionsDetailsLabel: '#777777',
+  transactionsDetailsLabel: secondaryText,
 
   // Select
   selectButtonShadow: 'rgba(238,201,76,0.65)',
 
-  // Status
+  // Status Pill
   statusPillLabel: text,
-  statusPillBg: '#f2f2f2',
-  statusPillBorder: '#ddd',
+  statusPillBg: '#F2F2F2',
+  statusPillBorder: border,
+
+  qrCodeWrapperBg: white,
 
   // Header
   headerTitle: text,
 
   // Wallet Summary
   walletSummaryBg: white,
-  walletSummaryBorder: '#ddd',
+  walletSummaryBorder: border,
+
+  // Forms
+  inputBg: white,
 
   // Console
   consoleBg: white,
 
   // Misc
-  divider: '#aaa',
+  divider: '#AAAAAA',
 };

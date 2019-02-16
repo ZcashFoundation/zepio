@@ -102,9 +102,9 @@ export const appTheme: AppTheme = {
       [LIGHT]: LIGHT_COLORS.transactionsItemHovered,
       [DARK]: DARK_COLORS.transactionsItemHovered,
     }),
-    inputBackground: theme('mode', {
-      [LIGHT]: LIGHT_COLORS.brandOne,
-      [DARK]: DARK_COLORS.brandOne,
+    inputBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.inputBg,
+      [DARK]: DARK_COLORS.inputBg,
     }),
     selectButtonShadow: theme('mode', {
       [LIGHT]: LIGHT_COLORS.selectButtonShadow,
@@ -162,9 +162,17 @@ export const appTheme: AppTheme = {
       [LIGHT]: LIGHT_COLORS.buttonPrimaryText,
       [DARK]: DARK_COLORS.buttonPrimaryText,
     }),
+    qrCodeWrapperBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.qrCodeWrapperBg,
+      [DARK]: DARK_COLORS.qrCodeWrapperBg,
+    }),
     statusPillBorder: theme('mode', {
       [LIGHT]: LIGHT_COLORS.statusPillBorder,
       [DARK]: DARK_COLORS.statusPillBorder,
+    }),
+    sidebarActiveItemBorder: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.sidebarActiveItemBorder,
+      [DARK]: DARK_COLORS.sidebarActiveItemBorder,
     }),
   },
 };

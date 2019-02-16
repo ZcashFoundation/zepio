@@ -6,22 +6,27 @@ type Colors = {
   primary: ThemeSet,
   secondary: ThemeSet,
   sidebarBg: ThemeSet,
+
+  // Sidebar
   sidebarItem: ThemeSet,
   sidebarItemActive: ThemeSet,
+  sidebarActiveItemBorder:  ThemeSet,
   sidebarHoveredItem: ThemeSet,
   sidebarHoveredItemLabel: ThemeSet,
+  sidebarLogoGradientBegin: ThemeSet,
+  sidebarLogoGradientEnd: ThemeSet,
+
   cardBackgroundColor: ThemeSet,
   text: ThemeSet,
   activeItem: ThemeSet,
   inactiveItem: ThemeSet,
-  sidebarLogoGradientBegin: ThemeSet,
-  sidebarLogoGradientEnd: ThemeSet,
   background: ThemeSet,
+
+  // Transactions
   transactionSent: ThemeSet,
   transactionReceived: ThemeSet,
   transactionsDate: ThemeSet,
   transactionsItemHovered: ThemeSet,
-  inputBackground: ThemeSet,
   selectButtonShadow: ThemeSet,
   transactionsDetailsLabel: ThemeSet,
   statusPillLabel: ThemeSet,
@@ -39,6 +44,8 @@ type Colors = {
   buttonPrimaryText: ThemeSet,
   buttonSecondaryText: ThemeSet,
   statusPillBorder: ThemeSet,
+  inputBg: ThemeSet,
+  qrCodeWrapperBg: ThemeSet,
 };
 
 type FontSize = {

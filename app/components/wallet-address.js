@@ -20,7 +20,7 @@ const AddressWrapper = styled.div`
 const Input = styled.input`
   border-radius: ${props => props.theme.boxBorderRadius};
   border: none;
-  background-color: ${props => props.theme.colors.inputBackground};
+  background-color: ${props => props.theme.colors.inputBg};
   color: ${props => props.theme.colors.text};
   padding: 15px;
   width: 100%;
@@ -35,7 +35,7 @@ const Input = styled.input`
 const QRCodeWrapper = styled.div`
   align-items: center;
   display: flex;
-  background-color: #000;
+  background-color: ${props => props.theme.colors.qrCodeWrapperBg}
   border-radius: 6px;
   padding: 20px;
   margin-top: 10px;

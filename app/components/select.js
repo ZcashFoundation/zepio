@@ -22,7 +22,7 @@ const SelectWrapper = styled.div`
   flex-direction: row;
   border-radius: ${(props: SelectWrapperProps) => props.theme.boxBorderRadius};
   border: none;
-  background-color: ${(props: SelectWrapperProps) => props.bgColor || props.theme.colors.inputBackground};
+  background-color: ${(props: SelectWrapperProps) => props.bgColor || props.theme.colors.inputBg};
   color: ${(props: SelectWrapperProps) => props.theme.colors.text};
   width: 100%;
   outline: none;
@@ -125,7 +125,7 @@ export class SelectComponent extends PureComponent<Props, State> {
   static defaultProps = {
     placeholder: '',
     placement: 'bottom',
-    bgColor: appTheme.colors.inputBackground,
+    bgColor: appTheme.colors.inputBg,
     capitalize: true,
   };
 
