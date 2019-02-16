@@ -2,62 +2,82 @@
 
 import eres from 'eres';
 import { connect } from 'react-redux';
-import flow from 'lodash.flow';
-import groupBy from 'lodash.groupby';
-import dateFns from 'date-fns';
 import { BigNumber } from 'bignumber.js';
+import uuidv4 from 'uuid/v4';
 
 import { TransactionsView } from '../views/transactions';
 import {
   loadTransactions,
   loadTransactionsSuccess,
   loadTransactionsError,
+  resetTransactionsList,
 } from '../redux/modules/transactions';
 import rpc from '../../services/api';
+import { listShieldedTransactions } from '../../services/shielded-transactions';
 import store from '../../config/electron-store';
 
-import { sortBy } from '../utils/sort-by';
+import { sortByDescend } from '../utils/sort-by-descend';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
+import type { Transaction } from '../components/transaction-item';
 
 const mapStateToProps = ({ transactions }: AppState) => ({
   transactions: transactions.list,
   isLoading: transactions.isLoading,
   error: transactions.error,
   zecPrice: transactions.zecPrice,
+  hasNextPage: transactions.hasNextPage,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  getTransactions: async () => {
+export type MapStateToProps = {
+  transactions: Transaction[],
+  isLoading: boolean,
+  error: string | null,
+  zecPrice: number,
+  hasNextPage: boolean,
+};
+
+export type MapDispatchToProps = {|
+  getTransactions: ({
+    offset: number,
+    count: number,
+    shieldedTransactionsCount: number,
+  }) => Promise<void>,
+  resetTransactionsList: () => void,
+|};
+
+const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
+  resetTransactionsList: () => dispatch(resetTransactionsList()),
+  getTransactions: async ({ offset, count, shieldedTransactionsCount }) => {
     dispatch(loadTransactions());
 
-    const [transactionsErr, transactions = []] = await eres(rpc.listtransactions());
+    const [transactionsErr, transactions = []] = await eres(
+      rpc.listtransactions('', count, offset),
+    );
 
     if (transactionsErr) {
       return dispatch(loadTransactionsError({ error: transactionsErr.message }));
     }
 
-    const formattedTransactions = flow([
-      arr => arr.map(transaction => ({
-        transactionId: transaction.txid,
+    const formattedTransactions = sortByDescend('date')(
+      [
+        ...transactions,
+        ...listShieldedTransactions({ count, offset: shieldedTransactionsCount }),
+      ].map(transaction => ({
+        transactionId: transaction.txid ? transaction.txid : uuidv4(),
         type: transaction.category,
         date: new Date(transaction.time * 1000).toISOString(),
         address: transaction.address,
         amount: new BigNumber(transaction.amount).absoluteValue().toNumber(),
       })),
-      arr => groupBy(arr, obj => dateFns.format(obj.date, 'MMM DD, YYYY')),
-      obj => Object.keys(obj).map(day => ({
-        day,
-        list: sortBy('date')(obj[day]),
-      })),
-      sortBy('day'),
-    ])(transactions);
+    );
 
     dispatch(
       loadTransactionsSuccess({
         list: formattedTransactions,
         zecPrice: new BigNumber(store.get('ZEC_DOLLAR_PRICE')).toNumber(),
+        hasNextPage: Boolean(formattedTransactions.length),
       }),
     );
   },

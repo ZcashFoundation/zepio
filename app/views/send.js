@@ -159,11 +159,9 @@ const ConfirmItemWrapper = styled(RowComponent)`
   width: 100%;
 `;
 
-type ItemLabelProps =
-  | {
-      color: string,
-    }
-  | Object;
+type ItemLabelProps = {
+  color: string,
+};
 /* eslint-disable max-len */
 const ItemLabel = styled(TextComponent)`
   font-weight: ${(props: PropsWithTheme<ItemLabelProps>) => String(props.theme.fontWeight.bold)};
@@ -227,7 +225,7 @@ const MaxAvailableAmount = styled.button`
   background: none;
   color: white;
   cursor: pointer;
-  border-left: ${props => `1px solid ${props.theme.colors.background}`};
+  border-left: ${props => `1px solid ${props.theme.colors.background(props)}`};
   opacity: 0.8;
 
   &:hover {

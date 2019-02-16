@@ -188,7 +188,13 @@ export const TransactionDetailsComponent = ({
       <InfoRow>
         <ColumnComponent width='100%'>
           <Label value='TRANSACTION ID' />
-          <TransactionId onClick={() => openExternal(ZCASH_EXPLORER_BASE_URL + transactionId)}>
+          <TransactionId
+            onClick={
+              from !== '(Shielded)'
+                ? () => openExternal(ZCASH_EXPLORER_BASE_URL + transactionId)
+                : () => {}
+            }
+          >
             <Ellipsis value={transactionId} />
           </TransactionId>
         </ColumnComponent>

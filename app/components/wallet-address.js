@@ -14,6 +14,7 @@ const AddressWrapper = styled.div`
   background-color: #000;
   border-radius: 6px;
   padding: 7px 13px;
+  margin-bottom: 10px;
   width: 100%;
 `;
 
@@ -38,7 +39,7 @@ const QRCodeWrapper = styled.div`
   background-color: ${props => props.theme.colors.qrCodeWrapperBg}
   border-radius: 6px;
   padding: 20px;
-  margin-top: 10px;
+  margin-bottom: 10px;
   width: 100%;
 `;
 

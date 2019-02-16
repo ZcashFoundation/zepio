@@ -10,9 +10,9 @@ declare module 'electron-store' {
       fileExtension?: string,
     }): ElectronStore;
 
-    set(key: string, value: string): void;
+    set(key: string, value: any): void;
     set(payload: Object): void;
-    get(key: string): string;
+    get(key: string): any;
     has(key: string): boolean;
     delete(key: string): void;
     clear(): void;

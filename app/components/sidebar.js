@@ -38,6 +38,7 @@ const StyledLink = styled.a`
   width: 100%;
   display: flex;
   align-items: center;
+  outline: none;
   cursor: pointer;
   outline: none;
   transition: all 0.03s ${(props: StyledLinkProps) => props.theme.transitionEase};
