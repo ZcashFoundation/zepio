@@ -3,8 +3,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { Transition, animated } from 'react-spring';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { ipcRenderer } from 'electron';
 
 import CircleProgressComponent from 'react-circle';
 import { TextComponent } from './text';
@@ -41,35 +39,27 @@ const Logo = styled.img`
 
 type Props = {
   progress: number,
+  message: string,
 };
 
 type State = {
   start: boolean,
-  message: string,
 };
 
 const TIME_DELAY_ANIM = 100;
 
 export class LoadingScreen extends PureComponent<Props, State> {
-  state = { start: false, message: 'ZEC Wallet Starting' };
+  state = { start: false };
 
   componentDidMount() {
     setTimeout(() => {
       this.setState(() => ({ start: true }));
     }, TIME_DELAY_ANIM);
-
-    ipcRenderer.on('zcashd-params-download', (event: Object, message: string) => {
-      this.setState(() => ({ message }));
-    });
-  }
-
-  componentWillUnmount() {
-    ipcRenderer.removeAllListeners('zcashd-log');
   }
 
   render() {
-    const { start, message } = this.state;
-    const { progress } = this.props;
+    const { start } = this.state;
+    const { progress, message } = this.props;
 
     return (
       <Wrapper data-testid='LoadingScreen'>
