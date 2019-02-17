@@ -21,6 +21,7 @@ const MenuWrapper = styled.div`
   margin-left: -10px;
   max-width: 400px;
   overflow: hidden;
+  border: 1px solid ${props => props.theme.colors.border}
 `;
 
 const MenuItem = styled.button`

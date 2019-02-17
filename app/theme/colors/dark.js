@@ -76,6 +76,7 @@ export const DARK_COLORS = {
 
   // Console
   consoleBg: black,
+  consoleBorder: 'transparent',
 
   // Input
   inputBorder: 'transparent',

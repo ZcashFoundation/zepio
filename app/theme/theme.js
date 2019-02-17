@@ -218,5 +218,9 @@ export const appTheme: AppTheme = {
       [LIGHT]: LIGHT_COLORS.sidebarItemHoveredBg,
       [DARK]: DARK_COLORS.sidebarItemHoveredBg,
     }),
+    consoleBorder: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.consoleBorder,
+      [DARK]: DARK_COLORS.consoleBorder,
+    }),
   },
 };

@@ -36,6 +36,7 @@ type Colors = {
 
   // Console
   consoleBg: ThemeSet,
+  consoleBorder: ThemeSet,
 
   // Buttons
   buttonPrimaryText: ThemeSet,

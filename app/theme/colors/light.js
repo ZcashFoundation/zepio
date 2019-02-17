@@ -70,7 +70,7 @@ export const LIGHT_COLORS = {
 
   // Status Pill
   statusPillLabel: text,
-  statusPillBg: '#F2F2F2',
+  statusPillBg: '#F9FBFE',
   statusPillBorder: border,
 
   // QR Code
@@ -88,6 +88,7 @@ export const LIGHT_COLORS = {
 
   // Console
   consoleBg: white,
+  consoleBorder: border,
 
   // Misc
   divider: '#AAAAAA',
