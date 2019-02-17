@@ -1,11 +1,15 @@
 // @flow
 
 import React from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import dateFns from 'date-fns';
 
-import SentIcon from '../assets/images/transaction_sent_icon.svg';
-import ReceivedIcon from '../assets/images/transaction_received_icon.svg';
+import { DARK } from '../constants/themes';
+
+import SentIconDark from '../assets/images/transaction_sent_icon_dark.svg';
+import ReceivedIconDark from '../assets/images/transaction_received_icon_dark.svg';
+import SentIconLight from '../assets/images/transaction_sent_icon_light.svg';
+import ReceivedIconLight from '../assets/images/transaction_received_icon_light.svg';
 
 import { RowComponent } from './row';
 import { ColumnComponent } from './column';
@@ -13,18 +17,22 @@ import { TextComponent } from './text';
 import { ModalComponent } from './modal';
 import { TransactionDetailsComponent } from './transaction-details';
 
-import { appTheme } from '../theme';
-
 import { formatNumber } from '../utils/format-number';
 import { truncateAddress } from '../utils/truncate-address';
 
 const Wrapper = styled(RowComponent)`
-  background-color: ${props => props.theme.colors.cardBackgroundColor};
+  background-color: ${props => props.theme.colors.transactionItemBg};
   padding: 15px 17px;
   cursor: pointer;
+  border: 1px solid ${props => props.theme.colors.transactionItemBorder};
+  border-bottom: none;
+
+  &:last-child {
+    border-bottom: 1px solid ${props => props.theme.colors.transactionItemBorder};
+  }
 
   &:hover {
-    background-color: #0a0a0a;
+    background-color: ${props => props.theme.colors.transactionItemHoverBg};
   }
 `;
 
@@ -41,10 +49,10 @@ const TransactionTypeLabel = styled(TextComponent)`
 /* eslint-enable max-len */
 
 const TransactionAddress = styled(TextComponent)`
-  color: #a7a7a7;
+  color: ${props => props.theme.colors.transactionItemAddress};
 
   ${String(Wrapper)}:hover & {
-    color: #fff;
+    color: ${props => props.theme.colors.transactionItemAddressHover};
   }
 `;
 
@@ -65,15 +73,17 @@ export type Transaction = {
   amount: number,
   zecPrice: number,
   transactionId: string,
+  theme: AppTheme,
 };
 
-export const TransactionItemComponent = ({
+const Component = ({
   type,
   date,
   address,
   amount,
   zecPrice,
   transactionId,
+  theme,
 }: Transaction) => {
   const isReceived = type === 'receive';
   const transactionTime = dateFns.format(new Date(date), 'HH:mm A');
@@ -87,6 +97,13 @@ export const TransactionItemComponent = ({
   });
   const transactionAddress = truncateAddress(address);
 
+  const receivedIcon = theme.mode === DARK
+    ? ReceivedIconDark
+    : ReceivedIconLight;
+  const sentIcon = theme.mode === DARK
+    ? SentIconDark
+    : SentIconLight;
+
   return (
     <ModalComponent
       renderTrigger={toggleVisibility => (
@@ -98,7 +115,7 @@ export const TransactionItemComponent = ({
         >
           <RowComponent alignItems='center'>
             <RowComponent alignItems='center'>
-              <Icon src={isReceived ? ReceivedIcon : SentIcon} alt='Transaction Type Icon' />
+              <Icon src={isReceived ? receivedIcon : sentIcon} alt='Transaction Type Icon' />
               <TransactionColumn>
                 <TransactionTypeLabel isReceived={isReceived} value={type} isBold />
                 <TransactionTime value={transactionTime} />
@@ -111,11 +128,11 @@ export const TransactionItemComponent = ({
               isBold
               value={transactionValueInZec}
               color={isReceived
-                ? appTheme.colors.transactionReceived
-                : appTheme.colors.transactionSent
+                ? theme.colors.transactionReceived
+                : theme.colors.transactionSent
               }
             />
-            <TextComponent value={transactionValueInUsd} color={appTheme.colors.inactiveItem} />
+            <TextComponent value={transactionValueInUsd} color={theme.colors.inactiveItem} />
           </ColumnComponent>
         </Wrapper>
       )}
@@ -135,3 +152,5 @@ export const TransactionItemComponent = ({
     </ModalComponent>
   );
 };
+
+export const TransactionItemComponent = withTheme(Component);

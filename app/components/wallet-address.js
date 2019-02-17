@@ -13,7 +13,7 @@ const AddressWrapper = styled.div`
   display: flex;
   background-color: #000;
   border-radius: 6px;
-  padding: 7px 13px;
+  padding: 0 13px 0 0;
   margin-bottom: 10px;
   width: 100%;
 `;

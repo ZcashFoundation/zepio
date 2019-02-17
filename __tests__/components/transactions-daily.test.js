@@ -26,6 +26,7 @@ describe('<TransactionDailyComponent />', () => {
                 amount: 1.7891,
                 zecPrice: 1.345,
                 date: new Date().toISOString(),
+                theme: appTheme,
               },
               {
                 type: 'send',
@@ -34,6 +35,7 @@ describe('<TransactionDailyComponent />', () => {
                 amount: 0.8458,
                 zecPrice: 1.344,
                 date: new Date().toISOString(),
+                theme: appTheme,
               },
             ]}
           />

@@ -43,16 +43,16 @@ export const appTheme: AppTheme = {
       [DARK]: DARK_COLORS.sidebarBg,
     }),
     sidebarItem: theme('mode', {
-      [LIGHT]: LIGHT_COLORS.brandThree,
-      [DARK]: DARK_COLORS.brandThree,
+      [LIGHT]: LIGHT_COLORS.sidebarItem,
+      [DARK]: DARK_COLORS.sidebarItem,
     }),
     sidebarItemActive: theme('mode', {
-      [LIGHT]: LIGHT_COLORS.activeItem,
-      [DARK]: DARK_COLORS.activeItem,
+      [LIGHT]: LIGHT_COLORS.sidebarItemActive,
+      [DARK]: DARK_COLORS.sidebarItemActive,
     }),
-    sidebarHoveredItem: theme('mode', {
-      [LIGHT]: LIGHT_COLORS.sidebarHoveredItem,
-      [DARK]: DARK_COLORS.sidebarHoveredItem,
+    sidebarItemHovered: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.sidebarItemHovered,
+      [DARK]: DARK_COLORS.sidebarItemHovered,
     }),
     sidebarHoveredItemLabel: theme('mode', {
       [LIGHT]: LIGHT_COLORS.sidebarHoveredItemLabel,
@@ -110,9 +110,9 @@ export const appTheme: AppTheme = {
       [LIGHT]: LIGHT_COLORS.selectButtonShadow,
       [DARK]: DARK_COLORS.selectButtonShadow,
     }),
-    transactionsDetailsLabel: theme('mode', {
-      [LIGHT]: LIGHT_COLORS.transactionsDetailsLabel,
-      [DARK]: DARK_COLORS.transactionsDetailsLabel,
+    transactionDetailsLabel: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.transactionDetailsLabel,
+      [DARK]: DARK_COLORS.transactionDetailsLabel,
     }),
     statusPillLabel: theme('mode', {
       [LIGHT]: LIGHT_COLORS.statusPillLabel,
@@ -173,6 +173,50 @@ export const appTheme: AppTheme = {
     sidebarActiveItemBorder: theme('mode', {
       [LIGHT]: LIGHT_COLORS.sidebarActiveItemBorder,
       [DARK]: DARK_COLORS.sidebarActiveItemBorder,
+    }),
+    transactionItemBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.transactionItemBg,
+      [DARK]: DARK_COLORS.transactionItemBg,
+    }),
+    transactionItemHoverBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.transactionItemHoverBg,
+      [DARK]: DARK_COLORS.transactionItemHoverBg,
+    }),
+    transactionItemBorder: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.transactionItemBorder,
+      [DARK]: DARK_COLORS.transactionItemBorder,
+    }),
+    transactionItemAddress: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.transactionItemAddress,
+      [DARK]: DARK_COLORS.transactionItemAddress,
+    }),
+    transactionItemAddressHover: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.transactionItemAddressHover,
+      [DARK]: DARK_COLORS.transactionItemAddressHover,
+    }),
+    transactionDetailsShadow: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.transactionDetailsShadow,
+      [DARK]: DARK_COLORS.transactionDetailsShadow,
+    }),
+    transactionDetailsBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.transactionDetailsBg,
+      [DARK]: DARK_COLORS.transactionDetailsBg,
+    }),
+    transactionDetailsRowHover: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.transactionDetailsRowHover,
+      [DARK]: DARK_COLORS.transactionDetailsRowHover,
+    }),
+    transactionDetailsDivider: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.transactionDetailsDivider,
+      [DARK]: DARK_COLORS.transactionDetailsDivider,
+    }),
+    inputBorder: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.inputBorder,
+      [DARK]: DARK_COLORS.inputBorder,
+    }),
+    sidebarItemHoveredBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.sidebarItemHoveredBg,
+      [DARK]: DARK_COLORS.sidebarItemHoveredBg,
     }),
   },
 };

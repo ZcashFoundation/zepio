@@ -7,45 +7,77 @@ type Colors = {
   secondary: ThemeSet,
   sidebarBg: ThemeSet,
 
-  // Sidebar
-  sidebarItem: ThemeSet,
-  sidebarItemActive: ThemeSet,
-  sidebarActiveItemBorder:  ThemeSet,
-  sidebarHoveredItem: ThemeSet,
-  sidebarHoveredItemLabel: ThemeSet,
-  sidebarLogoGradientBegin: ThemeSet,
-  sidebarLogoGradientEnd: ThemeSet,
-
   cardBackgroundColor: ThemeSet,
   text: ThemeSet,
   activeItem: ThemeSet,
   inactiveItem: ThemeSet,
   background: ThemeSet,
 
+  selectButtonShadow: ThemeSet,
+
+  modalItemLabel: ThemeSet,
+  blackTwo: ThemeSet,
+  buttonBorderColor: ThemeSet,
+
+  // Divider
+  divider: ThemeSet,
+
+  // Header
+  headerTitle: ThemeSet,
+
+  // Status Pill
+  statusPillBg: ThemeSet,
+  statusPillLabel: ThemeSet,
+  statusPillBorder: ThemeSet,
+
+  // Wallet Summary
+  walletSummaryBg: ThemeSet,
+  walletSummaryBorder: ThemeSet,
+
+  // Console
+  consoleBg: ThemeSet,
+
+  // Buttons
+  buttonPrimaryText: ThemeSet,
+  buttonSecondaryText: ThemeSet,
+
+  // QR Code
+  qrCodeWrapperBg: ThemeSet,
+
   // Transactions
   transactionSent: ThemeSet,
   transactionReceived: ThemeSet,
   transactionsDate: ThemeSet,
   transactionsItemHovered: ThemeSet,
-  selectButtonShadow: ThemeSet,
-  transactionsDetailsLabel: ThemeSet,
-  statusPillLabel: ThemeSet,
-  modalItemLabel: ThemeSet,
-  blackTwo: ThemeSet,
-  buttonBorderColor: ThemeSet,
-  divider: ThemeSet,
-  sidebarBg: ThemeSet,
-  headerTitle: ThemeSet,
-  statusPillBg: ThemeSet,
-  walletSummaryBg: ThemeSet,
-  walletSummaryBorder: ThemeSet,
-  consoleBg: ThemeSet,
-  sidebarBorderRight: ThemeSet,
-  buttonPrimaryText: ThemeSet,
-  buttonSecondaryText: ThemeSet,
-  statusPillBorder: ThemeSet,
+
+  // Transaction Item
+  transactionItemBg: ThemeSet,
+  transactionItemHoverBg: ThemeSet,
+  transactionItemAddress: ThemeSet,
+  transactionItemAddressHover: ThemeSet,
+
+  // Transaction Details
+  transactionDetailsShadow: ThemeSet,
+  transactionDetailsBg: ThemeSet,
+  transactionDetailsRowHover: ThemeSet,
+  transactionDetailsDivider: ThemeSet,
+  transactionDetailsLabel: ThemeSet,
+
+  // Input
   inputBg: ThemeSet,
-  qrCodeWrapperBg: ThemeSet,
+  inputBorder: ThemeSet,
+
+  // Sidebar
+  sidebarBg: ThemeSet,
+  sidebarItem: ThemeSet,
+  sidebarItemActive: ThemeSet,
+  sidebarActiveItemBorder:  ThemeSet,
+  sidebarBorderRight: ThemeSet,
+  sidebarItemHovered: ThemeSet,
+  sidebarHoveredItemLabel: ThemeSet,
+  sidebarLogoGradientBegin: ThemeSet,
+  sidebarLogoGradientEnd: ThemeSet,
+  sidebarItemHoveredBg: ThemeSet,
 };
 
 type FontSize = {

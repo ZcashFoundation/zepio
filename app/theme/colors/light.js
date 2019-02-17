@@ -1,13 +1,14 @@
 // @flow
 
 const white = '#FFFFFF';
+const whiteHover = '#F9FBFE';
 const offWhite = '#F9F9F9';
 const black = '#000000';
 const text = '#142533';
 const secondaryText = '#777777';
 const brand = '#5684EB';
 const error = '#FF6C6C';
-const success = '#6AEAC0';
+const success = '#66BE54';
 const logo = '#F4B728';
 const logo2 = '#FFE240';
 const border = '#DDDDDD';
@@ -36,11 +37,11 @@ export const LIGHT_COLORS = {
   sidebarBorderRight: border,
   sidebarLogoGradientBegin: logo,
   sidebarLogoGradientEnd: logo2,
-  sidebarHoveredItem: offWhite,
   sidebarHoveredItemLabel: '#8E8E96',
-  sidebarItem: offWhite,
-  sidebarItemLabel: '#8E8E96',
-  sidebarActiveItem: 'red',
+  sidebarItem: '#aaa',
+  sidebarItemActive: text,
+  sidebarItemHovered: text,
+  sidebarItemHoveredBg: offWhite,
   sidebarActiveItemLabel: '#8E8E96',
   sidebarActiveItemBorder: 'red',
 
@@ -49,7 +50,20 @@ export const LIGHT_COLORS = {
   transactionReceived: success,
   transactionsDate: secondaryText,
   transactionsItemHovered: '#222222',
-  transactionsDetailsLabel: secondaryText,
+
+  // Transaction Item
+  transactionItemBg: white,
+  transactionItemHoverBg: whiteHover,
+  transactionItemBorder: border,
+  transactionItemAddress: '#666666',
+  transactionItemAddressHover: '#666666',
+
+  // Transaction Details
+  transactionDetailsShadow: `0px 0px 1px 0px ${black}`,
+  transactionDetailsBg: white,
+  transactionDetailsRowHover: whiteHover,
+  transactionDetailsDivider: border,
+  transactionDetailsLabel: '#999999',
 
   // Select
   selectButtonShadow: 'rgba(238,201,76,0.65)',
@@ -59,6 +73,7 @@ export const LIGHT_COLORS = {
   statusPillBg: '#F2F2F2',
   statusPillBorder: border,
 
+  // QR Code
   qrCodeWrapperBg: white,
 
   // Header
@@ -76,4 +91,7 @@ export const LIGHT_COLORS = {
 
   // Misc
   divider: '#AAAAAA',
+
+  // Input
+  inputBorder: border,
 };

@@ -35,6 +35,7 @@ const getDefaultStyles: ($PropertyType<Props, 'inputType'>) => Element<*> = t =>
   width: 100%;
   outline: none;
   font-family: ${(props: DefaultStylesProps) => props.theme.fontFamily};
+  border: 1px solid ${(props: DefaultStylesProps) => props.theme.colors.inputBorder};
 
   ::placeholder {
     opacity: 0.5;

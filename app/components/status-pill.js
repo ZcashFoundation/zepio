@@ -1,16 +1,20 @@
 // @flow
 
-import React, { Component } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, { PureComponent } from 'react';
+import styled, { keyframes, withTheme } from 'styled-components';
 import eres from 'eres';
 
 import { TextComponent } from './text';
 
 import rpc from '../../services/api';
+import { DARK } from '../constants/themes';
 
-import readyIcon from '../assets/images/green_check.png';
-import syncIcon from '../assets/images/sync_icon.png';
-import errorIcon from '../assets/images/error_icon.png';
+import readyIconDark from '../assets/images/green_check_dark.png';
+import readyIconLight from '../assets/images/green_check_light.png';
+import syncIconDark from '../assets/images/sync_icon_dark.png';
+import syncIconLight from '../assets/images/sync_icon_light.png';
+import errorIconDark from '../assets/images/error_icon_dark.png';
+import errorIconLight from '../assets/images/error_icon_light.png';
 
 const rotate = keyframes`
   from {
@@ -49,7 +53,9 @@ const StatusPillLabel = styled(TextComponent)`
   user-select: none;
 `;
 
-type Props = {};
+type Props = {
+  theme: AppTheme,
+};
 
 type State = {
   type: string,
@@ -58,15 +64,25 @@ type State = {
   isSyncing: boolean,
 };
 
-export class StatusPill extends Component<Props, State> {
+class Component extends PureComponent<Props, State> {
   timer: ?IntervalID = null;
 
-  state = {
-    type: 'syncing',
-    icon: syncIcon,
-    progress: 0,
-    isSyncing: true,
-  };
+  constructor(props: Props) {
+    super(props);
+
+    const { theme } = props;
+
+    const syncIcon = theme.mode === DARK
+      ? syncIconDark
+      : syncIconLight;
+
+    this.state = {
+      type: 'syncing',
+      icon: syncIcon,
+      progress: 0,
+      isSyncing: true,
+    };
+  }
 
   componentDidMount() {
     this.timer = setInterval(() => {
@@ -82,6 +98,15 @@ export class StatusPill extends Component<Props, State> {
   }
 
   getBlockchainStatus = async () => {
+    const { theme } = this.props;
+
+    const readyIcon = theme.mode === DARK
+      ? readyIconDark
+      : readyIconLight;
+    const errorIcon = theme.mode === DARK
+      ? errorIconDark
+      : errorIconLight;
+
     const [blockchainErr, blockchaininfo] = await eres(rpc.getblockchaininfo());
 
     if (blockchainErr || !blockchaininfo) return;
@@ -100,7 +125,10 @@ export class StatusPill extends Component<Props, State> {
     });
 
     if (blockchainErr) {
-      this.setState(() => ({ type: 'error', icon: errorIcon }));
+      this.setState(() => ({
+        type: 'error',
+        icon: errorIcon,
+      }));
     }
   };
 
@@ -119,3 +147,5 @@ export class StatusPill extends Component<Props, State> {
     );
   }
 }
+
+export const StatusPill = withTheme(Component);

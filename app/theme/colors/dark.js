@@ -1,11 +1,14 @@
 // @flow
 
-const text = '#ffffff';
+const white = '#FFFFFF';
+const text = white;
 const brand = '#F4B728';
 const brand2 = '#FFE240';
 const black = '#000000';
 const error = '#FF6C6C';
 const success = '#6AEAC0';
+const darkBrand = '#212124';
+const brandThree = '#5d5d65';
 
 export const DARK_COLORS = {
   darkOne: brand,
@@ -28,7 +31,18 @@ export const DARK_COLORS = {
   transactionReceived: success,
   transactionsDate: '#777777',
   transactionsItemHovered: '#222222',
-  transactionsDetailsLabel: '#777777',
+
+  transactionItemBg: black,
+  transactionItemHoverBg: '#0A0A0A',
+  transactionItemBorder: 'transparent',
+  transactionItemAddress: '#A7A7A7',
+  transactionItemAddressHover: white,
+
+  transactionDetailsShadow: `0px 0px 20px 0px ${black}`,
+  transactionDetailsBg: darkBrand,
+  transactionDetailsRowHover: '#1D1D1D',
+  transactionDetailsDivider: '#3A3A3A',
+  transactionDetailsLabel: '#777777',
 
   // Status Pill
   statusPillLabel: '#727272',
@@ -37,13 +51,15 @@ export const DARK_COLORS = {
 
   // Sidebar
   sidebarBg: black,
-  sidebarBorderRight: '#212124',
+  sidebarBorderRight: black,
   sidebarLogoGradientBegin: brand,
   sidebarLogoGradientEnd: brand2,
-  sidebarHoveredItem: '#1C1C1C',
   sidebarHoveredItemLabel: '#8e8e96',
   sidebarActiveItemBorder: 'red',
-
+  sidebarItem: brandThree,
+  sidebarItemActive: brand,
+  sidebarItemHovered: '#FFF',
+  sidebarItemHoveredBg: darkBrand,
 
   // Misc
   divider: black,
@@ -60,4 +76,7 @@ export const DARK_COLORS = {
 
   // Console
   consoleBg: black,
+
+  // Input
+  inputBorder: 'transparent',
 };

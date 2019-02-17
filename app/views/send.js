@@ -23,11 +23,11 @@ import { ascii2hex } from '../utils/ascii-to-hexadecimal';
 import type { SendTransactionInput } from '../containers/send';
 import type { State as SendState } from '../redux/modules/send';
 
-import SentIcon from '../assets/images/transaction_sent_icon.svg';
+import SentIcon from '../assets/images/transaction_sent_icon_dark.svg';
 import MenuIcon from '../assets/images/menu_icon.svg';
-import ValidIcon from '../assets/images/green_check.png';
-import InvalidIcon from '../assets/images/error_icon.png';
-import LoadingIcon from '../assets/images/sync_icon.png';
+import ValidIcon from '../assets/images/green_check_dark.png';
+import InvalidIcon from '../assets/images/error_icon_dark.png';
+import LoadingIcon from '../assets/images/sync_icon_dark.png';
 import ArrowUpIcon from '../assets/images/arrow_up.png';
 
 import { appTheme } from '../theme';
@@ -170,6 +170,10 @@ const ItemLabel = styled(TextComponent)`
   margin-bottom: 3.5px;
 `;
 
+const ValidateItemLabel = styled(ItemLabel)`
+  margin-bottom: -1px;
+`;
+
 const SendZECValue = styled(TextComponent)`
   color: ${props => props.theme.colors.transactionSent};
   font-size: ${props => `${props.theme.fontSize.large}em`};
@@ -236,6 +240,10 @@ const MaxAvailableAmount = styled.button`
 const MaxAvailableAmountImg = styled.img`
   width: 20px;
   height: 20px;
+`;
+
+const ValidateWrapper = styled(RowComponent)`
+  margin-top: 3px;
 `;
 
 type Props = {
@@ -386,15 +394,21 @@ export class SendView extends PureComponent<Props, State> {
     const { isToAddressValid } = this.props;
 
     return isToAddressValid ? (
-      <RowComponent alignItems='center'>
+      <ValidateWrapper alignItems='center'>
         <ValidateStatusIcon src={ValidIcon} />
-        <ItemLabel value='VALID' color={appTheme.colors.transactionReceived} />
-      </RowComponent>
+        <ValidateItemLabel
+          value='VALID'
+          color={appTheme.colors.transactionReceived}
+        />
+      </ValidateWrapper>
     ) : (
-      <RowComponent alignItems='center'>
+      <ValidateWrapper alignItems='center'>
         <ValidateStatusIcon src={InvalidIcon} />
-        <ItemLabel value='INVALID' color={appTheme.colors.transactionSent} />
-      </RowComponent>
+        <ValidateItemLabel
+          value='INVALID'
+          color={appTheme.colors.transactionSent}
+        />
+      </ValidateWrapper>
     );
   };
 

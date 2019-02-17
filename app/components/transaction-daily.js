@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 import { TransactionItemComponent, type Transaction } from './transaction-item';
 import { TextComponent } from './text';
-import { Divider } from './divider';
 
 const Wrapper = styled.div`
   margin-top: 20px;
@@ -41,7 +40,7 @@ export const TransactionDailyComponent = ({ transactionsDate, transactions, zecP
     <TransactionsWrapper>
       {transactions.map(({
         date, type, address, amount, transactionId,
-      }, idx) => (
+      }) => (
         <Fragment key={`${address}-${type}-${amount}-${date}`}>
           <TransactionItemComponent
             transactionId={transactionId}
@@ -51,7 +50,6 @@ export const TransactionDailyComponent = ({ transactionsDate, transactions, zecP
             amount={amount}
             zecPrice={zecPrice}
           />
-          {idx < transactions.length - 1 && <Divider />}
         </Fragment>
       ))}
     </TransactionsWrapper>
