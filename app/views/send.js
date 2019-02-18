@@ -57,7 +57,7 @@ const FormWrapper = styled.div`
 
 const SendWrapper = styled(ColumnComponent)`
   width: 25%;
-  margin-top: 60px;
+  margin-top: 45px;
 `;
 
 type AmountProps =
