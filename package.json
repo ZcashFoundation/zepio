@@ -111,6 +111,7 @@
     "p-queue": "^3.0.0",
     "process-exists": "^3.1.0",
     "qrcode.react": "^0.8.0",
+    "rc-tooltip": "^3.7.3",
     "react": "^16.6.0",
     "react-circle": "^1.1.1",
     "react-click-outside": "tj/react-click-outside",
