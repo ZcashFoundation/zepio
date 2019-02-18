@@ -51,7 +51,6 @@ const Loader = styled.img`
 `;
 
 const FormWrapper = styled.div`
-  /* margin-top: ${props => props.theme.layoutContentPaddingTop}; */
   width: 71%;
 `;
 

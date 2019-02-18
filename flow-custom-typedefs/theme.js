@@ -88,6 +88,11 @@ type Colors = {
   sidebarLogoGradientBegin: ThemeSet,
   sidebarLogoGradientEnd: ThemeSet,
   sidebarItemHoveredBg: ThemeSet,
+
+  // Settings
+  settingsCardBg: ThemeSet,
+  settingsLearnMore: ThemeSet,
+  settingsLearnMoreHovered: ThemeSet,
 };
 
 type FontSize = {

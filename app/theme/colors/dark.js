@@ -93,4 +93,9 @@ export const DARK_COLORS = {
 
   // Input
   inputBorder: 'transparent',
+
+  // Settings
+  settingsCardBg: black,
+  settingsLearnMore: '#AAAAAA',
+  settingsLearnMoreHovered: '#fff',
 };

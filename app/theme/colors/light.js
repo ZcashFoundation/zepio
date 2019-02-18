@@ -106,4 +106,9 @@ export const LIGHT_COLORS = {
 
   // Input
   inputBorder: border,
+
+  // Settings
+  settingsCardBg: white,
+  settingsLearnMore: '#a0a0a0',
+  settingsLearnMoreHovered: '#000',
 };

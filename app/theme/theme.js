@@ -250,5 +250,17 @@ export const appTheme: AppTheme = {
       [LIGHT]: LIGHT_COLORS.dropdownBorder,
       [DARK]: DARK_COLORS.dropdownBorder,
     }),
+    settingsCardBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.settingsCardBg,
+      [DARK]: DARK_COLORS.settingsCardBg,
+    }),
+    settingsLearnMore: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.settingsLearnMore,
+      [DARK]: DARK_COLORS.settingsLearnMore,
+    }),
+    settingsLearnMoreHovered: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.settingsLearnMoreHovered,
+      [DARK]: DARK_COLORS.settingsLearnMoreHovered,
+    }),
   },
 };
