@@ -25,6 +25,8 @@ export const DARK_COLORS = {
   dropdownBg: '#5d5d5d',
   dropdownHoveredBg: '#212124',
   dropdownBorder: '#4e4b4b',
+  dropdownIconBorder: '#ddd',
+  dropdownOpenedIconBorder: '#2929DD',
 
   // Card
   cardBackgroundColor: black,
@@ -79,11 +81,14 @@ export const DARK_COLORS = {
   // Misc
   divider: black,
   qrCodeWrapperBg: black,
+  qrCodeWrapperBorder: black,
   headerTitle: text,
   selectButtonShadow: 'rgba(238,201,76,0.65)',
 
   // Forms
   inputBg: black,
+  inputBorder: 'transparent',
+  inputBorderActive: '#222',
 
   // Wallet Summary
   walletSummaryBg: black,
@@ -96,9 +101,6 @@ export const DARK_COLORS = {
   // Console
   consoleBg: black,
   consoleBorder: 'transparent',
-
-  // Input
-  inputBorder: 'transparent',
 
   // Settings
   settingsCardBg: black,

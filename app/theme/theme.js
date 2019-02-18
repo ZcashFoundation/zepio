@@ -286,5 +286,21 @@ export const appTheme: AppTheme = {
       [LIGHT]: LIGHT_COLORS.buttonSecondaryHoveredBg,
       [DARK]: DARK_COLORS.buttonSecondaryHoveredBg,
     }),
+    dropdownIconBorder: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.dropdownIconBorder,
+      [DARK]: DARK_COLORS.dropdownIconBorder,
+    }),
+    dropdownOpenedIconBorder: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.dropdownOpenedIconBorder,
+      [DARK]: DARK_COLORS.dropdownOpenedIconBorder,
+    }),
+    inputBorderActive: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.inputBorderActive,
+      [DARK]: DARK_COLORS.inputBorderActive,
+    }),
+    qrCodeWrapperBorder: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.qrCodeWrapperBorder,
+      [DARK]: DARK_COLORS.qrCodeWrapperBorder,
+    }),
   },
 };

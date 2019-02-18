@@ -26,9 +26,11 @@ export const LIGHT_COLORS = {
   activeItem: brand,
 
   // Dropdown
-  dropdownBg: white,
-  dropdownHoveredBg: offWhite,
+  dropdownBg: offWhite,
+  dropdownHoveredBg: white,
   dropdownBorder: border,
+  dropdownIconBorder: '#c1c1c1',
+  dropdownOpenedIconBorder: '#828282',
 
   // Buttons
   buttonPrimaryBg: brand,
@@ -88,6 +90,7 @@ export const LIGHT_COLORS = {
 
   // QR Code
   qrCodeWrapperBg: white,
+  qrCodeWrapperBorder: border,
 
   // Header
   headerTitle: text,
@@ -102,6 +105,8 @@ export const LIGHT_COLORS = {
 
   // Forms
   inputBg: white,
+  inputBorder: border,
+  inputBorderActive: '#828282',
 
   // Console
   consoleBg: white,
@@ -109,9 +114,6 @@ export const LIGHT_COLORS = {
 
   // Misc
   divider: '#AAAAAA',
-
-  // Input
-  inputBorder: border,
 
   // Settings
   settingsCardBg: white,

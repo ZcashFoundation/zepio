@@ -27,6 +27,8 @@ type Colors = {
   dropdownBg: ThemeSet,
   dropdownHoveredBg: ThemeSet,
   dropdownBorder: ThemeSet,
+  dropdownIconBorder: ThemeSet,
+  dropdownOpenedIconBorder: ThemeSet,
 
   // Divider
   divider: ThemeSet,
@@ -59,6 +61,7 @@ type Colors = {
 
   // QR Code
   qrCodeWrapperBg: ThemeSet,
+  qrCodeWrapperBorder: ThemeSet,
 
   // Transactions
   transactionSent: ThemeSet,
@@ -82,6 +85,7 @@ type Colors = {
   // Input
   inputBg: ThemeSet,
   inputBorder: ThemeSet,
+  inputBorderActive: ThemeSet,
 
   // Sidebar
   sidebarBg: ThemeSet,

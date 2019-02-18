@@ -40,6 +40,11 @@ const getDefaultStyles: ($PropertyType<Props, 'inputType'>) => Element<*> = t =>
   ::placeholder {
     opacity: 0.5;
   }
+
+  &:focus,
+  &:active {
+    border-color: ${(props: DefaultStylesProps) => props.theme.colors.inputBorderActive};
+  }
 `;
 
 const Wrapper = styled.div`

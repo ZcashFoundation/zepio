@@ -1,12 +1,16 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 import { ColumnComponent } from './column';
 import { QRCode } from './qrcode';
 
-import eyeIcon from '../assets/images/eye.png';
+import CopyIconDark from '../assets/images/copy_icon_dark.svg';
+import CopyIconLight from '../assets/images/copy_icon_light.svg';
+import ScanIconDark from '../assets/images/scan_icon_dark.svg';
+import ScanIconLight from '../assets/images/scan_icon_light.svg';
+import { DARK } from '../constants/themes';
 
 const AddressWrapper = styled.div`
   align-items: center;
@@ -23,11 +27,18 @@ const Input = styled.input`
   border-radius: ${props => props.theme.boxBorderRadius};
   border: none;
   background-color: ${props => props.theme.colors.inputBg};
-  color: ${props => props.theme.colors.text};
   padding: 15px;
   width: 100%;
   outline: none;
   font-family: ${props => props.theme.fontFamily};
+  font-size: 13px;
+  color: #666666;
+  line-height: 1;
+  cursor: pointer;
+
+  ${AddressWrapper}:hover & {
+    color: #fff;
+  }
 
   ::placeholder {
     opacity: 0.5;
@@ -38,7 +49,8 @@ const QRCodeWrapper = styled.div`
   align-items: center;
   display: flex;
   background-color: ${props => props.theme.colors.qrCodeWrapperBg}
-  border-radius: 6px;
+  border: 1px solid ${props => props.theme.colors.qrCodeWrapperBorder}
+  border-radius: 3px;
   padding: 20px;
   margin-bottom: 10px;
   width: 100%;
@@ -48,21 +60,31 @@ const IconButton = styled.button`
   background: transparent;
   cursor: pointer;
   outline: none;
+  border: none;
+  display: flex;
+  opacity: 0.4;
+  width: 28px;
+  margin-left: 3px;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const IconImage = styled.img`
-  max-width: 15px;
+  max-width: 23px;
 `;
 
 type Props = {
   address: string,
+  theme: AppTheme,
 };
 
 type State = {
   showQRCode: boolean,
 };
 
-export class WalletAddress extends PureComponent<Props, State> {
+class Component extends PureComponent<Props, State> {
   state = {
     showQRCode: false,
   };
@@ -72,9 +94,17 @@ export class WalletAddress extends PureComponent<Props, State> {
   hide = () => this.setState(() => ({ showQRCode: false }));
 
   render() {
-    const { address } = this.props;
+    const { address, theme } = this.props;
     const { showQRCode } = this.state;
     const toggleVisibility = showQRCode ? this.hide : this.show;
+
+    const qrCodeIcon = theme.mode === DARK
+      ? ScanIconDark
+      : ScanIconLight;
+
+    const copyIcon = theme.mode === DARK
+      ? CopyIconDark
+      : CopyIconLight;
 
     return (
       <ColumnComponent width='100%'>
@@ -84,16 +114,16 @@ export class WalletAddress extends PureComponent<Props, State> {
             onChange={() => {}}
             onFocus={event => event.currentTarget.select()}
           />
-          <IconButton onClick={toggleVisibility}>
-            <IconImage
-              src={eyeIcon}
-              alt='See QRCode'
-            />
-          </IconButton>
           <IconButton onClick={() => {}}>
             <IconImage
-              src={eyeIcon}
+              src={copyIcon}
               alt='Copy Address'
+            />
+          </IconButton>
+          <IconButton onClick={toggleVisibility}>
+            <IconImage
+              src={qrCodeIcon}
+              alt='See QRCode'
             />
           </IconButton>
         </AddressWrapper>
@@ -106,3 +136,5 @@ export class WalletAddress extends PureComponent<Props, State> {
     );
   }
 }
+
+export const WalletAddress = withTheme(Component);

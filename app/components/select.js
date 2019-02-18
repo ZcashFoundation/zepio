@@ -62,9 +62,14 @@ const SelectMenuButton = styled.button`
   padding: 3px 7px;
   outline: none;
   background-color: transparent;
-  border: 1px solid
-    ${(props: PropsWithTheme<{ isOpen: boolean }>) => (props.isOpen ? props.theme.colors.primary : '#29292D')};
   border-radius: 100%;
+  cursor: pointer;
+  border: 1px solid
+    ${(props: PropsWithTheme<{ isOpen: boolean }>) => (
+    props.isOpen
+      ? props.theme.colors.dropdownOpenedIconBorder
+      : props.theme.colors.dropdownIconBorder
+  )};
 `;
 
 const Icon = styled.img`
@@ -80,8 +85,9 @@ const OptionsWrapper = styled.div`
   margin-left: -0.25%;
   border-radius: ${props => props.theme.colors.boxBorderRadius};
   border: 1px solid ${props => props.theme.colors.inputBorder};
-  ${(props: PropsWithTheme<{ placement: string, optionsAmount: number }>) => `${String(props.placement)}: ${`-${String(((props.optionsAmount || 0) * 40) + 25)}px`}`};
+  ${(props: PropsWithTheme<{ placement: string, optionsAmount: number }>) => `${String(props.placement)}: ${`-${String(((props.optionsAmount || 0) * 40) + 10)}px`}`};
   overflow-y: auto;
+  box-shadow: 1px 3px 20px rgba(16, 19, 20, 0.1);
 `;
 
 const Option = styled.button`
@@ -179,7 +185,10 @@ export class SelectComponent extends PureComponent<Props, State> {
         onClick={() => this.setState(() => ({ isOpen: !isOpen }))}
         bgColor={bgColor}
       >
-        <ValueWrapper hasValue={Boolean(value)} capitalize={capitalize}>
+        <ValueWrapper
+          hasValue={Boolean(value)}
+          capitalize={capitalize}
+        >
           {this.getSelectedLabel(value) || placeholder}
         </ValueWrapper>
         <SelectMenuButtonWrapper>
