@@ -1,16 +1,20 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { Transition, animated } from 'react-spring';
+
+import { DARK } from '../constants/themes';
 
 import { InputLabelComponent } from '../components/input-label';
 import { RowComponent } from '../components/row';
 import { TextComponent } from '../components/text';
 import { WalletAddress } from '../components/wallet-address';
 
-import MenuIcon from '../assets/images/menu_icon.svg';
-import PlusIcon from '../assets/images/plus_icon.svg';
+import MenuIconDark from '../assets/images/menu_icon_dark.svg';
+import MenuIconLight from '../assets/images/menu_icon_light.svg';
+import PlusIconDark from '../assets/images/plus_icon_dark.svg';
+import PlusIconLight from '../assets/images/plus_icon_light.svg';
 
 import type { addressType } from '../redux/modules/receive';
 
@@ -54,7 +58,11 @@ const ActionIcon = styled.img`
   border: 1px solid ${props => props.theme.colors.text};
   border-radius: 100%;
   margin-right: 11.5px;
-  padding: 5px;
+  padding: 2px;
+`;
+
+const PlusIcon = styled(ActionIcon)`
+  padding: 6.5px;
 `;
 
 const RevealsMain = styled.div`
@@ -70,13 +78,14 @@ type Props = {
   addresses: Array<string>,
   loadAddresses: () => void,
   getNewAddress: ({ type: addressType }) => void,
+  theme: AppTheme,
 };
 
 type State = {
   showAdditionalOptions: boolean,
 };
 
-export class ReceiveView extends PureComponent<Props, State> {
+class Component extends PureComponent<Props, State> {
   state = {
     showAdditionalOptions: false,
   };
@@ -98,12 +107,21 @@ export class ReceiveView extends PureComponent<Props, State> {
   };
 
   render() {
-    const { addresses } = this.props;
+    const { addresses, theme } = this.props;
     const { showAdditionalOptions } = this.state;
     const buttonText = `${showAdditionalOptions ? 'Hide' : 'Show'} Other Address Types`;
 
     const shieldedAddresses = addresses.filter(addr => addr.startsWith('z'));
     const transparentAddresses = addresses.filter(addr => addr.startsWith('t'));
+
+
+    const seeMoreIcon = theme.mode === DARK
+      ? MenuIconDark
+      : MenuIconLight;
+
+    const plusIcon = theme.mode === DARK
+      ? PlusIconDark
+      : PlusIconLight;
 
     return (
       <div>
@@ -116,8 +134,8 @@ export class ReceiveView extends PureComponent<Props, State> {
         ))}
         <Row justifyContent='space-between'>
           <ActionButton onClick={() => this.generateNewAddress('shielded')}>
-            <ActionIcon
-              src={PlusIcon}
+            <PlusIcon
+              src={plusIcon}
               alt='New Shielded Address'
             />
             <ActionText value='New Shielded Address' />
@@ -128,7 +146,7 @@ export class ReceiveView extends PureComponent<Props, State> {
           >
             <ActionIcon
               isActive={showAdditionalOptions}
-              src={MenuIcon}
+              src={seeMoreIcon}
               alt='More Options'
             />
             <ActionText value={buttonText} />
@@ -161,7 +179,7 @@ export class ReceiveView extends PureComponent<Props, State> {
                     <WalletAddress key={addr} address={addr} />
                   ))}
                   <ActionButton onClick={() => this.generateNewAddress('transparent')}>
-                    <ActionIcon src={PlusIcon} alt='New Transparent Address' />
+                    <PlusIcon src={plusIcon} alt='New Transparent Address' />
                     <ActionText value='New Transparent Address' />
                   </ActionButton>
                 </animated.div>
@@ -173,3 +191,5 @@ export class ReceiveView extends PureComponent<Props, State> {
     );
   }
 }
+
+export const ReceiveView = withTheme(Component);

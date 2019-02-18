@@ -1,11 +1,12 @@
 // @flow
 
 import React, { Fragment, PureComponent } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { withTheme, keyframes } from 'styled-components';
 import { BigNumber } from 'bignumber.js';
 import { Transition, animated } from 'react-spring';
 
 import { FEES } from '../constants/fees';
+import { DARK } from '../constants/themes';
 
 import { InputLabelComponent } from '../components/input-label';
 import { InputComponent } from '../components/input';
@@ -20,17 +21,16 @@ import { ConfirmDialogComponent } from '../components/confirm-dialog';
 import { formatNumber } from '../utils/format-number';
 import { ascii2hex } from '../utils/ascii-to-hexadecimal';
 
-import type { SendTransactionInput } from '../containers/send';
-import type { State as SendState } from '../redux/modules/send';
-
 import SentIcon from '../assets/images/transaction_sent_icon_dark.svg';
-import MenuIcon from '../assets/images/menu_icon.svg';
+import MenuIconDark from '../assets/images/menu_icon_dark.svg';
+import MenuIconLight from '../assets/images/menu_icon_light.svg';
 import ValidIcon from '../assets/images/green_check_dark.png';
 import InvalidIcon from '../assets/images/error_icon_dark.png';
 import LoadingIcon from '../assets/images/sync_icon_dark.png';
 import ArrowUpIcon from '../assets/images/arrow_up.png';
 
-import { appTheme } from '../theme';
+import type { SendTransactionInput } from '../containers/send';
+import type { State as SendState } from '../redux/modules/send';
 
 const rotate = keyframes`
   from {
@@ -263,6 +263,7 @@ type Props = {
   loadAddresses: () => void,
   loadZECPrice: () => void,
   getAddressBalance: ({ address: string }) => void,
+  theme: AppTheme,
 };
 
 type State = {
@@ -287,7 +288,7 @@ const initialState = {
   isHexMemo: false,
 };
 
-export class SendView extends PureComponent<Props, State> {
+class Component extends PureComponent<Props, State> {
   state = initialState;
 
   componentDidMount() {
@@ -396,14 +397,14 @@ export class SendView extends PureComponent<Props, State> {
   };
 
   renderValidationStatus = () => {
-    const { isToAddressValid } = this.props;
+    const { isToAddressValid, theme } = this.props;
 
     return isToAddressValid ? (
       <ValidateWrapper alignItems='center'>
         <ValidateStatusIcon src={ValidIcon} />
         <ValidateItemLabel
           value='VALID'
-          color={appTheme.colors.transactionReceived}
+          color={theme.colors.transactionReceived}
         />
       </ValidateWrapper>
     ) : (
@@ -411,7 +412,7 @@ export class SendView extends PureComponent<Props, State> {
         <ValidateStatusIcon src={InvalidIcon} />
         <ValidateItemLabel
           value='INVALID'
-          color={appTheme.colors.transactionSent}
+          color={theme.colors.transactionSent}
         />
       </ValidateWrapper>
     );
@@ -500,7 +501,7 @@ export class SendView extends PureComponent<Props, State> {
 
   render() {
     const {
-      addresses, balance, zecPrice, isSending, error, operationId,
+      addresses, balance, zecPrice, isSending, error, operationId, theme,
     } = this.props;
     const {
       showFee, from, amount, to, memo, fee, feeType,
@@ -523,6 +524,10 @@ export class SendView extends PureComponent<Props, State> {
       value: new BigNumber(amount).times(zecPrice).toNumber(),
       append: 'USD $',
     });
+
+    const seeMoreIcon = theme.mode === DARK
+      ? MenuIconDark
+      : MenuIconLight;
 
     return (
       <RowComponent id='send-wrapper' justifyContent='space-between'>
@@ -583,7 +588,7 @@ export class SendView extends PureComponent<Props, State> {
             }))
             }
           >
-            <SeeMoreIcon src={MenuIcon} alt='Show more icon' />
+            <SeeMoreIcon src={seeMoreIcon} alt='Show more icon' />
             <TextComponent value={`${showFee ? 'Hide' : 'Show'} Additional Options`} />
           </ShowFeeButton>
           <RevealsMain>
@@ -617,7 +622,7 @@ export class SendView extends PureComponent<Props, State> {
                             onChange={this.handleChange('fee')}
                             value={String(fee)}
                             disabled={feeType !== FEES.CUSTOM}
-                            bgColor={appTheme.colors.blackTwo}
+                            bgColor={theme.colors.blackTwo}
                             name='fee'
                           />
                         </ColumnComponent>
@@ -625,7 +630,7 @@ export class SendView extends PureComponent<Props, State> {
                           <SelectComponent
                             placement='top'
                             value={String(feeType)}
-                            bgColor={appTheme.colors.blackTwo}
+                            bgColor={theme.colors.blackTwo}
                             onChange={this.handleChangeFeeType}
                             options={Object.keys(FEES).map(cur => ({
                               label: cur.toLowerCase(),
@@ -690,3 +695,5 @@ export class SendView extends PureComponent<Props, State> {
     );
   }
 }
+
+export const SendView = withTheme(Component);
