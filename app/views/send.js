@@ -1,9 +1,10 @@
 // @flow
 
 import React, { Fragment, PureComponent } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, withTheme } from 'styled-components';
 import { BigNumber } from 'bignumber.js';
 import { Transition, animated } from 'react-spring';
+import Tooltip from 'rc-tooltip';
 
 import { FEES } from '../constants/fees';
 
@@ -29,8 +30,6 @@ import ValidIcon from '../assets/images/green_check.png';
 import InvalidIcon from '../assets/images/error_icon.png';
 import LoadingIcon from '../assets/images/sync_icon.png';
 import ArrowUpIcon from '../assets/images/arrow_up.png';
-
-import theme from '../theme';
 
 const rotate = keyframes`
   from {
@@ -142,6 +141,7 @@ const InfoCardUSD = styled(TextComponent)`
 const FormButton = styled(Button)`
   width: 100%;
   margin: 10px 0;
+  z-index: 10000;
 `;
 
 const ModalContent = styled(ColumnComponent)`
@@ -250,6 +250,7 @@ type Props = {
   loadAddresses: () => void,
   loadZECPrice: () => void,
   getAddressBalance: ({ address: string }) => void,
+  theme: AppTheme,
 };
 
 type State = {
@@ -261,9 +262,10 @@ type State = {
   fee: number | null,
   memo: string,
   isHexMemo: boolean,
+  showBalanceTooltip: boolean,
 };
 
-const initialState = {
+const initialState: State = {
   showFee: false,
   from: '',
   amount: '',
@@ -272,9 +274,10 @@ const initialState = {
   fee: FEES.LOW,
   memo: '',
   isHexMemo: false,
+  showBalanceTooltip: false,
 };
 
-export class SendView extends PureComponent<Props, State> {
+class View extends PureComponent<Props, State> {
   state = initialState;
 
   componentDidMount() {
@@ -285,20 +288,31 @@ export class SendView extends PureComponent<Props, State> {
     loadZECPrice();
   }
 
+  updateTooltipVisibility = ({ balance, amount }: { balance: number, amount: number }) => {
+    this.setState({ showBalanceTooltip: new BigNumber(amount).gt(balance) });
+  };
+
+  getAmountWithFee = () => {
+    const { amount, fee } = this.state;
+
+    const feeValue = fee || 0;
+
+    if (!amount) return feeValue;
+
+    return new BigNumber(amount).plus(feeValue).toNumber();
+  };
+
   handleChange = (field: string) => (value: string | number) => {
     const { validateAddress, getAddressBalance, balance } = this.props;
-    const { fee, amount } = this.state;
+    const { amount } = this.state;
 
     if (field === 'to') {
       this.setState(() => ({ [field]: value }), () => validateAddress({ address: String(value) }));
     } else if (field === 'amount') {
-      const amountWithFee = new BigNumber(value).plus(fee || 0);
-
-      const validAmount = amountWithFee.isGreaterThan(balance)
-        ? new BigNumber(balance).minus(fee || 0).toNumber()
-        : value;
-
-      this.setState(() => ({ [field]: validAmount }));
+      this.setState(
+        () => ({ [field]: value }),
+        () => this.updateTooltipVisibility({ balance, amount: new BigNumber(value).toNumber() }),
+      );
     } else {
       if (field === 'from') getAddressBalance({ address: String(value) });
 
@@ -383,17 +397,17 @@ export class SendView extends PureComponent<Props, State> {
   };
 
   renderValidationStatus = () => {
-    const { isToAddressValid } = this.props;
+    const { isToAddressValid, theme } = this.props;
 
     return isToAddressValid ? (
       <RowComponent alignItems='center'>
         <ValidateStatusIcon src={ValidIcon} />
-        <ItemLabel value='VALID' color={theme.colors.transactionReceived} />
+        <ItemLabel value='VALID' color={theme.colors.transactionReceived(this.props)} />
       </RowComponent>
     ) : (
       <RowComponent alignItems='center'>
         <ValidateStatusIcon src={InvalidIcon} />
-        <ItemLabel value='INVALID' color={theme.colors.transactionSent} />
+        <ItemLabel value='INVALID' color={theme.colors.transactionSent(this.props)} />
       </RowComponent>
     );
   };
@@ -479,17 +493,26 @@ export class SendView extends PureComponent<Props, State> {
     );
   };
 
+  shouldDisableSendButton = () => {
+    const { balance } = this.props;
+    const {
+      from, amount, to, fee,
+    } = this.state;
+
+    return !from || !amount || !to || !fee || new BigNumber(amount).gt(balance);
+  };
+
   render() {
     const {
-      addresses, balance, zecPrice, isSending, error, operationId,
+      addresses, balance, zecPrice, isSending, error, operationId, theme,
     } = this.props;
     const {
-      showFee, from, amount, to, memo, fee, feeType,
+      showFee, from, amount, to, memo, fee, feeType, showBalanceTooltip,
     } = this.state;
 
     const isEmpty = amount === '';
 
-    const fixedAmount = isEmpty ? 0.0 : amount;
+    const fixedAmount = this.getAmountWithFee();
 
     const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
     const zecBalanceInUsd = formatNumber({
@@ -501,7 +524,7 @@ export class SendView extends PureComponent<Props, State> {
       append: 'ZEC ',
     });
     const valueSentInUsd = formatNumber({
-      value: new BigNumber(amount).times(zecPrice).toNumber(),
+      value: new BigNumber(fixedAmount).times(zecPrice).toNumber(),
       append: 'USD $',
     });
 
@@ -534,7 +557,6 @@ export class SendView extends PureComponent<Props, State> {
               placeholder='ZEC 0.0'
               min={0.01}
               name='amount'
-              disabled={!from}
             />
           </AmountWrapper>
           <InputLabelComponent value='To' />
@@ -645,15 +667,26 @@ export class SendView extends PureComponent<Props, State> {
             showButtons={!isSending && !error && !operationId}
             onClose={this.reset}
             renderTrigger={toggle => (
-              <FormButton
-                onClick={() => this.showModal(toggle)}
-                id='send-submit-button'
-                label='Send'
-                variant='secondary'
-                focused
-                isFluid
-                disabled={!from || !amount || !to || !fee}
-              />
+              <Tooltip
+                placement='topRight'
+                visible={showBalanceTooltip}
+                overlay={(
+                  <>
+                    <TextComponent size={theme.fontSize.medium} value='You do not seem' />
+                    <TextComponent size={theme.fontSize.medium} value='to have enough funds' />
+                  </>
+)}
+              >
+                <FormButton
+                  onClick={() => this.showModal(toggle)}
+                  id='send-submit-button'
+                  label='Send'
+                  variant='secondary'
+                  focused
+                  isFluid
+                  disabled={this.shouldDisableSendButton()}
+                />
+              </Tooltip>
             )}
           >
             {toggle => (
@@ -672,3 +705,5 @@ export class SendView extends PureComponent<Props, State> {
     );
   }
 }
+
+export const SendView = withTheme(View);
