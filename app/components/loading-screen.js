@@ -18,7 +18,19 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${props => props.theme.colors.cardBackgroundColor};
+  background-color: ${props => props.theme.colors.loadingScreenBg};
+`;
+
+const LoadingCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  padding: 60px;
+  min-width: 300px;
+  min-height: 200px;
+  border-radius: 3px;
 `;
 
 const CircleWrapper = styled.div`
@@ -35,6 +47,10 @@ const Logo = styled.img`
   height: 50px;
   top: calc(50% - 25px);
   left: calc(50% - 25px);
+`;
+
+const LoadingText = styled(TextComponent)`
+  color: ${props => props.theme.colors.loadingScreenText};
 `;
 
 type Props = {
@@ -86,18 +102,19 @@ export class LoadingScreen extends PureComponent<Props, State> {
                 justifyContent: 'center',
               }}
             >
-              <CircleWrapper>
-                <Logo src={zcashLogo} alt='Zcash Logo' />
-                <CircleProgressComponent
-                  progress={progress}
-                  s // TODO: check if this has any effect
-                  responsive
-                  showPercentage={false}
-                  progressColor={appTheme.colors.activeItem}
-                  bgColor={appTheme.colors.inactiveItem}
-                />
-              </CircleWrapper>
-              <TextComponent value={message} />
+              <LoadingCard>
+                <CircleWrapper>
+                  <Logo src={zcashLogo} alt='Zcash Logo' />
+                  <CircleProgressComponent
+                    progress={progress}
+                    responsive
+                    showPercentage={false}
+                    progressColor={appTheme.colors.activeItem}
+                    bgColor={appTheme.colors.inactiveItem}
+                  />
+                </CircleWrapper>
+                <LoadingText value={message} />
+              </LoadingCard>
             </animated.div>
           )}
         </Transition>

@@ -15,6 +15,8 @@ export type Props = {
   className?: string,
   size?: string | number,
   align?: string,
+  onClick?: Function,
+  onDoubleClick?: Function,
 };
 
 const Text = styled.p`
@@ -28,7 +30,8 @@ const Text = styled.p`
 `;
 
 export const TextComponent = ({
-  value, isBold, color, className, size, align, id,
+  value, isBold, color, className, size,
+  align, id, onClick, onDoubleClick,
 }: Props) => (
   <Text
     id={id}
@@ -37,6 +40,8 @@ export const TextComponent = ({
     color={color}
     size={`${String(size)}em`}
     align={align}
+    onClick={onClick}
+    onDoubleClick={onDoubleClick}
   >
     {value}
   </Text>
@@ -48,4 +53,6 @@ TextComponent.defaultProps = {
   color: appTheme.colors.text,
   size: appTheme.fontSize.regular,
   align: 'left',
+  onClick: () => {},
+  onDoubleClick: () => {},
 };

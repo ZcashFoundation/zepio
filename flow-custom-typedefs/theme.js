@@ -45,6 +45,14 @@ type Colors = {
   walletSummaryBg: ThemeSet,
   walletSummaryBorder: ThemeSet,
 
+  // Wallet Address
+  walletAddressBg: ThemeSet,
+  walletAddressBorder: ThemeSet,
+  walletAddressInput: ThemeSet,
+  walletAddressInputHovered: ThemeSet,
+  walletAddressTooltip: ThemeSet,
+  walletAddressTooltipBg: ThemeSet,
+
   // Console
   consoleBg: ThemeSet,
   consoleBorder: ThemeSet,
@@ -103,6 +111,10 @@ type Colors = {
   settingsCardBg: ThemeSet,
   settingsLearnMore: ThemeSet,
   settingsLearnMoreHovered: ThemeSet,
+
+  // Loading
+  loadingScreenBg: ThemeSet,
+  loadingScreenText: ThemeSet,
 };
 
 type FontSize = {

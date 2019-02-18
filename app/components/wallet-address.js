@@ -4,7 +4,9 @@ import React, { PureComponent } from 'react';
 import styled, { withTheme } from 'styled-components';
 
 import { ColumnComponent } from './column';
+import { TextComponent } from './text';
 import { QRCode } from './qrcode';
+import { CopyToClipboard } from './copy-to-clipboard';
 
 import CopyIconDark from '../assets/images/copy_icon_dark.svg';
 import CopyIconLight from '../assets/images/copy_icon_light.svg';
@@ -23,21 +25,29 @@ const AddressWrapper = styled.div`
   border: 1px solid ${props => props.theme.colors.walletAddressBorder};
 `;
 
-const Input = styled.input`
+const Address = styled(TextComponent)`
   border-radius: ${props => props.theme.boxBorderRadius};
   border: none;
   background-color: ${props => props.theme.colors.inputBg};
   padding: 15px;
-  width: 100%;
+  width: 92%;
   outline: none;
   font-family: ${props => props.theme.fontFamily};
   font-size: 13px;
-  color: #666666;
+  color: ${props => props.theme.colors.walletAddressInput};
   line-height: 1;
+  letter-spacing: 0.5px;
+  overflow-x: scroll;
   cursor: pointer;
+  user-select: text;
 
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* // todo: make this theme supported */
   ${AddressWrapper}:hover & {
-    color: #fff;
+    color: ${props => props.theme.colors.walletAddressInputHovered};
   }
 
   ::placeholder {
@@ -45,7 +55,7 @@ const Input = styled.input`
   }
 `;
 
-const QRCodeWrapper = styled.div`
+const QRCodeContainer = styled.div`
   align-items: center;
   display: flex;
   background-color: ${props => props.theme.colors.qrCodeWrapperBg}
@@ -56,23 +66,44 @@ const QRCodeWrapper = styled.div`
   width: 100%;
 `;
 
+const QRCodeWrapper = styled.div`
+  background-color: #FFFFFF;
+  padding: 10px;
+`;
+
 const IconButton = styled.button`
   background: transparent;
   cursor: pointer;
   outline: none;
   border: none;
   display: flex;
-  opacity: 0.4;
   width: 28px;
   margin-left: 3px;
-
-  &:hover {
-    opacity: 1;
-  }
+  position: relative;
 `;
 
 const IconImage = styled.img`
   max-width: 23px;
+  opacity: 0.4;
+
+  ${IconButton}:hover & {
+    opacity: 1;
+  }
+`;
+
+const CopyTooltip = styled.div`
+  background: ${props => props.theme.colors.walletAddressTooltipBg};
+  position: absolute;
+  top: -27px;
+  left: -8px;
+  padding: 6px 10px;
+  border-radius: 3px;
+`;
+
+const TooltipText = styled(TextComponent)`
+  color: ${props => props.theme.colors.walletAddressTooltip};
+  font-size: 10px;
+  font-weight: 700;
 `;
 
 type Props = {
@@ -81,22 +112,32 @@ type Props = {
 };
 
 type State = {
+  showCopiedTooltip: boolean,
   showQRCode: boolean,
 };
 
 class Component extends PureComponent<Props, State> {
   state = {
     showQRCode: false,
+    showCopiedTooltip: false,
   };
 
-  show = () => this.setState(() => ({ showQRCode: true }));
+  showMoreInfo = () => this.setState(() => ({ showQRCode: true }));
 
-  hide = () => this.setState(() => ({ showQRCode: false }));
+  toggleMoreInfo = () => this.setState(prevState => ({
+    showQRCode: !prevState.showQRCode,
+  }));
+
+  hideTooltip = () => this.setState(() => ({ showCopiedTooltip: false }));
+
+  copyAddress = () => this.setState(
+    () => ({ showCopiedTooltip: true }),
+    () => setTimeout(() => this.hideTooltip(), 1500),
+  );
 
   render() {
     const { address, theme } = this.props;
-    const { showQRCode } = this.state;
-    const toggleVisibility = showQRCode ? this.hide : this.show;
+    const { showQRCode, showCopiedTooltip } = this.state;
 
     const qrCodeIcon = theme.mode === DARK
       ? ScanIconDark
@@ -109,18 +150,28 @@ class Component extends PureComponent<Props, State> {
     return (
       <ColumnComponent width='100%'>
         <AddressWrapper>
-          <Input
+          <Address
             value={address}
-            onChange={() => {}}
-            onFocus={event => event.currentTarget.select()}
+            onClick={this.toggleMoreInfo}
+            onDoubleClick={this.showMoreInfo}
           />
-          <IconButton onClick={() => {}}>
-            <IconImage
-              src={copyIcon}
-              alt='Copy Address'
-            />
-          </IconButton>
-          <IconButton onClick={toggleVisibility}>
+          <CopyToClipboard
+            text={address}
+            onCopy={this.copyAddress}
+          >
+            <IconButton onClick={() => {}}>
+              {!showCopiedTooltip ? null : (
+                <CopyTooltip>
+                  <TooltipText value='Copied!' />
+                </CopyTooltip>
+              )}
+              <IconImage
+                src={copyIcon}
+                alt='Copy Address'
+              />
+            </IconButton>
+          </CopyToClipboard>
+          <IconButton onClick={this.toggleMoreInfo}>
             <IconImage
               src={qrCodeIcon}
               alt='See QRCode'
@@ -128,9 +179,11 @@ class Component extends PureComponent<Props, State> {
           </IconButton>
         </AddressWrapper>
         {!showQRCode ? null : (
-          <QRCodeWrapper>
-            <QRCode value={address} />
-          </QRCodeWrapper>
+          <QRCodeContainer>
+            <QRCodeWrapper>
+              <QRCode value={address} />
+            </QRCodeWrapper>
+          </QRCodeContainer>
         )}
       </ColumnComponent>
     );

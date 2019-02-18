@@ -14,6 +14,10 @@ const Layout = styled.div`
   padding-left: ${props => props.theme.layoutPaddingLeft};
   padding-right: ${props => props.theme.layoutPaddingRight};
   overflow: auto;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 type Props = {

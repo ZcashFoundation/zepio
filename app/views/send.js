@@ -59,6 +59,13 @@ const SendWrapper = styled(ColumnComponent)`
   margin-top: 45px;
 `;
 
+const Label = styled(InputLabelComponent)`
+  text-transform: uppercase;
+  color: ${props => props.theme.colors.transactionsDate};
+  font-size: ${props => `${props.theme.fontSize.regular * 0.9}em`};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
+`;
+
 type AmountProps =
   | {
       isEmpty: boolean,
@@ -95,7 +102,6 @@ const ShowFeeButton = styled.button`
   outline: none;
   display: flex;
   align-items: center;
-  margin: 30px 0;
   opacity: 0.7;
 
   &:hover {
@@ -249,6 +255,28 @@ const MaxAvailableAmountImg = styled.img`
 
 const ValidateWrapper = styled(RowComponent)`
   margin-top: 3px;
+`;
+
+
+const ActionsWrapper = styled(RowComponent)`
+  padding: 30px 0;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const HexadecimalWrapper = styled.div`
+  display: flex;
+  opacity: 0.7;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const HexadecimalText = styled(TextComponent)`
+  white-space: nowrap;
 `;
 
 type Props = {
@@ -504,7 +532,7 @@ class Component extends PureComponent<Props, State> {
       addresses, balance, zecPrice, isSending, error, operationId, theme,
     } = this.props;
     const {
-      showFee, from, amount, to, memo, fee, feeType,
+      showFee, from, amount, to, memo, fee, feeType, isHexMemo,
     } = this.state;
 
     const isEmpty = amount === '';
@@ -532,7 +560,7 @@ class Component extends PureComponent<Props, State> {
     return (
       <RowComponent id='send-wrapper' justifyContent='space-between'>
         <FormWrapper>
-          <InputLabelComponent value='From an address' />
+          <Label value='From an address' />
           <SelectComponent
             onChange={this.handleChange('from')}
             value={from}
@@ -540,7 +568,7 @@ class Component extends PureComponent<Props, State> {
             options={addresses.map(addr => ({ value: addr, label: addr }))}
             capitalize={false}
           />
-          <InputLabelComponent value='Amount' />
+          <Label value='Amount' />
           <AmountWrapper isEmpty={isEmpty}>
             <AmountInput
               renderRight={() => (
@@ -561,7 +589,7 @@ class Component extends PureComponent<Props, State> {
               disabled={!from}
             />
           </AmountWrapper>
-          <InputLabelComponent value='To' />
+          <Label value='To' />
           <InputComponent
             onChange={this.handleChange('to')}
             value={to}
@@ -569,7 +597,7 @@ class Component extends PureComponent<Props, State> {
             renderRight={to ? this.renderValidationStatus : () => null}
             name='to'
           />
-          <InputLabelComponent value='Memo' />
+          <Label value='Memo' />
           <InputComponent
             onChange={this.handleChange('memo')}
             value={memo}
@@ -577,20 +605,28 @@ class Component extends PureComponent<Props, State> {
             placeholder='Enter a text here'
             name='memo'
           />
-          <RowComponent justifyContent='flex-end'>
-            <Checkbox onChange={event => this.setState({ isHexMemo: event.target.checked })} />
-            <TextComponent value='Hexadecimal memo' />
-          </RowComponent>
-          <ShowFeeButton
-            id='send-show-additional-options-button'
-            onClick={() => this.setState(state => ({
-              showFee: !state.showFee,
-            }))
-            }
-          >
-            <SeeMoreIcon src={seeMoreIcon} alt='Show more icon' />
-            <TextComponent value={`${showFee ? 'Hide' : 'Show'} Additional Options`} />
-          </ShowFeeButton>
+          <ActionsWrapper>
+            <ShowFeeButton
+              id='send-show-additional-options-button'
+              onClick={() => this.setState(state => ({
+                showFee: !state.showFee,
+              }))
+              }
+            >
+              <SeeMoreIcon src={seeMoreIcon} alt='Show more icon' />
+              <TextComponent value={`${showFee ? 'Hide' : 'Show'} Additional Options`} />
+            </ShowFeeButton>
+            <HexadecimalWrapper>
+              <Checkbox
+                onChange={event => this.setState({ isHexMemo: event.target.checked })}
+                checked={isHexMemo}
+              />
+              <HexadecimalText
+                onClick={() => this.setState(prevState => ({ isHexMemo: !prevState.isHexMemo }))}
+                value='Hexadecimal Memo'
+              />
+            </HexadecimalWrapper>
+          </ActionsWrapper>
           <RevealsMain>
             <Transition
               native
@@ -616,7 +652,7 @@ class Component extends PureComponent<Props, State> {
                     <FeeWrapper id='send-fee-wrapper'>
                       <RowComponent alignItems='flex-end' justifyContent='space-between'>
                         <ColumnComponent width='74%'>
-                          <InputLabelComponent value='Fee' />
+                          <Label value='Fee' />
                           <InputComponent
                             type='number'
                             onChange={this.handleChange('fee')}

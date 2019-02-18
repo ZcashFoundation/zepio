@@ -230,6 +230,14 @@ export const appTheme: AppTheme = {
       [LIGHT]: LIGHT_COLORS.walletAddressBorder,
       [DARK]: DARK_COLORS.walletAddressBorder,
     }),
+    walletAddressInput: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.walletAddressInput,
+      [DARK]: DARK_COLORS.walletAddressInput,
+    }),
+    walletAddressInputHovered: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.walletAddressInputHovered,
+      [DARK]: DARK_COLORS.walletAddressInputHovered,
+    }),
     dropdownBg: theme('mode', {
       [LIGHT]: LIGHT_COLORS.dropdownBg,
       [DARK]: DARK_COLORS.dropdownBg,
@@ -298,9 +306,25 @@ export const appTheme: AppTheme = {
       [LIGHT]: LIGHT_COLORS.inputBorderActive,
       [DARK]: DARK_COLORS.inputBorderActive,
     }),
+    walletAddressTooltipBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.walletAddressTooltipBg,
+      [DARK]: DARK_COLORS.walletAddressTooltipBg,
+    }),
     qrCodeWrapperBorder: theme('mode', {
       [LIGHT]: LIGHT_COLORS.qrCodeWrapperBorder,
       [DARK]: DARK_COLORS.qrCodeWrapperBorder,
+    }),
+    walletAddressTooltip: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.walletAddressTooltip,
+      [DARK]: DARK_COLORS.walletAddressTooltip,
+    }),
+    loadingScreenBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.loadingScreenBg,
+      [DARK]: DARK_COLORS.loadingScreenBg,
+    }),
+    loadingScreenText: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.loadingScreenText,
+      [DARK]: DARK_COLORS.loadingScreenText,
     }),
   },
 };

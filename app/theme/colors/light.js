@@ -102,6 +102,10 @@ export const LIGHT_COLORS = {
   // Wallet Address
   walletAddressBg: white,
   walletAddressBorder: border,
+  walletAddressInput: '#666',
+  walletAddressInputHovered: black,
+  walletAddressTooltip: white,
+  walletAddressTooltipBg: black,
 
   // Forms
   inputBg: white,
@@ -119,4 +123,8 @@ export const LIGHT_COLORS = {
   settingsCardBg: white,
   settingsLearnMore: '#a0a0a0',
   settingsLearnMoreHovered: '#000',
+
+  // Loading
+  loadingScreenBg: offWhite,
+  loadingScreenText: white,
 };

@@ -97,6 +97,10 @@ export const DARK_COLORS = {
   // Wallet Address
   walletAddressBg: black,
   walletAddressBorder: black,
+  walletAddressInput: '#828282',
+  walletAddressInputHovered: white,
+  walletAddressTooltip: black,
+  walletAddressTooltipBg: white,
 
   // Console
   consoleBg: black,
@@ -106,4 +110,8 @@ export const DARK_COLORS = {
   settingsCardBg: black,
   settingsLearnMore: '#AAAAAA',
   settingsLearnMoreHovered: '#fff',
+
+  // Loading
+  loadingScreenBg: black,
+  loadingScreenText: white,
 };
