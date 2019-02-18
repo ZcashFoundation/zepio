@@ -21,7 +21,7 @@ const SelectWrapper = styled.div`
   display: flex;
   flex-direction: row;
   border-radius: ${(props: SelectWrapperProps) => props.theme.boxBorderRadius};
-  border: none;
+  border: 1px solid ${(props: SelectWrapperProps) => props.theme.colors.inputBorder};
   background-color: ${(props: SelectWrapperProps) => props.bgColor || props.theme.colors.inputBg};
   color: ${(props: SelectWrapperProps) => props.theme.colors.text};
   width: 100%;
@@ -76,8 +76,11 @@ const OptionsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  width: 100%;
-  ${(props: PropsWithTheme<{ placement: string, optionsAmount: number }>) => `${String(props.placement)}: ${`-${String((props.optionsAmount || 0) * 40)}px`}`};
+  width: 100.5%;
+  margin-left: -0.25%;
+  border-radius: ${props => props.theme.colors.boxBorderRadius};
+  border: 1px solid ${props => props.theme.colors.inputBorder};
+  ${(props: PropsWithTheme<{ placement: string, optionsAmount: number }>) => `${String(props.placement)}: ${`-${String(((props.optionsAmount || 0) * 40) + 25)}px`}`};
   overflow-y: auto;
 `;
 
@@ -85,15 +88,15 @@ const Option = styled.button`
   border: none;
   background: none;
   height: 40px;
-  background-color: #5d5d5d;
+  background-color: ${props => props.theme.colors.dropdownBg};
   cursor: pointer;
   z-index: 99;
   text-transform: ${(props: PropsWithTheme<{ capitalize: boolean }>) => (props.capitalize ? 'capitalize' : 'none')};
   padding: 5px 10px;
-  border-bottom: 1px solid #4e4b4b;
+  border-bottom: 1px solid ${props => props.theme.colors.dropdownBorder};
 
   &:hover {
-    background-color: ${props => props.theme.colors.background};
+    background-color: ${props => props.theme.colors.dropdownHoveredBg};
   }
 
   &:last-child {

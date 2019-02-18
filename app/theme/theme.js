@@ -222,5 +222,33 @@ export const appTheme: AppTheme = {
       [LIGHT]: LIGHT_COLORS.consoleBorder,
       [DARK]: DARK_COLORS.consoleBorder,
     }),
+    sendCardBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.sendCardBg,
+      [DARK]: DARK_COLORS.sendCardBg,
+    }),
+    sendCardBorder: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.sendCardBorder,
+      [DARK]: DARK_COLORS.sendCardBorder,
+    }),
+    walletAddressBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.walletAddressBg,
+      [DARK]: DARK_COLORS.walletAddressBg,
+    }),
+    walletAddressBorder: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.walletAddressBorder,
+      [DARK]: DARK_COLORS.walletAddressBorder,
+    }),
+    dropdownBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.dropdownBg,
+      [DARK]: DARK_COLORS.dropdownBg,
+    }),
+    dropdownHoveredBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.dropdownHoveredBg,
+      [DARK]: DARK_COLORS.dropdownHoveredBg,
+    }),
+    dropdownBorder: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.dropdownBorder,
+      [DARK]: DARK_COLORS.dropdownBorder,
+    }),
   },
 };

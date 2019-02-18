@@ -19,8 +19,17 @@ export const DARK_COLORS = {
   buttonBorderColor: '#3e3c42',
   activeItem: brand,
   text,
-  cardBackgroundColor: black,
   background: '#212124',
+
+  // Dropdown
+  dropdownBg: '#5d5d5d',
+  dropdownHoveredBg: '#212124',
+  dropdownBorder: '#4e4b4b',
+
+  // Card
+  cardBackgroundColor: black,
+  sendCardBg: black,
+  sendCardBorder: 'transparent',
 
   // Buttons
   buttonPrimaryText: text,
@@ -73,6 +82,10 @@ export const DARK_COLORS = {
   // Wallet Summary
   walletSummaryBg: black,
   walletSummaryBorder: black,
+
+  // Wallet Address
+  walletAddressBg: black,
+  walletAddressBorder: black,
 
   // Console
   consoleBg: black,

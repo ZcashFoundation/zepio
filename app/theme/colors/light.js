@@ -25,12 +25,19 @@ export const LIGHT_COLORS = {
   buttonBorderColor: '#3E3C42',
   activeItem: brand,
 
+  // Dropdown
+  dropdownBg: white,
+  dropdownHoveredBg: offWhite,
+  dropdownBorder: border,
+
   // Buttons
   buttonPrimaryText: white,
   buttonSecondaryText: text,
 
   // Card
   cardBackgroundColor: black,
+  sendCardBg: white,
+  sendCardBorder: border,
 
   // Sidebar
   sidebarBg: white,
@@ -82,6 +89,10 @@ export const LIGHT_COLORS = {
   // Wallet Summary
   walletSummaryBg: white,
   walletSummaryBorder: border,
+
+  // Wallet Address
+  walletAddressBg: white,
+  walletAddressBorder: border,
 
   // Forms
   inputBg: white,

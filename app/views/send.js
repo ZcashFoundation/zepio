@@ -51,7 +51,7 @@ const Loader = styled.img`
 `;
 
 const FormWrapper = styled.div`
-  margin-top: ${props => props.theme.layoutContentPaddingTop};
+  /* margin-top: ${props => props.theme.layoutContentPaddingTop}; */
   width: 71%;
 `;
 
@@ -121,7 +121,8 @@ const FeeWrapper = styled.div`
 
 const InfoCard = styled.div`
   width: 100%;
-  background-color: ${props => props.theme.colors.cardBackgroundColor};
+  background-color: ${props => props.theme.colors.sendCardBg};
+  border: 1px solid ${props => props.theme.colors.sendCardBorder}
   border-radius: ${props => props.theme.boxBorderRadius};
 `;
 

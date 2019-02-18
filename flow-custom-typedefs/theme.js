@@ -7,7 +7,11 @@ type Colors = {
   secondary: ThemeSet,
   sidebarBg: ThemeSet,
 
+  // Card
   cardBackgroundColor: ThemeSet,
+  sendCardBg: ThemeSet,
+  sendCardBorder: ThemeSet,
+
   text: ThemeSet,
   activeItem: ThemeSet,
   inactiveItem: ThemeSet,
@@ -18,6 +22,11 @@ type Colors = {
   modalItemLabel: ThemeSet,
   blackTwo: ThemeSet,
   buttonBorderColor: ThemeSet,
+
+  // Dropdown
+  dropdownBg: ThemeSet,
+  dropdownHoveredBg: ThemeSet,
+  dropdownBorder: ThemeSet,
 
   // Divider
   divider: ThemeSet,

@@ -11,11 +11,12 @@ import eyeIcon from '../assets/images/eye.png';
 const AddressWrapper = styled.div`
   align-items: center;
   display: flex;
-  background-color: #000;
-  border-radius: 6px;
+  border-radius: ${props => props.theme.boxBorderRadius};
   padding: 0 13px 0 0;
   margin-bottom: 10px;
   width: 100%;
+  background: ${props => props.theme.colors.walletAddressBg};
+  border: 1px solid ${props => props.theme.colors.walletAddressBorder};
 `;
 
 const Input = styled.input`
