@@ -141,7 +141,6 @@ const InfoCardUSD = styled(TextComponent)`
 const FormButton = styled(Button)`
   width: 100%;
   margin: 10px 0;
-  z-index: 10000;
 `;
 
 const ModalContent = styled(ColumnComponent)`
