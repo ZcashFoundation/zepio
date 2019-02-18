@@ -3,8 +3,6 @@
 import React, { PureComponent } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { Transition, animated } from 'react-spring';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { ipcRenderer } from 'electron';
 
 import CircleProgressComponent from 'react-circle';
 import { TextComponent } from './text';
@@ -40,11 +38,11 @@ const Logo = styled.img`
 type Props = {
   progress: number,
   theme: AppTheme,
+  message: string,
 };
 
 type State = {
   start: boolean,
-  message: string,
 };
 
 const TIME_DELAY_ANIM = 100;
@@ -56,19 +54,11 @@ export class Component extends PureComponent<Props, State> {
     setTimeout(() => {
       this.setState(() => ({ start: true }));
     }, TIME_DELAY_ANIM);
-
-    ipcRenderer.on('zcashd-params-download', (event: Object, message: string) => {
-      this.setState(() => ({ message }));
-    });
-  }
-
-  componentWillUnmount() {
-    ipcRenderer.removeAllListeners('zcashd-log');
   }
 
   render() {
-    const { start, message } = this.state;
-    const { progress, theme } = this.props;
+    const { start } = this.state;
+    const { progress, message, theme } = this.props;
 
     return (
       <Wrapper data-testid='LoadingScreen'>

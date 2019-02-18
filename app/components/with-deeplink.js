@@ -19,6 +19,10 @@ export const withDeepLink = (
 
     if (arg) this.redirect(arg);
 
+    remote.app.on('open-url', (event, url) => {
+      this.redirect(url);
+    });
+
     ipcRenderer.on('on-deep-link', (event: Object, message: string) => {
       this.redirect(message);
     });
