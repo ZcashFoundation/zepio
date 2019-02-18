@@ -29,23 +29,24 @@ const Primary = styled(DefaultButton)`
   }
 
   &:disabled {
-    background-color: ${props => props.theme.colors.buttonBorderColor};
+    background-color: ${props => props.theme.colors.buttonPrimaryDisabledBg};
     cursor: not-allowed;
-    opacity: 0.8;
+    opacity: 0.45;
   }
 `;
 
 const Secondary = styled(DefaultButton)`
-  background-color: transparent;
+  background-color: ${props => props.theme.colors.buttonSecondaryBg};
   color: ${props => props.theme.colors.buttonSecondaryText};
-  border: 2px solid ${props => props.theme.colors.buttonBorderColor};
+  border: 1px solid ${props => props.theme.colors.buttonSecondaryBorder};
 
   &:hover {
-    border-color: ${props => props.theme.colors.primary};
+    background-color: ${props => props.theme.colors.buttonSecondaryHoveredBg}
+    border-color: ${props => props.theme.colors.buttonSecondaryHoveredBg}
   }
 
   &:disabled {
-    background-color: Transparent;
+    background-color: ${props => props.theme.colors.buttonSecondaryDisabledBg};
     cursor: not-allowed;
     color: ${props => props.theme.colors.buttonBorderColor};
 

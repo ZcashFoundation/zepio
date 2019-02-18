@@ -123,6 +123,7 @@ const InfoCard = styled.div`
   background-color: ${props => props.theme.colors.sendCardBg};
   border: 1px solid ${props => props.theme.colors.sendCardBorder}
   border-radius: ${props => props.theme.boxBorderRadius};
+  margin-bottom: 10px;
 `;
 
 const InfoContent = styled.div`
@@ -141,7 +142,11 @@ const InfoCardUSD = styled(TextComponent)`
 
 const FormButton = styled(Button)`
   width: 100%;
-  margin: 10px 0;
+  margin: 5px 0;
+
+  &:first-child {
+    margin-top: 0;
+  }
 `;
 
 const ModalContent = styled(ColumnComponent)`
@@ -663,7 +668,6 @@ export class SendView extends PureComponent<Props, State> {
                 onClick={() => this.showModal(toggle)}
                 id='send-submit-button'
                 label='Send'
-                variant='secondary'
                 focused
                 isFluid
                 disabled={!from || !amount || !to || !fee}
@@ -680,7 +684,7 @@ export class SendView extends PureComponent<Props, State> {
               </ModalContent>
             )}
           </ConfirmDialogComponent>
-          <FormButton label='Cancel' variant='secondary' />
+          <FormButton label='Clear Form' variant='secondary' />
         </SendWrapper>
       </RowComponent>
     );

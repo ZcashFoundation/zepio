@@ -154,14 +154,6 @@ export const appTheme: AppTheme = {
       [LIGHT]: LIGHT_COLORS.sidebarBorderRight,
       [DARK]: DARK_COLORS.sidebarBorderRight,
     }),
-    buttonSecondaryText: theme('mode', {
-      [LIGHT]: LIGHT_COLORS.buttonSecondaryText,
-      [DARK]: DARK_COLORS.buttonSecondaryText,
-    }),
-    buttonPrimaryText: theme('mode', {
-      [LIGHT]: LIGHT_COLORS.buttonPrimaryText,
-      [DARK]: DARK_COLORS.buttonPrimaryText,
-    }),
     qrCodeWrapperBg: theme('mode', {
       [LIGHT]: LIGHT_COLORS.qrCodeWrapperBg,
       [DARK]: DARK_COLORS.qrCodeWrapperBg,
@@ -261,6 +253,38 @@ export const appTheme: AppTheme = {
     settingsLearnMoreHovered: theme('mode', {
       [LIGHT]: LIGHT_COLORS.settingsLearnMoreHovered,
       [DARK]: DARK_COLORS.settingsLearnMoreHovered,
+    }),
+    buttonPrimaryText: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.buttonPrimaryText,
+      [DARK]: DARK_COLORS.buttonPrimaryText,
+    }),
+    buttonSecondaryText: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.buttonSecondaryText,
+      [DARK]: DARK_COLORS.buttonSecondaryText,
+    }),
+    buttonPrimaryBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.buttonPrimaryBg,
+      [DARK]: DARK_COLORS.buttonPrimaryBg,
+    }),
+    buttonSecondaryBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.buttonSecondaryBg,
+      [DARK]: DARK_COLORS.buttonSecondaryBg,
+    }),
+    buttonPrimaryDisabledBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.buttonPrimaryDisabledBg,
+      [DARK]: DARK_COLORS.buttonPrimaryDisabledBg,
+    }),
+    buttonSecondaryDisabledBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.buttonSecondaryDisabledBg,
+      [DARK]: DARK_COLORS.buttonSecondaryDisabledBg,
+    }),
+    buttonSecondaryBorder: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.buttonSecondaryBorder,
+      [DARK]: DARK_COLORS.buttonSecondaryBorder,
+    }),
+    buttonSecondaryHoveredBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.buttonSecondaryHoveredBg,
+      [DARK]: DARK_COLORS.buttonSecondaryHoveredBg,
     }),
   },
 };

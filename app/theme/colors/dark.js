@@ -32,8 +32,14 @@ export const DARK_COLORS = {
   sendCardBorder: 'transparent',
 
   // Buttons
-  buttonPrimaryText: text,
+  buttonPrimaryBg: brand,
+  buttonPrimaryDisabledBg: brand,
+  buttonPrimaryText: black,
+  buttonSecondaryBg: '#ddd',
+  buttonSecondaryDisabledBg: brand,
   buttonSecondaryText: black,
+  buttonSecondaryBorder: '#ddd',
+  buttonSecondaryHoveredBg: '#bbb',
 
   // Transactions
   transactionSent: error,

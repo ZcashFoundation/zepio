@@ -48,8 +48,14 @@ type Colors = {
   consoleBorder: ThemeSet,
 
   // Buttons
+  buttonPrimaryBg: ThemeSet,
   buttonPrimaryText: ThemeSet,
+  buttonPrimaryDisabledBg: ThemeSet,
+  buttonSecondaryBg: ThemeSet,
   buttonSecondaryText: ThemeSet,
+  buttonSecondaryDisabledBg: ThemeSet,
+  buttonSecondaryBorder: ThemeSet,
+  buttonSecondaryHoveredBg: ThemeSet,
 
   // QR Code
   qrCodeWrapperBg: ThemeSet,

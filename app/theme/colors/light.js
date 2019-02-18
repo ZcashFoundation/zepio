@@ -31,8 +31,14 @@ export const LIGHT_COLORS = {
   dropdownBorder: border,
 
   // Buttons
+  buttonPrimaryBg: brand,
+  buttonPrimaryDisabledBg: brand,
   buttonPrimaryText: white,
-  buttonSecondaryText: text,
+  buttonSecondaryBg: '#989898',
+  buttonSecondaryDisabledBg: brand,
+  buttonSecondaryBorder: '#989898',
+  buttonSecondaryText: white,
+  buttonSecondaryHoveredBg: '#aaa',
 
   // Card
   cardBackgroundColor: black,

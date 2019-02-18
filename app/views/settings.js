@@ -86,7 +86,7 @@ const LearnMore = styled.div`
   cursor: pointer;
   text-transform: uppercase;
   font-size: 10px;
-  font-family: Roboto;
+  font-family: ${props => props.theme.fontFamily};;
   letter-spacing: 1px;
   color: ${props => props.theme.colors.settingsLearnMore};
 
