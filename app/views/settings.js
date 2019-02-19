@@ -22,6 +22,7 @@ import { SelectComponent } from '../components/select';
 import rpc from '../../services/api';
 import { DARK, LIGHT } from '../constants/themes';
 import electronStore from '../../config/electron-store';
+import type { MapDispatchToProps, MapStateToProps } from '../containers/settings';
 
 const HOME_DIR = electron.remote.app.getPath('home');
 
@@ -79,9 +80,8 @@ type Key = {
   key: string,
 };
 
-type Props = {
-  addresses: string[],
-};
+type Props = MapDispatchToProps & MapStateToProps;
+
 type State = {
   viewKeys: Key[],
   privateKeys: Key[],
@@ -104,6 +104,12 @@ export class SettingsView extends PureComponent<Props, State> {
     successImportPrivateKeys: false,
     error: null,
   };
+
+  componentDidMount() {
+    const { loadAddresses } = this.props;
+
+    loadAddresses();
+  }
 
   exportViewKeys = () => {
     const { addresses } = this.props;
