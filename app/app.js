@@ -11,6 +11,8 @@ import { appTheme as theme, GlobalStyle } from './theme';
 import electronStore from '../config/electron-store';
 import { DARK, THEME_MODE } from './constants/themes';
 
+import 'rc-tooltip/assets/bootstrap.css';
+
 const store = configureStore({});
 
 type Props = {};
