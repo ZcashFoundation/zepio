@@ -2,6 +2,8 @@
 
 /* eslint-disable import/no-extraneous-dependencies */
 import fs from 'fs';
+import os from 'os';
+import path from 'path';
 import { promisify } from 'util';
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
@@ -23,8 +25,6 @@ import rpc from '../../services/api';
 import { DARK, LIGHT } from '../constants/themes';
 import electronStore from '../../config/electron-store';
 import type { MapDispatchToProps, MapStateToProps } from '../containers/settings';
-
-const HOME_DIR = electron.remote.app.getPath('home');
 
 const Wrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
@@ -111,6 +111,20 @@ export class SettingsView extends PureComponent<Props, State> {
     loadAddresses();
   }
 
+  getWalletFolderPath = () => {
+    const { app } = electron.remote;
+
+    if (os.platform() === 'darwin') {
+      return path.join(app.getPath('appData'), 'Zcash');
+    }
+
+    if (os.platform() === 'linux') {
+      return path.join(app.getPath('home'), '.zcash');
+    }
+
+    return path.join(app.getPath('appData'), 'Zcash');
+  };
+
   exportViewKeys = () => {
     const { addresses } = this.props;
 
@@ -189,15 +203,17 @@ export class SettingsView extends PureComponent<Props, State> {
       async (pathToSave: string) => {
         if (!pathToSave) return;
 
-        const zcashDir = isDev ? `${HOME_DIR}/.zcash/testnet3` : HOME_DIR;
+        const WALLET_DIR = this.getWalletFolderPath();
+
+        const zcashDir = isDev ? path.join(WALLET_DIR, 'testnet3') : WALLET_DIR;
         const walletDatPath = `${zcashDir}/wallet.dat`;
 
         const [cannotAccess] = await eres(promisify(fs.access)(walletDatPath));
 
         /* eslint-disable no-alert */
-
         if (cannotAccess) {
           alert("Couldn't backup the wallet.dat file. You need to back it up manually.");
+          return;
         }
 
         const [error] = await eres(promisify(fs.copyFile)(walletDatPath, pathToSave));
