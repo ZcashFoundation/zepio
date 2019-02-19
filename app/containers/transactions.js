@@ -70,6 +70,7 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
         date: new Date(transaction.time * 1000).toISOString(),
         address: transaction.address,
         amount: new BigNumber(transaction.amount).absoluteValue().toNumber(),
+        fees: transaction.fee ? new BigNumber(transaction.fee).abs().toFormat(4) : 'N/A',
       })),
     );
 

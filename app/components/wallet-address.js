@@ -67,7 +67,7 @@ const QRCodeContainer = styled.div`
 `;
 
 const QRCodeWrapper = styled.div`
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   padding: 10px;
 `;
 
@@ -139,13 +139,9 @@ class Component extends PureComponent<Props, State> {
     const { address, theme } = this.props;
     const { showQRCode, showCopiedTooltip } = this.state;
 
-    const qrCodeIcon = theme.mode === DARK
-      ? ScanIconDark
-      : ScanIconLight;
+    const qrCodeIcon = theme.mode === DARK ? ScanIconDark : ScanIconLight;
 
-    const copyIcon = theme.mode === DARK
-      ? CopyIconDark
-      : CopyIconLight;
+    const copyIcon = theme.mode === DARK ? CopyIconDark : CopyIconLight;
 
     return (
       <ColumnComponent width='100%'>
@@ -155,27 +151,18 @@ class Component extends PureComponent<Props, State> {
             onClick={this.toggleMoreInfo}
             onDoubleClick={this.showMoreInfo}
           />
-          <CopyToClipboard
-            text={address}
-            onCopy={this.copyAddress}
-          >
+          <CopyToClipboard text={address} onCopy={this.copyAddress}>
             <IconButton onClick={() => {}}>
               {!showCopiedTooltip ? null : (
                 <CopyTooltip>
                   <TooltipText value='Copied!' />
                 </CopyTooltip>
               )}
-              <IconImage
-                src={copyIcon}
-                alt='Copy Address'
-              />
+              <IconImage src={copyIcon} alt='Copy Address' />
             </IconButton>
           </CopyToClipboard>
           <IconButton onClick={this.toggleMoreInfo}>
-            <IconImage
-              src={qrCodeIcon}
-              alt='See QRCode'
-            />
+            <IconImage src={qrCodeIcon} alt='See QRCode' />
           </IconButton>
         </AddressWrapper>
         {!showQRCode ? null : (
