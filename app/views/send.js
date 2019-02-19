@@ -1,11 +1,13 @@
 // @flow
 
 import React, { Fragment, PureComponent } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { withTheme, keyframes } from 'styled-components';
 import { BigNumber } from 'bignumber.js';
 import { Transition, animated } from 'react-spring';
+import Tooltip from 'rc-tooltip';
 
 import { FEES } from '../constants/fees';
+import { DARK } from '../constants/themes';
 
 import { InputLabelComponent } from '../components/input-label';
 import { InputComponent } from '../components/input';
@@ -20,17 +22,17 @@ import { ConfirmDialogComponent } from '../components/confirm-dialog';
 import { formatNumber } from '../utils/format-number';
 import { ascii2hex } from '../utils/ascii-to-hexadecimal';
 
+import SentIcon from '../assets/images/transaction_sent_icon_dark.svg';
+import MenuIconDark from '../assets/images/menu_icon_dark.svg';
+import MenuIconLight from '../assets/images/menu_icon_light.svg';
+import ValidIcon from '../assets/images/green_check_dark.png';
+import InvalidIcon from '../assets/images/error_icon_dark.png';
+import LoadingIcon from '../assets/images/sync_icon_dark.png';
+import ArrowUpIconDark from '../assets/images/arrow_up_dark.png';
+import ArrowUpIconLight from '../assets/images/arrow_up_light.png';
+
 import type { SendTransactionInput } from '../containers/send';
 import type { State as SendState } from '../redux/modules/send';
-
-import SentIcon from '../assets/images/transaction_sent_icon.svg';
-import MenuIcon from '../assets/images/menu_icon.svg';
-import ValidIcon from '../assets/images/green_check.png';
-import InvalidIcon from '../assets/images/error_icon.png';
-import LoadingIcon from '../assets/images/sync_icon.png';
-import ArrowUpIcon from '../assets/images/arrow_up.png';
-
-import theme from '../theme';
 
 const rotate = keyframes`
   from {
@@ -51,13 +53,19 @@ const Loader = styled.img`
 `;
 
 const FormWrapper = styled.div`
-  margin-top: ${props => props.theme.layoutContentPaddingTop};
   width: 71%;
 `;
 
 const SendWrapper = styled(ColumnComponent)`
   width: 25%;
-  margin-top: 60px;
+  margin-top: 42px;
+`;
+
+const Label = styled(InputLabelComponent)`
+  text-transform: uppercase;
+  color: ${props => props.theme.colors.transactionsDate};
+  font-size: ${props => `${props.theme.fontSize.regular * 0.9}em`};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
 `;
 
 type AmountProps =
@@ -96,7 +104,6 @@ const ShowFeeButton = styled.button`
   outline: none;
   display: flex;
   align-items: center;
-  margin: 30px 0;
   opacity: 0.7;
 
   &:hover {
@@ -113,16 +120,19 @@ const SeeMoreIcon = styled.img`
 `;
 
 const FeeWrapper = styled.div`
-  background-color: #000;
-  border-radius: 4px;
-  padding: 13px 19px;
+  background-color: ${props => props.theme.colors.sendAdditionalOptionsBg};
+  border: 1px solid ${props => props.theme.colors.sendAdditionalOptionsBorder};
+  border-radius: 3px;
+  padding: 0 20px 15px;
   margin-bottom: 20px;
 `;
 
 const InfoCard = styled.div`
   width: 100%;
-  background-color: ${props => props.theme.colors.cardBackgroundColor};
+  background-color: ${props => props.theme.colors.sendCardBg};
+  border: 1px solid ${props => props.theme.colors.sendCardBorder}
   border-radius: ${props => props.theme.boxBorderRadius};
+  margin-bottom: 10px;
 `;
 
 const InfoContent = styled.div`
@@ -141,7 +151,11 @@ const InfoCardUSD = styled(TextComponent)`
 
 const FormButton = styled(Button)`
   width: 100%;
-  margin: 10px 0;
+  margin: 5px 0;
+
+  &:first-child {
+    margin-top: 0;
+  }
 `;
 
 const ModalContent = styled(ColumnComponent)`
@@ -168,6 +182,10 @@ const ItemLabel = styled(TextComponent)`
   font-size: ${(props: PropsWithTheme<ItemLabelProps>) => String(props.theme.fontSize.small)};
   color: ${(props: PropsWithTheme<ItemLabelProps>) => props.color || props.theme.colors.modalItemLabel};
   margin-bottom: 3.5px;
+`;
+
+const ValidateItemLabel = styled(ItemLabel)`
+  margin-bottom: -1px;
 `;
 
 const SendZECValue = styled(TextComponent)`
@@ -225,8 +243,12 @@ const MaxAvailableAmount = styled.button`
   background: none;
   color: white;
   cursor: pointer;
-  border-left: ${props => `1px solid ${props.theme.colors.background(props)}`};
+  border-left: 1px solid ${props => props.theme.colors.inputBorder};
   opacity: 0.8;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     opacity: 1;
@@ -236,6 +258,32 @@ const MaxAvailableAmount = styled.button`
 const MaxAvailableAmountImg = styled.img`
   width: 20px;
   height: 20px;
+`;
+
+const ValidateWrapper = styled(RowComponent)`
+  margin-top: 3px;
+`;
+
+
+const ActionsWrapper = styled(RowComponent)`
+  padding: 30px 0;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const HexadecimalWrapper = styled.div`
+  display: flex;
+  opacity: 0.7;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const HexadecimalText = styled(TextComponent)`
+  white-space: nowrap;
 `;
 
 type Props = {
@@ -250,6 +298,7 @@ type Props = {
   loadAddresses: () => void,
   loadZECPrice: () => void,
   getAddressBalance: ({ address: string }) => void,
+  theme: AppTheme,
 };
 
 type State = {
@@ -261,9 +310,10 @@ type State = {
   fee: number | null,
   memo: string,
   isHexMemo: boolean,
+  showBalanceTooltip: boolean,
 };
 
-const initialState = {
+const initialState: State = {
   showFee: false,
   from: '',
   amount: '',
@@ -272,9 +322,10 @@ const initialState = {
   fee: FEES.LOW,
   memo: '',
   isHexMemo: false,
+  showBalanceTooltip: false,
 };
 
-export class SendView extends PureComponent<Props, State> {
+class Component extends PureComponent<Props, State> {
   state = initialState;
 
   componentDidMount() {
@@ -285,20 +336,31 @@ export class SendView extends PureComponent<Props, State> {
     loadZECPrice();
   }
 
+  updateTooltipVisibility = ({ balance, amount }: { balance: number, amount: number }) => {
+    this.setState({ showBalanceTooltip: new BigNumber(amount).gt(balance) });
+  };
+
+  getAmountWithFee = () => {
+    const { amount, fee } = this.state;
+
+    const feeValue = fee || 0;
+
+    if (!amount) return feeValue;
+
+    return new BigNumber(amount).plus(feeValue).toNumber();
+  };
+
   handleChange = (field: string) => (value: string | number) => {
     const { validateAddress, getAddressBalance, balance } = this.props;
-    const { fee, amount } = this.state;
+    const { amount } = this.state;
 
     if (field === 'to') {
       this.setState(() => ({ [field]: value }), () => validateAddress({ address: String(value) }));
     } else if (field === 'amount') {
-      const amountWithFee = new BigNumber(value).plus(fee || 0);
-
-      const validAmount = amountWithFee.isGreaterThan(balance)
-        ? new BigNumber(balance).minus(fee || 0).toNumber()
-        : value;
-
-      this.setState(() => ({ [field]: validAmount }));
+      this.setState(
+        () => ({ [field]: value }),
+        () => this.updateTooltipVisibility({ balance, amount: new BigNumber(value).toNumber() }),
+      );
     } else {
       if (field === 'from') getAddressBalance({ address: String(value) });
 
@@ -383,18 +445,24 @@ export class SendView extends PureComponent<Props, State> {
   };
 
   renderValidationStatus = () => {
-    const { isToAddressValid } = this.props;
+    const { isToAddressValid, theme } = this.props;
 
     return isToAddressValid ? (
-      <RowComponent alignItems='center'>
+      <ValidateWrapper alignItems='center'>
         <ValidateStatusIcon src={ValidIcon} />
-        <ItemLabel value='VALID' color={theme.colors.transactionReceived} />
-      </RowComponent>
+        <ValidateItemLabel
+          value='VALID'
+          color={theme.colors.transactionReceived}
+        />
+      </ValidateWrapper>
     ) : (
-      <RowComponent alignItems='center'>
+      <ValidateWrapper alignItems='center'>
         <ValidateStatusIcon src={InvalidIcon} />
-        <ItemLabel value='INVALID' color={theme.colors.transactionSent} />
-      </RowComponent>
+        <ValidateItemLabel
+          value='INVALID'
+          color={theme.colors.transactionSent}
+        />
+      </ValidateWrapper>
     );
   };
 
@@ -479,17 +547,26 @@ export class SendView extends PureComponent<Props, State> {
     );
   };
 
+  shouldDisableSendButton = () => {
+    const { balance } = this.props;
+    const {
+      from, amount, to, fee,
+    } = this.state;
+
+    return !from || !amount || !to || !fee || new BigNumber(amount).gt(balance);
+  };
+
   render() {
     const {
-      addresses, balance, zecPrice, isSending, error, operationId,
+      addresses, balance, zecPrice, isSending, error, operationId, theme,
     } = this.props;
     const {
-      showFee, from, amount, to, memo, fee, feeType,
+      showFee, from, amount, to, memo, fee, feeType, isHexMemo, showBalanceTooltip,
     } = this.state;
 
     const isEmpty = amount === '';
 
-    const fixedAmount = isEmpty ? 0.0 : amount;
+    const fixedAmount = this.getAmountWithFee();
 
     const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
     const zecBalanceInUsd = formatNumber({
@@ -501,14 +578,22 @@ export class SendView extends PureComponent<Props, State> {
       append: 'ZEC ',
     });
     const valueSentInUsd = formatNumber({
-      value: new BigNumber(amount).times(zecPrice).toNumber(),
+      value: new BigNumber(fixedAmount).times(zecPrice).toNumber(),
       append: 'USD $',
     });
+
+    const seeMoreIcon = theme.mode === DARK
+      ? MenuIconDark
+      : MenuIconLight;
+
+    const arrowUpIcon = theme.mode === DARK
+      ? ArrowUpIconDark
+      : ArrowUpIconLight;
 
     return (
       <RowComponent id='send-wrapper' justifyContent='space-between'>
         <FormWrapper>
-          <InputLabelComponent value='From an address' />
+          <Label value='From an address' />
           <SelectComponent
             onChange={this.handleChange('from')}
             value={from}
@@ -516,7 +601,7 @@ export class SendView extends PureComponent<Props, State> {
             options={addresses.map(addr => ({ value: addr, label: addr }))}
             capitalize={false}
           />
-          <InputLabelComponent value='Amount' />
+          <Label value='Amount' />
           <AmountWrapper isEmpty={isEmpty}>
             <AmountInput
               renderRight={() => (
@@ -524,7 +609,7 @@ export class SendView extends PureComponent<Props, State> {
                   onClick={() => this.handleChange('amount')(balance)}
                   disabled={!from}
                 >
-                  <MaxAvailableAmountImg src={ArrowUpIcon} />
+                  <MaxAvailableAmountImg src={arrowUpIcon} />
                 </MaxAvailableAmount>
               )}
               isEmpty={isEmpty}
@@ -534,10 +619,9 @@ export class SendView extends PureComponent<Props, State> {
               placeholder='ZEC 0.0'
               min={0.01}
               name='amount'
-              disabled={!from}
             />
           </AmountWrapper>
-          <InputLabelComponent value='To' />
+          <Label value='To' />
           <InputComponent
             onChange={this.handleChange('to')}
             value={to}
@@ -545,7 +629,7 @@ export class SendView extends PureComponent<Props, State> {
             renderRight={to ? this.renderValidationStatus : () => null}
             name='to'
           />
-          <InputLabelComponent value='Memo' />
+          <Label value='Memo' />
           <InputComponent
             onChange={this.handleChange('memo')}
             value={memo}
@@ -553,20 +637,28 @@ export class SendView extends PureComponent<Props, State> {
             placeholder='Enter a text here'
             name='memo'
           />
-          <RowComponent justifyContent='flex-end'>
-            <Checkbox onChange={event => this.setState({ isHexMemo: event.target.checked })} />
-            <TextComponent value='Hexadecimal memo' />
-          </RowComponent>
-          <ShowFeeButton
-            id='send-show-additional-options-button'
-            onClick={() => this.setState(state => ({
-              showFee: !state.showFee,
-            }))
-            }
-          >
-            <SeeMoreIcon src={MenuIcon} alt='Show more icon' />
-            <TextComponent value={`${showFee ? 'Hide' : 'Show'} Additional Options`} />
-          </ShowFeeButton>
+          <ActionsWrapper>
+            <ShowFeeButton
+              id='send-show-additional-options-button'
+              onClick={() => this.setState(state => ({
+                showFee: !state.showFee,
+              }))
+              }
+            >
+              <SeeMoreIcon src={seeMoreIcon} alt='Show more icon' />
+              <TextComponent value={`${showFee ? 'Hide' : 'Show'} Additional Options`} />
+            </ShowFeeButton>
+            <HexadecimalWrapper>
+              <Checkbox
+                onChange={event => this.setState({ isHexMemo: event.target.checked })}
+                checked={isHexMemo}
+              />
+              <HexadecimalText
+                onClick={() => this.setState(prevState => ({ isHexMemo: !prevState.isHexMemo }))}
+                value='Hexadecimal Memo'
+              />
+            </HexadecimalWrapper>
+          </ActionsWrapper>
           <RevealsMain>
             <Transition
               native
@@ -591,22 +683,23 @@ export class SendView extends PureComponent<Props, State> {
                   <animated.div style={props}>
                     <FeeWrapper id='send-fee-wrapper'>
                       <RowComponent alignItems='flex-end' justifyContent='space-between'>
-                        <ColumnComponent width='74%'>
-                          <InputLabelComponent value='Fee' />
+                        <ColumnComponent width='64%'>
+                          <Label value='Fee' />
                           <InputComponent
                             type='number'
                             onChange={this.handleChange('fee')}
                             value={String(fee)}
                             disabled={feeType !== FEES.CUSTOM}
-                            bgColor={theme.colors.blackTwo}
+                            bgColor={theme.colors.sendAdditionalInputBg}
+                            color={theme.colors.sendAdditionalInputText}
                             name='fee'
                           />
                         </ColumnComponent>
-                        <ColumnComponent width='25%'>
+                        <ColumnComponent width='35%'>
                           <SelectComponent
                             placement='top'
                             value={String(feeType)}
-                            bgColor={theme.colors.blackTwo}
+                            bgColor={theme.colors.sendAdditionalInputBg}
                             onChange={this.handleChangeFeeType}
                             options={Object.keys(FEES).map(cur => ({
                               label: cur.toLowerCase(),
@@ -645,15 +738,26 @@ export class SendView extends PureComponent<Props, State> {
             showButtons={!isSending && !error && !operationId}
             onClose={this.reset}
             renderTrigger={toggle => (
-              <FormButton
-                onClick={() => this.showModal(toggle)}
-                id='send-submit-button'
-                label='Send'
-                variant='secondary'
-                focused
-                isFluid
-                disabled={!from || !amount || !to || !fee}
-              />
+              <Tooltip
+                placement='topRight'
+                visible={showBalanceTooltip}
+                overlay={(
+                  <>
+                    <TextComponent size={theme.fontSize.medium} value='You do not seem' />
+                    <TextComponent size={theme.fontSize.medium} value='to have enough funds' />
+                  </>
+                )}
+              >
+                <FormButton
+                  onClick={() => this.showModal(toggle)}
+                  id='send-submit-button'
+                  label='Send'
+                  variant='secondary'
+                  focused
+                  isFluid
+                  disabled={this.shouldDisableSendButton()}
+                />
+              </Tooltip>
             )}
           >
             {toggle => (
@@ -666,9 +770,11 @@ export class SendView extends PureComponent<Props, State> {
               </ModalContent>
             )}
           </ConfirmDialogComponent>
-          <FormButton label='Cancel' variant='secondary' />
+          <FormButton label='Clear Form' variant='secondary' />
         </SendWrapper>
       </RowComponent>
     );
   }
 }
+
+export const SendView = withTheme(Component);
