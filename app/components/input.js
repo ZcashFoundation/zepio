@@ -3,7 +3,7 @@
 import React, { type Element } from 'react';
 import styled from 'styled-components';
 
-import theme from '../theme';
+import { appTheme } from '../theme';
 
 type Props = {
   inputType?: 'input' | 'textarea',
@@ -28,16 +28,22 @@ type DefaultStylesProps = PropsWithTheme<{
 const getDefaultStyles: ($PropertyType<Props, 'inputType'>) => Element<*> = t => styled[t]`
   border-radius: ${(props: DefaultStylesProps) => props.theme.boxBorderRadius};
   border: none;
-  background-color: ${(props: DefaultStylesProps) => props.bgColor || props.theme.colors.inputBackground};
+  background-color: ${(props: DefaultStylesProps) => props.bgColor || props.theme.colors.inputBg};
   color: ${(props: DefaultStylesProps) => props.theme.colors.text};
   padding: 15px;
   padding-right: ${(props: DefaultStylesProps) => (props.withRightElement ? '85px' : '15px')};
   width: 100%;
   outline: none;
   font-family: ${(props: DefaultStylesProps) => props.theme.fontFamily};
+  border: 1px solid ${(props: DefaultStylesProps) => props.theme.colors.inputBorder};
 
   ::placeholder {
     opacity: 0.5;
+  }
+
+  &:focus,
+  &:active {
+    border-color: ${(props: DefaultStylesProps) => props.theme.colors.inputBorderActive};
   }
 `;
 
@@ -104,5 +110,5 @@ InputComponent.defaultProps = {
   onChange: () => {},
   onFocus: () => {},
   step: 1,
-  bgColor: theme.colors.inputBackground,
+  bgColor: appTheme.colors.inputBg,
 };

@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { TextComponent } from './text';
 import { Button } from './button';
 
-import ErrorIcon from '../assets/images/error_icon.png';
+import ErrorIcon from '../assets/images/error_icon_dark.png';
 
 const ModalWrapper = styled.div`
   width: 100vw;

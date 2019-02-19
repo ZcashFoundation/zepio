@@ -9,6 +9,8 @@ import { TextComponent } from './text';
 
 import zcashLogo from '../assets/images/zcash-simple-icon.svg';
 
+import { appTheme } from '../theme';
+
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
@@ -16,7 +18,19 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${props => props.theme.colors.cardBackgroundColor};
+  background-color: ${props => props.theme.colors.loadingScreenBg};
+`;
+
+const LoadingCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  padding: 60px;
+  min-width: 300px;
+  min-height: 200px;
+  border-radius: 3px;
 `;
 
 const CircleWrapper = styled.div`
@@ -35,6 +49,10 @@ const Logo = styled.img`
   left: calc(50% - 25px);
 `;
 
+const LoadingText = styled(TextComponent)`
+  color: ${props => props.theme.colors.loadingScreenText};
+`;
+
 type Props = {
   progress: number,
   theme: AppTheme,
@@ -47,7 +65,7 @@ type State = {
 
 const TIME_DELAY_ANIM = 100;
 
-export class Component extends PureComponent<Props, State> {
+class Component extends PureComponent<Props, State> {
   state = { start: false };
 
   componentDidMount() {
@@ -85,17 +103,19 @@ export class Component extends PureComponent<Props, State> {
                 justifyContent: 'center',
               }}
             >
-              <CircleWrapper>
-                <Logo src={zcashLogo} alt='Zcash Logo' />
-                <CircleProgressComponent
-                  progress={progress}
-                  responsive
-                  showPercentage={false}
-                  progressColor={theme.colors.activeItem(this.props)}
-                  bgColor={theme.colors.inactiveItem(this.props)}
-                />
-              </CircleWrapper>
-              <TextComponent value={message} />
+              <LoadingCard>
+                <CircleWrapper>
+                  <Logo src={zcashLogo} alt='Zcash Logo' />
+                  <CircleProgressComponent
+                    progress={progress}
+                    responsive
+                    showPercentage={false}
+                    progressColor={theme.colors.activeItem}
+                    bgColor={theme.colors.inactiveItem}
+                  />
+                </CircleWrapper>
+                <LoadingText value={message} />
+              </LoadingCard>
             </animated.div>
           )}
         </Transition>

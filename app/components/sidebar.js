@@ -2,8 +2,9 @@
 
 /* eslint-disable max-len */
 import React from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import type { Location, RouterHistory } from 'react-router-dom';
+
 import { MENU_OPTIONS } from '../constants/sidebar';
 
 const Wrapper = styled.div`
@@ -13,6 +14,7 @@ const Wrapper = styled.div`
   height: ${props => `calc(100vh - ${props.theme.headerHeight})`};
   font-family: ${props => props.theme.fontFamily};
   background-color: ${props => props.theme.colors.sidebarBg};
+  border-right: 1px solid ${props => props.theme.colors.sidebarBorderRight};
   padding-top: 15px;
   position: relative;
 `;
@@ -20,11 +22,17 @@ const Wrapper = styled.div`
 /* eslint-disable max-len */
 type StyledLinkProps = PropsWithTheme<{ isActive: boolean }>;
 const StyledLink = styled.a`
-  color: ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarItemActive : props.theme.colors.sidebarItem)};
+  color: ${(props: StyledLinkProps) => (props.isActive
+    ? props.theme.colors.sidebarItemActive
+    : props.theme.colors.sidebarItem
+  )};
+  background-color: ${(props: StyledLinkProps) => (props.isActive
+    ? props.theme.colors.sidebarItemHoveredBg
+    : 'transparent'
+  )};
   font-size: ${(props: StyledLinkProps) => `${props.theme.fontSize.regular}em`};
   text-decoration: none;
   font-weight: ${(props: StyledLinkProps) => String(props.theme.fontWeight.bold)};
-  background-color: ${(props: StyledLinkProps) => (props.isActive ? `${props.theme.colors.sidebarHoveredItem}` : 'transparent')};
   letter-spacing: 0.25px;
   padding: 25px 20px;
   height: 35px;
@@ -32,13 +40,19 @@ const StyledLink = styled.a`
   display: flex;
   align-items: center;
   outline: none;
-  border-right: ${(props: StyledLinkProps) => (props.isActive ? `3px solid ${props.theme.colors.sidebarItemActive(props)}` : 'none')};
   cursor: pointer;
+  outline: none;
   transition: all 0.03s ${(props: StyledLinkProps) => props.theme.transitionEase};
+  border-right: ${(props: StyledLinkProps) => (props.isActive ? `3px solid ${props.theme.colors.sidebarActiveItemBorder}` : 'none')};
+  border-top: 1px solid ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarBorderRight : 'transparent')};
+  border-bottom: 1px solid ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarBorderRight : 'transparent')};
 
   &:hover {
-    color: ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarItemActive : '#ddd')}
-    background-color: ${(props: StyledLinkProps) => props.theme.colors.sidebarHoveredItem};
+    border-top: 1px solid ${props => props.theme.colors.sidebarBorderRight};
+    border-bottom: 1px solid ${props => props.theme.colors.sidebarBorderRight};
+
+    background-color: ${(props: StyledLinkProps) => props.theme.colors.sidebarItemHoveredBg};
+    color: ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarItemActive : props.theme.colors.sidebarItemHovered)}
   }
 `;
 
@@ -47,24 +61,29 @@ const Icon = styled.img`
   height: 17px;
   margin-right: 13px;
 
+  opacity: ${(props: any) => (props.isActive ? '1' : '0.3')};
+
   ${StyledLink}:hover & {
-    filter: ${(props: StyledLinkProps) => (props.isActive ? 'none' : 'brightness(300%)')};
+    opacity: 1;
   }
 `;
 
 type MenuItem = {
   route: string,
   label: string,
-  icon: (isActive: boolean) => string,
+  icon: (isActive: boolean, themeMode: string) => string,
 };
 
 type Props = {
   history: RouterHistory,
   options?: MenuItem[],
   location: Location,
+  theme: AppTheme,
 };
 
-export const SidebarComponent = ({ options, location, history }: Props) => (
+export const Component = ({
+  options, location, history, theme,
+}: Props) => (
   <Wrapper id='sidebar'>
     {(options || []).map((item) => {
       const isActive = item.route === '/'
@@ -77,7 +96,11 @@ export const SidebarComponent = ({ options, location, history }: Props) => (
           key={item.route}
           onClick={() => (isActive ? {} : history.push(item.route))}
         >
-          <Icon isActive={isActive} src={item.icon(isActive)} Alt={`${item.route}`} />
+          <Icon
+            isActive={isActive}
+            src={item.icon(isActive, theme.mode)}
+            Alt={`${item.route}`}
+          />
           {item.label}
         </StyledLink>
       );
@@ -85,6 +108,8 @@ export const SidebarComponent = ({ options, location, history }: Props) => (
   </Wrapper>
 );
 
-SidebarComponent.defaultProps = {
+Component.defaultProps = {
   options: MENU_OPTIONS,
 };
+
+export const SidebarComponent = withTheme(Component);

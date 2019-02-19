@@ -1,13 +1,18 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
+
+import { DARK, LIGHT } from '../constants/themes';
 
 import { TextComponent } from './text';
-import ChevronUp from '../assets/images/chevron-up.svg';
-import ChevronDown from '../assets/images/chevron-down.svg';
 
-import theme from '../theme';
+import ChevronUpLight from '../assets/images/chevron_up_icon_light.svg';
+import ChevronUpDark from '../assets/images/chevron_up_icon_dark.svg';
+import ChevronDownLight from '../assets/images/chevron_down_icon_light.svg';
+import ChevronDownDark from '../assets/images/chevron_down_icon_dark.svg';
+
+import { appTheme } from '../theme';
 
 /* eslint-disable max-len */
 type SelectWrapperProps = PropsWithTheme<{
@@ -21,8 +26,8 @@ const SelectWrapper = styled.div`
   display: flex;
   flex-direction: row;
   border-radius: ${(props: SelectWrapperProps) => props.theme.boxBorderRadius};
-  border: none;
-  background-color: ${(props: SelectWrapperProps) => props.bgColor || props.theme.colors.inputBackground};
+  border: 1px solid ${(props: SelectWrapperProps) => props.theme.colors.inputBorder};
+  background-color: ${(props: SelectWrapperProps) => props.bgColor || props.theme.colors.inputBg};
   color: ${(props: SelectWrapperProps) => props.theme.colors.text};
   width: 100%;
   outline: none;
@@ -62,9 +67,14 @@ const SelectMenuButton = styled.button`
   padding: 3px 7px;
   outline: none;
   background-color: transparent;
-  border: 1px solid
-    ${(props: PropsWithTheme<{ isOpen: boolean }>) => (props.isOpen ? props.theme.colors.primary : '#29292D')};
   border-radius: 100%;
+  cursor: pointer;
+  border: 1px solid
+    ${(props: PropsWithTheme<{ isOpen: boolean }>) => (
+    props.isOpen
+      ? props.theme.colors.dropdownOpenedIconBorder
+      : props.theme.colors.dropdownIconBorder
+  )};
 `;
 
 const Icon = styled.img`
@@ -76,24 +86,28 @@ const OptionsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  width: 100%;
-  ${(props: PropsWithTheme<{ placement: string, optionsAmount: number }>) => `${String(props.placement)}: ${`-${String((props.optionsAmount || 0) * 40)}px`}`};
+  width: 100.5%;
+  margin-left: -0.25%;
+  border-radius: ${props => props.theme.colors.boxBorderRadius};
+  border: 1px solid ${props => props.theme.colors.inputBorder};
+  ${(props: PropsWithTheme<{ placement: string, optionsAmount: number }>) => `${String(props.placement)}: ${`-${String(((props.optionsAmount || 0) * 40) + 10)}px`}`};
   overflow-y: auto;
+  box-shadow: 1px 3px 20px rgba(16, 19, 20, 0.1);
 `;
 
 const Option = styled.button`
   border: none;
   background: none;
   height: 40px;
-  background-color: #5d5d5d;
+  background-color: ${props => props.theme.colors.dropdownBg};
   cursor: pointer;
   z-index: 99;
   text-transform: ${(props: PropsWithTheme<{ capitalize: boolean }>) => (props.capitalize ? 'capitalize' : 'none')};
   padding: 5px 10px;
-  border-bottom: 1px solid #4e4b4b;
+  border-bottom: 1px solid ${props => props.theme.colors.dropdownBorder};
 
   &:hover {
-    background-color: ${props => props.theme.colors.background};
+    background-color: ${props => props.theme.colors.dropdownHoveredBg};
   }
 
   &:last-child {
@@ -111,13 +125,14 @@ type Props = {
   placement?: 'top' | 'bottom',
   bgColor?: string,
   capitalize?: boolean,
+  theme: AppTheme,
 };
 
 type State = {
   isOpen: boolean,
 };
 
-export class SelectComponent extends PureComponent<Props, State> {
+class Component extends PureComponent<Props, State> {
   state = {
     isOpen: false,
   };
@@ -125,7 +140,7 @@ export class SelectComponent extends PureComponent<Props, State> {
   static defaultProps = {
     placeholder: '',
     placement: 'bottom',
-    bgColor: theme.colors.inputBackground,
+    bgColor: appTheme.colors.inputBg,
     capitalize: true,
   };
 
@@ -151,14 +166,24 @@ export class SelectComponent extends PureComponent<Props, State> {
   };
 
   getSelectIcon = () => {
-    const { placement } = this.props;
+    const { placement, theme } = this.props;
     const { isOpen } = this.state;
 
-    if (placement === 'top') {
-      return !isOpen ? ChevronUp : ChevronDown;
+    if (theme.mode === DARK) {
+      if (placement === 'top') {
+        return !isOpen ? ChevronUpDark : ChevronDownDark;
+      }
+
+      return !isOpen ? ChevronDownDark : ChevronUpDark;
     }
 
-    return !isOpen ? ChevronDown : ChevronUp;
+    if (theme.mode === LIGHT) {
+      if (placement === 'top') {
+        return !isOpen ? ChevronUpLight : ChevronDownLight;
+      }
+
+      return !isOpen ? ChevronDownLight : ChevronUpLight;
+    }
   };
 
   render() {
@@ -176,7 +201,10 @@ export class SelectComponent extends PureComponent<Props, State> {
         onClick={() => this.setState(() => ({ isOpen: !isOpen }))}
         bgColor={bgColor}
       >
-        <ValueWrapper hasValue={Boolean(value)} capitalize={capitalize}>
+        <ValueWrapper
+          hasValue={Boolean(value)}
+          capitalize={capitalize}
+        >
           {this.getSelectedLabel(value) || placeholder}
         </ValueWrapper>
         <SelectMenuButtonWrapper>
@@ -207,3 +235,5 @@ export class SelectComponent extends PureComponent<Props, State> {
     );
   }
 }
+
+export const SelectComponent = withTheme(Component);
