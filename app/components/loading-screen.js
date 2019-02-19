@@ -48,7 +48,7 @@ type State = {
 const TIME_DELAY_ANIM = 100;
 
 export class Component extends PureComponent<Props, State> {
-  state = { start: false, message: 'ZEC Wallet Starting' };
+  state = { start: false };
 
   componentDidMount() {
     setTimeout(() => {

@@ -4,7 +4,7 @@ import React, { type ComponentType, Component } from 'react';
 import { ipcRenderer, remote } from 'electron';
 import { type RouterHistory, type Location } from 'react-router-dom';
 import { searchUriInArgv } from '../../config/handle-deeplink';
-import electronStore from "../../config/electron-store"
+import electronStore from '../../config/electron-store';
 
 type PassedProps = {
   history: RouterHistory,
@@ -12,13 +12,16 @@ type PassedProps = {
   isRunning: boolean,
 };
 
-const OSX_DEEPLINK_URL_KEY = "OSX_DEEPLINK_URL"
+const OSX_DEEPLINK_URL_KEY = 'OSX_DEEPLINK_URL';
 
 export const withDeepLink = (
   WrappedComponent: ComponentType<PassedProps>,
 ): ComponentType<$Diff<PassedProps, {}>> => class extends Component<PassedProps> {
   componentDidMount() {
-    const arg = searchUriInArgv([...remote.process.argv, electronStore.get(OSX_DEEPLINK_URL_KEY) || ""]);
+    const arg = searchUriInArgv([
+      ...remote.process.argv,
+      electronStore.get(OSX_DEEPLINK_URL_KEY) || '',
+    ]);
 
     if (arg) this.redirect(arg);
 
@@ -40,7 +43,7 @@ export const withDeepLink = (
 
     // clean osx deeplink storage
     if (electronStore.has(OSX_DEEPLINK_URL_KEY)) {
-      electronStore.delete(OSX_DEEPLINK_URL_KEY)
+      electronStore.delete(OSX_DEEPLINK_URL_KEY);
     }
 
     history.replace(`/send/${message.replace(/zcash:(\/\/)?/, '')}`);
