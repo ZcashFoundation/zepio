@@ -31,17 +31,30 @@ const RoundedTransactionWrapper = styled.div`
 
   ${props => (props.roundPosition === 'top'
     ? `
-  border-top-left-radius: ${props.theme.boxBorderRadius};
-  border-top-right-radius: ${props.theme.boxBorderRadius};`
-    : `border-bottom-left-radius: ${props.theme.boxBorderRadius};
-  border-bottom-right-radius: ${props.theme.boxBorderRadius};`)}
+      border-top-left-radius: ${props.theme.boxBorderRadius};
+      border-top-right-radius: ${props.theme.boxBorderRadius};
+    `
+    : `
+      border-bottom-left-radius: ${props.theme.boxBorderRadius};
+      border-bottom-right-radius: ${props.theme.boxBorderRadius};
+    `
+  )}
+`;
+
+const ListWrapper = styled.div`
+  margin-top: 10px;
 `;
 
 export class TransactionsView extends PureComponent<Props> {
   componentDidMount() {
     const { getTransactions, resetTransactionsList } = this.props;
+
     resetTransactionsList();
-    getTransactions({ count: PAGE_SIZE, offset: 0, shieldedTransactionsCount: 0 });
+    getTransactions({
+      count: PAGE_SIZE,
+      offset: 0,
+      shieldedTransactionsCount: 0,
+    });
   }
 
   isRowLoaded = ({ index }: { index: number }) => {
@@ -122,9 +135,14 @@ export class TransactionsView extends PureComponent<Props> {
     return transactionItem;
   };
 
-  renderRow = ({ index, key, style }: { index: number, key: string, style: Object }) => (
+  renderRow = (
+    { index, key, style }: { index: number, key: string, style: Object },
+  ) => (
     <div key={key} style={style}>
-      {this.isRowLoaded({ index }) ? this.renderTransactions({ index }) : 'Loading...'}
+      {this.isRowLoaded({ index })
+        ? this.renderTransactions({ index })
+        : 'Loading...'
+      }
     </div>
   );
 
@@ -179,16 +197,18 @@ export class TransactionsView extends PureComponent<Props> {
         {({ onRowsRendered, registerChild }) => (
           <AutoSizer>
             {({ width, height }) => (
-              <List
-                noRowsRenderer={EmptyTransactionsComponent}
-                ref={registerChild}
-                onRowsRendered={onRowsRendered}
-                rowRenderer={this.renderRow}
-                rowHeight={this.getRowHeight}
-                rowCount={transactionsSize}
-                width={width}
-                height={height - 20}
-              />
+              <ListWrapper>
+                <List
+                  noRowsRenderer={EmptyTransactionsComponent}
+                  ref={registerChild}
+                  onRowsRendered={onRowsRendered}
+                  rowRenderer={this.renderRow}
+                  rowHeight={this.getRowHeight}
+                  rowCount={transactionsSize}
+                  width={width}
+                  height={height - 20}
+                />
+              </ListWrapper>
             )}
           </AutoSizer>
         )}
