@@ -5,7 +5,6 @@ import styled, { withTheme, keyframes } from 'styled-components';
 import { BigNumber } from 'bignumber.js';
 import { Transition, animated } from 'react-spring';
 import { type Match } from 'react-router-dom';
-import Tooltip from 'rc-tooltip';
 
 import { FEES } from '../constants/fees';
 import { DARK } from '../constants/themes';
@@ -32,8 +31,7 @@ import LoadingIcon from '../assets/images/sync_icon_dark.png';
 import ArrowUpIconDark from '../assets/images/arrow_up_dark.png';
 import ArrowUpIconLight from '../assets/images/arrow_up_light.png';
 
-import type { SendTransactionInput, MapDispatchToProps, MapStateToProps } from '../containers/send';
-import type { State as SendState } from '../redux/modules/send';
+import type { MapDispatchToProps, MapStateToProps } from '../containers/send';
 
 const rotate = keyframes`
   from {
@@ -87,7 +85,7 @@ const AmountWrapper = styled.div`
     display: block;
     transition: all 0.05s ease-in-out;
     opacity: ${(props: AmountProps) => (props.isEmpty ? '0' : '1')};
-    color: #fff;
+    color: ${props => props.theme.colors.text};
     z-index: 10;
   }
 `;
@@ -278,7 +276,7 @@ const HexadecimalWrapper = styled.div`
   cursor: pointer;
 
   &:hover {
-    opacity: 1;
+    opacity: 1;s
   }
 `;
 
@@ -286,10 +284,33 @@ const HexadecimalText = styled(TextComponent)`
   white-space: nowrap;
 `;
 
+const SimpleTooltip = styled.div`
+  background: ${props => props.theme.colors.walletAddressTooltipBg};
+  position: absolute;
+  top: -30px;
+  right: 0px;
+  padding: 6px 10px;
+  border-radius: 3px;
+`;
+
+const TooltipText = styled(TextComponent)`
+  color: ${props => props.theme.colors.walletAddressTooltip};
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+`;
+
+const SendButtonWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+`;
+
 type Props = {
   match: Match,
   theme: AppTheme,
-} & MapStateToProps & MapDispatchToProps;
+} & MapStateToProps &
+  MapDispatchToProps;
 
 type State = {
   showFee: boolean,
@@ -453,18 +474,12 @@ class Component extends PureComponent<Props, State> {
     return isToAddressValid ? (
       <ValidateWrapper alignItems='center'>
         <ValidateStatusIcon src={ValidIcon} />
-        <ValidateItemLabel
-          value='VALID'
-          color={theme.colors.transactionReceived}
-        />
+        <ValidateItemLabel value='VALID' color={theme.colors.transactionReceived} />
       </ValidateWrapper>
     ) : (
       <ValidateWrapper alignItems='center'>
         <ValidateStatusIcon src={InvalidIcon} />
-        <ValidateItemLabel
-          value='INVALID'
-          color={theme.colors.transactionSent}
-        />
+        <ValidateItemLabel value='INVALID' color={theme.colors.transactionSent} />
       </ValidateWrapper>
     );
   };
@@ -564,12 +579,20 @@ class Component extends PureComponent<Props, State> {
       addresses, balance, zecPrice, isSending, error, operationId, theme,
     } = this.props;
     const {
-      showFee, from, amount, to, memo, fee, feeType, isHexMemo, showBalanceTooltip,
+      showFee,
+      from,
+      amount,
+      to,
+      memo,
+      fee,
+      feeType,
+      isHexMemo,
+      showBalanceTooltip,
     } = this.state;
 
     const isEmpty = amount === '';
 
-    const fixedAmount = this.getAmountWithFee();
+    const fixedAmount = isEmpty || new BigNumber(amount).eq(0) ? 0 : this.getAmountWithFee();
 
     const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
     const zecBalanceInUsd = formatNumber({
@@ -585,13 +608,9 @@ class Component extends PureComponent<Props, State> {
       append: 'USD $',
     });
 
-    const seeMoreIcon = theme.mode === DARK
-      ? MenuIconDark
-      : MenuIconLight;
+    const seeMoreIcon = theme.mode === DARK ? MenuIconDark : MenuIconLight;
 
-    const arrowUpIcon = theme.mode === DARK
-      ? ArrowUpIconDark
-      : ArrowUpIconLight;
+    const arrowUpIcon = theme.mode === DARK ? ArrowUpIconDark : ArrowUpIconLight;
 
     return (
       <RowComponent id='send-wrapper' justifyContent='space-between'>
@@ -741,16 +760,13 @@ class Component extends PureComponent<Props, State> {
             showButtons={!isSending && !error && !operationId}
             onClose={this.reset}
             renderTrigger={toggle => (
-              <Tooltip
-                placement='topRight'
-                visible={showBalanceTooltip}
-                overlay={(
-                  <>
-                    <TextComponent size={theme.fontSize.medium} value='You do not seem' />
-                    <TextComponent size={theme.fontSize.medium} value='to have enough funds' />
-                  </>
-                )}
-              >
+              <SendButtonWrapper>
+                {showBalanceTooltip ? (
+                  <SimpleTooltip>
+                    <TooltipText value='You do not seem' />
+                    <TooltipText value='to have enough funds' />
+                  </SimpleTooltip>
+                ) : null}
                 <FormButton
                   onClick={() => this.showModal(toggle)}
                   id='send-submit-button'
@@ -760,7 +776,7 @@ class Component extends PureComponent<Props, State> {
                   isFluid
                   disabled={this.shouldDisableSendButton()}
                 />
-              </Tooltip>
+              </SendButtonWrapper>
             )}
           >
             {toggle => (
