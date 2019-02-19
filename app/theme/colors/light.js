@@ -127,4 +127,10 @@ export const LIGHT_COLORS = {
   // Loading
   loadingScreenBg: offWhite,
   loadingScreenText: white,
+
+  // Additional Panes
+  sendAdditionalOptionsBg: white,
+  sendAdditionalOptionsBorder: border,
+  sendAdditionalInputBg: offWhite,
+  sendAdditionalInputText: white,
 };

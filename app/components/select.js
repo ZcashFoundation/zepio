@@ -1,11 +1,16 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
+
+import { DARK, LIGHT } from '../constants/themes';
 
 import { TextComponent } from './text';
-import ChevronUp from '../assets/images/chevron-up.svg';
-import ChevronDown from '../assets/images/chevron-down.svg';
+
+import ChevronUpLight from '../assets/images/chevron_up_icon_light.svg';
+import ChevronUpDark from '../assets/images/chevron_up_icon_dark.svg';
+import ChevronDownLight from '../assets/images/chevron_down_icon_light.svg';
+import ChevronDownDark from '../assets/images/chevron_down_icon_dark.svg';
 
 import { appTheme } from '../theme';
 
@@ -120,13 +125,14 @@ type Props = {
   placement?: 'top' | 'bottom',
   bgColor?: string,
   capitalize?: boolean,
+  theme: AppTheme,
 };
 
 type State = {
   isOpen: boolean,
 };
 
-export class SelectComponent extends PureComponent<Props, State> {
+class Component extends PureComponent<Props, State> {
   state = {
     isOpen: false,
   };
@@ -160,14 +166,24 @@ export class SelectComponent extends PureComponent<Props, State> {
   };
 
   getSelectIcon = () => {
-    const { placement } = this.props;
+    const { placement, theme } = this.props;
     const { isOpen } = this.state;
 
-    if (placement === 'top') {
-      return !isOpen ? ChevronUp : ChevronDown;
+    if (theme.mode === DARK) {
+      if (placement === 'top') {
+        return !isOpen ? ChevronUpDark : ChevronDownDark;
+      }
+
+      return !isOpen ? ChevronDownDark : ChevronUpDark;
     }
 
-    return !isOpen ? ChevronDown : ChevronUp;
+    if (theme.mode === LIGHT) {
+      if (placement === 'top') {
+        return !isOpen ? ChevronUpLight : ChevronDownLight;
+      }
+
+      return !isOpen ? ChevronDownLight : ChevronUpLight;
+    }
   };
 
   render() {
@@ -219,3 +235,5 @@ export class SelectComponent extends PureComponent<Props, State> {
     );
   }
 }
+
+export const SelectComponent = withTheme(Component);

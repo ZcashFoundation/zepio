@@ -326,5 +326,21 @@ export const appTheme: AppTheme = {
       [LIGHT]: LIGHT_COLORS.loadingScreenText,
       [DARK]: DARK_COLORS.loadingScreenText,
     }),
+    sendAdditionalOptionsBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.sendAdditionalOptionsBg,
+      [DARK]: DARK_COLORS.sendAdditionalOptionsBg,
+    }),
+    sendAdditionalOptionsBorder: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.sendAdditionalOptionsBorder,
+      [DARK]: DARK_COLORS.sendAdditionalOptionsBorder,
+    }),
+    sendAdditionalInputBg: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.sendAdditionalInputBg,
+      [DARK]: DARK_COLORS.sendAdditionalInputBg,
+    }),
+    sendAdditionalInputText: theme('mode', {
+      [LIGHT]: LIGHT_COLORS.sendAdditionalInputText,
+      [DARK]: DARK_COLORS.sendAdditionalInputText,
+    }),
   },
 };

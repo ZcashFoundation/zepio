@@ -115,6 +115,12 @@ type Colors = {
   // Loading
   loadingScreenBg: ThemeSet,
   loadingScreenText: ThemeSet,
+
+  // Misc
+  sendAdditionalOptionsBg: ThemeSet,
+  sendAdditionalOptionsBorder: ThemeSet,
+  sendAdditionalInputBg: ThemeSet,
+  sendAdditionalInputText: ThemeSet,
 };
 
 type FontSize = {

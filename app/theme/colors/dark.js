@@ -25,8 +25,8 @@ export const DARK_COLORS = {
   dropdownBg: '#5d5d5d',
   dropdownHoveredBg: '#212124',
   dropdownBorder: '#4e4b4b',
-  dropdownIconBorder: '#ddd',
-  dropdownOpenedIconBorder: '#2929DD',
+  dropdownIconBorder: '#828282',
+  dropdownOpenedIconBorder: '#ddd',
 
   // Card
   cardBackgroundColor: black,
@@ -114,4 +114,10 @@ export const DARK_COLORS = {
   // Loading
   loadingScreenBg: black,
   loadingScreenText: white,
+
+  // Misc
+  sendAdditionalOptionsBg: black,
+  sendAdditionalOptionsBorder: black,
+  sendAdditionalInputBg: darkBrand,
+  sendAdditionalInputText: white,
 };

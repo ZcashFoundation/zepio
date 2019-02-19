@@ -27,7 +27,8 @@ import MenuIconLight from '../assets/images/menu_icon_light.svg';
 import ValidIcon from '../assets/images/green_check_dark.png';
 import InvalidIcon from '../assets/images/error_icon_dark.png';
 import LoadingIcon from '../assets/images/sync_icon_dark.png';
-import ArrowUpIcon from '../assets/images/arrow_up.png';
+import ArrowUpIconDark from '../assets/images/arrow_up_dark.png';
+import ArrowUpIconLight from '../assets/images/arrow_up_light.png';
 
 import type { SendTransactionInput } from '../containers/send';
 import type { State as SendState } from '../redux/modules/send';
@@ -56,7 +57,7 @@ const FormWrapper = styled.div`
 
 const SendWrapper = styled(ColumnComponent)`
   width: 25%;
-  margin-top: 45px;
+  margin-top: 42px;
 `;
 
 const Label = styled(InputLabelComponent)`
@@ -118,9 +119,10 @@ const SeeMoreIcon = styled.img`
 `;
 
 const FeeWrapper = styled.div`
-  background-color: #000;
-  border-radius: 4px;
-  padding: 13px 19px;
+  background-color: ${props => props.theme.colors.sendAdditionalOptionsBg};
+  border: 1px solid ${props => props.theme.colors.sendAdditionalOptionsBorder};
+  border-radius: 3px;
+  padding: 0 20px 15px;
   margin-bottom: 20px;
 `;
 
@@ -240,8 +242,12 @@ const MaxAvailableAmount = styled.button`
   background: none;
   color: white;
   cursor: pointer;
-  border-left: ${props => `1px solid ${props.theme.colors.background(props)}`};
+  border-left: 1px solid ${props => props.theme.colors.inputBorder};
   opacity: 0.8;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     opacity: 1;
@@ -557,6 +563,10 @@ class Component extends PureComponent<Props, State> {
       ? MenuIconDark
       : MenuIconLight;
 
+    const arrowUpIcon = theme.mode === DARK
+      ? ArrowUpIconDark
+      : ArrowUpIconLight;
+
     return (
       <RowComponent id='send-wrapper' justifyContent='space-between'>
         <FormWrapper>
@@ -576,7 +586,7 @@ class Component extends PureComponent<Props, State> {
                   onClick={() => this.handleChange('amount')(balance)}
                   disabled={!from}
                 >
-                  <MaxAvailableAmountImg src={ArrowUpIcon} />
+                  <MaxAvailableAmountImg src={arrowUpIcon} />
                 </MaxAvailableAmount>
               )}
               isEmpty={isEmpty}
@@ -651,22 +661,23 @@ class Component extends PureComponent<Props, State> {
                   <animated.div style={props}>
                     <FeeWrapper id='send-fee-wrapper'>
                       <RowComponent alignItems='flex-end' justifyContent='space-between'>
-                        <ColumnComponent width='74%'>
+                        <ColumnComponent width='64%'>
                           <Label value='Fee' />
                           <InputComponent
                             type='number'
                             onChange={this.handleChange('fee')}
                             value={String(fee)}
                             disabled={feeType !== FEES.CUSTOM}
-                            bgColor={theme.colors.blackTwo}
+                            bgColor={theme.colors.sendAdditionalInputBg}
+                            color={theme.colors.sendAdditionalInputText}
                             name='fee'
                           />
                         </ColumnComponent>
-                        <ColumnComponent width='25%'>
+                        <ColumnComponent width='35%'>
                           <SelectComponent
                             placement='top'
                             value={String(feeType)}
-                            bgColor={theme.colors.blackTwo}
+                            bgColor={theme.colors.sendAdditionalInputBg}
                             onChange={this.handleChangeFeeType}
                             options={Object.keys(FEES).map(cur => ({
                               label: cur.toLowerCase(),
