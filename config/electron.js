@@ -104,10 +104,7 @@ if (instanceLock) {
   app.quit();
 }
 
-app.on('will-finish-launching', () => handleDeeplink({
-  app,
-  mainWindow,
-}));
+handleDeeplink({ app, mainWindow })
 
 /* eslint-disable-next-line consistent-return */
 app.on('ready', async () => {

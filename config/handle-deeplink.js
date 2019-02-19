@@ -1,5 +1,6 @@
 // @flow
-import { typeof app as ElectronApp, type electron$BrowserWindow } from 'electron'; // eslint-disable-line
+import { typeof app as ElectronApp, type electron$BrowserWindow, remote } from 'electron'; // eslint-disable-line
+import store from "./electron-store"
 
 const sendMessage = (mainWindow, url) => {
   if (mainWindow) {
@@ -30,6 +31,7 @@ export const handleDeeplink = ({
   if (listenOpenUrl) {
     app.on('open-url', (event: Object, url: string) => {
       event.preventDefault();
+      store.set("OSX_DEEPLINK_URL", url)
       sendMessage(mainWindow, url);
     });
   }
