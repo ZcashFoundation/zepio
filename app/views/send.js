@@ -4,6 +4,7 @@ import React, { Fragment, PureComponent } from 'react';
 import styled, { withTheme, keyframes } from 'styled-components';
 import { BigNumber } from 'bignumber.js';
 import { Transition, animated } from 'react-spring';
+import { type Match } from 'react-router-dom';
 import Tooltip from 'rc-tooltip';
 
 import { FEES } from '../constants/fees';
@@ -31,7 +32,7 @@ import LoadingIcon from '../assets/images/sync_icon_dark.png';
 import ArrowUpIconDark from '../assets/images/arrow_up_dark.png';
 import ArrowUpIconLight from '../assets/images/arrow_up_light.png';
 
-import type { SendTransactionInput } from '../containers/send';
+import type { SendTransactionInput, MapDispatchToProps, MapStateToProps } from '../containers/send';
 import type { State as SendState } from '../redux/modules/send';
 
 const rotate = keyframes`
@@ -264,7 +265,6 @@ const ValidateWrapper = styled(RowComponent)`
   margin-top: 3px;
 `;
 
-
 const ActionsWrapper = styled(RowComponent)`
   padding: 30px 0;
   align-items: center;
@@ -287,19 +287,9 @@ const HexadecimalText = styled(TextComponent)`
 `;
 
 type Props = {
-  ...SendState,
-  balance: number,
-  zecPrice: number,
-  addresses: string[],
-  sendTransaction: SendTransactionInput => void,
-  loadAddresses: () => void,
-  resetSendView: () => void,
-  validateAddress: ({ address: string }) => void,
-  loadAddresses: () => void,
-  loadZECPrice: () => void,
-  getAddressBalance: ({ address: string }) => void,
+  match: Match,
   theme: AppTheme,
-};
+} & MapStateToProps & MapDispatchToProps;
 
 type State = {
   showFee: boolean,
@@ -329,11 +319,24 @@ class Component extends PureComponent<Props, State> {
   state = initialState;
 
   componentDidMount() {
-    const { resetSendView, loadAddresses, loadZECPrice } = this.props;
+    const {
+      resetSendView, loadAddresses, loadZECPrice, match,
+    } = this.props;
 
     resetSendView();
     loadAddresses();
     loadZECPrice();
+
+    if (match.params.to) {
+      this.handleChange('to')(match.params.to);
+    }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    const previousToAddress = prevProps.match.params.to;
+    const toAddress = this.props.match.params.to; // eslint-disable-line
+
+    if (toAddress && previousToAddress !== toAddress) this.handleChange('to')(toAddress);
   }
 
   updateTooltipVisibility = ({ balance, amount }: { balance: number, amount: number }) => {

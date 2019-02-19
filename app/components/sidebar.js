@@ -86,7 +86,9 @@ export const Component = ({
 }: Props) => (
   <Wrapper id='sidebar'>
     {(options || []).map((item) => {
-      const isActive = location.pathname === item.route;
+      const isActive = item.route === '/'
+        ? location.pathname === item.route
+        : location.pathname.startsWith(item.route);
 
       return (
         <StyledLink

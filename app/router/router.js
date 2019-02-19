@@ -42,7 +42,7 @@ const ContentWrapper = styled.div`
 const getTitle = (path: string) => {
   if (path === '/') return 'Dashboard';
 
-  return path.replace('/', '');
+  return path.split('/')[1];
 };
 
 export const RouterComponent = ({
@@ -60,7 +60,7 @@ export const RouterComponent = ({
         <ScrollTopComponent>
           <Switch>
             <Route exact path={DASHBOARD_ROUTE} component={DashboardContainer} />
-            <Route path={SEND_ROUTE} component={SendContainer} />
+            <Route path={`${SEND_ROUTE}/:to?`} component={SendContainer} />
             <Route path={RECEIVE_ROUTE} component={ReceiveContainer} />
             <Route path={SETTINGS_ROUTE} component={SettingsContainer} />
             <Route path={CONSOLE_ROUTE} component={ConsoleView} />

@@ -5,10 +5,12 @@ set -eu
 # Create default zcash.conf
 if [[ "$OSTYPE" == "darwin"* ]]; then
   if [ ! -e "$HOME/Library/Application Support/Zcash/zcash.conf" ] ; then
+    mkdir -p "$HOME/Library/Application Support/Zcash"
     echo "server=1" > "$HOME/Library/Application Support/Zcash/zcash.conf"
   fi
 else
   if [ ! -e "$HOME/.zcash/zcash.conf" ] ; then
+    mkdir -p "$HOME/.zcash" 
     echo "server=1" > "$HOME/.zcash/zcash.conf"
   fi
 fi

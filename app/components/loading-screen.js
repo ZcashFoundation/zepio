@@ -1,15 +1,13 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { Transition, animated } from 'react-spring';
 
 import CircleProgressComponent from 'react-circle';
 import { TextComponent } from './text';
 
 import zcashLogo from '../assets/images/zcash-simple-icon.svg';
-
-import { appTheme } from '../theme';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -55,6 +53,7 @@ const LoadingText = styled(TextComponent)`
 
 type Props = {
   progress: number,
+  theme: AppTheme,
   message: string,
 };
 
@@ -64,7 +63,7 @@ type State = {
 
 const TIME_DELAY_ANIM = 100;
 
-export class LoadingScreen extends PureComponent<Props, State> {
+class Component extends PureComponent<Props, State> {
   state = { start: false };
 
   componentDidMount() {
@@ -75,7 +74,7 @@ export class LoadingScreen extends PureComponent<Props, State> {
 
   render() {
     const { start } = this.state;
-    const { progress, message } = this.props;
+    const { progress, message, theme } = this.props;
 
     return (
       <Wrapper data-testid='LoadingScreen'>
@@ -109,8 +108,8 @@ export class LoadingScreen extends PureComponent<Props, State> {
                     progress={progress}
                     responsive
                     showPercentage={false}
-                    progressColor={appTheme.colors.activeItem}
-                    bgColor={appTheme.colors.inactiveItem}
+                    progressColor={theme.colors.activeItem}
+                    bgColor={theme.colors.inactiveItem}
                   />
                 </CircleWrapper>
                 <LoadingText value={message} />
@@ -122,3 +121,5 @@ export class LoadingScreen extends PureComponent<Props, State> {
     );
   }
 }
+
+export const LoadingScreen = withTheme(Component);
