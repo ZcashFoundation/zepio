@@ -14,7 +14,7 @@ const ModalWrapper = styled.div`
   top: 0;
   left: 0;
   z-index: 10;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.4);
 `;
 
 const ChildrenWrapper = styled.div`
@@ -103,7 +103,9 @@ export class ModalComponent extends PureComponent<Props, State> {
               ) this.close();
             }}
           >
-            <ChildrenWrapper>{children(toggleVisibility)}</ChildrenWrapper>
+            <ChildrenWrapper>
+              {children(toggleVisibility)}
+            </ChildrenWrapper>
           </ModalWrapper>,
           this.element,
         )}

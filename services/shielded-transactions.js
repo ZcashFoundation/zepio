@@ -12,7 +12,20 @@ type ShieldedTransaction = {|
 |};
 
 // eslint-disable-next-line
-export const listShieldedTransactions = (): Array<ShieldedTransaction> => electronStore.has(STORE_KEY) ? electronStore.get(STORE_KEY) : [];
+export const listShieldedTransactions = (
+  pagination: ?{
+    offset: number,
+    count: number,
+  },
+): Array<ShieldedTransaction> => {
+  const transactions = electronStore.has(STORE_KEY) ? electronStore.get(STORE_KEY) : [];
+
+  if (!pagination) return transactions;
+
+  const { offset = 0, count = 10 } = pagination;
+
+  return transactions.slice(offset - 1, offset + count);
+};
 
 export const saveShieldedTransaction = ({
   category,

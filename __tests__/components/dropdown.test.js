@@ -7,7 +7,7 @@ import 'jest-dom/extend-expect';
 
 import { DropdownComponent } from '../../app/components/dropdown';
 import { Button } from '../../app/components/button';
-import appTheme from '../../app/theme';
+import { appTheme } from '../../app/theme';
 
 afterEach(cleanup);
 
@@ -28,8 +28,8 @@ describe('<DropdownComponent />', () => {
               />
             )}
             options={[
-              { label: 'asbh1yeasbdh23848asdasd', onClick: console.log },
-              { label: 'urtyruhjr374hbfdjdhuh', onClick: console.log },
+              { label: 'asbh1yeasbdh23848asdasd', onClick: console.log }, // eslint-disable-line
+              { label: 'urtyruhjr374hbfdjdhuh', onClick: console.log }, // eslint-disable-line
             ]}
           />
         </div>
@@ -53,8 +53,8 @@ describe('<DropdownComponent />', () => {
               />
             )}
             options={[
-              { label: 'asbh1yeasbdh23848asdasd', onClick: console.log },
-              { label: 'urtyruhjr374hbfdjdhuh', onClick: console.log },
+              { label: 'asbh1yeasbdh23848asdasd', onClick: console.log }, // eslint-disable-line
+              { label: 'urtyruhjr374hbfdjdhuh', onClick: console.log }, // eslint-disable-line
             ]}
           />
         </div>
