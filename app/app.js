@@ -7,9 +7,9 @@ import { ThemeProvider } from 'styled-components';
 
 import { configureStore, history } from './redux/create';
 import { Router } from './router/container';
-import theme, { GlobalStyle } from './theme';
+import { appTheme as theme, GlobalStyle } from './theme';
 import electronStore from '../config/electron-store';
-import { DARK } from './constants/themes';
+import { DARK, THEME_MODE } from './constants/themes';
 
 const store = configureStore({});
 
@@ -20,15 +20,15 @@ type State = {
 
 export class App extends Component<Props, State> {
   state = {
-    themeMode: electronStore.get('THEME_MODE') || DARK,
+    themeMode: electronStore.get(THEME_MODE) || DARK,
   };
 
   componentDidMount() {
-    if (!electronStore.has('THEME_MODE')) {
-      electronStore.set('THEME_MODE', DARK);
+    if (!electronStore.has(THEME_MODE)) {
+      electronStore.set(THEME_MODE, DARK);
     }
 
-    electronStore.onDidChange('THEME_MODE', newValue => this.setState({ themeMode: newValue }));
+    electronStore.onDidChange(THEME_MODE, newValue => this.setState({ themeMode: newValue }));
   }
 
   render() {

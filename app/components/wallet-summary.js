@@ -8,12 +8,13 @@ import { RowComponent } from './row';
 
 import { formatNumber } from '../utils/format-number';
 
-import theme from '../theme';
+import { appTheme } from '../theme';
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${props => props.theme.colors.cardBackgroundColor};
+  background-color: ${props => props.theme.colors.walletSummaryBg};
+  border: 1px solid ${props => props.theme.colors.walletSummaryBorder};
   border-radius: ${props => props.theme.boxBorderRadius};
   padding: 37px 45px;
   min-height: 250px;
@@ -60,31 +61,31 @@ export const WalletSummaryComponent = ({
     <AllAddresses value='ALL ADDRESSES' isBold />
     <ValueBox>
       <TextComponent
-        size={theme.fontSize.medium * 2.5}
+        size={appTheme.fontSize.medium * 2.5}
         value={`ZEC ${formatNumber({ value: total })}`}
         isBold
       />
       <USDValue
         value={`USD $${formatNumber({ value: total * zecPrice })}`}
-        size={theme.fontSize.medium * 2}
+        size={appTheme.fontSize.medium * 2}
       />
     </ValueBox>
     <RowComponent>
       <ValueBox>
-        <ShieldedValue value='&#9679; SHIELDED' isBold size={theme.fontSize.small} />
+        <ShieldedValue value='&#9679; SHIELDED' isBold size={appTheme.fontSize.small} />
         <TextComponent
           value={`ZEC ${formatNumber({ value: shielded })}`}
           isBold
-          size={theme.fontSize.medium}
+          size={appTheme.fontSize.medium}
         />
         <USDValue value={`USD $${formatNumber({ value: shielded * zecPrice })}`} />
       </ValueBox>
       <ValueBox>
-        <Label value='&#9679; TRANSPARENT' isBold size={theme.fontSize.small} />
+        <Label value='&#9679; TRANSPARENT' isBold size={appTheme.fontSize.small} />
         <TextComponent
           value={`ZEC ${formatNumber({ value: transparent })}`}
           isBold
-          size={theme.fontSize.medium}
+          size={appTheme.fontSize.medium}
         />
         <USDValue value={`USD $${formatNumber({ value: transparent * zecPrice })}`} />
       </ValueBox>

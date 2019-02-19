@@ -30,6 +30,7 @@ describe('Transactions Actions', () => {
     const payload = {
       list: [],
       zecPrice: 0,
+      hasNextPage: false,
     };
 
     store.dispatch(loadTransactionsSuccess(payload));

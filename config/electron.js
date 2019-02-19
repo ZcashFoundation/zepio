@@ -14,6 +14,7 @@ import runDaemon from './daemon/zcashd-child-process';
 import zcashLog from './daemon/logger';
 import getZecPrice from '../services/zec-price';
 import store from './electron-store';
+import { handleDeeplink } from './handle-deeplink';
 
 dotenv.config();
 
@@ -79,9 +80,37 @@ const createWindow = () => {
   exports.mainWindow = mainWindow;
 };
 
+app.setAsDefaultProtocolClient('zcash');
+
+const instanceLock = app.requestSingleInstanceLock();
+if (instanceLock) {
+  app.on('second-instance', (event: Object, argv: string[]) => {
+    handleDeeplink({
+      app,
+      mainWindow,
+      argv,
+      listenOpenUrl: false,
+    });
+
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+      }
+
+      mainWindow.focus();
+    }
+  });
+} else {
+  app.quit();
+}
+
+handleDeeplink({ app, mainWindow });
+
 /* eslint-disable-next-line consistent-return */
 app.on('ready', async () => {
   createWindow();
+
+  console.log('[Process Argv]', process.argv); // eslint-disable-line
 
   if (process.env.NODE_ENV === 'test') {
     zcashLog('Not running daemon, please run the mock API');

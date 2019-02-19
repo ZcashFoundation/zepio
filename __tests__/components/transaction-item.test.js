@@ -6,7 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import 'jest-dom/extend-expect';
 
 import { TransactionItemComponent } from '../../app/components/transaction-item';
-import appTheme from '../../app/theme';
+import { appTheme } from '../../app/theme';
 
 afterEach(cleanup);
 
@@ -21,6 +21,7 @@ describe('<TransactionItem />', () => {
           amount={0.8652}
           date={new Date().toISOString()}
           zecPrice={2.94}
+          fees={0.0001}
         />
       </ThemeProvider>,
     );

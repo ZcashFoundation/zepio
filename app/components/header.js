@@ -55,6 +55,7 @@ const Title = styled(TextComponent)`
   text-transform: capitalize;
   letter-spacing: 0.25px;
   font-weight: ${props => String(props.theme.fontWeight.bold)};
+  color: ${props => props.theme.colors.headerTitle};
 `;
 
 type Props = {
@@ -73,7 +74,7 @@ export const HeaderComponent = ({ title }: Props) => (
         <Title value={title} />
         <Status type='syncing' progress={0} />
       </TitleRow>
-      <Divider opacity={0.1} />
+      <Divider opacity={0.2} />
     </TitleWrapper>
   </Wrapper>
 );

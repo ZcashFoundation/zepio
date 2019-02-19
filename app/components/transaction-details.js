@@ -1,34 +1,36 @@
 // @flow
 
 import React from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import dateFns from 'date-fns';
 import { BigNumber } from 'bignumber.js';
 
 import { ZCASH_EXPLORER_BASE_URL } from '../constants/explorer';
+import { DARK } from '../constants/themes';
 
-import SentIcon from '../assets/images/transaction_sent_icon.svg';
-import ReceivedIcon from '../assets/images/transaction_received_icon.svg';
+import SentIconDark from '../assets/images/transaction_sent_icon_dark.svg';
+import ReceivedIconDark from '../assets/images/transaction_received_icon_dark.svg';
+import SentIconLight from '../assets/images/transaction_sent_icon_light.svg';
+import ReceivedIconLight from '../assets/images/transaction_received_icon_light.svg';
 import CloseIcon from '../assets/images/close_icon.svg';
 
 import { TextComponent } from './text';
 import { RowComponent } from './row';
 import { ColumnComponent } from './column';
 
-import theme from '../theme';
+import { appTheme } from '../theme';
 
 import { formatNumber } from '../utils/format-number';
-import { truncateAddress } from '../utils/truncate-address';
 import { openExternal } from '../utils/open-external';
 
 const Wrapper = styled.div`
   width: 460px;
-  background-color: ${props => props.theme.colors.background};
+  background-color: ${props => props.theme.colors.transactionDetailsBg};
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 6px;
-  box-shadow: 0px 0px 30px 0px black;
+  box-shadow: ${props => props.theme.colors.transactionDetailsShadow};
   position: relative;
 `;
 
@@ -71,7 +73,7 @@ const InfoRow = styled(RowComponent)`
   }
 
   &:hover {
-    background: #1d1d1d;
+    background: ${props => props.theme.colors.transactionDetailsRowHover};
   }
 `;
 
@@ -85,14 +87,14 @@ const DetailsWrapper = styled.div`
 
 const Divider = styled.div`
   width: 100%;
-  background-color: #3a3a3a;
+  background-color: ${props => props.theme.colors.transactionDetailsDivider};
   height: 1px;
   opacity: 0.5;
 `;
 
 const Label = styled(TextComponent)`
   font-weight: ${props => String(props.theme.fontWeight.bold)};
-  color: ${props => props.theme.colors.transactionsDetailsLabel};
+  color: ${props => props.theme.colors.transactionDetailsLabel};
   margin-bottom: 5px;
   letter-spacing: 0.25px;
 `;
@@ -124,22 +126,26 @@ type Props = {
   zecPrice: number,
   date: string,
   transactionId: string,
-  from: string,
-  to: string,
+  address: string,
+  fees: number | string,
   handleClose: () => void,
+  theme: AppTheme,
 };
 
-export const TransactionDetailsComponent = ({
+const Component = ({
   amount,
   type,
   zecPrice,
   date,
   transactionId,
-  from,
-  to,
+  address,
+  fees,
   handleClose,
+  theme,
 }: Props) => {
   const isReceived = type === 'receive';
+  const receivedIcon = theme.mode === DARK ? ReceivedIconDark : ReceivedIconLight;
+  const sentIcon = theme.mode === DARK ? SentIconDark : SentIconLight;
 
   return (
     <Wrapper>
@@ -150,7 +156,7 @@ export const TransactionDetailsComponent = ({
         <TextComponent value='Transaction Details' align='center' />
       </TitleWrapper>
       <DetailsWrapper>
-        <Icon src={isReceived ? ReceivedIcon : SentIcon} alt='Transaction Type Icon' />
+        <Icon src={isReceived ? receivedIcon : sentIcon} alt='Transaction Type Icon' />
         <TextComponent
           isBold
           size={2.625}
@@ -158,7 +164,7 @@ export const TransactionDetailsComponent = ({
             append: `${isReceived ? '+' : '-'}ZEC `,
             value: amount,
           })}
-          color={isReceived ? theme.colors.transactionReceived : theme.colors.transactionSent}
+          color={isReceived ? appTheme.colors.transactionReceived : appTheme.colors.transactionSent}
         />
         <TextComponent
           value={formatNumber({
@@ -166,7 +172,7 @@ export const TransactionDetailsComponent = ({
             value: new BigNumber(amount).times(zecPrice).toNumber(),
           })}
           size={1.5}
-          color={theme.colors.transactionsDetailsLabel}
+          color={appTheme.colors.transactionDetailsLabel}
         />
       </DetailsWrapper>
       <InfoRow>
@@ -175,12 +181,16 @@ export const TransactionDetailsComponent = ({
           <TextComponent value={dateFns.format(new Date(date), 'MMMM D, YYYY HH:MMA')} />
         </ColumnComponent>
         <ColumnComponent>
-          <TextComponent value='FEES' isBold color={theme.colors.transactionsDetailsLabel} />
+          <TextComponent value='FEES' isBold color={appTheme.colors.transactionDetailsLabel} />
           <TextComponent
-            value={formatNumber({
-              value: new BigNumber(amount).times(0.1).toNumber(),
-              append: 'ZEC ',
-            })}
+            value={
+              fees === 'N/A'
+                ? 'N/A'
+                : formatNumber({
+                  value: new BigNumber(fees).toFormat(4),
+                  append: 'ZEC ',
+                })
+            }
           />
         </ColumnComponent>
       </InfoRow>
@@ -188,7 +198,13 @@ export const TransactionDetailsComponent = ({
       <InfoRow>
         <ColumnComponent width='100%'>
           <Label value='TRANSACTION ID' />
-          <TransactionId onClick={() => openExternal(ZCASH_EXPLORER_BASE_URL + transactionId)}>
+          <TransactionId
+            onClick={
+              address !== '(Shielded)'
+                ? () => openExternal(ZCASH_EXPLORER_BASE_URL + transactionId)
+                : () => {}
+            }
+          >
             <Ellipsis value={transactionId} />
           </TransactionId>
         </ColumnComponent>
@@ -196,17 +212,12 @@ export const TransactionDetailsComponent = ({
       <Divider />
       <InfoRow>
         <ColumnComponent width='100%'>
-          <Label value='FROM' />
-          <Ellipsis value={truncateAddress(from)} />
-        </ColumnComponent>
-      </InfoRow>
-      <Divider />
-      <InfoRow>
-        <ColumnComponent width='100%'>
-          <Label value='TO' />
-          <Ellipsis value={truncateAddress(to)} />
+          <Label value='Address' />
+          <Ellipsis value={address} />
         </ColumnComponent>
       </InfoRow>
     </Wrapper>
   );
 };
+
+export const TransactionDetailsComponent = withTheme(Component);
