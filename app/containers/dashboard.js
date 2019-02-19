@@ -50,11 +50,12 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
     const formattedTransactions: Array<Object> = flow([
       arr => arr.map(transaction => ({
-        transactionId: transaction.txid,
+        transactionId: transaction.txid || 'N/A',
         type: transaction.category,
         date: new Date(transaction.time * 1000).toISOString(),
         address: transaction.address,
         amount: Math.abs(transaction.amount),
+        fees: transaction.fee ? new BigNumber(transaction.fee).abs().toFormat(4) : 'N/A',
       })),
       arr => groupBy(arr, obj => dateFns.format(obj.date, 'MMM DD, YYYY')),
       obj => Object.keys(obj).map(day => ({

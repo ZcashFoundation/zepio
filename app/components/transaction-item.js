@@ -71,6 +71,7 @@ export type Transaction = {
   date: string,
   address: string,
   amount: number,
+  fees: number | string,
   zecPrice: number,
   transactionId: string,
   theme: AppTheme,
@@ -81,6 +82,7 @@ const Component = ({
   date,
   address,
   amount,
+  fees,
   zecPrice,
   transactionId,
   theme,
@@ -97,12 +99,8 @@ const Component = ({
   });
   const transactionAddress = truncateAddress(address);
 
-  const receivedIcon = theme.mode === DARK
-    ? ReceivedIconDark
-    : ReceivedIconLight;
-  const sentIcon = theme.mode === DARK
-    ? SentIconDark
-    : SentIconLight;
+  const receivedIcon = theme.mode === DARK ? ReceivedIconDark : ReceivedIconLight;
+  const sentIcon = theme.mode === DARK ? SentIconDark : SentIconLight;
 
   return (
     <ModalComponent
@@ -127,10 +125,7 @@ const Component = ({
             <TextComponent
               isBold
               value={transactionValueInZec}
-              color={isReceived
-                ? theme.colors.transactionReceived
-                : theme.colors.transactionSent
-              }
+              color={isReceived ? theme.colors.transactionReceived : theme.colors.transactionSent}
             />
             <TextComponent value={transactionValueInUsd} color={theme.colors.inactiveItem} />
           </ColumnComponent>
@@ -141,8 +136,8 @@ const Component = ({
         <TransactionDetailsComponent
           amount={amount}
           date={date}
-          from={address}
-          to=''
+          address={address}
+          fees={fees}
           transactionId={transactionId}
           handleClose={toggleVisibility}
           type={type}

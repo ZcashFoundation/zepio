@@ -21,7 +21,6 @@ import { ColumnComponent } from './column';
 import { appTheme } from '../theme';
 
 import { formatNumber } from '../utils/format-number';
-import { truncateAddress } from '../utils/truncate-address';
 import { openExternal } from '../utils/open-external';
 
 const Wrapper = styled.div`
@@ -127,8 +126,8 @@ type Props = {
   zecPrice: number,
   date: string,
   transactionId: string,
-  from: string,
-  to: string,
+  address: string,
+  fees: number | string,
   handleClose: () => void,
   theme: AppTheme,
 };
@@ -139,35 +138,25 @@ const Component = ({
   zecPrice,
   date,
   transactionId,
-  from,
-  to,
+  address,
+  fees,
   handleClose,
   theme,
 }: Props) => {
   const isReceived = type === 'receive';
-  const receivedIcon = theme.mode === DARK
-    ? ReceivedIconDark
-    : ReceivedIconLight;
-  const sentIcon = theme.mode === DARK
-    ? SentIconDark
-    : SentIconLight;
+  const receivedIcon = theme.mode === DARK ? ReceivedIconDark : ReceivedIconLight;
+  const sentIcon = theme.mode === DARK ? SentIconDark : SentIconLight;
 
   return (
     <Wrapper>
       <CloseIconWrapper>
-        <CloseIconImg
-          src={CloseIcon}
-          onClick={handleClose}
-        />
+        <CloseIconImg src={CloseIcon} onClick={handleClose} />
       </CloseIconWrapper>
       <TitleWrapper>
         <TextComponent value='Transaction Details' align='center' />
       </TitleWrapper>
       <DetailsWrapper>
-        <Icon
-          src={isReceived ? receivedIcon : sentIcon}
-          alt='Transaction Type Icon'
-        />
+        <Icon src={isReceived ? receivedIcon : sentIcon} alt='Transaction Type Icon' />
         <TextComponent
           isBold
           size={2.625}
@@ -194,10 +183,14 @@ const Component = ({
         <ColumnComponent>
           <TextComponent value='FEES' isBold color={appTheme.colors.transactionDetailsLabel} />
           <TextComponent
-            value={formatNumber({
-              value: new BigNumber(amount).times(0.1).toNumber(),
-              append: 'ZEC ',
-            })}
+            value={
+              fees === 'N/A'
+                ? 'N/A'
+                : formatNumber({
+                  value: new BigNumber(fees).toFormat(4),
+                  append: 'ZEC ',
+                })
+            }
           />
         </ColumnComponent>
       </InfoRow>
@@ -207,7 +200,7 @@ const Component = ({
           <Label value='TRANSACTION ID' />
           <TransactionId
             onClick={
-              from !== '(Shielded)'
+              address !== '(Shielded)'
                 ? () => openExternal(ZCASH_EXPLORER_BASE_URL + transactionId)
                 : () => {}
             }
@@ -219,15 +212,8 @@ const Component = ({
       <Divider />
       <InfoRow>
         <ColumnComponent width='100%'>
-          <Label value='FROM' />
-          <Ellipsis value={from} />
-        </ColumnComponent>
-      </InfoRow>
-      <Divider />
-      <InfoRow>
-        <ColumnComponent width='100%'>
-          <Label value='TO' />
-          <Ellipsis value={truncateAddress(to) || 'N/A'} />
+          <Label value='Address' />
+          <Ellipsis value={address} />
         </ColumnComponent>
       </InfoRow>
     </Wrapper>
