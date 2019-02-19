@@ -2,6 +2,8 @@
 
 /* eslint-disable import/no-extraneous-dependencies */
 import fs from 'fs';
+import os from 'os';
+import path from 'path';
 import { promisify } from 'util';
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
@@ -25,8 +27,6 @@ import electronStore from '../../config/electron-store';
 import { openExternal } from '../utils/open-external';
 
 import type { MapDispatchToProps, MapStateToProps } from '../containers/settings';
-
-const HOME_DIR = electron.remote.app.getPath('home');
 
 const EXPORT_VIEW_KEYS_TITLE = 'Export View Keys';
 const EXPORT_VIEW_KEYS_CONTENT = 'Viewing keys for shielded addresses allow for the disclosure of all transaction information to a preffered party. Anyone who holds these keys can see all shielded transaction details, but cannot spend coins as it is not a private key.';
@@ -164,6 +164,20 @@ export class SettingsView extends PureComponent<Props, State> {
     loadAddresses();
   }
 
+  getWalletFolderPath = () => {
+    const { app } = electron.remote;
+
+    if (os.platform() === 'darwin') {
+      return path.join(app.getPath('appData'), 'Zcash');
+    }
+
+    if (os.platform() === 'linux') {
+      return path.join(app.getPath('home'), '.zcash');
+    }
+
+    return path.join(app.getPath('appData'), 'Zcash');
+  };
+
   exportViewKeys = () => {
     const { addresses } = this.props;
 
@@ -242,15 +256,17 @@ export class SettingsView extends PureComponent<Props, State> {
       async (pathToSave: string) => {
         if (!pathToSave) return;
 
-        const zcashDir = isDev ? `${HOME_DIR}/.zcash/testnet3` : HOME_DIR;
+        const WALLET_DIR = this.getWalletFolderPath();
+
+        const zcashDir = isDev ? path.join(WALLET_DIR, 'testnet3') : WALLET_DIR;
         const walletDatPath = `${zcashDir}/wallet.dat`;
 
         const [cannotAccess] = await eres(promisify(fs.access)(walletDatPath));
 
         /* eslint-disable no-alert */
-
         if (cannotAccess) {
           alert("Couldn't backup the wallet.dat file. You need to back it up manually.");
+          return;
         }
 
         const [error] = await eres(promisify(fs.copyFile)(walletDatPath, pathToSave));

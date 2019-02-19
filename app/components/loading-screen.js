@@ -9,8 +9,6 @@ import { TextComponent } from './text';
 
 import zcashLogo from '../assets/images/zcash-simple-icon.svg';
 
-import { appTheme } from '../theme';
-
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
