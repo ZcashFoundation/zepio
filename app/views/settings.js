@@ -24,6 +24,8 @@ import { DARK, LIGHT, THEME_MODE } from '../constants/themes';
 import electronStore from '../../config/electron-store';
 import { openExternal } from '../utils/open-external';
 
+import type { MapDispatchToProps, MapStateToProps } from '../containers/settings';
+
 const HOME_DIR = electron.remote.app.getPath('home');
 
 const EXPORT_VIEW_KEYS_TITLE = 'Export View Keys';
@@ -131,9 +133,8 @@ type Key = {
   key: string,
 };
 
-type Props = {
-  addresses: string[],
-};
+type Props = MapDispatchToProps & MapStateToProps;
+
 type State = {
   viewKeys: Key[],
   privateKeys: Key[],
@@ -156,6 +157,12 @@ export class SettingsView extends PureComponent<Props, State> {
     successImportPrivateKeys: false,
     error: null,
   };
+
+  componentDidMount() {
+    const { loadAddresses } = this.props;
+
+    loadAddresses();
+  }
 
   exportViewKeys = () => {
     const { addresses } = this.props;
