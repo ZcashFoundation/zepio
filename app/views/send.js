@@ -34,13 +34,6 @@ import ArrowUpIconLight from '../assets/images/arrow_up_light.png';
 import type { SendTransactionInput } from '../containers/send';
 import type { State as SendState } from '../redux/modules/send';
 
-import SentIcon from '../assets/images/transaction_sent_icon.svg';
-import MenuIcon from '../assets/images/menu_icon.svg';
-import ValidIcon from '../assets/images/green_check.png';
-import InvalidIcon from '../assets/images/error_icon.png';
-import LoadingIcon from '../assets/images/sync_icon.png';
-import ArrowUpIcon from '../assets/images/arrow_up.png';
-
 const rotate = keyframes`
   from {
     transform: rotate(0deg);
