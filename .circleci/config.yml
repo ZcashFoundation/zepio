@@ -1,31 +1,18 @@
 version: 2
 
 jobs:
-  install_deps:
-    docker:
-      - image: circleci/node
-    steps:
-      - checkout
-      - run: yarn install
-      - save_cache:
-          key: zec-dependencies-cache-{{ checksum "yarn.lock" }}
-          paths:
-            - /usr/local/share/.cache/yarn/v2
-            - ./node_modules
-
   test:
     docker:
       - image: electronuserland/builder:wine-chrome
     steps:
       - checkout
-      - restore_cache:
-          key: zec-dependencies-cache-{{ checksum "yarn.lock" }}
       - run: apt-get -y update
       - run: apt install -y software-properties-common
       - run: add-apt-repository ppa:jonathonf/ffmpeg-4
       - run: apt-get -y update
       - run: apt-get -y install libusb-1.0-0-dev graphicsmagick libudev-dev
       - run: apt-get -y install tmux xvfb libxtst6 libxss1 libgtk2.0-0 libnss3 libasound2 libgconf-2-4 ffmpeg frei0r-plugins
+      - run: yarn install
       - run:
           name: Run Webpack
           command: yarn dev
@@ -46,6 +33,11 @@ jobs:
           kill -s SIGINT $(pgrep ffmpeg)
           sleep 10
           kill -s SIGTERM $(pgrep Xvfb)
+      - save_cache:
+          key: zec-dependencies-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - /usr/local/share/.cache/yarn/v2
+            - ./node_modules
       - store_artifacts:
           path: /tmp/e2e-record.mp4
           destination: e2e-record.mp4
@@ -69,12 +61,9 @@ jobs:
 
 workflows:
   version: 2
-  test_build:
+  build_test:
     jobs:
-      - install_deps
-      - test:
-          requires:
-            - install_deps
+      - test
       - build_linux:
           requires:
             - test
