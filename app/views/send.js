@@ -80,7 +80,7 @@ const AmountWrapper = styled.div`
     content: 'ZEC';
     font-family: ${props => props.theme.fontFamily};
     position: absolute;
-    margin-top: 15px;
+    margin-top: 16px;
     margin-left: 15px;
     display: block;
     transition: all 0.05s ease-in-out;
@@ -361,7 +361,11 @@ class Component extends PureComponent<Props, State> {
   }
 
   updateTooltipVisibility = ({ balance, amount }: { balance: number, amount: number }) => {
-    this.setState({ showBalanceTooltip: new BigNumber(amount).gt(balance) });
+    const { from, to } = this.state;
+
+    this.setState({
+      showBalanceTooltip: !from || !to ? false : new BigNumber(amount).gt(balance),
+    });
   };
 
   getAmountWithFee = () => {
@@ -379,11 +383,15 @@ class Component extends PureComponent<Props, State> {
     const { amount } = this.state;
 
     if (field === 'to') {
-      this.setState(() => ({ [field]: value }), () => validateAddress({ address: String(value) }));
-    } else if (field === 'amount') {
       this.setState(
         () => ({ [field]: value }),
-        () => this.updateTooltipVisibility({ balance, amount: new BigNumber(value).toNumber() }),
+        () => {
+          validateAddress({ address: String(value) });
+          this.updateTooltipVisibility({
+            balance,
+            amount: new BigNumber(amount).toNumber(),
+          });
+        },
       );
     } else {
       if (field === 'from') getAddressBalance({ address: String(value) });
@@ -392,6 +400,10 @@ class Component extends PureComponent<Props, State> {
         () => ({ [field]: value }),
         () => {
           if (field === 'fee') this.handleChange('amount')(amount);
+          this.updateTooltipVisibility({
+            balance,
+            amount: new BigNumber(field === 'amount' ? value : amount).toNumber(),
+          });
         },
       );
     }
@@ -461,7 +473,6 @@ class Component extends PureComponent<Props, State> {
     const feeValue = new BigNumber(fee);
 
     if (feeValue.isEqualTo(FEES.LOW)) return `Low ZEC ${feeValue.toString()}`;
-    // eslint-disable-next-line max-len
     if (feeValue.isEqualTo(FEES.MEDIUM)) return `Medium ZEC ${feeValue.toString()}`;
     if (feeValue.isEqualTo(FEES.HIGH)) return `High ZEC ${feeValue.toString()}`;
 
@@ -474,12 +485,12 @@ class Component extends PureComponent<Props, State> {
     return isToAddressValid ? (
       <ValidateWrapper alignItems='center'>
         <ValidateStatusIcon src={ValidIcon} />
-        <ValidateItemLabel value='VALID' color={theme.colors.transactionReceived} />
+        <ValidateItemLabel value='VALID' color={theme.colors.transactionReceived(this.props)} />
       </ValidateWrapper>
     ) : (
       <ValidateWrapper alignItems='center'>
         <ValidateStatusIcon src={InvalidIcon} />
-        <ValidateItemLabel value='INVALID' color={theme.colors.transactionSent} />
+        <ValidateItemLabel value='INVALID' color={theme.colors.transactionSent(this.props)} />
       </ValidateWrapper>
     );
   };
@@ -712,8 +723,8 @@ class Component extends PureComponent<Props, State> {
                             onChange={this.handleChange('fee')}
                             value={String(fee)}
                             disabled={feeType !== FEES.CUSTOM}
-                            bgColor={theme.colors.sendAdditionalInputBg}
-                            color={theme.colors.sendAdditionalInputText}
+                            bgColor={theme.colors.sendAdditionalInputBg(this.props)}
+                            color={theme.colors.sendAdditionalInputText(this.props)}
                             name='fee'
                           />
                         </ColumnComponent>
@@ -721,7 +732,7 @@ class Component extends PureComponent<Props, State> {
                           <SelectComponent
                             placement='top'
                             value={String(feeType)}
-                            bgColor={theme.colors.sendAdditionalInputBg}
+                            bgColor={theme.colors.sendAdditionalInputBg(this.props)}
                             onChange={this.handleChangeFeeType}
                             options={Object.keys(FEES).map(cur => ({
                               label: cur.toLowerCase(),

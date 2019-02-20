@@ -18,8 +18,6 @@ import { TextComponent } from './text';
 import { RowComponent } from './row';
 import { ColumnComponent } from './column';
 
-import { appTheme } from '../theme';
-
 import { formatNumber } from '../utils/format-number';
 import { openExternal } from '../utils/open-external';
 
@@ -164,7 +162,11 @@ const Component = ({
             append: `${isReceived ? '+' : '-'}ZEC `,
             value: amount,
           })}
-          color={isReceived ? appTheme.colors.transactionReceived : appTheme.colors.transactionSent}
+          color={
+            isReceived
+              ? theme.colors.transactionReceived({ theme })
+              : theme.colors.transactionSent({ theme })
+          }
         />
         <TextComponent
           value={formatNumber({
@@ -172,7 +174,7 @@ const Component = ({
             value: new BigNumber(amount).times(zecPrice).toNumber(),
           })}
           size={1.5}
-          color={appTheme.colors.transactionDetailsLabel}
+          color={theme.colors.transactionDetailsLabel({ theme })}
         />
       </DetailsWrapper>
       <InfoRow>
@@ -181,7 +183,11 @@ const Component = ({
           <TextComponent value={dateFns.format(new Date(date), 'MMMM D, YYYY HH:MMA')} />
         </ColumnComponent>
         <ColumnComponent>
-          <TextComponent value='FEES' isBold color={appTheme.colors.transactionDetailsLabel} />
+          <TextComponent
+            value='FEES'
+            isBold
+            color={theme.colors.transactionDetailsLabel({ theme })}
+          />
           <TextComponent
             value={
               fees === 'N/A'
