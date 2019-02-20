@@ -7,9 +7,7 @@ import { ZcashLogo } from './zcash-logo';
 import { TextComponent } from './text';
 import { Divider } from './divider';
 import { RowComponent } from './row';
-import { StatusPill } from './status-pill';
-
-import { withSyncStatus } from '../../services/sync-status';
+import { StatusPillContainer } from '../containers/status-pill';
 
 const Wrapper = styled.div`
   height: ${props => props.theme.headerHeight};
@@ -62,8 +60,6 @@ type Props = {
   title: string,
 };
 
-const Status = withSyncStatus(StatusPill);
-
 export const HeaderComponent = ({ title }: Props) => (
   <Wrapper id='header'>
     <LogoWrapper>
@@ -72,7 +68,7 @@ export const HeaderComponent = ({ title }: Props) => (
     <TitleWrapper>
       <TitleRow alignItems='center' justifyContent='space-around'>
         <Title value={title} />
-        <Status type='syncing' progress={0} />
+        <StatusPillContainer />
       </TitleRow>
       <Divider opacity={0.2} />
     </TitleWrapper>

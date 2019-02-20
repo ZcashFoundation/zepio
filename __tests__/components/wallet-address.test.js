@@ -12,16 +12,14 @@ afterEach(cleanup);
 
 describe('<WalletAddress />', () => {
   test('should render wallet address component correctly', () => {
-    const { queryByTestId } = render(
+    const { getByText } = render(
       <ThemeProvider theme={appTheme}>
         <div style={{ width: '700px' }}>
-          <WalletAddress
-            address='t14oHp2v54vfmdgQ3v3SNuQga8JKHTNi2a1'
-          />
+          <WalletAddress address='t14oHp2v54vfmdgQ3v3SNuQga8JKHTNi2a1' />
         </div>
       </ThemeProvider>,
     );
 
-    expect(queryByTestId('Address')).toBeInTheDocument();
+    expect(getByText('t14oHp2v54vfmdgQ3v3SNuQga8JKHTNi2a1')).toBeInTheDocument();
   });
 });

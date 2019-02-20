@@ -114,6 +114,7 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
         clearInterval(interval);
         if (from.startsWith('z')) {
           saveShieldedTransaction({
+            txid: operationStatus.result.txid,
             category: 'send',
             time: Date.now() / 1000,
             address: '(Shielded)',
