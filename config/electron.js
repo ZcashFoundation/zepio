@@ -65,9 +65,7 @@ const createWindow = () => {
     },
   });
 
-  getZecPrice().then((obj) => {
-    store.set('ZEC_DOLLAR_PRICE', String(obj.USD));
-  });
+  getZecPrice().then(({ USD }) => store.set('ZEC_DOLLAR_PRICE', String(USD)));
 
   mainWindow.setVisibleOnAllWorkspaces(true);
   registerDebugShortcut(app, mainWindow);

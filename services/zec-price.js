@@ -1,8 +1,6 @@
 // @flow
 
-/* eslint-disable import/no-extraneous-dependencies */
-// $FlowFixMe
-import { net } from 'electron';
+import got from 'got';
 
 type Payload = {
   [currency: string]: number,
@@ -18,18 +16,7 @@ export default (currencies: string[] = ['USD']): Promise<Payload> => new Promise
     ',',
   )}&api_key=${String(process.env.ZEC_PRICE_API_KEY)}`;
 
-  const request = net.request(ENDPOINT);
-  request.on('response', (response) => {
-    let data = '';
-    /* eslint-disable-next-line no-return-assign */
-    response.on('data', chunk => (data += chunk));
-    response.on('end', () => {
-      try {
-        resolve(JSON.parse(data));
-      } catch (err) {
-        reject(err);
-      }
-    });
-  });
-  request.end();
+  got(ENDPOINT)
+    .then(response => resolve(JSON.parse(response.body)))
+    .catch(reject);
 });
