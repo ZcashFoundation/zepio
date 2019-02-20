@@ -4,6 +4,7 @@ import electronStore from '../config/electron-store';
 const STORE_KEY = 'SHIELDED_TRANSACTIONS';
 
 type ShieldedTransaction = {|
+  txid: string,
   category: 'send' | 'receive',
   time: number,
   address: string,
@@ -28,6 +29,7 @@ export const listShieldedTransactions = (
 };
 
 export const saveShieldedTransaction = ({
+  txid,
   category,
   time,
   address,
@@ -37,6 +39,7 @@ export const saveShieldedTransaction = ({
   electronStore.set(
     STORE_KEY,
     listShieldedTransactions().concat({
+      txid,
       category,
       time,
       address,

@@ -3,7 +3,6 @@
 import eres from 'eres';
 import { connect } from 'react-redux';
 import { BigNumber } from 'bignumber.js';
-import uuidv4 from 'uuid/v4';
 
 import { TransactionsView } from '../views/transactions';
 import {
@@ -65,10 +64,10 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
         ...transactions,
         ...listShieldedTransactions({ count, offset: shieldedTransactionsCount }),
       ].map(transaction => ({
-        transactionId: transaction.txid ? transaction.txid : uuidv4(),
+        transactionId: transaction.txid,
         type: transaction.category,
         date: new Date(transaction.time * 1000).toISOString(),
-        address: transaction.address,
+        address: transaction.address || '(Shielded)',
         amount: new BigNumber(transaction.amount).absoluteValue().toNumber(),
         fees: transaction.fee ? new BigNumber(transaction.fee).abs().toFormat(4) : 'N/A',
       })),
