@@ -2,11 +2,9 @@
 
 import React, { PureComponent } from 'react';
 import styled, { keyframes, withTheme } from 'styled-components';
-import eres from 'eres';
 
 import { TextComponent } from './text';
 
-import rpc from '../../services/api';
 import { DARK } from '../constants/themes';
 
 import readyIconDark from '../assets/images/green_check_dark.png';
@@ -15,6 +13,8 @@ import syncIconDark from '../assets/images/sync_icon_dark.png';
 import syncIconLight from '../assets/images/sync_icon_light.png';
 import errorIconDark from '../assets/images/error_icon_dark.png';
 import errorIconLight from '../assets/images/error_icon_light.png';
+
+import type { MapDispatchToProps, MapStateToProps } from '../containers/status-pill';
 
 const rotate = keyframes`
   from {
@@ -55,94 +55,85 @@ const StatusPillLabel = styled(TextComponent)`
 
 type Props = {
   theme: AppTheme,
-};
+} & MapStateToProps &
+  MapDispatchToProps;
 
-type State = {
-  type: string,
-  icon: string,
-  progress: number,
-  isSyncing: boolean,
-};
+const MINUTE_IN_MILI = 60000;
 
-class Component extends PureComponent<Props, State> {
+class Component extends PureComponent<Props> {
   timer: ?IntervalID = null;
 
-  constructor(props: Props) {
-    super(props);
+  componentDidMount() {
+    const { getBlockchainStatus } = this.props;
 
-    const { theme } = props;
-
-    const syncIcon = theme.mode === DARK
-      ? syncIconDark
-      : syncIconLight;
-
-    this.state = {
-      type: 'syncing',
-      icon: syncIcon,
-      progress: 0,
-      isSyncing: true,
-    };
+    this.timer = setInterval(() => getBlockchainStatus(), 2000);
   }
 
-  componentDidMount() {
-    this.timer = setInterval(() => {
-      this.getBlockchainStatus();
-    }, 2000);
+  componentDidUpdate(prevProps: Props) {
+    const { getBlockchainStatus, nodeSyncType } = this.props;
+    if (prevProps.nodeSyncType === 'syncing' && nodeSyncType === 'ready') {
+      // if the status is "ready", we can increase the interval to avoid useless rpc calls
+      this.cleanUpdateInterval();
+      this.timer = setInterval(() => getBlockchainStatus(), MINUTE_IN_MILI);
+    }
   }
 
   componentWillUnmount() {
+    this.cleanUpdateInterval();
+  }
+
+  cleanUpdateInterval = () => {
     if (this.timer) {
       clearInterval(this.timer);
       this.timer = null;
     }
-  }
+  };
 
-  getBlockchainStatus = async () => {
+  isSyncing = () => {
+    const { nodeSyncType } = this.props;
+    return nodeSyncType === 'syncing';
+  };
+
+  getReadyIcon = () => {
     const { theme } = this.props;
+    return theme.mode === DARK ? readyIconDark : readyIconLight;
+  };
 
-    const readyIcon = theme.mode === DARK
-      ? readyIconDark
-      : readyIconLight;
-    const errorIcon = theme.mode === DARK
-      ? errorIconDark
-      : errorIconLight;
+  getErrorIcon = () => {
+    const { theme } = this.props;
+    return theme.mode === DARK ? errorIconDark : errorIconLight;
+  };
 
-    const [blockchainErr, blockchaininfo] = await eres(rpc.getblockchaininfo());
+  getSyncingIcon = () => {
+    const { theme } = this.props;
+    return theme.mode === DARK ? syncIconDark : syncIconLight;
+  };
 
-    if (blockchainErr || !blockchaininfo) return;
+  getIcon = () => {
+    const { nodeSyncType } = this.props;
 
-    const newProgress = blockchaininfo.verificationprogress * 100;
-
-    this.setState({
-      progress: newProgress,
-      ...(newProgress > 99.99
-        ? {
-          type: 'ready',
-          icon: readyIcon,
-          isSyncing: false,
-        }
-        : {}),
-    });
-
-    if (blockchainErr) {
-      this.setState(() => ({
-        type: 'error',
-        icon: errorIcon,
-      }));
+    switch (nodeSyncType) {
+      case 'syncing':
+        return this.getSyncingIcon();
+      case 'ready':
+        return this.getReadyIcon();
+      case 'error':
+        return this.getErrorIcon();
+      default:
+        return null;
     }
   };
 
   render() {
-    const {
-      type, icon, progress, isSyncing,
-    } = this.state;
-    const showPercent = isSyncing ? `(${progress.toFixed(2)}%)` : '';
-    const typeText = type === 'ready' ? 'Synced' : type;
+    const icon = this.getIcon();
+    const { nodeSyncType, nodeSyncProgress } = this.props;
+    const percent = nodeSyncType === 'syncing' ? `(${nodeSyncProgress.toFixed(2)}%)` : '';
+    const typeText = nodeSyncType === 'ready' ? 'Synced' : nodeSyncType;
 
     return (
       <Wrapper id='status-pill'>
-        <Icon src={icon} animated={isSyncing} />
-        <StatusPillLabel value={`${typeText} ${showPercent}`} />
+        {icon && <Icon src={icon} animated={this.isSyncing()} />}
+        <StatusPillLabel value={`${typeText} ${percent}`} />
       </Wrapper>
     );
   }

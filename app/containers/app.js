@@ -8,12 +8,21 @@ import { LayoutComponent } from '../components/layout';
 import type { Dispatch } from '../types/redux';
 import type { AppState } from '../types/app-state';
 
-const mapStateToProps = ({ app }: AppState) => ({
+export type MapStateToProps = {|
+  isErrorModalVisible: boolean,
+  error: string | null,
+|};
+
+const mapStateToProps = ({ app }: AppState): MapStateToProps => ({
   isErrorModalVisible: app.isErrorModalVisible,
   error: app.error,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+export type MapDispatchToProps = {|
+  closeErrorModal: () => void,
+|};
+
+const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
   closeErrorModal: () => dispatch(closeErrorModal()),
 });
 
