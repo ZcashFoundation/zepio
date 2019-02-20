@@ -79,3 +79,7 @@ workflows:
       - build_linux:
           requires:
             - test
+          filters:
+            branches:
+              only:
+                - master
