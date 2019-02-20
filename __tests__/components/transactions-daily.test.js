@@ -16,7 +16,7 @@ describe('<TransactionDailyComponent />', () => {
       const { container } = render(
         <ThemeProvider theme={appTheme}>
           <TransactionDailyComponent
-            transactionsDate={new Date().toISOString()}
+            transactionsDate='2019-02-20T19:31:57.117Z'
             zecPrice={1.345}
             transactions={[
               {
@@ -25,7 +25,7 @@ describe('<TransactionDailyComponent />', () => {
                 address: '123456789123456789123456789123456789',
                 amount: 1.7891,
                 zecPrice: 1.345,
-                date: new Date().toISOString(),
+                date: '2019-02-20T19:31:57.117Z',
                 theme: appTheme,
                 fees: 0.001,
               },
@@ -35,7 +35,7 @@ describe('<TransactionDailyComponent />', () => {
                 address: '123456789123456789123456789123456789',
                 amount: 0.8458,
                 zecPrice: 1.344,
-                date: new Date().toISOString(),
+                date: '2019-02-20T19:31:57.117Z',
                 theme: appTheme,
                 fees: 0.001,
               },
