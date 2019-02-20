@@ -6,7 +6,6 @@ jobs:
       - image: circleci/node
     steps:
       - checkout
-      - run: yarn config delete proxy
       - run: yarn install
       - save_cache:
           key: zec-dependencies-cache-{{ checksum "yarn.lock" }}
