@@ -26,6 +26,7 @@
     "docz:deploy": "yarn docz:build && cd ./.docz/dist && now && now alias zec-docz.now.sh",
     "test": "jest --runInBand",
     "test:watch": "jest --watch",
+    "test:unit": "jest --testPathIgnorePatterns=e2e --testPathIgnorePatterns=setup",
     "e2e:serve": "node -r @babel/register ./__tests__/setup/mockAPI.js",
     "e2e:run": "yarn test e2e"
   },
