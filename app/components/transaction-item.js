@@ -125,9 +125,16 @@ const Component = ({
             <TextComponent
               isBold
               value={transactionValueInZec}
-              color={isReceived ? theme.colors.transactionReceived : theme.colors.transactionSent}
+              color={
+                isReceived
+                  ? theme.colors.transactionReceived({ theme })
+                  : theme.colors.transactionSent({ theme })
+              }
             />
-            <TextComponent value={transactionValueInUsd} color={theme.colors.inactiveItem} />
+            <TextComponent
+              value={transactionValueInUsd}
+              color={theme.colors.inactiveItem({ theme })}
+            />
           </ColumnComponent>
         </Wrapper>
       )}
