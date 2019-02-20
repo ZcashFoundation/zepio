@@ -99,7 +99,7 @@ export const Component = ({
           <Icon
             isActive={isActive}
             src={item.icon(isActive, theme.mode)}
-            Alt={`${item.route}`}
+            alt={`${item.route}`}
           />
           {item.label}
         </StyledLink>
