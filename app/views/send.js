@@ -80,7 +80,7 @@ const AmountWrapper = styled.div`
     content: 'ZEC';
     font-family: ${props => props.theme.fontFamily};
     position: absolute;
-    margin-top: 15px;
+    margin-top: 16px;
     margin-left: 15px;
     display: block;
     transition: all 0.05s ease-in-out;
