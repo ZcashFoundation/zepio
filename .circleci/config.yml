@@ -62,12 +62,41 @@ jobs:
             export GIT_COMMIT_DESC=$(git log --format=oneline -n 1 | sed -E 's/^[^ ]+ (.*)$/\1/g')
             curl -F file=@dist/zec-react-wallet_0.3.0_amd64.deb -F channels=$SLACK_CHANNEL -F token=$SLACK_API_TOKEN -F title="${CIRCLE_PROJECT_REPONAME} | branch -> ${CIRCLE_BRANCH} | commit -> ${GIT_COMMIT_DESC}"  https://slack.com/api/files.upload
 
+  build_windows:
+    docker:
+      - image: electronuserland/builder:wine-chrome
+    steps:
+      - checkout
+      - restore_cache:
+          key: zec-dependencies-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: Download PFX certificate
+          command: echo ${WIN_CERTIFICATE_PFX} | base64 --decode > win-certificate.pfx
+      - run:
+          name: Build Windows Installer
+          command: yarn electron:dist -w
+      - store_artifacts:
+          path: ./dist/ZEC Wallet Setup 0.3.0.exe
+          destination: ZEC Wallet Setup 0.3.0.exe
+      - run:
+          name: Upload to Slack
+          command: |
+            export GIT_COMMIT_DESC=$(git log --format=oneline -n 1 | sed -E 's/^[^ ]+ (.*)$/\1/g')
+            curl -F file="@dist/ZEC Wallet Setup 0.3.0.exe" -F channels=$SLACK_CHANNEL -F token=$SLACK_API_TOKEN -F title="${CIRCLE_PROJECT_REPONAME} | branch -> ${CIRCLE_BRANCH} | commit -> ${GIT_COMMIT_DESC}"  https://slack.com/api/files.upload
+
 workflows:
   version: 2
   build_test:
     jobs:
       - test
       - build_linux:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
+      - build_windows:
           requires:
             - test
           filters:
