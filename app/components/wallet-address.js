@@ -106,6 +106,14 @@ const TooltipText = styled(TextComponent)`
   font-weight: 700;
 `;
 
+const ActionsWrapper = styled.div`
+  width: 8%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
 type Props = {
   address: string,
   theme: AppTheme,
@@ -151,19 +159,21 @@ class Component extends PureComponent<Props, State> {
             onClick={this.toggleMoreInfo}
             onDoubleClick={this.showMoreInfo}
           />
-          <CopyToClipboard text={address} onCopy={this.copyAddress}>
-            <IconButton onClick={() => {}}>
-              {!showCopiedTooltip ? null : (
-                <CopyTooltip>
-                  <TooltipText value='Copied!' />
-                </CopyTooltip>
-              )}
-              <IconImage src={copyIcon} alt='Copy Address' />
+          <ActionsWrapper>
+            <CopyToClipboard text={address} onCopy={this.copyAddress}>
+              <IconButton onClick={() => {}}>
+                {!showCopiedTooltip ? null : (
+                  <CopyTooltip>
+                    <TooltipText value='Copied!' />
+                  </CopyTooltip>
+                )}
+                <IconImage src={copyIcon} alt='Copy Address' />
+              </IconButton>
+            </CopyToClipboard>
+            <IconButton onClick={this.toggleMoreInfo}>
+              <IconImage src={qrCodeIcon} alt='See QRCode' />
             </IconButton>
-          </CopyToClipboard>
-          <IconButton onClick={this.toggleMoreInfo}>
-            <IconImage src={qrCodeIcon} alt='See QRCode' />
-          </IconButton>
+          </ActionsWrapper>
         </AddressWrapper>
         {!showQRCode ? null : (
           <QRCodeContainer>
