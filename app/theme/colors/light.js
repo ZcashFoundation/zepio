@@ -1,17 +1,34 @@
 // @flow
+// Colors named with: chir.ag/projects/name-that-color/
 
+// Lights
 const white = '#FFFFFF';
 const whiteHover = '#F9FBFE';
 const offWhite = '#F9F9F9';
+const alto = '#DDDDDD';
+const silver = '#C1C1C1';
+const silverChalice = '#AAAAAA';
+const boulder = '#A0A0A0';
+const doveGray = '#666666';
+const starDust = '#777777';
+
+// Darks
 const black = '#000000';
 const text = '#142533';
-const secondaryText = '#777777';
-const brand = '#5684EB';
+const mineShaft = '#222222';
+const shipGray = '#3E3C42';
+const scorpion = '#989898';
+const dustyGray = '#999999';
+const bitter = '#828282';
+const manatee = '#8E8E96';
+
+// Colors
 const error = '#FF6C6C';
 const success = '#66BE54';
-const logo = '#F4B728';
-const logo2 = '#FFE240';
-const border = '#DDDDDD';
+const cornflowerBlue = '#5684EB';
+const saffron = '#F4B728';
+const brightSun = '#FFE240';
+const offBrand = 'rgba(238,201,76,0.65)';
 
 export const LIGHT_COLORS = {
   // General
@@ -19,113 +36,113 @@ export const LIGHT_COLORS = {
   success,
   error,
   background: offWhite,
-  divider: '#AAAAAA',
+  divider: silverChalice,
   inactiveItem: success,
-  activeItem: brand,
+  activeItem: cornflowerBlue,
 
   // Header
   headerTitle: text,
 
   // Select
-  selectButtonShadow: 'rgba(238,201,76,0.65)',
+  selectButtonShadow: offBrand,
 
   // Send View (Additional Options Section)
   sendAdditionalOptionsBg: white,
-  sendAdditionalOptionsBorder: border,
+  sendAdditionalOptionsBorder: alto,
   sendAdditionalInputBg: offWhite,
   sendAdditionalInputText: white,
 
   // Dropdown
   dropdownBg: offWhite,
   dropdownHoveredBg: white,
-  dropdownBorder: border,
-  dropdownIconBorder: '#c1c1c1',
-  dropdownOpenedIconBorder: '#828282',
+  dropdownBorder: alto,
+  dropdownIconBorder: silver,
+  dropdownOpenedIconBorder: bitter,
 
   // Card
   cardBackgroundColor: black,
   sendCardBg: white,
-  sendCardBorder: border,
+  sendCardBorder: alto,
 
   // Buttons
-  buttonPrimaryBg: brand,
-  buttonPrimaryDisabledBg: brand,
+  buttonPrimaryBg: cornflowerBlue,
+  buttonPrimaryDisabledBg: cornflowerBlue,
   buttonPrimaryText: white,
-  buttonSecondaryBg: '#989898',
-  buttonSecondaryDisabledBg: brand,
-  buttonSecondaryBorder: '#989898',
+  buttonSecondaryBg: scorpion,
+  buttonSecondaryDisabledBg: cornflowerBlue,
+  buttonSecondaryBorder: scorpion,
   buttonSecondaryText: white,
-  buttonSecondaryHoveredBg: '#aaa',
-  buttonBorderColor: '#3E3C42',
+  buttonSecondaryHoveredBg: silverChalice,
+  buttonBorderColor: shipGray,
 
   // Transactions
   transactionSent: error,
   transactionReceived: success,
-  transactionsDate: secondaryText,
-  transactionsItemHovered: '#222222',
+  transactionsDate: starDust,
+  transactionsItemHovered: mineShaft,
   transactionItemBg: white,
   transactionItemHoverBg: whiteHover,
-  transactionItemBorder: border,
-  transactionItemAddress: '#666666',
+  transactionItemBorder: alto,
+  transactionItemAddress: doveGray,
   transactionItemAddressHover: black,
   transactionDetailsShadow: `0px 0px 1px 0px ${black}`,
   transactionDetailsBg: white,
   transactionDetailsRowHover: whiteHover,
-  transactionDetailsDivider: border,
-  transactionDetailsLabel: '#999999',
-  transactionLabelText: '#666666',
+  transactionDetailsDivider: alto,
+  transactionDetailsLabel: dustyGray,
+  transactionLabelText: doveGray,
   transactionLabelTextHovered: black,
 
   // Status Pill
   statusPillLabel: text,
-  statusPillBg: '#F9FBFE',
-  statusPillBorder: border,
+  statusPillBg: whiteHover,
+  statusPillBorder: alto,
 
   // Sidebar
   sidebarBg: white,
-  sidebarBorderRight: border,
-  sidebarLogoGradientBegin: logo,
-  sidebarLogoGradientEnd: logo2,
-  sidebarHoveredItemLabel: '#8E8E96',
-  sidebarItem: '#aaa',
+  sidebarBorderRight: alto,
+  sidebarLogoGradientBegin: saffron,
+  sidebarLogoGradientEnd: brightSun,
+  sidebarHoveredItemLabel: manatee,
+  sidebarItem: silverChalice,
   sidebarItemActive: text,
   sidebarItemHovered: text,
   sidebarItemHoveredBg: offWhite,
-  sidebarActiveItemLabel: '#8E8E96',
-  sidebarActiveItemBorder: 'red',
+  sidebarActiveItemLabel: manatee,
+  sidebarActiveItemBorder: error,
 
   // QR Code
   qrCodeWrapperBg: white,
-  qrCodeWrapperBorder: border,
+  qrCodeWrapperBorder: alto,
 
   // Forms
   inputBg: white,
-  inputBorder: border,
-  inputBorderActive: '#828282',
+  inputBorder: alto,
+  inputBorderActive: bitter,
 
   // Wallet Summary
   walletSummaryBg: white,
-  walletSummaryBorder: border,
+  walletSummaryBorder: alto,
 
   // Wallet Address
   walletAddressBg: white,
-  walletAddressBorder: border,
-  walletAddressInput: '#666',
+  walletAddressBorder: alto,
+  walletAddressInput: doveGray,
   walletAddressInputHovered: black,
   walletAddressTooltip: white,
   walletAddressTooltipBg: black,
 
   // Console
   consoleBg: white,
-  consoleBorder: border,
+  consoleBorder: alto,
 
   // Settings
   settingsCardBg: white,
-  settingsLearnMore: '#a0a0a0',
-  settingsLearnMoreHovered: '#000',
+  settingsLearnMore: boulder,
+  settingsLearnMoreHovered: black,
 
   // Loading
   loadingScreenBg: black,
   loadingScreenText: white,
-  loadingScreenProgress: logo,
+  loadingScreenProgress: saffron,
 };

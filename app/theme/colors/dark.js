@@ -1,94 +1,116 @@
 // @flow
+// Colors named with: chir.ag/projects/name-that-color/
 
+// Lights
 const white = '#FFFFFF';
-const text = white;
-const brand = '#F4B728';
-const brand2 = '#FFE240';
+const gray = '#DDDDDD';
+const silver = '#BBBBBB';
+const silverChalice = '#AAAAAA';
+const boulder = '#777777';
+const doveGray = '#727272';
+const scorpion = '#5D5D5D';
+const manatee = '#8E8E96';
+const friarGray = '#828282';
+
+// Darks
 const black = '#000000';
+const shark = '#212124';
+const tundora = '#4E4B4B';
+const shipGray = '#3E3C42';
+const codGray = '#1D1D1D';
+const mineShaft = '#3A3A3A';
+const woodsmoke = '#222222';
+const heavyMetal = '#0A0A0A';
+
+// Colors
+const saffron = '#F4B728';
+const brightSun = '#FFE240';
+const offBrand = 'rgba(238,201,76,0.65)';
 const error = '#FF6C6C';
 const success = '#6AEAC0';
-const darkBrand = '#212124';
-const brandThree = '#5d5d65';
+
+// Misc
+const transparent = 'transparent';
 
 export const DARK_COLORS = {
   // General
-  text,
-  success,
   error,
-  background: '#212124',
+  success,
+  text: white,
+  background: shark,
   divider: black,
-  inactiveItem: brandThree,
-  activeItem: brand,
+  inactiveItem: scorpion,
+  activeItem: saffron,
 
   // Header
-  headerTitle: text,
+  headerTitle: white,
 
   // Select
-  selectButtonShadow: 'rgba(238,201,76,0.65)',
+  selectButtonShadow: offBrand,
 
   // Send View (Additional Options Section)
   sendAdditionalOptionsBg: black,
   sendAdditionalOptionsBorder: black,
-  sendAdditionalInputBg: darkBrand,
+  sendAdditionalInputBg: shark,
   sendAdditionalInputText: white,
 
   // Dropdown
-  dropdownBg: '#5d5d5d',
-  dropdownHoveredBg: '#212124',
-  dropdownBorder: '#4e4b4b',
-  dropdownIconBorder: '#828282',
-  dropdownOpenedIconBorder: '#ddd',
+  dropdownBg: scorpion,
+  dropdownHoveredBg: shark,
+  dropdownBorder: tundora,
+  dropdownIconBorder: friarGray,
+  dropdownOpenedIconBorder: gray,
 
   // Card
   cardBackgroundColor: black,
   sendCardBg: black,
-  sendCardBorder: 'transparent',
+  sendCardBorder: transparent,
 
   // Buttons
-  buttonPrimaryBg: brand,
-  buttonPrimaryDisabledBg: brand,
+  buttonPrimaryBg: saffron,
+  buttonPrimaryDisabledBg: saffron,
   buttonPrimaryText: black,
-  buttonSecondaryBg: '#ddd',
-  buttonSecondaryDisabledBg: brand,
+  buttonSecondaryBg: gray,
+  buttonSecondaryDisabledBg: saffron,
   buttonSecondaryText: black,
-  buttonSecondaryBorder: '#ddd',
-  buttonSecondaryHoveredBg: '#bbb',
-  buttonBorderColor: '#3e3c42',
+  buttonSecondaryBorder: gray,
+  buttonSecondaryHoveredBg: silver,
+  buttonBorderColor: shipGray,
 
   // Transactions
   transactionSent: error,
   transactionReceived: success,
-  transactionsDate: '#777777',
-  transactionsItemHovered: '#222222',
+  transactionsDate: boulder,
+  transactionsItemHovered: woodsmoke,
   transactionItemBg: black,
-  transactionItemHoverBg: '#0A0A0A',
-  transactionItemBorder: 'transparent',
-  transactionItemAddress: '#A7A7A7',
+  transactionItemHoverBg: heavyMetal,
+  transactionItemBorder: transparent,
+  transactionItemAddress: silverChalice,
   transactionItemAddressHover: white,
   transactionDetailsShadow: `0px 0px 20px 0px ${black}`,
-  transactionDetailsBg: darkBrand,
-  transactionDetailsRowHover: '#1D1D1D',
-  transactionDetailsDivider: '#3A3A3A',
-  transactionDetailsLabel: '#777777',
-  transactionLabelText: '#777777',
+  transactionDetailsBg: shark,
+  transactionDetailsRowHover: codGray,
+  transactionDetailsDivider: mineShaft,
+  transactionDetailsLabel: boulder,
+  transactionLabelText: boulder,
   transactionLabelTextHovered: white,
 
   // Status Pill
-  statusPillLabel: '#727272',
+  statusPillLabel: doveGray,
   statusPillBg: black,
   statusPillBorder: black,
 
   // Sidebar
   sidebarBg: black,
   sidebarBorderRight: black,
-  sidebarLogoGradientBegin: brand,
-  sidebarLogoGradientEnd: brand2,
-  sidebarHoveredItemLabel: '#8e8e96',
-  sidebarActiveItemBorder: 'red',
-  sidebarItem: brandThree,
-  sidebarItemActive: brand,
-  sidebarItemHovered: '#FFF',
-  sidebarItemHoveredBg: darkBrand,
+  sidebarLogoGradientBegin: saffron,
+  sidebarLogoGradientEnd: brightSun,
+  sidebarHoveredItemLabel: manatee,
+  sidebarActiveItemBorder: error,
+  sidebarItem: scorpion,
+  sidebarItemActive: saffron,
+  sidebarItemHovered: white,
+  sidebarItemHoveredBg: shark,
 
   // QRCode
   qrCodeWrapperBg: black,
@@ -96,8 +118,8 @@ export const DARK_COLORS = {
 
   // Forms
   inputBg: black,
-  inputBorder: 'transparent',
-  inputBorderActive: '#222',
+  inputBorder: transparent,
+  inputBorderActive: woodsmoke,
 
   // Wallet Summary
   walletSummaryBg: black,
@@ -106,22 +128,22 @@ export const DARK_COLORS = {
   // Wallet Address
   walletAddressBg: black,
   walletAddressBorder: black,
-  walletAddressInput: '#828282',
+  walletAddressInput: friarGray,
   walletAddressInputHovered: white,
   walletAddressTooltip: black,
   walletAddressTooltipBg: white,
 
   // Console
   consoleBg: black,
-  consoleBorder: 'transparent',
+  consoleBorder: transparent,
 
   // Settings
   settingsCardBg: black,
-  settingsLearnMore: '#AAAAAA',
-  settingsLearnMoreHovered: '#fff',
+  settingsLearnMore: silverChalice,
+  settingsLearnMoreHovered: white,
 
   // Loading
   loadingScreenBg: black,
   loadingScreenText: white,
-  loadingScreenProgress: brand,
+  loadingScreenProgress: saffron,
 };
