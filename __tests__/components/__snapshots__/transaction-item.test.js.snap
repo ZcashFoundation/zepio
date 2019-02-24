@@ -27,16 +27,16 @@ exports[`<TransactionItem /> should render a transaction item correctly 1`] = `
             send
           </p>
           <p
-            class="sc-kgoBCf bfmmtg sc-htpNat pRhzD"
+            class="sc-kgoBCf goviHQ sc-htpNat pRhzD"
           >
-            16:31 PM
+            14:31 PM
           </p>
         </div>
       </div>
       <p
-        class="sc-chPdSV bQobpM sc-htpNat pRhzD"
+        class="sc-chPdSV dTXjho sc-htpNat pRhzD"
       >
-        12345678912345678912...9123456789
+        123456789123456789123456789123456789
       </p>
     </div>
     <div
@@ -45,13 +45,11 @@ exports[`<TransactionItem /> should render a transaction item correctly 1`] = `
     >
       <p
         class="sc-htpNat jAbxuE"
-        color="#FF6C6C"
       >
         -ZEC 0.865
       </p>
       <p
-        class="sc-htpNat dhSLjI"
-        color="#5d5d65"
+        class="sc-kgoBCf goviHQ sc-htpNat pRhzD"
       >
         -USD $2.544
       </p>

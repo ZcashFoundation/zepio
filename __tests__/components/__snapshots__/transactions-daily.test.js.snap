@@ -39,16 +39,16 @@ exports[`<TransactionDailyComponent /> render() should render user daily transac
                 receive
               </p>
               <p
-                class="sc-kgoBCf bfmmtg sc-htpNat pRhzD"
+                class="sc-kgoBCf goviHQ sc-htpNat pRhzD"
               >
-                16:31 PM
+                14:31 PM
               </p>
             </div>
           </div>
           <p
-            class="sc-chPdSV bQobpM sc-htpNat pRhzD"
+            class="sc-chPdSV dTXjho sc-htpNat pRhzD"
           >
-            12345678912345678912...9123456789
+            123456789123456789123456789123456789
           </p>
         </div>
         <div
@@ -57,13 +57,11 @@ exports[`<TransactionDailyComponent /> render() should render user daily transac
         >
           <p
             class="sc-htpNat dztgbW"
-            color="#6AEAC0"
           >
             +ZEC 1.789
           </p>
           <p
-            class="sc-htpNat dhSLjI"
-            color="#5d5d65"
+            class="sc-kgoBCf goviHQ sc-htpNat pRhzD"
           >
             +USD $2.406
           </p>
@@ -94,16 +92,16 @@ exports[`<TransactionDailyComponent /> render() should render user daily transac
                 send
               </p>
               <p
-                class="sc-kgoBCf bfmmtg sc-htpNat pRhzD"
+                class="sc-kgoBCf goviHQ sc-htpNat pRhzD"
               >
-                16:31 PM
+                14:31 PM
               </p>
             </div>
           </div>
           <p
-            class="sc-chPdSV bQobpM sc-htpNat pRhzD"
+            class="sc-chPdSV dTXjho sc-htpNat pRhzD"
           >
-            12345678912345678912...9123456789
+            123456789123456789123456789123456789
           </p>
         </div>
         <div
@@ -112,13 +110,11 @@ exports[`<TransactionDailyComponent /> render() should render user daily transac
         >
           <p
             class="sc-htpNat jAbxuE"
-            color="#FF6C6C"
           >
             -ZEC 0.846
           </p>
           <p
-            class="sc-htpNat dhSLjI"
-            color="#5d5d65"
+            class="sc-kgoBCf goviHQ sc-htpNat pRhzD"
           >
             -USD $1.138
           </p>
