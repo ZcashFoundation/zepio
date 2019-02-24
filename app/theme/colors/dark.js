@@ -68,6 +68,8 @@ export const DARK_COLORS = {
   transactionDetailsRowHover: '#1D1D1D',
   transactionDetailsDivider: '#3A3A3A',
   transactionDetailsLabel: '#777777',
+  transactionLabelText: '#777777',
+  transactionLabelTextHovered: white,
 
   // Status Pill
   statusPillLabel: '#727272',

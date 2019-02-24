@@ -18,7 +18,6 @@ import { ModalComponent } from './modal';
 import { TransactionDetailsComponent } from './transaction-details';
 
 import { formatNumber } from '../utils/format-number';
-import { truncateAddress } from '../utils/truncate-address';
 
 const Wrapper = styled(RowComponent)`
   background-color: ${props => props.theme.colors.transactionItemBg};
@@ -56,8 +55,12 @@ const TransactionAddress = styled(TextComponent)`
   }
 `;
 
-const TransactionTime = styled(TextComponent)`
-  color: ${props => props.theme.colors.inactiveItem};
+const TransactionLabel = styled(TextComponent)`
+  color: ${props => props.theme.colors.transactionLabelText};
+
+  ${String(Wrapper)}:hover & {
+    color: ${props => props.theme.colors.transactionLabelTextHovered};
+  }
 `;
 
 const TransactionColumn = styled(ColumnComponent)`
@@ -97,7 +100,6 @@ const Component = ({
     value: amount * zecPrice,
     append: `${isReceived ? '+' : '-'}USD $`,
   });
-  const transactionAddress = truncateAddress(address);
 
   const receivedIcon = theme.mode === DARK ? ReceivedIconDark : ReceivedIconLight;
   const sentIcon = theme.mode === DARK ? SentIconDark : SentIconLight;
@@ -115,11 +117,18 @@ const Component = ({
             <RowComponent alignItems='center'>
               <Icon src={isReceived ? receivedIcon : sentIcon} alt='Transaction Type Icon' />
               <TransactionColumn>
-                <TransactionTypeLabel isReceived={isReceived} value={type} isBold />
-                <TransactionTime value={transactionTime} />
+                <TransactionTypeLabel
+                  isReceived={isReceived}
+                  value={type}
+                  isBold
+                />
+                <TransactionLabel
+                  value={transactionTime}
+                  isReceived={isReceived}
+                />
               </TransactionColumn>
             </RowComponent>
-            <TransactionAddress value={transactionAddress} />
+            <TransactionAddress value={address} />
           </RowComponent>
           <ColumnComponent alignItems='flex-end'>
             <TextComponent
@@ -127,14 +136,11 @@ const Component = ({
               value={transactionValueInZec}
               color={
                 isReceived
-                  ? theme.colors.transactionReceived({ theme })
-                  : theme.colors.transactionSent({ theme })
+                  ? theme.colors.transactionReceived
+                  : theme.colors.transactionSent
               }
             />
-            <TextComponent
-              value={transactionValueInUsd}
-              color={theme.colors.inactiveItem({ theme })}
-            />
+            <TransactionLabel value={transactionValueInUsd} />
           </ColumnComponent>
         </Wrapper>
       )}

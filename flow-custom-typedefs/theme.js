@@ -60,6 +60,8 @@ type Colors = {
   transactionDetailsRowHover: ThemeSet,
   transactionDetailsDivider: ThemeSet,
   transactionDetailsLabel: ThemeSet,
+  transactionLabelText: ThemeSet,
+  transactionLabelTextHovered: ThemeSet,
 
   // Status Pill
   statusPillBg: ThemeSet,

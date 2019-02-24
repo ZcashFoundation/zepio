@@ -65,12 +65,14 @@ export const LIGHT_COLORS = {
   transactionItemHoverBg: whiteHover,
   transactionItemBorder: border,
   transactionItemAddress: '#666666',
-  transactionItemAddressHover: '#666666',
+  transactionItemAddressHover: black,
   transactionDetailsShadow: `0px 0px 1px 0px ${black}`,
   transactionDetailsBg: white,
   transactionDetailsRowHover: whiteHover,
   transactionDetailsDivider: border,
   transactionDetailsLabel: '#999999',
+  transactionLabelText: '#666666',
+  transactionLabelTextHovered: black,
 
   // Status Pill
   statusPillLabel: text,
