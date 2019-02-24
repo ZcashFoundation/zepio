@@ -143,6 +143,13 @@ const InfoCardLabel = styled(TextComponent)`
   margin-bottom: 10px;
 `;
 
+const InfoCardSubLabel = styled(TextComponent)`
+  opacity: 0.5;
+  margin-top: -7px;
+  margin-bottom: 10px;
+  font-size: 9px;
+`;
+
 const InfoCardUSD = styled(TextComponent)`
   opacity: 0.5;
   margin-top: 2.5px;
@@ -754,13 +761,14 @@ class Component extends PureComponent<Props, State> {
         <SendWrapper>
           <InfoCard>
             <InfoContent>
-              <InfoCardLabel value='Available Funds:' />
+              <InfoCardLabel value='Available Funds' />
               <TextComponent value={zecBalance} size={1.25} isBold />
               <InfoCardUSD value={zecBalanceInUsd} size={0.84375} />
             </InfoContent>
             <Divider opacity={0.3} />
             <InfoContent>
               <InfoCardLabel value='Sending' />
+              <InfoCardSubLabel value='Includes transaction fees' />
               <TextComponent value={valueSent} size={1.25} isBold />
               <InfoCardUSD value={valueSentInUsd} size={0.84375} />
             </InfoContent>
