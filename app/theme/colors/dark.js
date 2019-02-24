@@ -121,4 +121,5 @@ export const DARK_COLORS = {
   // Loading
   loadingScreenBg: black,
   loadingScreenText: white,
+  loadingScreenProgress: brand,
 };

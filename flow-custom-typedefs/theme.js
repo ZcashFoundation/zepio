@@ -113,6 +113,7 @@ type Colors = {
   // Loading
   loadingScreenBg: ThemeSet,
   loadingScreenText: ThemeSet,
+  loadingScreenProgress: ThemeSet,
 };
 
 type FontSize = {

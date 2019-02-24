@@ -108,8 +108,8 @@ class Component extends PureComponent<Props, State> {
                     progress={progress}
                     responsive
                     showPercentage={false}
-                    progressColor={theme.colors.activeItem(this.props)}
-                    bgColor={theme.colors.inactiveItem(this.props)}
+                    progressColor={theme.colors.loadingScreenProgress({ theme })}
+                    bgColor={theme.colors.loadingScreenBg({ theme })}
                   />
                 </CircleWrapper>
                 <LoadingText value={message} />
