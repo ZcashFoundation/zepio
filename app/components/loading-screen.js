@@ -28,7 +28,7 @@ const LoadingCard = styled.div`
   padding: 60px;
   min-width: 300px;
   min-height: 200px;
-  border-radius: 3px;
+  border-radius: ${props => props.theme.boxBorderRadius};
 `;
 
 const CircleWrapper = styled.div`

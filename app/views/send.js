@@ -121,7 +121,7 @@ const SeeMoreIcon = styled.img`
 const FeeWrapper = styled.div`
   background-color: ${props => props.theme.colors.sendAdditionalOptionsBg};
   border: 1px solid ${props => props.theme.colors.sendAdditionalOptionsBorder};
-  border-radius: 3px;
+  border-radius: ${props => props.theme.boxBorderRadius};
   padding: 0 20px 15px;
   margin-bottom: 20px;
 `;
@@ -297,7 +297,7 @@ const SimpleTooltip = styled.div`
   top: -30px;
   right: 0px;
   padding: 6px 10px;
-  border-radius: 3px;
+  border-radius: ${props => props.theme.boxBorderRadius};
 `;
 
 const TooltipText = styled(TextComponent)`

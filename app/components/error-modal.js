@@ -28,7 +28,7 @@ const ChildrenWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  border-radius: ${props => props.theme.boxBorderRadius};
   box-shadow: 0px 0px 30px 0px black;
   position: relative;
   z-index: 90;

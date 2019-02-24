@@ -27,7 +27,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 6px;
+  border-radius: ${props => props.theme.boxBorderRadius};
   box-shadow: ${props => props.theme.colors.transactionDetailsShadow};
   position: relative;
 `;

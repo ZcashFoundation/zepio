@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   background-color: ${props => props.theme.colors.background};
   flex-direction: column;
   align-items: center;
-  border-radius: 6px;
+  border-radius: ${props => props.theme.boxBorderRadius};
   box-shadow: ${props => props.theme.colors.transactionDetailsShadow}
   position: relative;
 `;

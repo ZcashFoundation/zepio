@@ -15,7 +15,7 @@ const DefaultButton = styled.button`
   cursor: pointer;
   outline: none;
   min-width: 100px;
-  border-radius: 3px;
+  border-radius: ${props => props.theme.boxBorderRadius};
   transition: background-color 0.1s ${props => props.theme.transitionEase};
 `;
 

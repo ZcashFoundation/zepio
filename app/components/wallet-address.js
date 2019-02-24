@@ -60,7 +60,7 @@ const QRCodeContainer = styled.div`
   display: flex;
   background-color: ${props => props.theme.colors.qrCodeWrapperBg}
   border: 1px solid ${props => props.theme.colors.qrCodeWrapperBorder}
-  border-radius: 3px;
+  border-radius: ${props => props.theme.boxBorderRadius};
   padding: 20px;
   margin-bottom: 10px;
   width: 100%;
@@ -97,7 +97,7 @@ const CopyTooltip = styled.div`
   top: -27px;
   left: -8px;
   padding: 6px 10px;
-  border-radius: 3px;
+  border-radius: ${props => props.theme.boxBorderRadius};
 `;
 
 const TooltipText = styled(TextComponent)`
