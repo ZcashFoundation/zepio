@@ -20,7 +20,7 @@ const DefaultButton = styled.button`
 `;
 
 const Primary = styled(DefaultButton)`
-  background-color: ${props => props.theme.colors.primary};
+  background-color: ${props => props.theme.colors.buttonPrimaryBg};
   color: ${props => props.theme.colors.buttonPrimaryText};
   border: none;
 
@@ -31,7 +31,12 @@ const Primary = styled(DefaultButton)`
   &:disabled {
     background-color: ${props => props.theme.colors.buttonPrimaryDisabledBg};
     cursor: not-allowed;
+    border: none;
     opacity: 0.45;
+
+    &:hover {
+      opacity: 0.45;
+    }
   }
 `;
 

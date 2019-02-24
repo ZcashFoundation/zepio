@@ -11,15 +11,24 @@ const darkBrand = '#212124';
 const brandThree = '#5d5d65';
 
 export const DARK_COLORS = {
-  darkOne: brand,
-  blackTwo: '#171717',
-  lightOne: text,
-  brandOne: black,
-  brandThree: '#5d5d65',
-  buttonBorderColor: '#3e3c42',
-  activeItem: brand,
+  // General
   text,
   background: '#212124',
+  divider: black,
+  inactiveItem: brandThree,
+  activeItem: brand,
+
+  // Header
+  headerTitle: text,
+
+  // Select
+  selectButtonShadow: 'rgba(238,201,76,0.65)',
+
+  // Send View (Additional Options Section)
+  sendAdditionalOptionsBg: black,
+  sendAdditionalOptionsBorder: black,
+  sendAdditionalInputBg: darkBrand,
+  sendAdditionalInputText: white,
 
   // Dropdown
   dropdownBg: '#5d5d5d',
@@ -42,19 +51,18 @@ export const DARK_COLORS = {
   buttonSecondaryText: black,
   buttonSecondaryBorder: '#ddd',
   buttonSecondaryHoveredBg: '#bbb',
+  buttonBorderColor: '#3e3c42',
 
   // Transactions
   transactionSent: error,
   transactionReceived: success,
   transactionsDate: '#777777',
   transactionsItemHovered: '#222222',
-
   transactionItemBg: black,
   transactionItemHoverBg: '#0A0A0A',
   transactionItemBorder: 'transparent',
   transactionItemAddress: '#A7A7A7',
   transactionItemAddressHover: white,
-
   transactionDetailsShadow: `0px 0px 20px 0px ${black}`,
   transactionDetailsBg: darkBrand,
   transactionDetailsRowHover: '#1D1D1D',
@@ -78,12 +86,9 @@ export const DARK_COLORS = {
   sidebarItemHovered: '#FFF',
   sidebarItemHoveredBg: darkBrand,
 
-  // Misc
-  divider: black,
+  // QRCode
   qrCodeWrapperBg: black,
   qrCodeWrapperBorder: black,
-  headerTitle: text,
-  selectButtonShadow: 'rgba(238,201,76,0.65)',
 
   // Forms
   inputBg: black,
@@ -114,10 +119,4 @@ export const DARK_COLORS = {
   // Loading
   loadingScreenBg: black,
   loadingScreenText: white,
-
-  // Misc
-  sendAdditionalOptionsBg: black,
-  sendAdditionalOptionsBorder: black,
-  sendAdditionalInputBg: darkBrand,
-  sendAdditionalInputText: white,
 };

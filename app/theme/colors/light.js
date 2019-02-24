@@ -15,15 +15,23 @@ const border = '#DDDDDD';
 
 export const LIGHT_COLORS = {
   // General
-  background: offWhite,
   text,
-  darkOne: brand,
-  blackTwo: '#171717',
-  lightOne: white,
-  brandOne: '#000',
-  brandThree: '#5D5D65',
-  buttonBorderColor: '#3E3C42',
+  background: offWhite,
+  divider: '#AAAAAA',
+  inactiveItem: success,
   activeItem: brand,
+
+  // Header
+  headerTitle: text,
+
+  // Select
+  selectButtonShadow: 'rgba(238,201,76,0.65)',
+
+  // Send View (Additional Options Section)
+  sendAdditionalOptionsBg: white,
+  sendAdditionalOptionsBorder: border,
+  sendAdditionalInputBg: offWhite,
+  sendAdditionalInputText: white,
 
   // Dropdown
   dropdownBg: offWhite,
@@ -31,6 +39,11 @@ export const LIGHT_COLORS = {
   dropdownBorder: border,
   dropdownIconBorder: '#c1c1c1',
   dropdownOpenedIconBorder: '#828282',
+
+  // Card
+  cardBackgroundColor: black,
+  sendCardBg: white,
+  sendCardBorder: border,
 
   // Buttons
   buttonPrimaryBg: brand,
@@ -41,11 +54,28 @@ export const LIGHT_COLORS = {
   buttonSecondaryBorder: '#989898',
   buttonSecondaryText: white,
   buttonSecondaryHoveredBg: '#aaa',
+  buttonBorderColor: '#3E3C42',
 
-  // Card
-  cardBackgroundColor: black,
-  sendCardBg: white,
-  sendCardBorder: border,
+  // Transactions
+  transactionSent: error,
+  transactionReceived: success,
+  transactionsDate: secondaryText,
+  transactionsItemHovered: '#222222',
+  transactionItemBg: white,
+  transactionItemHoverBg: whiteHover,
+  transactionItemBorder: border,
+  transactionItemAddress: '#666666',
+  transactionItemAddressHover: '#666666',
+  transactionDetailsShadow: `0px 0px 1px 0px ${black}`,
+  transactionDetailsBg: white,
+  transactionDetailsRowHover: whiteHover,
+  transactionDetailsDivider: border,
+  transactionDetailsLabel: '#999999',
+
+  // Status Pill
+  statusPillLabel: text,
+  statusPillBg: '#F9FBFE',
+  statusPillBorder: border,
 
   // Sidebar
   sidebarBg: white,
@@ -60,40 +90,14 @@ export const LIGHT_COLORS = {
   sidebarActiveItemLabel: '#8E8E96',
   sidebarActiveItemBorder: 'red',
 
-  // Transactions
-  transactionSent: error,
-  transactionReceived: success,
-  transactionsDate: secondaryText,
-  transactionsItemHovered: '#222222',
-
-  // Transaction Item
-  transactionItemBg: white,
-  transactionItemHoverBg: whiteHover,
-  transactionItemBorder: border,
-  transactionItemAddress: '#666666',
-  transactionItemAddressHover: '#666666',
-
-  // Transaction Details
-  transactionDetailsShadow: `0px 0px 1px 0px ${black}`,
-  transactionDetailsBg: white,
-  transactionDetailsRowHover: whiteHover,
-  transactionDetailsDivider: border,
-  transactionDetailsLabel: '#999999',
-
-  // Select
-  selectButtonShadow: 'rgba(238,201,76,0.65)',
-
-  // Status Pill
-  statusPillLabel: text,
-  statusPillBg: '#F9FBFE',
-  statusPillBorder: border,
-
   // QR Code
   qrCodeWrapperBg: white,
   qrCodeWrapperBorder: border,
 
-  // Header
-  headerTitle: text,
+  // Forms
+  inputBg: white,
+  inputBorder: border,
+  inputBorderActive: '#828282',
 
   // Wallet Summary
   walletSummaryBg: white,
@@ -107,17 +111,9 @@ export const LIGHT_COLORS = {
   walletAddressTooltip: white,
   walletAddressTooltipBg: black,
 
-  // Forms
-  inputBg: white,
-  inputBorder: border,
-  inputBorderActive: '#828282',
-
   // Console
   consoleBg: white,
   consoleBorder: border,
-
-  // Misc
-  divider: '#AAAAAA',
 
   // Settings
   settingsCardBg: white,
@@ -125,12 +121,6 @@ export const LIGHT_COLORS = {
   settingsLearnMoreHovered: '#000',
 
   // Loading
-  loadingScreenBg: offWhite,
+  loadingScreenBg: black,
   loadingScreenText: white,
-
-  // Additional Panes
-  sendAdditionalOptionsBg: white,
-  sendAdditionalOptionsBorder: border,
-  sendAdditionalInputBg: offWhite,
-  sendAdditionalInputText: white,
 };

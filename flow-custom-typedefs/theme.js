@@ -3,25 +3,25 @@
 import { ThemeSet } from 'styled-theming';
 
 type Colors = {
-  primary: ThemeSet,
-  secondary: ThemeSet,
-  sidebarBg: ThemeSet,
-
-  // Card
-  cardBackgroundColor: ThemeSet,
-  sendCardBg: ThemeSet,
-  sendCardBorder: ThemeSet,
-
+  // General
   text: ThemeSet,
+  background: ThemeSet,
+  divider: ThemeSet,
   activeItem: ThemeSet,
   inactiveItem: ThemeSet,
-  background: ThemeSet,
+  modalItemLabel: ThemeSet,
 
+  // Header
+  headerTitle: ThemeSet,
+
+  // Select
   selectButtonShadow: ThemeSet,
 
-  modalItemLabel: ThemeSet,
-  blackTwo: ThemeSet,
-  buttonBorderColor: ThemeSet,
+  // Send View (Additional Options Section)
+  sendAdditionalOptionsBg: ThemeSet,
+  sendAdditionalOptionsBorder: ThemeSet,
+  sendAdditionalInputBg: ThemeSet,
+  sendAdditionalInputText: ThemeSet,
 
   // Dropdown
   dropdownBg: ThemeSet,
@@ -30,16 +30,62 @@ type Colors = {
   dropdownIconBorder: ThemeSet,
   dropdownOpenedIconBorder: ThemeSet,
 
-  // Divider
-  divider: ThemeSet,
+  // Card
+  cardBackgroundColor: ThemeSet,
+  sendCardBg: ThemeSet,
+  sendCardBorder: ThemeSet,
 
-  // Header
-  headerTitle: ThemeSet,
+  // Buttons
+  buttonPrimaryBg: ThemeSet,
+  buttonPrimaryText: ThemeSet,
+  buttonPrimaryDisabledBg: ThemeSet,
+  buttonSecondaryBg: ThemeSet,
+  buttonSecondaryText: ThemeSet,
+  buttonSecondaryDisabledBg: ThemeSet,
+  buttonSecondaryBorder: ThemeSet,
+  buttonSecondaryHoveredBg: ThemeSet,
+  buttonBorderColor: ThemeSet,
+
+  // Transactions
+  transactionSent: ThemeSet,
+  transactionReceived: ThemeSet,
+  transactionsDate: ThemeSet,
+  transactionsItemHovered: ThemeSet,
+  transactionItemBg: ThemeSet,
+  transactionItemHoverBg: ThemeSet,
+  transactionItemAddress: ThemeSet,
+  transactionItemAddressHover: ThemeSet,
+  transactionDetailsShadow: ThemeSet,
+  transactionDetailsBg: ThemeSet,
+  transactionDetailsRowHover: ThemeSet,
+  transactionDetailsDivider: ThemeSet,
+  transactionDetailsLabel: ThemeSet,
 
   // Status Pill
   statusPillBg: ThemeSet,
   statusPillLabel: ThemeSet,
   statusPillBorder: ThemeSet,
+
+  // Sidebar
+  sidebarBg: ThemeSet,
+  sidebarItem: ThemeSet,
+  sidebarItemActive: ThemeSet,
+  sidebarActiveItemBorder:  ThemeSet,
+  sidebarBorderRight: ThemeSet,
+  sidebarItemHovered: ThemeSet,
+  sidebarHoveredItemLabel: ThemeSet,
+  sidebarLogoGradientBegin: ThemeSet,
+  sidebarLogoGradientEnd: ThemeSet,
+  sidebarItemHoveredBg: ThemeSet,
+
+  // QR Code
+  qrCodeWrapperBg: ThemeSet,
+  qrCodeWrapperBorder: ThemeSet,
+
+  // Forms
+  inputBg: ThemeSet,
+  inputBorder: ThemeSet,
+  inputBorderActive: ThemeSet,
 
   // Wallet Summary
   walletSummaryBg: ThemeSet,
@@ -57,56 +103,6 @@ type Colors = {
   consoleBg: ThemeSet,
   consoleBorder: ThemeSet,
 
-  // Buttons
-  buttonPrimaryBg: ThemeSet,
-  buttonPrimaryText: ThemeSet,
-  buttonPrimaryDisabledBg: ThemeSet,
-  buttonSecondaryBg: ThemeSet,
-  buttonSecondaryText: ThemeSet,
-  buttonSecondaryDisabledBg: ThemeSet,
-  buttonSecondaryBorder: ThemeSet,
-  buttonSecondaryHoveredBg: ThemeSet,
-
-  // QR Code
-  qrCodeWrapperBg: ThemeSet,
-  qrCodeWrapperBorder: ThemeSet,
-
-  // Transactions
-  transactionSent: ThemeSet,
-  transactionReceived: ThemeSet,
-  transactionsDate: ThemeSet,
-  transactionsItemHovered: ThemeSet,
-
-  // Transaction Item
-  transactionItemBg: ThemeSet,
-  transactionItemHoverBg: ThemeSet,
-  transactionItemAddress: ThemeSet,
-  transactionItemAddressHover: ThemeSet,
-
-  // Transaction Details
-  transactionDetailsShadow: ThemeSet,
-  transactionDetailsBg: ThemeSet,
-  transactionDetailsRowHover: ThemeSet,
-  transactionDetailsDivider: ThemeSet,
-  transactionDetailsLabel: ThemeSet,
-
-  // Input
-  inputBg: ThemeSet,
-  inputBorder: ThemeSet,
-  inputBorderActive: ThemeSet,
-
-  // Sidebar
-  sidebarBg: ThemeSet,
-  sidebarItem: ThemeSet,
-  sidebarItemActive: ThemeSet,
-  sidebarActiveItemBorder:  ThemeSet,
-  sidebarBorderRight: ThemeSet,
-  sidebarItemHovered: ThemeSet,
-  sidebarHoveredItemLabel: ThemeSet,
-  sidebarLogoGradientBegin: ThemeSet,
-  sidebarLogoGradientEnd: ThemeSet,
-  sidebarItemHoveredBg: ThemeSet,
-
   // Settings
   settingsCardBg: ThemeSet,
   settingsLearnMore: ThemeSet,
@@ -115,12 +111,6 @@ type Colors = {
   // Loading
   loadingScreenBg: ThemeSet,
   loadingScreenText: ThemeSet,
-
-  // Misc
-  sendAdditionalOptionsBg: ThemeSet,
-  sendAdditionalOptionsBorder: ThemeSet,
-  sendAdditionalInputBg: ThemeSet,
-  sendAdditionalInputText: ThemeSet,
 };
 
 type FontSize = {
