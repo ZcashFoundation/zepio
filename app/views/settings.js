@@ -17,7 +17,6 @@ import { ConfirmDialogComponent } from '../components/confirm-dialog';
 import { TextComponent } from '../components/text';
 import { InputComponent } from '../components/input';
 import { InputLabelComponent } from '../components/input-label';
-import { RowComponent } from '../components/row';
 import { Clipboard } from '../components/clipboard';
 import { SelectComponent } from '../components/select';
 
@@ -33,23 +32,25 @@ const EXPORT_VIEW_KEYS_CONTENT = 'Viewing keys for shielded addresses allow for 
 const EXPORT_VIEW_KEYS_LEARN_MORE = 'https://z.cash/blog/viewing-keys-selective-disclosure';
 const IMPORT_PRIV_KEYS_TITLE = 'Import Private Keys';
 const IMPORT_PRIV_KEYS_CONTENT = 'Importing private keys will add the spendable coins to this wallet.';
+const IMPORT_PRIV_KEYS_CONTENT_MODAL = 'Paste your private keys here, one per line. These spending keys will be imported into your wallet.';
+const IMPORT_PRIV_KEYS_SUCCESS_CONTENT = 'Private keys imported in your wallet. Any spendable coins should now be available.';
 const EXPORT_PRIV_KEYS_TITLE = 'Export Private Keys';
 const EXPORT_PRIV_KEYS_CONTENT = 'Beware: exporting your private keys will allow anyone controlling them to spend your coins. Only perform this action on a trusted machine.';
 const BACKUP_WALLET_TITLE = 'Backup Wallet';
-const BACKUP_WALLET_CONTENT = 'It is recommended that you backup your wallet often.';
+const BACKUP_WALLET_CONTENT = 'It is recommended that you backup your wallet often to avoid possible issues arising from data corruption.';
 
 const Wrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
 `;
 
 const ModalContent = styled.div`
-  padding: 20px 30px;
+  padding: 20px 40px;
   width: 100%;
   max-height: 600px;
   overflow-y: auto;
 
   p {
-    word-break: break-all;
+    word-break: break-word;
   }
 `;
 
@@ -126,6 +127,59 @@ const SettingsActionWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+`;
+
+const StatusWrapper = styled.div`
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StatusTextError = styled(TextComponent)`
+  font-weight: 700;
+  color: ${props => props.theme.colors.error};
+`;
+
+const StatusTextSuccess = styled(TextComponent)`
+  font-weight: 700;
+  color: ${props => props.theme.colors.success};
+`;
+
+const ViewKeyHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0 10px 0;
+`;
+
+const ViewKeyLabel = styled(TextComponent)`
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
+  font-size: ${props => String(props.theme.fontSize.small)};
+  color: ${props => props.theme.colors.modalItemLabel};
+  margin-bottom: 3.5px;
+`;
+
+const ViewKeyAddress = styled(TextComponent)`
+  font-size: 12px;
+  padding: 10px 0;
+  line-height: 1.5;
+  word-break: break-all !important;
+`;
+
+const ViewKeyContentWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+
+  > :first-child {
+    width: 100%;
+  }
+`;
+
+const ViewKeyInputComponent = styled(InputComponent)`
+  font-size: 12px;
 `;
 
 type Key = {
@@ -321,27 +375,28 @@ export class SettingsView extends PureComponent<Props, State> {
           )}
           onConfirm={this.exportViewKeys}
           showButtons={!successExportViewKeys}
-          width={450}
+          width={550}
         >
           {() => (
             <ModalContent>
               {successExportViewKeys ? (
-                viewKeys.map(({ zAddress, key }) => (
+                viewKeys.map(({ zAddress, key }, index) => (
                   <>
-                    <InputLabelComponent value={zAddress} />
-                    <RowComponent alignItems='center'>
-                      <InputComponent
+                    <ViewKeyHeader>
+                      <ViewKeyLabel value={`View Key for Address #${index + 1}`} />
+                      <ViewKeyAddress value={`Address: ${zAddress}`} />
+                    </ViewKeyHeader>
+                    <ViewKeyContentWrapper>
+                      <ViewKeyInputComponent
                         value={key}
-                        onFocus={(event) => {
-                          event.currentTarget.select();
-                        }}
+                        onFocus={event => event.currentTarget.select()}
                       />
                       <ClipboardButton text={key} />
-                    </RowComponent>
+                    </ViewKeyContentWrapper>
                   </>
                 ))
               ) : (
-                <TextComponent value='Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.' />
+                <TextComponent value={EXPORT_VIEW_KEYS_CONTENT} />
               )}
             </ModalContent>
           )}
@@ -359,27 +414,29 @@ export class SettingsView extends PureComponent<Props, State> {
             )}
             onConfirm={this.exportPrivateKeys}
             showButtons={!successExportPrivateKeys}
-            width={450}
+            width={550}
           >
             {() => (
               <ModalContent>
                 {successExportPrivateKeys ? (
-                  privateKeys.map(({ zAddress, key }) => (
+                  privateKeys.map(({ zAddress, key }, index) => (
                     <>
-                      <InputLabelComponent value={zAddress} />
-                      <RowComponent alignItems='center'>
-                        <InputComponent
+                      <ViewKeyHeader>
+                        <ViewKeyLabel value={`Private Key for Address #${index + 1}`} />
+                        <ViewKeyAddress value={`Address: ${zAddress}`} />
+                      </ViewKeyHeader>
+                      <ViewKeyContentWrapper>
+                        <ViewKeyInputComponent
                           value={key}
-                          onFocus={(event) => {
-                            event.currentTarget.select();
-                          }}
+                          width='100%'
+                          onFocus={event => event.currentTarget.select()}
                         />
                         <ClipboardButton text={key} />
-                      </RowComponent>
+                      </ViewKeyContentWrapper>
                     </>
                   ))
                 ) : (
-                  <TextComponent value='Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.' />
+                  <TextComponent value={EXPORT_PRIV_KEYS_CONTENT} />
                 )}
               </ModalContent>
             )}
@@ -400,17 +457,22 @@ export class SettingsView extends PureComponent<Props, State> {
           >
             {() => (
               <ModalContent>
-                <InputLabelComponent value='Please paste your private keys here, one per line. The keys will be imported into your zcashd node' />
+                <InputLabelComponent
+                  marginTop='0'
+                  value={IMPORT_PRIV_KEYS_CONTENT_MODAL}
+                />
                 <InputComponent
                   value={importedPrivateKeys}
                   onChange={value => this.setState({ importedPrivateKeys: value })}
                   inputType='textarea'
                   rows={10}
                 />
-                {successImportPrivateKeys && (
-                  <TextComponent value='Private keys imported in your node' align='center' />
-                )}
-                {error && <TextComponent value={error} align='center' />}
+                <StatusWrapper>
+                  {successImportPrivateKeys && (
+                    <StatusTextSuccess value={IMPORT_PRIV_KEYS_SUCCESS_CONTENT} />
+                  )}
+                  {error && <StatusTextError value={error} align='center' />}
+                </StatusWrapper>
               </ModalContent>
             )}
           </ConfirmDialogComponent>

@@ -5,6 +5,8 @@ import { ThemeSet } from 'styled-theming';
 type Colors = {
   // General
   text: ThemeSet,
+  success: ThemeSet,
+  error: ThemeSet,
   background: ThemeSet,
   divider: ThemeSet,
   activeItem: ThemeSet,

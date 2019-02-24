@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import styled, { withTheme, keyframes } from 'styled-components';
 import { BigNumber } from 'bignumber.js';
 import { Transition, animated } from 'react-spring';
@@ -27,7 +27,8 @@ import MenuIconDark from '../assets/images/menu_icon_dark.svg';
 import MenuIconLight from '../assets/images/menu_icon_light.svg';
 import ValidIcon from '../assets/images/green_check_dark.png';
 import InvalidIcon from '../assets/images/error_icon_dark.png';
-import LoadingIcon from '../assets/images/sync_icon_dark.png';
+import LoadingIconDark from '../assets/images/sync_icon_dark.png';
+import LoadingIconLight from '../assets/images/sync_icon_light.png';
 import ArrowUpIconDark from '../assets/images/arrow_up_dark.png';
 import ArrowUpIconLight from '../assets/images/arrow_up_light.png';
 
@@ -41,14 +42,6 @@ const rotate = keyframes`
   to {
     transform: rotate(360deg);
   }
-`;
-
-const Loader = styled.img`
-  width: 25px;
-  height: 25px;
-  animation: 2s linear infinite;
-  animation-name: ${rotate};
-  margin-bottom: 10px;
 `;
 
 const FormWrapper = styled.div`
@@ -170,12 +163,12 @@ const ModalContent = styled(ColumnComponent)`
   justify-content: center;
 
   p {
-    word-break: break-all;
+    word-break: break-word;
   }
 `;
 
 const ConfirmItemWrapper = styled(RowComponent)`
-  padding: 22.5px 33.5px;
+  padding: 22.5px 40px;
   width: 100%;
 `;
 
@@ -294,8 +287,9 @@ const HexadecimalText = styled(TextComponent)`
 const SimpleTooltip = styled.div`
   background: ${props => props.theme.colors.walletAddressTooltipBg};
   position: absolute;
-  top: -30px;
-  right: 0px;
+  top: -24px;
+  left: 0;
+  right: 0;
   padding: 6px 10px;
   border-radius: ${props => props.theme.boxBorderRadius};
 `;
@@ -311,6 +305,74 @@ const SendButtonWrapper = styled.div`
   position: relative;
   width: 100%;
   display: flex;
+`;
+
+const ErrorWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 20px 40px;
+`;
+
+const ErrorLabel = styled(TextComponent)`
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 16px;
+`;
+
+const ErrorMessage = styled(TextComponent)`
+  font-size: 14px;
+  font-weight: 700;
+  color: ${props => props.theme.colors.error};
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
+const LoaderWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Loader = styled.img`
+  width: 45px;
+  height: 45px;
+  animation: 2s linear infinite;
+  animation-name: ${rotate};
+  margin-bottom: 30px;
+`;
+
+const ZSuccessWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 40px;
+`;
+
+const ZSuccessContentWrapper = styled.div`
+  padding: 0 0 40px 0;
+`;
+
+const ZSuccessLabel = styled(TextComponent)`
+  color: ${props => props.theme.colors.success};
+  font-weight: 700;
+  font-size: 30px;
+`;
+
+const ZSuccessMessage = styled(TextComponent)`
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 5px;
+`;
+
+const ZSuccessTransactionId = styled(TextComponent)`
+  text-align: center;
+  word-break: break-all !important;
 `;
 
 type Props = {
@@ -368,10 +430,13 @@ class Component extends PureComponent<Props, State> {
   }
 
   updateTooltipVisibility = ({ balance, amount }: { balance: number, amount: number }) => {
-    const { from, to } = this.state;
+    const { from, to, fee } = this.state;
+    const feeValue = fee || 0;
 
     this.setState({
-      showBalanceTooltip: !from || !to ? false : new BigNumber(amount).gt(balance),
+      showBalanceTooltip: (!from || !to)
+        ? false
+        : new BigNumber(amount).plus(feeValue).gt(balance),
     });
   };
 
@@ -514,36 +579,63 @@ class Component extends PureComponent<Props, State> {
     /* eslint-enable react/no-unused-prop-types */
   }) => {
     // eslint-disable-next-line react/prop-types
-    const { operationId, isSending, error } = this.props;
+    const {
+      operationId, isSending, error, theme,
+    } = this.props;
     const { from, to } = this.state;
+
+    const loadingIcon = theme.mode === DARK
+      ? LoadingIconDark
+      : LoadingIconLight;
 
     if (isSending) {
       return (
-        <Fragment>
-          <Loader src={LoadingIcon} />
+        <LoaderWrapper>
+          <Loader src={loadingIcon} />
           <TextComponent value='Processing transaction...' />
-        </Fragment>
+        </LoaderWrapper>
       );
     }
 
     if (operationId) {
       return (
-        <ColumnComponent width='100%' id='send-success-wrapper'>
-          <TextComponent value={`Transaction ID: ${operationId}`} align='center' />
-          <button
-            type='button'
+        <ZSuccessWrapper id='send-success-wrapper'>
+          <ZSuccessLabel value='Success!' />
+          <ZSuccessContentWrapper>
+            <ZSuccessMessage value='Your transaction was sent successfully.' />
+            <ZSuccessTransactionId value={`Transaction ID: ${operationId}`} />
+          </ZSuccessContentWrapper>
+          <FormButton
+            label='Done'
+            variant='primary'
             onClick={() => {
               this.reset();
               toggle();
             }}
-          >
-            Send again!
-          </button>
-        </ColumnComponent>
+          />
+        </ZSuccessWrapper>
       );
     }
 
-    if (error) return <TextComponent id='send-error-message' value={error} />;
+    if (error) {
+      return (
+        <ErrorWrapper>
+          <ErrorLabel value='Error' />
+          <ErrorMessage
+            id='send-error-message'
+            value={error}
+          />
+          <FormButton
+            label='Try Again'
+            variant='primary'
+            onClick={() => {
+              this.reset();
+              toggle();
+            }}
+          />
+        </ErrorWrapper>
+      );
+    }
 
     return (
       <>
@@ -646,7 +738,7 @@ class Component extends PureComponent<Props, State> {
             <AmountInput
               renderRight={() => (
                 <MaxAvailableAmount
-                  onClick={() => this.handleChange('amount')(balance)}
+                  onClick={() => this.handleChange('amount')(balance - (Number(fee) || 0))}
                   disabled={!from}
                 >
                   <MaxAvailableAmountImg src={arrowUpIcon} />
@@ -774,23 +866,22 @@ class Component extends PureComponent<Props, State> {
             </InfoContent>
           </InfoCard>
           <ConfirmDialogComponent
-            title='Please Confirm Transaction Details'
+            title='Transaction Status'
             onConfirm={this.handleSubmit}
             showButtons={!isSending && !error && !operationId}
             onClose={this.reset}
             renderTrigger={toggle => (
               <SendButtonWrapper>
-                {showBalanceTooltip ? (
+                {!showBalanceTooltip ? null : (
                   <SimpleTooltip>
-                    <TooltipText value='You do not seem' />
-                    <TooltipText value='to have enough funds' />
+                    <TooltipText value='Not enough funds!' />
                   </SimpleTooltip>
-                ) : null}
+                )}
                 <FormButton
                   onClick={() => this.showModal(toggle)}
                   id='send-submit-button'
                   label='Send'
-                  variant='secondary'
+                  variant='primary'
                   focused
                   isFluid
                   disabled={this.shouldDisableSendButton()}
@@ -808,7 +899,11 @@ class Component extends PureComponent<Props, State> {
               </ModalContent>
             )}
           </ConfirmDialogComponent>
-          <FormButton label='Clear Form' variant='secondary' />
+          <FormButton
+            label='Clear Form'
+            variant='secondary'
+            onClick={this.reset}
+          />
         </SendWrapper>
       </RowComponent>
     );

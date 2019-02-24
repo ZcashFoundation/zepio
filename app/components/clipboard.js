@@ -33,6 +33,10 @@ export class Clipboard extends PureComponent<Props, State> {
     if (document.body) document.body.removeChild(el);
 
     this.setState({ copied: true });
+
+    setTimeout(() => {
+      this.setState(() => ({ copied: false }));
+    }, 1500);
   };
 
   render() {
@@ -42,7 +46,7 @@ export class Clipboard extends PureComponent<Props, State> {
     return (
       <div data-testid='Clipboard'>
         <Button
-          label={copied ? 'Copied!' : 'Copy!'}
+          label={copied ? 'Copied!' : 'Copy'}
           className={className}
           onClick={this.handleClick}
           disabled={copied}

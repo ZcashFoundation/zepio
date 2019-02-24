@@ -13,6 +13,8 @@ const brandThree = '#5d5d65';
 export const DARK_COLORS = {
   // General
   text,
+  success,
+  error,
   background: '#212124',
   divider: black,
   inactiveItem: brandThree,

@@ -16,6 +16,8 @@ const border = '#DDDDDD';
 export const LIGHT_COLORS = {
   // General
   text,
+  success,
+  error,
   background: offWhite,
   divider: '#AAAAAA',
   inactiveItem: success,
