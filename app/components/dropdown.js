@@ -1,4 +1,5 @@
 // @flow
+
 import React, { type Node, Component } from 'react';
 import styled from 'styled-components';
 /* eslint-disable import/no-extraneous-dependencies */
@@ -9,18 +10,18 @@ import ClickOutside from 'react-click-outside';
 
 import { TextComponent } from './text';
 
-import truncateAddress from '../utils/truncateAddress';
+import { truncateAddress } from '../utils/truncate-address';
 
 /* eslint-disable max-len  */
 const MenuWrapper = styled.div`
-  background-image: ${props => `linear-gradient(to right, ${darken(
-    0.05,
-    props.theme.colors.activeItem,
-  )}, ${props.theme.colors.activeItem})`};
+  background-image: ${props => `linear-gradient(to right, ${darken(0.05, props.theme.colors.activeItem)}, ${
+    props.theme.colors.activeItem
+  })`};
   border-radius: ${props => props.theme.boxBorderRadius};
   margin-left: -10px;
   max-width: 400px;
   overflow: hidden;
+  border: 1px solid ${props => props.theme.colors.border}
 `;
 
 const MenuItem = styled.button`
@@ -56,7 +57,7 @@ const MenuItem = styled.button`
 
 const OptionItem = styled(MenuItem)`
   &:hover {
-    background-color: #F9D114;
+    background-color: #f9d114;
   }
 `;
 
@@ -100,9 +101,7 @@ export class DropdownComponent extends Component<Props, State> {
     } = this.props;
 
     const body = [
-      <ClickOutside
-        onClickOutside={() => this.setState(() => ({ isOpen: false }))}
-      >
+      <ClickOutside onClickOutside={() => this.setState(() => ({ isOpen: false }))}>
         <MenuWrapper>
           {label && (
             <MenuItem disabled isGroupLabel>
@@ -110,7 +109,7 @@ export class DropdownComponent extends Component<Props, State> {
             </MenuItem>
           )}
           {options.map(({ label: optionLabel, onClick }) => (
-            <OptionItem onClick={onClick} key={optionLabel}>
+            <OptionItem onClick={onClick} key={optionLabel} data-testid='DropdownOption'>
               <Option value={truncate ? truncateAddress(optionLabel) : optionLabel} />
             </OptionItem>
           ))}
@@ -127,7 +126,9 @@ export class DropdownComponent extends Component<Props, State> {
         body={body}
       >
         {renderTrigger(
-          () => this.setState(state => ({ isOpen: !state.isOpen })),
+          () => this.setState(state => ({
+            isOpen: !state.isOpen,
+          })),
           isOpen,
         )}
       </PopoverWithStyle>

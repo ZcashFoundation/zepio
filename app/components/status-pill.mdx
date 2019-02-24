@@ -13,10 +13,42 @@ import { DoczWrapper } from '../theme.js'
 
 <PropsTable of={StatusPill} />
 
-## Basic Usage
+## Syching
 
 <Playground>
   <DoczWrapper>
-    {() => <StatusPill percent={83.} />}
+    {() =>
+      <StatusPill
+        progress={99.3}
+        type='syncing'
+      />
+    }
+  </DoczWrapper>
+</Playground>
+
+## Ready
+
+<Playground>
+  <DoczWrapper>
+    {() =>
+      <StatusPill
+        progress={100.}
+        type='ready'
+      />
+    }
+  </DoczWrapper>
+</Playground>
+
+
+## With Error
+
+<Playground>
+  <DoczWrapper>
+    {() =>
+      <StatusPill
+        progress={0.}
+        type='error'
+      />
+    }
   </DoczWrapper>
 </Playground>

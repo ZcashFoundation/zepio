@@ -1,11 +1,13 @@
 [ignore]
 .*/node_modules/polished/.*
-./__tests__
+./__tests__/**.js
+./flow-typed/npm/styled-components_v4.x.x.js
 
 [include]
 
 [libs]
 flow-typed
+flow-custom-typedefs
 
 [lints]
 

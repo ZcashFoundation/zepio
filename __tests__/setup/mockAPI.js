@@ -1,4 +1,5 @@
 // @flow
+
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'babel-polyfill';
 
@@ -11,7 +12,7 @@ const sleep = (time: number) => new Promise(resolve => setTimeout(resolve, time)
 createTestServer({
   httpPort: '18232',
 }).then(async (server) => {
-  console.log('[MOCK RPC API]', server.url);
+  console.log('[MOCK RPC API]', server.url); // eslint-disable-line
 
   server.get('/', (req, res) => {
     res.send('Zcash RPC');
@@ -93,6 +94,10 @@ createTestServer({
       case 'z_getoperationstatus':
         return res.send({
           result: [{ id: 'operation-id-1', status: 'success', result: { txid: 'txid-1' } }],
+        });
+      case 'z_getbalance':
+        return res.send({
+          result: 5,
         });
       default:
         return null;

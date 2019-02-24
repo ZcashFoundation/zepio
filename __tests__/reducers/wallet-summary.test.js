@@ -1,4 +1,5 @@
 // @flow
+
 import walletSummaryReducer, {
   LOAD_WALLET_SUMMARY,
   LOAD_WALLET_SUMMARY_SUCCESS,
@@ -8,12 +9,14 @@ import walletSummaryReducer, {
 describe('WalletSummary Reducer', () => {
   test('should return the valid initial state', () => {
     const initialState = {
+      addresses: [],
+      transactions: [],
       total: 0,
       shielded: 0,
       transparent: 0,
       error: null,
       isLoading: false,
-      dollarValue: 0,
+      zecPrice: 0,
     };
     const action = {
       type: 'UNKNOWN_ACTION',
@@ -29,12 +32,14 @@ describe('WalletSummary Reducer', () => {
       payload: {},
     };
     const expectedState = {
+      addresses: [],
+      transactions: [],
       total: 0,
       shielded: 0,
       transparent: 0,
       error: null,
       isLoading: true,
-      dollarValue: 0,
+      zecPrice: 0,
     };
 
     expect(walletSummaryReducer(undefined, action)).toEqual(expectedState);
@@ -53,7 +58,9 @@ describe('WalletSummary Reducer', () => {
       ...action.payload,
       error: null,
       isLoading: false,
-      dollarValue: 0,
+      addresses: [],
+      transactions: [],
+      zecPrice: 0,
     };
 
     expect(walletSummaryReducer(undefined, action)).toEqual(expectedState);
@@ -72,7 +79,9 @@ describe('WalletSummary Reducer', () => {
       transparent: 0,
       error: action.payload.error,
       isLoading: false,
-      dollarValue: 0,
+      addresses: [],
+      transactions: [],
+      zecPrice: 0,
     };
 
     expect(walletSummaryReducer(undefined, action)).toEqual(expectedState);

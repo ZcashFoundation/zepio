@@ -1,4 +1,5 @@
 // @flow
+
 import { getApp } from '../setup/utils';
 
 const app = getApp();
@@ -9,6 +10,7 @@ beforeEach(async () => {
   await app.client.waitUntilTextExists('#sidebar', 'Send');
   await app.client.element('#sidebar a:nth-child(2)').click();
 });
+
 afterEach(() => app.stop());
 
 describe('Send', () => {
@@ -88,6 +90,7 @@ describe('Send', () => {
 
     await app.client.element('#send-submit-button').click();
     await app.client.element('#confirm-modal-button').click();
+
     expect(app.client.getAttribute('#send-confirm-transaction-modal img', 'src')).resolves.toEqual(
       expect.stringContaining('/assets/sync_icon.png'),
     );
@@ -152,6 +155,6 @@ describe('Send', () => {
     );
     expect(
       await app.client.element('#transaction-item-operation-id-1 img').getAttribute('src'),
-    ).toEndWith('/assets/transaction_sent_icon.svg');
+    ).toEndWith('/assets/transaction_sent_icon_dark.svg');
   });
 });

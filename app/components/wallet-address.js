@@ -1,154 +1,190 @@
 // @flow
+
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
-import { Transition, animated } from 'react-spring';
+import styled, { withTheme } from 'styled-components';
 
 import { ColumnComponent } from './column';
-import { Button } from './button';
+import { TextComponent } from './text';
 import { QRCode } from './qrcode';
+import { CopyToClipboard } from './copy-to-clipboard';
 
-import truncateAddress from '../utils/truncateAddress';
-
-import eyeIcon from '../assets/images/eye.png';
+import CopyIconDark from '../assets/images/copy_icon_dark.svg';
+import CopyIconLight from '../assets/images/copy_icon_light.svg';
+import ScanIconDark from '../assets/images/scan_icon_dark.svg';
+import ScanIconLight from '../assets/images/scan_icon_light.svg';
+import { DARK } from '../constants/themes';
 
 const AddressWrapper = styled.div`
   align-items: center;
   display: flex;
-  background-color: #000;
-  border-radius: 6px;
-  padding: 7px 13px;
+  border-radius: ${props => props.theme.boxBorderRadius};
+  padding: 0 13px 0 0;
+  margin-bottom: 10px;
   width: 100%;
+  background: ${props => props.theme.colors.walletAddressBg};
+  border: 1px solid ${props => props.theme.colors.walletAddressBorder};
 `;
 
-const Input = styled.input`
+const Address = styled(TextComponent)`
   border-radius: ${props => props.theme.boxBorderRadius};
   border: none;
-  background-color: ${props => props.theme.colors.inputBackground};
-  color: ${props => props.theme.colors.text};
+  background-color: ${props => props.theme.colors.inputBg};
   padding: 15px;
-  width: 100%;
+  width: 92%;
   outline: none;
   font-family: ${props => props.theme.fontFamily};
+  font-size: 13px;
+  color: ${props => props.theme.colors.walletAddressInput};
+  line-height: 1;
+  letter-spacing: 0.5px;
+  overflow-x: scroll;
+  cursor: pointer;
+  user-select: text;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* // todo: make this theme supported */
+  ${AddressWrapper}:hover & {
+    color: ${props => props.theme.colors.walletAddressInputHovered};
+  }
 
   ::placeholder {
     opacity: 0.5;
   }
 `;
 
-const Btn = styled(Button)`
-  border-width: 1px;
-  font-weight: ${props => props.theme.fontWeight.regular};
-  border-color: ${props => (props.isVisible
-    ? props.theme.colors.primary : props.theme.colors.buttonBorderColor
-  )};
-  padding: 8px 10px;
-  min-width: 260px;
-
-  img {
-    height: 12px;
-    width: 20px;
-  }
+const QRCodeContainer = styled.div`
+  align-items: center;
+  display: flex;
+  background-color: ${props => props.theme.colors.qrCodeWrapperBg}
+  border: 1px solid ${props => props.theme.colors.qrCodeWrapperBorder}
+  border-radius: ${props => props.theme.boxBorderRadius};
+  padding: 20px;
+  margin-bottom: 10px;
+  width: 100%;
 `;
 
 const QRCodeWrapper = styled.div`
-  align-items: center;
-  display: flex;
-  background-color: #000;
-  border-radius: 6px;
-  padding: 20px;
-  margin-top: 10px;
-  width: 100%;
+  background-color: #ffffff;
+  padding: 10px;
 `;
 
-const RevealsMain = styled.div`
-  width: 100%;
-  height: 100%;
-  position: relative;
+const IconButton = styled.button`
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  border: none;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  height: ${props => (props.isVisible ? '178px' : 0)}
-  transition: all 0.25s ease-in-out;
+  width: 28px;
+  margin-left: 3px;
+  position: relative;
+`;
 
-  & > div {
-    top: 0;
-    right: 0;
-    left: 0;
+const IconImage = styled.img`
+  max-width: 23px;
+  opacity: 0.4;
+
+  ${IconButton}:hover & {
+    opacity: 1;
   }
+`;
+
+const CopyTooltip = styled.div`
+  background: ${props => props.theme.colors.walletAddressTooltipBg};
+  position: absolute;
+  top: -27px;
+  left: -8px;
+  padding: 6px 10px;
+  border-radius: ${props => props.theme.boxBorderRadius};
+`;
+
+const TooltipText = styled(TextComponent)`
+  color: ${props => props.theme.colors.walletAddressTooltip};
+  font-size: 10px;
+  font-weight: 700;
+`;
+
+const ActionsWrapper = styled.div`
+  width: 8%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
 `;
 
 type Props = {
   address: string,
-  isVisible?: boolean,
+  theme: AppTheme,
 };
 
 type State = {
-  isVisible: boolean,
+  showCopiedTooltip: boolean,
+  showQRCode: boolean,
 };
 
-export class WalletAddress extends PureComponent<Props, State> {
-  static defaultProps = {
-    isVisible: false,
-  }
+class Component extends PureComponent<Props, State> {
+  state = {
+    showQRCode: false,
+    showCopiedTooltip: false,
+  };
 
-  constructor(props: Props) {
-    super(props);
+  showMoreInfo = () => this.setState(() => ({ showQRCode: true }));
 
-    this.state = { isVisible: Boolean(props.isVisible) };
-  }
+  toggleMoreInfo = () => this.setState(prevState => ({
+    showQRCode: !prevState.showQRCode,
+  }));
 
-  show = () => this.setState(() => ({ isVisible: true }));
+  hideTooltip = () => this.setState(() => ({ showCopiedTooltip: false }));
 
-  hide = () => this.setState(() => ({ isVisible: false }));
+  copyAddress = () => this.setState(
+    () => ({ showCopiedTooltip: true }),
+    () => setTimeout(() => this.hideTooltip(), 1500),
+  );
 
   render() {
-    const { address } = this.props;
-    const { isVisible } = this.state;
-    const toggleVisibility = isVisible ? this.hide : this.show;
-    const buttonLabel = `${isVisible ? 'Hide' : 'Show'} details and QR Code`;
+    const { address, theme } = this.props;
+    const { showQRCode, showCopiedTooltip } = this.state;
+
+    const qrCodeIcon = theme.mode === DARK ? ScanIconDark : ScanIconLight;
+
+    const copyIcon = theme.mode === DARK ? CopyIconDark : CopyIconLight;
 
     return (
       <ColumnComponent width='100%'>
         <AddressWrapper>
-          <Input
-            value={isVisible ? address : truncateAddress(address)}
-            onChange={() => {}}
-            onFocus={event => event.currentTarget.select()}
+          <Address
+            value={address}
+            onClick={this.toggleMoreInfo}
+            onDoubleClick={this.showMoreInfo}
           />
-          <Btn
-            icon={eyeIcon}
-            label={buttonLabel}
-            onClick={toggleVisibility}
-            variant='secondary'
-            isVisible={isVisible}
-          />
+          <ActionsWrapper>
+            <CopyToClipboard text={address} onCopy={this.copyAddress}>
+              <IconButton onClick={() => {}}>
+                {!showCopiedTooltip ? null : (
+                  <CopyTooltip>
+                    <TooltipText value='Copied!' />
+                  </CopyTooltip>
+                )}
+                <IconImage src={copyIcon} alt='Copy Address' />
+              </IconButton>
+            </CopyToClipboard>
+            <IconButton onClick={this.toggleMoreInfo}>
+              <IconImage src={qrCodeIcon} alt='See QRCode' />
+            </IconButton>
+          </ActionsWrapper>
         </AddressWrapper>
-        <RevealsMain isVisible={isVisible}>
-          <Transition
-            native
-            items={isVisible}
-            enter={[{
-              height: 'auto',
-              opacity: 1,
-            }]}
-            leave={{ height: 0, opacity: 0 }}
-            from={{
-              position: 'absolute',
-              overflow: 'hidden',
-              opacity: 0,
-              height: 0,
-            }}
-          >
-            {show => show && (props => (
-              <animated.div style={props}>
-                <QRCodeWrapper>
-                  <QRCode value={address} />
-                </QRCodeWrapper>
-              </animated.div>
-            ))}
-          </Transition>
-        </RevealsMain>
+        {!showQRCode ? null : (
+          <QRCodeContainer>
+            <QRCodeWrapper>
+              <QRCode value={address} />
+            </QRCodeWrapper>
+          </QRCodeContainer>
+        )}
       </ColumnComponent>
     );
   }
 }
+
+export const WalletAddress = withTheme(Component);

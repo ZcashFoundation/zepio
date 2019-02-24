@@ -9,6 +9,7 @@ beforeAll(async () => {
   await app.client.waitUntilWindowLoaded();
   await app.client.waitUntilTextExists('#sidebar', 'Dashboard');
 });
+
 afterAll(() => app.stop());
 
 describe('Sidebar', () => {
@@ -17,9 +18,8 @@ describe('Sidebar', () => {
 
     expect(await app.client.getUrl()).toEndWith('/');
 
-    expect(await app.client.element('#sidebar a:nth-child(1)').getHTML()).toEqual(
-      expect.stringContaining('Dashboard'),
-    );
+    expect(await app.client.element('#sidebar a:nth-child(1)')
+      .getHTML()).toEqual(expect.stringContaining('Dashboard'));
 
     expect(await app.client.element('#sidebar a:nth-child(1) img').getAttribute('src')).toEqual(
       expect.stringContaining('/assets/dashboard_icon_active.svg'),
@@ -31,11 +31,11 @@ describe('Sidebar', () => {
 
     expect(await app.client.getUrl()).toEndWith('/send');
 
-    expect(await app.client.element('#sidebar a:nth-child(2)').getHTML()).toEqual(
-      expect.stringContaining('Send'),
-    );
+    expect(await app.client.element('#sidebar a:nth-child(2)')
+      .getHTML()).toEqual(expect.stringContaining('Send'));
 
-    expect(await app.client.element('#sidebar a:nth-child(2) img').getAttribute('src')).toEqual(
+    expect(await app.client.element('#sidebar a:nth-child(2) img')
+      .getAttribute('src')).toEqual(
       expect.stringContaining('/assets/send_icon_active.svg'),
     );
   });
@@ -45,11 +45,11 @@ describe('Sidebar', () => {
 
     expect(await app.client.getUrl()).toEndWith('/receive');
 
-    expect(await app.client.element('#sidebar a:nth-child(3)').getHTML()).toEqual(
-      expect.stringContaining('Receive'),
-    );
+    expect(await app.client.element('#sidebar a:nth-child(3)')
+      .getHTML()).toEqual(expect.stringContaining('Receive'));
 
-    expect(await app.client.element('#sidebar a:nth-child(3) img').getAttribute('src')).toEqual(
+    expect(await app.client.element('#sidebar a:nth-child(3) img')
+      .getAttribute('src')).toEqual(
       expect.stringContaining('/assets/receive_icon_active.svg'),
     );
   });
@@ -59,11 +59,11 @@ describe('Sidebar', () => {
 
     expect(await app.client.getUrl()).toEndWith('/transactions');
 
-    expect(await app.client.element('#sidebar a:nth-child(4)').getHTML()).toEqual(
-      expect.stringContaining('Transactions'),
-    );
+    expect(await app.client.element('#sidebar a:nth-child(4)')
+      .getHTML()).toEqual(expect.stringContaining('Transactions'));
 
-    expect(await app.client.element('#sidebar a:nth-child(4) img').getAttribute('src')).toEqual(
+    expect(await app.client.element('#sidebar a:nth-child(4) img')
+      .getAttribute('src')).toEqual(
       expect.stringContaining('/assets/transactions_icon_active.svg'),
     );
   });
@@ -73,11 +73,11 @@ describe('Sidebar', () => {
 
     expect(await app.client.getUrl()).toEndWith('/settings');
 
-    expect(await app.client.element('#sidebar a:nth-child(5)').getHTML()).toEqual(
-      expect.stringContaining('Settings'),
-    );
+    expect(await app.client.element('#sidebar a:nth-child(5)')
+      .getHTML()).toEqual(expect.stringContaining('Settings'));
 
-    expect(await app.client.element('#sidebar a:nth-child(5) img').getAttribute('src')).toEqual(
+    expect(await app.client.element('#sidebar a:nth-child(5) img')
+      .getAttribute('src')).toEqual(
       expect.stringContaining('/assets/settings_icon_active.svg'),
     );
   });
@@ -87,11 +87,11 @@ describe('Sidebar', () => {
 
     expect(await app.client.getUrl()).toEndWith('/console');
 
-    expect(await app.client.element('#sidebar a:nth-child(6)').getHTML()).toEqual(
-      expect.stringContaining('Console'),
-    );
+    expect(await app.client.element('#sidebar a:nth-child(6)')
+      .getHTML()).toEqual(expect.stringContaining('Console'));
 
-    expect(await app.client.element('#sidebar a:nth-child(6) img').getAttribute('src')).toEqual(
+    expect(await app.client.element('#sidebar a:nth-child(6) img')
+      .getAttribute('src')).toEqual(
       expect.stringContaining('/assets/console_icon_active.svg'),
     );
   });

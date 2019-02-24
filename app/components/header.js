@@ -1,13 +1,13 @@
 // @flow
-import React from 'react';
 
+import React from 'react';
 import styled from 'styled-components';
 
 import { ZcashLogo } from './zcash-logo';
 import { TextComponent } from './text';
 import { Divider } from './divider';
 import { RowComponent } from './row';
-import { StatusPill } from './status-pill';
+import { StatusPillContainer } from '../containers/status-pill';
 
 const Wrapper = styled.div`
   height: ${props => props.theme.headerHeight};
@@ -52,7 +52,8 @@ const Title = styled(TextComponent)`
   margin-bottom: 10px;
   text-transform: capitalize;
   letter-spacing: 0.25px;
-  font-weight: ${props => props.theme.fontWeight.bold};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
+  color: ${props => props.theme.colors.headerTitle};
 `;
 
 type Props = {
@@ -67,9 +68,9 @@ export const HeaderComponent = ({ title }: Props) => (
     <TitleWrapper>
       <TitleRow alignItems='center' justifyContent='space-around'>
         <Title value={title} />
-        <StatusPill />
+        <StatusPillContainer />
       </TitleRow>
-      <Divider opacity={0.1} />
+      <Divider opacity={0.2} />
     </TitleWrapper>
   </Wrapper>
 );

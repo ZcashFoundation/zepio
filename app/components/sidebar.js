@@ -1,8 +1,10 @@
 // @flow
 
+/* eslint-disable max-len */
 import React from 'react';
-import styled from 'styled-components';
-import { Link, type Location } from 'react-router-dom';
+import styled, { withTheme } from 'styled-components';
+import type { Location, RouterHistory } from 'react-router-dom';
+
 import { MENU_OPTIONS } from '../constants/sidebar';
 
 const Wrapper = styled.div`
@@ -10,22 +12,27 @@ const Wrapper = styled.div`
   flex-direction: column;
   width: ${props => props.theme.sidebarWidth};
   height: ${props => `calc(100vh - ${props.theme.headerHeight})`};
-  font-family: ${props => props.theme.fontFamily}
+  font-family: ${props => props.theme.fontFamily};
   background-color: ${props => props.theme.colors.sidebarBg};
+  border-right: 1px solid ${props => props.theme.colors.sidebarBorderRight};
   padding-top: 15px;
   position: relative;
 `;
 
-const StyledLink = styled(Link)`
-  color: ${props => (props.isActive
+/* eslint-disable max-len */
+type StyledLinkProps = PropsWithTheme<{ isActive: boolean }>;
+const StyledLink = styled.a`
+  color: ${(props: StyledLinkProps) => (props.isActive
     ? props.theme.colors.sidebarItemActive
-    : props.theme.colors.sidebarItem)};
-  font-size: ${props => `${props.theme.fontSize.regular}em`};
+    : props.theme.colors.sidebarItem
+  )};
+  background-color: ${(props: StyledLinkProps) => (props.isActive
+    ? props.theme.colors.sidebarItemHoveredBg
+    : 'transparent'
+  )};
+  font-size: ${(props: StyledLinkProps) => `${props.theme.fontSize.regular}em`};
   text-decoration: none;
-  font-weight: ${props => props.theme.fontWeight.bold};
-  background-color: ${props => (props.isActive
-    ? `${props.theme.colors.sidebarHoveredItem}`
-    : 'transparent')};
+  font-weight: ${(props: StyledLinkProps) => String(props.theme.fontWeight.bold)};
   letter-spacing: 0.25px;
   padding: 25px 20px;
   height: 35px;
@@ -33,18 +40,19 @@ const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
   outline: none;
-  border-right: ${props => (props.isActive
-    ? `3px solid ${props.theme.colors.sidebarItemActive}`
-    : 'none')};
   cursor: pointer;
-  transition: all 0.03s ${props => props.theme.colors.transitionEase};
+  outline: none;
+  transition: all 0.03s ${(props: StyledLinkProps) => props.theme.transitionEase};
+  border-right: ${(props: StyledLinkProps) => (props.isActive ? `3px solid ${props.theme.colors.sidebarActiveItemBorder}` : 'none')};
+  border-top: 1px solid ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarBorderRight : 'transparent')};
+  border-bottom: 1px solid ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarBorderRight : 'transparent')};
 
   &:hover {
-    color: ${
-  /* eslint-disable-next-line max-len */
-  props => (props.isActive ? props.theme.colors.sidebarItemActive : '#ddd')
-}
-    background-color: ${props => props.theme.colors.sidebarHoveredItem};
+    border-top: 1px solid ${props => props.theme.colors.sidebarBorderRight};
+    border-bottom: 1px solid ${props => props.theme.colors.sidebarBorderRight};
+
+    background-color: ${(props: StyledLinkProps) => props.theme.colors.sidebarItemHoveredBg};
+    color: ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarItemActive : props.theme.colors.sidebarItemHovered)}
   }
 `;
 
@@ -53,32 +61,44 @@ const Icon = styled.img`
   height: 17px;
   margin-right: 13px;
 
+  opacity: ${(props: any) => (props.isActive ? '1' : '0.3')};
+
   ${StyledLink}:hover & {
-    filter: ${props => (props.isActive ? 'none' : 'brightness(300%)')};
+    opacity: 1;
   }
 `;
 
 type MenuItem = {
   route: string,
   label: string,
-  icon: (isActive: boolean) => string,
+  icon: (isActive: boolean, themeMode: string) => string,
 };
 
 type Props = {
+  history: RouterHistory,
   options?: MenuItem[],
   location: Location,
+  theme: AppTheme,
 };
 
-export const SidebarComponent = ({ options, location }: Props) => (
+export const Component = ({
+  options, location, history, theme,
+}: Props) => (
   <Wrapper id='sidebar'>
     {(options || []).map((item) => {
-      const isActive = location.pathname === item.route;
+      const isActive = item.route === '/'
+        ? location.pathname === item.route
+        : location.pathname.startsWith(item.route);
 
       return (
-        <StyledLink isActive={isActive} key={item.route} to={item.route}>
+        <StyledLink
+          isActive={isActive}
+          key={item.route}
+          onClick={() => (isActive ? {} : history.push(item.route))}
+        >
           <Icon
             isActive={isActive}
-            src={item.icon(isActive)}
+            src={item.icon(isActive, theme.mode)}
             alt={`${item.route}`}
           />
           {item.label}
@@ -88,6 +108,8 @@ export const SidebarComponent = ({ options, location }: Props) => (
   </Wrapper>
 );
 
-SidebarComponent.defaultProps = {
+Component.defaultProps = {
   options: MENU_OPTIONS,
 };
+
+export const SidebarComponent = withTheme(Component);

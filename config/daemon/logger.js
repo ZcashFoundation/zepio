@@ -1,4 +1,4 @@
 // @flow
 
-/* eslint-disable-next-line no-console */
+// eslint-disable-next-line
 export default (...message: Array<*>) => console.log('[Zcash Daemon]', ...message);

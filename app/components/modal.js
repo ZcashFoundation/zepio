@@ -1,4 +1,5 @@
 // @flow
+
 import React, { PureComponent, Fragment, type Element } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
@@ -13,7 +14,7 @@ const ModalWrapper = styled.div`
   top: 0;
   left: 0;
   z-index: 10;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.4);
 `;
 
 const ChildrenWrapper = styled.div`
@@ -69,23 +70,19 @@ export class ModalComponent extends PureComponent<Props, State> {
     }
   };
 
-  open = () => {
-    this.setState(
-      () => ({ isVisible: true }),
-      () => {
-        if (modalRoot) modalRoot.appendChild(this.element);
-      },
-    );
-  };
+  open = () => this.setState(
+    () => ({ isVisible: true }),
+    () => {
+      if (modalRoot) modalRoot.appendChild(this.element);
+    },
+  );
 
-  close = () => {
-    this.setState(
-      () => ({ isVisible: false }),
-      () => {
-        if (modalRoot) modalRoot.removeChild(this.element);
-      },
-    );
-  };
+  close = () => this.setState(
+    () => ({ isVisible: false }),
+    () => {
+      if (modalRoot) modalRoot.removeChild(this.element);
+    },
+  );
 
   render() {
     const { renderTrigger, children, closeOnBackdropClick } = this.props;
@@ -95,22 +92,23 @@ export class ModalComponent extends PureComponent<Props, State> {
     return (
       <Fragment>
         {renderTrigger(toggleVisibility)}
-        {isVisible
-          ? createPortal(
-            <ModalWrapper
-              id='modal-portal-wrapper'
-              onClick={(event) => {
-                if (
-                  closeOnBackdropClick
-                    && event.target.id === 'modal-portal-wrapper'
-                ) this.close();
-              }}
-            >
-              <ChildrenWrapper>{children(toggleVisibility)}</ChildrenWrapper>
-            </ModalWrapper>,
-            this.element,
-          )
-          : null}
+        {!isVisible ? null : createPortal(
+          <ModalWrapper
+            id='modal-portal-wrapper'
+            data-testid='Modal'
+            onClick={(event) => {
+              if (
+                closeOnBackdropClick
+                  && event.target.id === 'modal-portal-wrapper'
+              ) this.close();
+            }}
+          >
+            <ChildrenWrapper>
+              {children(toggleVisibility)}
+            </ChildrenWrapper>
+          </ModalWrapper>,
+          this.element,
+        )}
       </Fragment>
     );
   }

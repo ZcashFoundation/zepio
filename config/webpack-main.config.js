@@ -1,3 +1,5 @@
+// @flow
+
 const HtmlWebPackPlugin = require('html-webpack-plugin'); // eslint-disable-line
 const TerserPlugin = require('terser-webpack-plugin'); // eslint-disable-line
 const autoprefixer = require('autoprefixer');
@@ -21,7 +23,7 @@ module.exports = {
         },
       },
       {
-        test: /\.scss$/,
+        test: /\.(scss|css)$/,
         use: [
           {
             loader: 'style-loader',

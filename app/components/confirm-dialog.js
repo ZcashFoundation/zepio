@@ -1,4 +1,5 @@
 // @flow
+
 import React, { type Element } from 'react';
 import styled from 'styled-components';
 
@@ -11,12 +12,12 @@ import CloseIcon from '../assets/images/close_icon.svg';
 
 const Wrapper = styled.div`
   display: flex;
-  width: ${props => `${props.width}px`};
+  width: ${(props: PropsWithTheme<{ width: number }>) => `${String(props.width)}px`};
   background-color: ${props => props.theme.colors.background};
   flex-direction: column;
   align-items: center;
-  border-radius: 6px;
-  box-shadow: 0px 0px 30px 0px black;
+  border-radius: ${props => props.theme.boxBorderRadius};
+  box-shadow: ${props => props.theme.colors.transactionDetailsShadow}
   position: relative;
 `;
 
@@ -39,6 +40,22 @@ const CloseIconImg = styled.img`
   margin-top: 12px;
   margin-right: 12px;
   cursor: pointer;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  width: 100%;
+  padding: 20px 40px 10px;
+
+  & > :first-child {
+    margin-right: 5px;
+  }
+
+  & > :last-child {
+    margin-left: 5px;
+  }
 `;
 
 const Btn = styled(Button)`
@@ -80,7 +97,7 @@ export const ConfirmDialogComponent = ({
       closeOnEsc={false}
     >
       {toggle => (
-        <Wrapper width={width}>
+        <Wrapper width={Number(width)}>
           <CloseIconWrapper>
             <CloseIconImg src={CloseIcon} onClick={handleClose(toggle)} />
           </CloseIconWrapper>
@@ -90,7 +107,7 @@ export const ConfirmDialogComponent = ({
           <Divider opacity={0.3} />
           {children(handleClose(toggle))}
           {showButtons && (
-            <>
+            <ButtonWrapper>
               <Btn
                 id='confirm-modal-button'
                 label='Confirm'
@@ -103,7 +120,7 @@ export const ConfirmDialogComponent = ({
                 variant='secondary'
                 disabled={isLoading}
               />
-            </>
+            </ButtonWrapper>
           )}
         </Wrapper>
       )}

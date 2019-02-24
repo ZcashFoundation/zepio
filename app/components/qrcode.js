@@ -9,7 +9,11 @@ type Props = {
 };
 
 export const QRCode = ({ value, size }: Props) => (
-  <QR value={value} size={size} />
+  <QR
+    data-testid='QRCode'
+    value={value}
+    size={size}
+  />
 );
 
 QRCode.defaultProps = {

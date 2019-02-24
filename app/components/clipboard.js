@@ -1,4 +1,5 @@
 // @flow
+
 import React, { PureComponent } from 'react';
 
 import { Button } from './button';
@@ -32,6 +33,10 @@ export class Clipboard extends PureComponent<Props, State> {
     if (document.body) document.body.removeChild(el);
 
     this.setState({ copied: true });
+
+    setTimeout(() => {
+      this.setState(() => ({ copied: false }));
+    }, 1500);
   };
 
   render() {
@@ -39,12 +44,14 @@ export class Clipboard extends PureComponent<Props, State> {
     const { copied } = this.state;
 
     return (
-      <Button
-        label={copied ? 'Copied!' : 'Copy!'}
-        className={className}
-        onClick={this.handleClick}
-        disabled={copied}
-      />
+      <div data-testid='Clipboard'>
+        <Button
+          label={copied ? 'Copied!' : 'Copy'}
+          className={className}
+          onClick={this.handleClick}
+          disabled={copied}
+        />
+      </div>
     );
   }
 }

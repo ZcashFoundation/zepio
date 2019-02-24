@@ -1,6 +1,9 @@
 // @flow
+
 /* eslint-disable import/no-extraneous-dependencies */
 import fs from 'fs';
+import os from 'os';
+import path from 'path';
 import { promisify } from 'util';
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
@@ -14,25 +17,40 @@ import { ConfirmDialogComponent } from '../components/confirm-dialog';
 import { TextComponent } from '../components/text';
 import { InputComponent } from '../components/input';
 import { InputLabelComponent } from '../components/input-label';
-import { RowComponent } from '../components/row';
 import { Clipboard } from '../components/clipboard';
+import { SelectComponent } from '../components/select';
 
 import rpc from '../../services/api';
+import { DARK, LIGHT, THEME_MODE } from '../constants/themes';
+import electronStore from '../../config/electron-store';
+import { openExternal } from '../utils/open-external';
 
-const HOME_DIR = electron.remote.app.getPath('home');
+import type { MapDispatchToProps, MapStateToProps } from '../containers/settings';
+
+const EXPORT_VIEW_KEYS_TITLE = 'Export View Keys';
+const EXPORT_VIEW_KEYS_CONTENT = 'Viewing keys for shielded addresses allow for the disclosure of all transaction information to a preffered party. Anyone who holds these keys can see all shielded transaction details, but cannot spend coins as it is not a private key.';
+const EXPORT_VIEW_KEYS_LEARN_MORE = 'https://z.cash/blog/viewing-keys-selective-disclosure';
+const IMPORT_PRIV_KEYS_TITLE = 'Import Private Keys';
+const IMPORT_PRIV_KEYS_CONTENT = 'Importing private keys will add the spendable coins to this wallet.';
+const IMPORT_PRIV_KEYS_CONTENT_MODAL = 'Paste your private keys here, one per line. These spending keys will be imported into your wallet.';
+const IMPORT_PRIV_KEYS_SUCCESS_CONTENT = 'Private keys imported in your wallet. Any spendable coins should now be available.';
+const EXPORT_PRIV_KEYS_TITLE = 'Export Private Keys';
+const EXPORT_PRIV_KEYS_CONTENT = 'Beware: exporting your private keys will allow anyone controlling them to spend your coins. Only perform this action on a trusted machine.';
+const BACKUP_WALLET_TITLE = 'Backup Wallet';
+const BACKUP_WALLET_CONTENT = 'It is recommended that you backup your wallet often to avoid possible issues arising from data corruption.';
 
 const Wrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
 `;
 
 const ModalContent = styled.div`
-  padding: 20px;
+  padding: 20px 40px;
   width: 100%;
   max-height: 600px;
   overflow-y: auto;
 
   p {
-    word-break: break-all;
+    word-break: break-word;
   }
 `;
 
@@ -48,22 +66,120 @@ const ClipboardButton = styled(Clipboard)`
 `;
 
 const SettingsWrapper = styled.div`
-  margin-bottom: 45px;
+  margin-bottom: 20px;
   min-width: 200px;
-  width: 37%;
+  width: 70%;
+  max-width: 600px;
+  min-width: 350px;
+  background: ${props => props.theme.colors.settingsCardBg};
+  padding: 20px 20px 10px 20px;
+  border: 1px solid ${props => props.theme.colors.inputBorder};
+  border-radius: ${props => props.theme.boxBorderRadius};
+`;
+
+const SettingsInnerWrapper = styled.div`
+  margin-bottom: 50px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+const LearnMore = styled.div`
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-family: ${props => props.theme.fontFamily};;
+  letter-spacing: 1px;
+  color: ${props => props.theme.colors.settingsLearnMore};
+
+  &:hover {
+    color: ${props => props.theme.colors.settingsLearnMoreHovered};;
+  }
+}
 `;
 
 const SettingsTitle = styled(TextComponent)`
   text-transform: uppercase;
   color: ${props => props.theme.colors.transactionsDate};
   font-size: ${props => `${props.theme.fontSize.regular * 0.9}em`};
-  font-weight: ${props => props.theme.fontWeight.bold};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
   margin-bottom: 5px;
 `;
 
 const SettingsContent = styled(TextComponent)`
+  margin-bottom: 30px;
+  margin-top: 15px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+`;
+
+const ThemeSelectWrapper = styled.div`
   margin-bottom: 20px;
-  margin-top: 10px;
+  width: 70%;
+  max-width: 600px;
+  min-width: 350px;
+`;
+
+const SettingsActionWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const StatusWrapper = styled.div`
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StatusTextError = styled(TextComponent)`
+  font-weight: 700;
+  color: ${props => props.theme.colors.error};
+`;
+
+const StatusTextSuccess = styled(TextComponent)`
+  font-weight: 700;
+  color: ${props => props.theme.colors.success};
+`;
+
+const ViewKeyHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0 10px 0;
+`;
+
+const ViewKeyLabel = styled(TextComponent)`
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
+  font-size: ${props => String(props.theme.fontSize.small)};
+  color: ${props => props.theme.colors.modalItemLabel};
+  margin-bottom: 3.5px;
+`;
+
+const ViewKeyAddress = styled(TextComponent)`
+  font-size: 12px;
+  padding: 10px 0;
+  line-height: 1.5;
+  word-break: break-all !important;
+`;
+
+const ViewKeyContentWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+
+  > :first-child {
+    width: 100%;
+  }
+`;
+
+const ViewKeyInputComponent = styled(InputComponent)`
+  font-size: 12px;
 `;
 
 type Key = {
@@ -71,9 +187,8 @@ type Key = {
   key: string,
 };
 
-type Props = {
-  addresses: string[],
-};
+type Props = MapDispatchToProps & MapStateToProps;
+
 type State = {
   viewKeys: Key[],
   privateKeys: Key[],
@@ -95,6 +210,26 @@ export class SettingsView extends PureComponent<Props, State> {
     successExportPrivateKeys: false,
     successImportPrivateKeys: false,
     error: null,
+  };
+
+  componentDidMount() {
+    const { loadAddresses } = this.props;
+
+    loadAddresses();
+  }
+
+  getWalletFolderPath = () => {
+    const { app } = electron.remote;
+
+    if (os.platform() === 'darwin') {
+      return path.join(app.getPath('appData'), 'Zcash');
+    }
+
+    if (os.platform() === 'linux') {
+      return path.join(app.getPath('home'), '.zcash');
+    }
+
+    return path.join(app.getPath('appData'), 'Zcash');
   };
 
   exportViewKeys = () => {
@@ -170,31 +305,28 @@ export class SettingsView extends PureComponent<Props, State> {
     )}.dat`;
 
     electron.remote.dialog.showSaveDialog(
+      undefined,
       { defaultPath: backupFileName },
-      async (pathToSave) => {
+      async (pathToSave: string) => {
         if (!pathToSave) return;
 
-        const zcashDir = isDev ? `${HOME_DIR}/.zcash/testnet3` : HOME_DIR;
+        const WALLET_DIR = this.getWalletFolderPath();
+
+        const zcashDir = isDev ? path.join(WALLET_DIR, 'testnet3') : WALLET_DIR;
         const walletDatPath = `${zcashDir}/wallet.dat`;
 
         const [cannotAccess] = await eres(promisify(fs.access)(walletDatPath));
 
         /* eslint-disable no-alert */
-
         if (cannotAccess) {
-          alert(
-            "Couldn't backup the wallet.dat file. You need to back it up manually.",
-          );
+          alert("Couldn't backup the wallet.dat file. You need to back it up manually.");
+          return;
         }
 
-        const [error] = await eres(
-          promisify(fs.copyFile)(walletDatPath, pathToSave),
-        );
+        const [error] = await eres(promisify(fs.copyFile)(walletDatPath, pathToSave));
 
         if (error) {
-          alert(
-            "Couldn't backup the wallet.dat file. You need to back it up manually.",
-          );
+          alert("Couldn't backup the wallet.dat file. You need to back it up manually.");
         }
       },
     );
@@ -212,121 +344,144 @@ export class SettingsView extends PureComponent<Props, State> {
       error,
     } = this.state;
 
+    const themeOptions = [
+      { label: 'Dark', value: DARK },
+      { label: 'Light', value: LIGHT },
+    ];
+
     return (
       <Wrapper>
+        <ThemeSelectWrapper>
+          <SettingsTitle value='Theme' />
+          <SelectComponent
+            onChange={newMode => electronStore.set(THEME_MODE, newMode)}
+            value={electronStore.get(THEME_MODE)}
+            options={themeOptions}
+          />
+        </ThemeSelectWrapper>
         <ConfirmDialogComponent
-          title='Export view keys'
+          title={EXPORT_VIEW_KEYS_TITLE}
           renderTrigger={toggleVisibility => (
             <SettingsWrapper>
-              <SettingsTitle value='Export view keys' />
-              <SettingsContent value='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.' />
-              <Btn label='Export view keys' onClick={toggleVisibility} />
+              <SettingsTitle value={EXPORT_VIEW_KEYS_TITLE} />
+              <SettingsContent value={EXPORT_VIEW_KEYS_CONTENT} />
+              <SettingsActionWrapper>
+                <Btn label={EXPORT_VIEW_KEYS_TITLE} onClick={toggleVisibility} />
+                <LearnMore onClick={() => openExternal(EXPORT_VIEW_KEYS_LEARN_MORE)}>
+                  Learn More
+                </LearnMore>
+              </SettingsActionWrapper>
             </SettingsWrapper>
           )}
           onConfirm={this.exportViewKeys}
           showButtons={!successExportViewKeys}
-          width={750}
+          width={550}
         >
           {() => (
             <ModalContent>
               {successExportViewKeys ? (
-                viewKeys.map(({ zAddress, key }) => (
+                viewKeys.map(({ zAddress, key }, index) => (
                   <>
-                    <InputLabelComponent value={zAddress} />
-                    <RowComponent alignItems='center'>
-                      <InputComponent
+                    <ViewKeyHeader>
+                      <ViewKeyLabel value={`View Key for Address #${index + 1}`} />
+                      <ViewKeyAddress value={`Address: ${zAddress}`} />
+                    </ViewKeyHeader>
+                    <ViewKeyContentWrapper>
+                      <ViewKeyInputComponent
                         value={key}
-                        onFocus={(event) => {
-                          event.currentTarget.select();
-                        }}
+                        onFocus={event => event.currentTarget.select()}
                       />
                       <ClipboardButton text={key} />
-                    </RowComponent>
+                    </ViewKeyContentWrapper>
                   </>
                 ))
               ) : (
-                <TextComponent value='Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.' />
+                <TextComponent value={EXPORT_VIEW_KEYS_CONTENT} />
               )}
-            </ModalContent>
-          )}
-        </ConfirmDialogComponent>
-
-        <ConfirmDialogComponent
-          title='Export private keys'
-          renderTrigger={toggleVisibility => (
-            <SettingsWrapper>
-              <SettingsTitle value='Export private keys' />
-              <SettingsContent value='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.' />
-              <Btn label='Export private keys' onClick={toggleVisibility} />
-            </SettingsWrapper>
-          )}
-          onConfirm={this.exportPrivateKeys}
-          showButtons={!successExportPrivateKeys}
-          width={750}
-        >
-          {() => (
-            <ModalContent>
-              {successExportPrivateKeys ? (
-                privateKeys.map(({ zAddress, key }) => (
-                  <>
-                    <InputLabelComponent value={zAddress} />
-                    <RowComponent alignItems='center'>
-                      <InputComponent
-                        value={key}
-                        onFocus={(event) => {
-                          event.currentTarget.select();
-                        }}
-                      />
-                      <ClipboardButton text={key} />
-                    </RowComponent>
-                  </>
-                ))
-              ) : (
-                <TextComponent value='Ut id vulputate arcu. Curabitur mattis aliquam magna sollicitudin vulputate. Morbi tempus bibendum porttitor. Quisque dictum ac ipsum a luctus. Donec et lacus ac erat consectetur molestie a id erat.' />
-              )}
-            </ModalContent>
-          )}
-        </ConfirmDialogComponent>
-
-        <ConfirmDialogComponent
-          title='Import private keys'
-          renderTrigger={toggleVisibility => (
-            <SettingsWrapper>
-              <SettingsTitle value='Import private keys' />
-              <SettingsContent value='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.' />
-              <Btn label='Import private keys' onClick={toggleVisibility} />
-            </SettingsWrapper>
-          )}
-          onConfirm={this.importPrivateKeys}
-          showButtons={!successImportPrivateKeys}
-          width={900}
-          isLoading={isLoading}
-        >
-          {() => (
-            <ModalContent>
-              <InputLabelComponent value='Please paste your private keys here, one per line. The keys will be imported into your zcashd node' />
-              <InputComponent
-                value={importedPrivateKeys}
-                onChange={value => this.setState({ importedPrivateKeys: value })
-                }
-                inputType='textarea'
-                rows={10}
-              />
-              {successImportPrivateKeys && (
-                <TextComponent
-                  value='Private keys imported in your node'
-                  align='center'
-                />
-              )}
-              {error && <TextComponent value={error} align='center' />}
             </ModalContent>
           )}
         </ConfirmDialogComponent>
 
         <SettingsWrapper>
-          <SettingsTitle value='Backup Wallet' />
-          <SettingsContent value='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.' />
-          <Btn label='Backup wallet.dat' onClick={this.backupWalletDat} />
+          <ConfirmDialogComponent
+            title={EXPORT_PRIV_KEYS_TITLE}
+            renderTrigger={toggleVisibility => (
+              <SettingsInnerWrapper>
+                <SettingsTitle value={EXPORT_PRIV_KEYS_TITLE} />
+                <SettingsContent value={EXPORT_PRIV_KEYS_CONTENT} />
+                <Btn label={EXPORT_PRIV_KEYS_TITLE} onClick={toggleVisibility} />
+              </SettingsInnerWrapper>
+            )}
+            onConfirm={this.exportPrivateKeys}
+            showButtons={!successExportPrivateKeys}
+            width={550}
+          >
+            {() => (
+              <ModalContent>
+                {successExportPrivateKeys ? (
+                  privateKeys.map(({ zAddress, key }, index) => (
+                    <>
+                      <ViewKeyHeader>
+                        <ViewKeyLabel value={`Private Key for Address #${index + 1}`} />
+                        <ViewKeyAddress value={`Address: ${zAddress}`} />
+                      </ViewKeyHeader>
+                      <ViewKeyContentWrapper>
+                        <ViewKeyInputComponent
+                          value={key}
+                          width='100%'
+                          onFocus={event => event.currentTarget.select()}
+                        />
+                        <ClipboardButton text={key} />
+                      </ViewKeyContentWrapper>
+                    </>
+                  ))
+                ) : (
+                  <TextComponent value={EXPORT_PRIV_KEYS_CONTENT} />
+                )}
+              </ModalContent>
+            )}
+          </ConfirmDialogComponent>
+          <ConfirmDialogComponent
+            title={IMPORT_PRIV_KEYS_TITLE}
+            renderTrigger={toggleVisibility => (
+              <SettingsInnerWrapper>
+                <SettingsTitle value={IMPORT_PRIV_KEYS_TITLE} />
+                <SettingsContent value={IMPORT_PRIV_KEYS_CONTENT} />
+                <Btn label={IMPORT_PRIV_KEYS_TITLE} onClick={toggleVisibility} />
+              </SettingsInnerWrapper>
+            )}
+            onConfirm={this.importPrivateKeys}
+            showButtons={!successImportPrivateKeys}
+            width={450}
+            isLoading={isLoading}
+          >
+            {() => (
+              <ModalContent>
+                <InputLabelComponent
+                  marginTop='0'
+                  value={IMPORT_PRIV_KEYS_CONTENT_MODAL}
+                />
+                <InputComponent
+                  value={importedPrivateKeys}
+                  onChange={value => this.setState({ importedPrivateKeys: value })}
+                  inputType='textarea'
+                  rows={10}
+                />
+                <StatusWrapper>
+                  {successImportPrivateKeys && (
+                    <StatusTextSuccess value={IMPORT_PRIV_KEYS_SUCCESS_CONTENT} />
+                  )}
+                  {error && <StatusTextError value={error} align='center' />}
+                </StatusWrapper>
+              </ModalContent>
+            )}
+          </ConfirmDialogComponent>
+        </SettingsWrapper>
+
+        <SettingsWrapper>
+          <SettingsTitle value={BACKUP_WALLET_TITLE} />
+          <SettingsContent value={BACKUP_WALLET_CONTENT} />
+          <Btn label={BACKUP_WALLET_TITLE} onClick={this.backupWalletDat} />
         </SettingsWrapper>
       </Wrapper>
     );

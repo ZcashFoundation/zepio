@@ -1,13 +1,8 @@
 // @flow
 
-import React from 'react';
+import React, { type ElementProps } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable max-len */
-// $FlowFixMe
-import { darken } from 'polished';
-import type { ElementProps } from 'react';
 
 const DefaultButton = styled.button`
   align-items: center;
@@ -15,42 +10,48 @@ const DefaultButton = styled.button`
   justify-content: center;
   padding: 10px 30px;
   font-family: ${props => props.theme.fontFamily};
-  font-weight: ${props => props.theme.fontWeight.bold};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
   font-size: ${props => `${props.theme.fontSize.regular}em`};
   cursor: pointer;
   outline: none;
   min-width: 100px;
-  border-radius: 100px;
-  transition: background-color 0.1s ${props => props.theme.colors.transitionEase};
+  border-radius: ${props => props.theme.boxBorderRadius};
+  transition: background-color 0.1s ${props => props.theme.transitionEase};
 `;
 
 const Primary = styled(DefaultButton)`
-  background-color: ${props => props.theme.colors.primary};
-  color: ${props => props.theme.colors.secondary};
+  background-color: ${props => props.theme.colors.buttonPrimaryBg};
+  color: ${props => props.theme.colors.buttonPrimaryText};
   border: none;
 
   &:hover {
-    background-color: ${props => darken(0.1, props.theme.colors.primary(props))};
+    opacity: 0.9;
   }
 
   &:disabled {
-    background-color: ${props => props.theme.colors.buttonBorderColor};
+    background-color: ${props => props.theme.colors.buttonPrimaryDisabledBg};
     cursor: not-allowed;
-    opacity: 0.8;
+    border: none;
+    opacity: 0.45;
+
+    &:hover {
+      opacity: 0.45;
+    }
   }
 `;
 
 const Secondary = styled(DefaultButton)`
-  background-color: transparent;
-  color: ${props => props.theme.colors.secondary};
-  border: 2px solid ${props => props.theme.colors.buttonBorderColor};
+  background-color: ${props => props.theme.colors.buttonSecondaryBg};
+  color: ${props => props.theme.colors.buttonSecondaryText};
+  border: 1px solid ${props => props.theme.colors.buttonSecondaryBorder};
 
   &:hover {
-    border-color: ${props => props.theme.colors.primary};
+    background-color: ${props => props.theme.colors.buttonSecondaryHoveredBg}
+    border-color: ${props => props.theme.colors.buttonSecondaryHoveredBg}
   }
 
   &:disabled {
-    background-color: Transparent;
+    background-color: ${props => props.theme.colors.buttonSecondaryDisabledBg};
     cursor: not-allowed;
     color: ${props => props.theme.colors.buttonBorderColor};
 
@@ -76,6 +77,7 @@ type Props = {
   icon?: string | null,
   className?: string,
   isLoading?: boolean,
+  id?: string,
 };
 
 export const Button = ({
@@ -101,12 +103,12 @@ export const Button = ({
   const buttonLabel = isLoading ? 'Loading...' : label;
 
   const component = variant === 'primary' ? (
-    <Primary {...props}>
+    <Primary {...props} data-testid='PrimaryButton'>
       {icon ? <Icon src={icon} /> : null}
       {buttonLabel}
     </Primary>
   ) : (
-    <Secondary {...props}>
+    <Secondary {...props} data-testid='SecondaryButton'>
       {icon ? <Icon src={icon} /> : null}
       {buttonLabel}
     </Secondary>
@@ -123,4 +125,5 @@ Button.defaultProps = {
   disabled: false,
   className: '',
   isLoading: false,
+  id: '',
 };

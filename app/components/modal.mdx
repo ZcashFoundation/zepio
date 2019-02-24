@@ -12,12 +12,15 @@ import { ModalComponent } from './modal.js'
 
 <PropsTable of={ModalComponent} />
 
-## Basic usage
+## Basic Usage
 
 <Playground>
   <ModalComponent
     renderTrigger={toggleVisibility => (
-      <button type="button" onClick={toggleVisibility}>
+      <button
+        type="button"
+        onClick={toggleVisibility}
+      >
         Open Modal
       </button>
     )}
@@ -25,7 +28,10 @@ import { ModalComponent } from './modal.js'
     {toggleVisibility => (
       <div style={{ padding: '50px', backgroundColor: 'white' }}>
         Modal Content
-        <button type="button" onClick={toggleVisibility}>
+        <button
+          type="button"
+          onClick={toggleVisibility}
+        >
           Close Modal
         </button>
       </div>
@@ -40,7 +46,10 @@ import { ModalComponent } from './modal.js'
     closeOnEsc={false}
     closeOnBackdropClick={false}
     renderTrigger={toggleVisibility => (
-      <button type="button" onClick={toggleVisibility}>
+      <button
+        type="button"
+        onClick={toggleVisibility}
+      >
         Open Modal
       </button>
     )}
@@ -48,7 +57,10 @@ import { ModalComponent } from './modal.js'
     {toggleVisibility => (
       <div style={{ padding: '50px', backgroundColor: 'white' }}>
         Modal Content
-        <button type="button" onClick={toggleVisibility}>
+        <button
+          type="button"
+          onClick={toggleVisibility}
+        >
           Close Modal
         </button>
       </div>

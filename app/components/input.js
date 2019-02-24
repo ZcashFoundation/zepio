@@ -1,22 +1,49 @@
 // @flow
+/* eslint-disable max-len */
 import React, { type Element } from 'react';
 import styled from 'styled-components';
 
-import theme from '../theme';
+import { appTheme } from '../theme';
 
-const getDefaultStyles = t => styled[t]`
-  border-radius: ${props => props.theme.boxBorderRadius};
+type Props = {
+  inputType?: 'input' | 'textarea',
+  value: string,
+  onChange?: string => void,
+  onFocus?: (SyntheticFocusEvent<HTMLInputElement>) => void,
+  rows?: number,
+  disabled?: boolean,
+  type?: string,
+  step?: number,
+  name?: string,
+  renderRight?: () => Element<*> | null,
+  bgColor?: string,
+};
+
+type DefaultStylesProps = PropsWithTheme<{
+  bgColor: ?string,
+  withRightElement: boolean,
+}>;
+
+// $FlowFixMe
+const getDefaultStyles: ($PropertyType<Props, 'inputType'>) => Element<*> = t => styled[t]`
+  border-radius: ${(props: DefaultStylesProps) => props.theme.boxBorderRadius};
   border: none;
-  background-color: ${props => props.bgColor || props.theme.colors.inputBackground};
-  color: ${props => props.theme.colors.text};
+  background-color: ${(props: DefaultStylesProps) => props.bgColor || props.theme.colors.inputBg};
+  color: ${(props: DefaultStylesProps) => props.theme.colors.text};
   padding: 15px;
-  padding-right: ${props => (props.withRightElement ? '85px' : '15px')};
+  padding-right: ${(props: DefaultStylesProps) => (props.withRightElement ? '85px' : '15px')};
   width: 100%;
   outline: none;
-  font-family: ${props => props.theme.fontFamily};
+  font-family: ${(props: DefaultStylesProps) => props.theme.fontFamily};
+  border: 1px solid ${(props: DefaultStylesProps) => props.theme.colors.inputBorder};
 
   ::placeholder {
     opacity: 0.5;
+  }
+
+  &:focus,
+  &:active {
+    border-color: ${(props: DefaultStylesProps) => props.theme.colors.inputBorderActive};
   }
 `;
 
@@ -33,20 +60,6 @@ const RightElement = styled.div`
 const Input = getDefaultStyles('input');
 const Textarea = getDefaultStyles('textarea');
 
-type Props = {
-  inputType?: 'input' | 'textarea',
-  value: string,
-  onChange?: string => void,
-  onFocus?: (SyntheticFocusEvent<HTMLInputElement>) => void,
-  rows?: number,
-  disabled?: boolean,
-  type?: string,
-  step?: number,
-  name?: string,
-  renderRight?: () => Element<*> | null,
-  bgColor?: string,
-};
-
 export const InputComponent = ({
   inputType,
   bgColor,
@@ -55,18 +68,23 @@ export const InputComponent = ({
   ...props
 }: Props) => {
   const rightElement = renderRight();
-
   const inputTypes = {
     input: () => (
       <Input
         onChange={evt => onChange(evt.target.value)}
         withRightElement={Boolean(rightElement)}
         bgColor={bgColor}
+        data-testid='Input'
         {...props}
       />
     ),
     textarea: () => (
-      <Textarea onChange={evt => onChange(evt.target.value)} bgColor={bgColor} {...props} />
+      <Textarea
+        onChange={evt => onChange(evt.target.value)}
+        bgColor={bgColor}
+        data-testid='Textarea'
+        {...props}
+      />
     ),
   };
 
@@ -92,5 +110,5 @@ InputComponent.defaultProps = {
   onChange: () => {},
   onFocus: () => {},
   step: 1,
-  bgColor: theme.colors.inputBackground,
+  bgColor: appTheme.colors.inputBg,
 };

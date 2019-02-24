@@ -1,21 +1,20 @@
 // @flow
+
 import '@babel/polyfill';
 import dotenv from 'dotenv';
 
 import path from 'path';
 
 /* eslint-disable import/no-extraneous-dependencies */
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, typeof BrowserWindow as BrowserWindowType } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import isDev from 'electron-is-dev';
-/* eslint-enable import/no-extraneous-dependencies */
-import type { BrowserWindow as BrowserWindowType } from 'electron';
-import eres from 'eres';
 import { registerDebugShortcut } from '../utils/debug-shortcut';
 import runDaemon from './daemon/zcashd-child-process';
 import zcashLog from './daemon/logger';
 import getZecPrice from '../services/zec-price';
 import store from './electron-store';
+import { handleDeeplink } from './handle-deeplink';
 
 dotenv.config();
 
@@ -26,10 +25,12 @@ let zcashDaemon;
 const showStatus = (text) => {
   if (text === 'Update downloaded') updateAvailable = true;
 
-  mainWindow.webContents.send('update', {
-    updateAvailable,
-    updateInfo: text,
-  });
+  if (mainWindow) {
+    mainWindow.webContents.send('update', {
+      updateAvailable,
+      updateInfo: text,
+    });
+  }
 };
 
 const createWindow = () => {
@@ -42,10 +43,11 @@ const createWindow = () => {
 
   autoUpdater.on('download-progress', progress => showStatus(
     /* eslint-disable-next-line max-len */
-    `Download speed: ${progress.bytesPerSecond} - Downloaded ${
-      progress.percent
-    }% (${progress.transferred}/${progress.total})`,
+    `Download speed: ${progress.bytesPerSecond} - Downloaded ${progress.percent}% (${
+      progress.transferred
+    }/${progress.total})`,
   ));
+
   autoUpdater.on('update-downloaded', () => {
     updateAvailable = true;
     showStatus('Update downloaded');
@@ -63,40 +65,64 @@ const createWindow = () => {
     },
   });
 
-  getZecPrice().then((obj) => {
-    store.set('ZEC_DOLLAR_PRICE', obj.USD);
-  });
+  getZecPrice().then(({ USD }) => store.set('ZEC_DOLLAR_PRICE', String(USD)));
 
   mainWindow.setVisibleOnAllWorkspaces(true);
   registerDebugShortcut(app, mainWindow);
 
   mainWindow.loadURL(
-    isDev
-      ? 'http://0.0.0.0:8080/'
-      : `file://${path.join(__dirname, '../build/index.html')}`,
+    isDev ? 'http://localhost:8080/' : `file://${path.join(__dirname, '../build/index.html')}`,
   );
 
   exports.app = app;
   exports.mainWindow = mainWindow;
 };
 
+app.setAsDefaultProtocolClient('zcash');
+
+const instanceLock = app.requestSingleInstanceLock();
+if (instanceLock) {
+  app.on('second-instance', (event: Object, argv: string[]) => {
+    handleDeeplink({
+      app,
+      mainWindow,
+      argv,
+      listenOpenUrl: false,
+    });
+
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+      }
+
+      mainWindow.focus();
+    }
+  });
+} else {
+  app.quit();
+}
+
+handleDeeplink({ app, mainWindow });
+
 /* eslint-disable-next-line consistent-return */
 app.on('ready', async () => {
   createWindow();
+
+  console.log('[Process Argv]', process.argv); // eslint-disable-line
 
   if (process.env.NODE_ENV === 'test') {
     zcashLog('Not running daemon, please run the mock API');
     return;
   }
 
-  const [err, proc] = await eres(runDaemon());
-
-  if (err || !proc) return zcashLog(err);
-
-  /* eslint-disable-next-line */
-  zcashLog(`Zcash Daemon running. PID: ${proc.pid}`);
-
-  zcashDaemon = proc;
+  runDaemon()
+    .then((proc) => {
+      if (proc) {
+        zcashLog(`Zcash Daemon running. PID: ${proc.pid}`);
+        zcashDaemon = proc;
+      }
+    })
+    .catch(zcashLog);
 });
 app.on('activate', () => {
   if (mainWindow === null) createWindow();

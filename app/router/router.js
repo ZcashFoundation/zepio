@@ -1,7 +1,9 @@
 // @flow
 
 import React from 'react';
-import { Route, Switch, type Location } from 'react-router-dom';
+import {
+  Route, Switch, type Location, type RouterHistory,
+} from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ScrollTopComponent } from './scroll-top';
@@ -13,7 +15,7 @@ import { ReceiveContainer } from '../containers/receive';
 import { SettingsContainer } from '../containers/settings';
 import { NotFoundView } from '../views/not-found';
 import { ConsoleView } from '../views/console';
-import { LayoutComponent } from '../components/layout';
+import { AppContainer as LayoutComponent } from '../containers/app';
 import { HeaderComponent } from '../components/header';
 
 import {
@@ -40,31 +42,29 @@ const ContentWrapper = styled.div`
 const getTitle = (path: string) => {
   if (path === '/') return 'Dashboard';
 
-  return path.replace('/', '');
+  return path.split('/')[1];
 };
 
-export const RouterComponent = ({ location }: { location: Location }) => (
+export const RouterComponent = ({
+  location,
+  history,
+}: {
+  location: Location,
+  history: RouterHistory,
+}) => (
   <FullWrapper>
     <HeaderComponent title={getTitle(location.pathname)} />
     <ContentWrapper>
-      <SidebarContainer location={location} />
-      {/* $FlowFixMe */}
+      <SidebarContainer location={location} history={history} />
       <LayoutComponent>
         <ScrollTopComponent>
           <Switch>
-            <Route
-              exact
-              path={DASHBOARD_ROUTE}
-              component={DashboardContainer}
-            />
-            <Route path={SEND_ROUTE} component={SendContainer} />
+            <Route exact path={DASHBOARD_ROUTE} component={DashboardContainer} />
+            <Route path={`${SEND_ROUTE}/:to?`} component={SendContainer} />
             <Route path={RECEIVE_ROUTE} component={ReceiveContainer} />
             <Route path={SETTINGS_ROUTE} component={SettingsContainer} />
             <Route path={CONSOLE_ROUTE} component={ConsoleView} />
-            <Route
-              path={TRANSACTIONS_ROUTE}
-              component={TransactionsContainer}
-            />
+            <Route path={TRANSACTIONS_ROUTE} component={TransactionsContainer} />
             <Route component={NotFoundView} />
           </Switch>
         </ScrollTopComponent>

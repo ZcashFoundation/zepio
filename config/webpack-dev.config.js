@@ -1,3 +1,5 @@
+// @flow
+
 const path = require('path');
 const mainWebpack = require('./webpack-main.config');
 

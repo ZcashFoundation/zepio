@@ -5,15 +5,17 @@ import eres from 'eres';
 import flow from 'lodash.flow';
 import groupBy from 'lodash.groupby';
 import dateFns from 'date-fns';
+import { BigNumber } from 'bignumber.js';
 import { DashboardView } from '../views/dashboard';
 import rpc from '../../services/api';
+import { listShieldedTransactions } from '../../services/shielded-transactions';
 import store from '../../config/electron-store';
 import {
   loadWalletSummary,
   loadWalletSummarySuccess,
   loadWalletSummaryError,
 } from '../redux/modules/wallet';
-import sortBy from '../utils/sortBy';
+import { sortByDescend } from '../utils/sort-by-descend';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
@@ -33,63 +35,47 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   getSummary: async () => {
     dispatch(loadWalletSummary());
 
-    const [err, walletSummary] = await eres(rpc.z_gettotalbalance());
-
-    if (err) return dispatch(loadWalletSummaryError({ error: err.message }));
-
-    const [zAddressesErr, zAddresses] = await eres(rpc.z_listaddresses());
-
-    const [tAddressesErr, transparentAddresses] = await eres(
-      rpc.getaddressesbyaccount(''),
-    );
-
-    // eslint-disable-next-line
-    if (zAddressesErr || tAddressesErr) return dispatch(
-      loadWalletSummaryError({
-        error: zAddressesErr?.message || tAddressesErr?.message,
-      }),
-    );
-
+    const [walletErr, walletSummary] = await eres(rpc.z_gettotalbalance());
+    const [zAddressesErr, zAddresses = []] = await eres(rpc.z_listaddresses());
+    const [tAddressesErr, tAddresses = []] = await eres(rpc.getaddressesbyaccount(''));
     const [transactionsErr, transactions] = await eres(rpc.listtransactions());
 
-    if (transactionsErr) {
+    if (walletErr || zAddressesErr || tAddressesErr || transactionsErr) {
       return dispatch(
-        loadWalletSummaryError({ error: transactionsErr.message }),
+        loadWalletSummaryError({
+          error: 'Something went wrong!',
+        }),
       );
     }
 
-    const formattedTransactions = flow([
+    const formattedTransactions: Array<Object> = flow([
       arr => arr.map(transaction => ({
         transactionId: transaction.txid,
         type: transaction.category,
         date: new Date(transaction.time * 1000).toISOString(),
-        address: transaction.address,
+        address: transaction.address || '(Shielded)',
         amount: Math.abs(transaction.amount),
+        fees: transaction.fee ? new BigNumber(transaction.fee).abs().toFormat(4) : 'N/A',
       })),
       arr => groupBy(arr, obj => dateFns.format(obj.date, 'MMM DD, YYYY')),
       obj => Object.keys(obj).map(day => ({
         day,
-        list: sortBy('date')(obj[day]),
+        jsDay: new Date(day),
+        list: sortByDescend('date')(obj[day]),
       })),
-      sortBy('day'),
-    ])(transactions);
+      sortByDescend('jsDay'),
+    ])([...transactions, ...listShieldedTransactions()]);
 
     if (!zAddresses.length) {
-      const [getNewZAddressErr, newZAddress] = await eres(
-        rpc.z_getnewaddress(),
-      );
+      const [, newZAddress] = await eres(rpc.z_getnewaddress());
 
-      if (!getNewZAddressErr && newZAddress) {
-        zAddresses.push(newZAddress);
-      }
+      if (newZAddress) zAddresses.push(newZAddress);
     }
 
-    if (!transparentAddresses.length) {
-      const [getNewAddressErr, newAddress] = await eres(rpc.getnewaddress(''));
+    if (!tAddresses.length) {
+      const [, newTAddress] = await eres(rpc.getnewaddress(''));
 
-      if (!getNewAddressErr && newAddress) {
-        transparentAddresses.push(newAddress);
-      }
+      if (newTAddress) tAddresses.push(newTAddress);
     }
 
     dispatch(
@@ -97,9 +83,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
         transparent: walletSummary.transparent,
         total: walletSummary.total,
         shielded: walletSummary.private,
-        addresses: [...zAddresses, ...transparentAddresses],
+        addresses: [...zAddresses, ...tAddresses],
         transactions: formattedTransactions,
-        zecPrice: store.get('ZEC_DOLLAR_PRICE'),
+        zecPrice: new BigNumber(store.get('ZEC_DOLLAR_PRICE')).toNumber(),
       }),
     );
   },

@@ -1,21 +1,25 @@
 // @flow
-import React, { Component } from 'react';
-import styled, { keyframes } from 'styled-components';
-import eres from 'eres';
+
+import React, { PureComponent } from 'react';
+import styled, { keyframes, withTheme } from 'styled-components';
 
 import { TextComponent } from './text';
 
-import rpc from '../../services/api';
+import { DARK } from '../constants/themes';
 
-import readyIcon from '../assets/images/green_check.png';
-import syncIcon from '../assets/images/sync_icon.png';
-import errorIcon from '../assets/images/error_icon.png';
+import readyIconDark from '../assets/images/green_check_dark.png';
+import readyIconLight from '../assets/images/green_check_light.png';
+import syncIconDark from '../assets/images/sync_icon_dark.png';
+import syncIconLight from '../assets/images/sync_icon_light.png';
+import errorIconDark from '../assets/images/error_icon_dark.png';
+import errorIconLight from '../assets/images/error_icon_light.png';
+
+import type { MapDispatchToProps, MapStateToProps } from '../containers/status-pill';
 
 const rotate = keyframes`
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
   }
@@ -24,7 +28,8 @@ const rotate = keyframes`
 const Wrapper = styled.div`
   align-items: center;
   display: flex;
-  background-color: #000;
+  background: ${props => props.theme.colors.statusPillBg};
+  border: 1px solid ${props => props.theme.colors.statusPillBorder}
   border-radius: 27px;
   padding: 8px 16px;
 `;
@@ -34,82 +39,104 @@ const Icon = styled.img`
   height: 12px;
   margin-right: 8px;
   animation: 2s linear infinite;
-  animation-name: ${props => (props.animated ? rotate : 'none')};
+
+  animation-name: ${/** $FlowFixMe */
+  (props: PropsWithTheme<{ animated: boolean }>) => (props.animated ? rotate : 'none')};
 `;
 
 const StatusPillLabel = styled(TextComponent)`
   color: ${props => props.theme.colors.statusPillLabel};
-  font-weight: ${props => props.theme.fontWeight.bold};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
   text-transform: uppercase;
   font-size: 10px;
   padding-top: 1px;
   user-select: none;
 `;
 
-type Props = {};
+type Props = {
+  theme: AppTheme,
+} & MapStateToProps &
+  MapDispatchToProps;
 
-type State = {
-  type: string,
-  icon: string,
-  progress: number,
-  isSyncing: boolean,
-};
+const MINUTE_IN_MILI = 60000;
 
-export class StatusPill extends Component<Props, State> {
+class Component extends PureComponent<Props> {
   timer: ?IntervalID = null;
 
-  state = {
-    type: 'syncing',
-    icon: syncIcon,
-    progress: 0,
-    isSyncing: true,
-  };
-
   componentDidMount() {
-    this.timer = setInterval(() => {
-      this.getBlockchainStatus();
-    }, 2000);
+    const { getBlockchainStatus } = this.props;
+
+    this.timer = setInterval(() => getBlockchainStatus(), 2000);
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    const { getBlockchainStatus, nodeSyncType } = this.props;
+    if (prevProps.nodeSyncType === 'syncing' && nodeSyncType === 'ready') {
+      // if the status is "ready", we can increase the interval to avoid useless rpc calls
+      this.cleanUpdateInterval();
+      this.timer = setInterval(() => getBlockchainStatus(), MINUTE_IN_MILI);
+    }
   }
 
   componentWillUnmount() {
+    this.cleanUpdateInterval();
+  }
+
+  cleanUpdateInterval = () => {
     if (this.timer) {
       clearInterval(this.timer);
       this.timer = null;
     }
-  }
+  };
 
-  getBlockchainStatus = async () => {
-    const [blockchainErr, blockchaininfo] = await eres(rpc.getblockchaininfo());
+  isSyncing = () => {
+    const { nodeSyncType } = this.props;
+    return nodeSyncType === 'syncing';
+  };
 
-    const newProgress = blockchaininfo.verificationprogress * 100;
+  getReadyIcon = () => {
+    const { theme } = this.props;
+    return theme.mode === DARK ? readyIconDark : readyIconLight;
+  };
 
-    this.setState({
-      progress: newProgress,
-      ...(newProgress > 99.99
-        ? {
-          type: 'ready',
-          icon: readyIcon,
-          isSyncing: false,
-        }
-        : {}),
-    });
+  getErrorIcon = () => {
+    const { theme } = this.props;
+    return theme.mode === DARK ? errorIconDark : errorIconLight;
+  };
 
-    if (blockchainErr) {
-      this.setState(() => ({ type: 'error', icon: errorIcon }));
+  getSyncingIcon = () => {
+    const { theme } = this.props;
+    return theme.mode === DARK ? syncIconDark : syncIconLight;
+  };
+
+  getIcon = () => {
+    const { nodeSyncType } = this.props;
+
+    switch (nodeSyncType) {
+      case 'syncing':
+        return this.getSyncingIcon();
+      case 'ready':
+        return this.getReadyIcon();
+      case 'error':
+        return this.getErrorIcon();
+      default:
+        return null;
     }
   };
 
   render() {
-    const {
-      type, icon, progress, isSyncing,
-    } = this.state;
-    const showPercent = isSyncing ? `(${progress.toFixed(2)}%)` : '';
+    const icon = this.getIcon();
+    const { nodeSyncType, nodeSyncProgress } = this.props;
+    const percent = nodeSyncType === 'syncing' ? `(${nodeSyncProgress.toFixed(2)}%)` : '';
+    const typeText = nodeSyncType === 'ready' ? 'Synced' : nodeSyncType;
 
     return (
       <Wrapper id='status-pill'>
-        <Icon src={icon} animated={isSyncing} />
-        <StatusPillLabel value={`${type} ${showPercent}`} />
+        {icon && <Icon src={icon} animated={this.isSyncing()} />}
+        <StatusPillLabel value={`${typeText} ${percent}`} />
       </Wrapper>
     );
   }
 }
+
+export const StatusPill = withTheme(Component);

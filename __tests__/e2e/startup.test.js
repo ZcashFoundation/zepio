@@ -8,6 +8,7 @@ beforeAll(async () => {
   await app.start();
   await app.client.waitUntilWindowLoaded();
 });
+
 afterAll(() => app.stop());
 
 describe('Startup', () => {
