@@ -86,8 +86,10 @@ const OptionsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
+  z-index: 99;
   width: 100.5%;
   margin-left: -0.25%;
+  background-color: ${props => props.theme.colors.dropdownBg};
   border-radius: ${props => props.theme.colors.boxBorderRadius};
   border: 1px solid ${props => props.theme.colors.inputBorder};
   ${(props: PropsWithTheme<{ placement: string, optionsAmount: number }>) => `${String(props.placement)}: ${`-${String(((props.optionsAmount || 0) * 40) + 10)}px`}`};

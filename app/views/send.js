@@ -890,7 +890,7 @@ class Component extends PureComponent<Props, State> {
             )}
           >
             {toggle => (
-              <ModalContent id='send-confirm-transaction-modal'>
+              <ModalContent id='send-confirm-transaction-modal' width='100%'>
                 {this.renderModalContent({
                   valueSent,
                   valueSentInUsd,
