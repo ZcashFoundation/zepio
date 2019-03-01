@@ -56,3 +56,13 @@ export const parseZcashConf = (): Promise<Array<string>> => new Promise((resolve
     resolve(Object.keys(payload).reduce((acc, key) => acc.concat(`-${key}=${payload[key]}`), []));
   });
 });
+
+export const parseCmdArgs = (cmd: string): { user: string, password: string } => {
+  const rpcUserInArgs = cmd.split(' ').find(x => x.startsWith('-rpcuser'));
+  const rpcPasswordInArgs = cmd.split(' ').find(x => x.startsWith('-rpcpassword'));
+
+  const rpcUser = rpcUserInArgs ? rpcUserInArgs.replace('-rpcuser=', '') : '';
+  const rpcPassword = rpcPasswordInArgs ? rpcPasswordInArgs.replace('-rpcpassword=', '') : '';
+
+  return { user: rpcUser, password: rpcPassword };
+};
