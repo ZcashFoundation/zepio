@@ -9,6 +9,7 @@ import isDev from 'electron-is-dev';
 import type { ChildProcess } from 'child_process';
 import eres from 'eres';
 import uuid from 'uuid/v4';
+import findProcess from 'find-process';
 /* eslint-disable-next-line import/named */
 import { mainWindow } from '../electron';
 
@@ -18,7 +19,7 @@ import getDaemonName from './get-daemon-name';
 import fetchParams from './run-fetch-params';
 import log from './logger';
 import store from '../electron-store';
-import { parseZcashConf } from './parse-zcash-conf';
+import { parseZcashConf, parseCmdArgs } from './parse-zcash-conf';
 
 const getDaemonOptions = ({ username, password, optionsFromZcashConf }) => {
   /*
@@ -48,9 +49,11 @@ const getDaemonOptions = ({ username, password, optionsFromZcashConf }) => {
 
 let resolved = false;
 
+const ZCASHD_PROCESS_NAME = getDaemonName();
+
 // eslint-disable-next-line
 const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve, reject) => {
-  const processName = path.join(getBinariesPath(), getOsFolder(), getDaemonName());
+  const processName = path.join(getBinariesPath(), getOsFolder(), ZCASHD_PROCESS_NAME);
 
   if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', 'Fetching params...');
 
@@ -64,14 +67,23 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', 'ZEC Wallet Starting');
   log('Fetch Params finished!');
 
-  const [, isRunning] = await eres(processExists(processName));
+  const [, isRunning] = await eres(processExists(ZCASHD_PROCESS_NAME));
+
+  // This will parse and save rpcuser and rpcpassword in the store
+  const [, optionsFromZcashConf = []] = await eres(parseZcashConf());
 
   if (isRunning) {
     log('Already is running!');
+    // We need grab the rpcuser and rpcpassword from either process args or zcash.conf
+
+    // Command line args override zcash.conf
+    const [{ cmd }] = await findProcess('name', ZCASHD_PROCESS_NAME);
+    const { user, password } = parseCmdArgs(cmd);
+    if (user) store.set('rpcuser', user);
+    if (password) store.set('rpcpassword', password);
+
     return resolve();
   }
-
-  const [, optionsFromZcashConf = []] = await eres(parseZcashConf());
 
   const hasCredentials = store.has('rpcuser') && store.has('rpcpassword');
 
