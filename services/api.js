@@ -21,6 +21,15 @@ const client = got.extend({
   auth: `${RPC.user}:${RPC.password}`,
 });
 
+const getMessage = (statusCode) => {
+  switch (statusCode) {
+    case 401:
+      return 'Not authorized to access Zcash RPC, please check your rpcuser and rpcpassword';
+    default:
+      return 'Something went wrong';
+  }
+};
+
 const api: APIMethods = METHODS.reduce(
   (obj, method) => ({
     ...obj,
@@ -34,7 +43,12 @@ const api: APIMethods = METHODS.reduce(
         },
       })
       .then(data => Promise.resolve(data.body && data.body.result))
-      .catch(payload => Promise.reject(new Error(payload.body?.error.message || 'Something went wrong'))),
+      .catch(payload =>
+      // eslint-disable-next-line
+          Promise.reject({
+          message: payload.body?.error?.message || getMessage(payload.statusCode),
+          statusCode: payload.statusCode,
+        })),
   }),
   {},
 );

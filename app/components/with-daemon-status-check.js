@@ -58,10 +58,19 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
         .catch((error) => {
           const statusMessage = error.message === 'Something went wrong' ? 'ZEC Wallet Starting' : error.message;
 
-          this.setState((state) => {
-            const newProgress = state.progress > 70 ? state.progress + 2.5 : state.progress + 5;
-            return { progress: newProgress > 95 ? 95 : newProgress, message: statusMessage };
+          const isRpcOff = Math.trunc(error.statusCode / 100) === 5;
+
+          this.setState({
+            message: statusMessage,
           });
+
+          // if rpc is off (500) we have probably started the daemon process and are waiting it to boot up
+          if (isRpcOff) {
+            this.setState((state) => {
+              const newProgress = state.progress > 70 ? state.progress + 2.5 : state.progress + 5;
+              return { progress: newProgress > 95 ? 95 : newProgress, message: statusMessage };
+            });
+          }
         });
     };
 
