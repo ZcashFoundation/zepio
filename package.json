@@ -1,6 +1,6 @@
 {
   "name": "zec-react-wallet",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Zcash Reference Wallet",
   "main": "config/main.js",
   "license": "MIT",
@@ -108,6 +108,7 @@
     "electron-store": "^2.0.0",
     "electron-updater": "^4.0.4",
     "eres": "^1.0.1",
+    "find-process": "^1.2.1",
     "got": "^9.3.2",
     "history": "^4.7.2",
     "lodash.flow": "^3.5.0",
