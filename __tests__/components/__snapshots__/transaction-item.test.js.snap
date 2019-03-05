@@ -29,7 +29,7 @@ exports[`<TransactionItem /> should render a transaction item correctly 1`] = `
           <p
             class="sc-kgoBCf goviHQ sc-htpNat pRhzD"
           >
-            14:31 PM
+            16:31 PM
           </p>
         </div>
       </div>

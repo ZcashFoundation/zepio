@@ -41,7 +41,7 @@ exports[`<TransactionDailyComponent /> render() should render user daily transac
               <p
                 class="sc-kgoBCf goviHQ sc-htpNat pRhzD"
               >
-                14:31 PM
+                16:31 PM
               </p>
             </div>
           </div>
@@ -94,7 +94,7 @@ exports[`<TransactionDailyComponent /> render() should render user daily transac
               <p
                 class="sc-kgoBCf goviHQ sc-htpNat pRhzD"
               >
-                14:31 PM
+                16:31 PM
               </p>
             </div>
           </div>
