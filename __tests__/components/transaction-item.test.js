@@ -3,24 +3,30 @@
 import React from 'react';
 import { render, cleanup } from 'react-testing-library';
 import { ThemeProvider } from 'styled-components';
+import dateFns from 'date-fns';
 import 'jest-dom/extend-expect';
 
 import { TransactionItemComponent } from '../../app/components/transaction-item';
 import { appTheme } from '../../app/theme';
 
 let originalDate;
+const fixedDate = new Date('2018-02-28T09:39:59');
 
-beforeEach(() => {
+beforeAll(() => {
+  dateFns.format = jest.fn(() => '17:01 PM');
+
   originalDate = global.Date;
   global.Date = class extends Date {
     constructor() {
       super();
-      return '2019-03-05T19:58:35.457Z';
+
+      return fixedDate;
     }
   };
 });
-afterEach(() => {
+afterAll(() => {
   global.Date = originalDate;
+  dateFns.format.mockRestore();
   cleanup();
 });
 
