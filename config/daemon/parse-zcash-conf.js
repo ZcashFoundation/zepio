@@ -34,7 +34,6 @@ type ZcashConfFile = {
 
 export const parseZcashConf = (): Promise<Array<string>> => new Promise((resolve, reject) => {
   fs.readFile(locateZcashConf(), (err, file) => {
-    // TODO: Maybe we can create the zcash.conf on the fly here
     if (err) return reject(err);
 
     const fileString = file.toString();
@@ -42,15 +41,14 @@ export const parseZcashConf = (): Promise<Array<string>> => new Promise((resolve
     // $FlowFixMe
     const { rpcuser, rpcpassword, ...payload }: ZcashConfFile = filterObjectNullKeys(
       fileString.split('\n').reduce((acc, cur) => {
+        if (!cur) return acc;
         const [key, value] = cur.split('=');
-        return { ...acc, [key]: value };
+        return { ...acc, [key.trim().toLowerCase()]: value.trim() };
       }, {}),
     );
 
-    if (rpcuser && rpcpassword) {
-      store.set('rpcuser', rpcuser);
-      store.set('rpcpassword', rpcpassword);
-    }
+    if (rpcuser) store.set('rpcuser', rpcuser);
+    if (rpcpassword) store.set('rpcpassword', rpcpassword);
 
     // $FlowFixMe
     resolve(Object.keys(payload).reduce((acc, key) => acc.concat(`-${key}=${payload[key]}`), []));
