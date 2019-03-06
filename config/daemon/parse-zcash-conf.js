@@ -52,8 +52,8 @@ export const parseZcashConf = (): Promise<Array<string>> => new Promise((resolve
       }, {}),
     );
 
-    if (rpcuser) store.set('rpcuser', rpcuser);
-    if (rpcpassword) store.set('rpcpassword', rpcpassword);
+    store.set('rpcuser', rpcuser || '');
+    store.set('rpcpassword', rpcpassword || '');
 
     // $FlowFixMe
     resolve(Object.keys(payload).reduce((acc, key) => acc.concat(`-${key}=${payload[key]}`), []));
