@@ -42,6 +42,11 @@ export const parseZcashConf = (): Promise<Array<string>> => new Promise((resolve
     const { rpcuser, rpcpassword, ...payload }: ZcashConfFile = filterObjectNullKeys(
       fileString.split('\n').reduce((acc, cur) => {
         if (!cur) return acc;
+
+        const line = cur.trim();
+
+        if (line.startsWith('#')) return acc;
+
         const [key, value] = cur.split('=');
         return { ...acc, [key.trim().toLowerCase()]: value.trim() };
       }, {}),

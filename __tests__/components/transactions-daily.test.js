@@ -13,6 +13,7 @@ let originalDate;
 const fixedDate = new Date('2018-02-28T09:39:59');
 
 beforeAll(() => {
+  // $FlowFixMe
   dateFns.format = jest.fn(() => '17:01 PM');
 
   originalDate = global.Date;
