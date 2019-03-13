@@ -18,6 +18,7 @@
     "electron:prepare": "yarn icon:build && rm -rf dist && mkdir dist",
     "electron:pack": "yarn electron:prepare && electron-builder --dir",
     "electron:dist": "yarn electron:prepare && electron-builder",
+    "electron:distall": "yarn electron:dist -mlw",
     "electron:clean-store": "electron -r @babel/register ./utils/clean-electron-store.js",
     "preelectron:prepare": "yarn build",
     "icon:build": "./node_modules/.bin/electron-icon-maker --input=build-assets/icon.png --output=./build",
