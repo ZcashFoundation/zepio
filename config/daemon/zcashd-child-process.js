@@ -19,7 +19,7 @@ import getDaemonName from './get-daemon-name';
 import fetchParams from './run-fetch-params';
 import log from './logger';
 import store from '../electron-store';
-import { parseZcashConf, parseCmdArgs } from './parse-zcash-conf';
+import { parseZcashConf, parseCmdArgs, generateArgsFromConf } from './parse-zcash-conf';
 
 const getDaemonOptions = ({ username, password, optionsFromZcashConf }) => {
   /*
@@ -70,7 +70,10 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   const [, isRunning] = await eres(processExists(ZCASHD_PROCESS_NAME));
 
   // This will parse and save rpcuser and rpcpassword in the store
-  const [, optionsFromZcashConf = []] = await eres(parseZcashConf());
+  const [, optionsFromZcashConf] = await eres(parseZcashConf());
+
+  if (optionsFromZcashConf.rpcuser) store.set('rpcuser', optionsFromZcashConf.rpcuser);
+  if (optionsFromZcashConf.rpcpassword) store.set('rpcpassword', optionsFromZcashConf.rpcpassword);
 
   if (isRunning) {
     log('Already is running!');
@@ -85,28 +88,22 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     return resolve();
   }
 
-  const hasCredentials = store.has('rpcuser') && store.has('rpcpassword');
+  if (!optionsFromZcashConf.rpcuser) store.set('rpcuser', uuid());
+  if (!optionsFromZcashConf.rpcpassword) store.set('rpcpassword', uuid());
 
-  const rpcCredentials = hasCredentials
-    ? {
-      username: store.get('rpcuser'),
-      password: store.get('rpcpassword'),
-    }
-    : {
-      username: uuid(),
-      password: uuid(),
-    };
+  const rpcCredentials = {
+    username: store.get('rpcuser'),
+    password: store.get('rpcpassword'),
+  };
 
   if (isDev) log('Rpc Credentials', rpcCredentials);
 
-  if (!hasCredentials) {
-    store.set('rpcuser', rpcCredentials.username);
-    store.set('rpcpassword', rpcCredentials.password);
-  }
-
   const childProcess = cp.spawn(
     processName,
-    await getDaemonOptions({ ...rpcCredentials, optionsFromZcashConf }),
+    await getDaemonOptions({
+      ...rpcCredentials,
+      optionsFromZcashConf: generateArgsFromConf(optionsFromZcashConf),
+    }),
     {
       stdio: ['ignore', 'pipe', 'pipe'],
     },
