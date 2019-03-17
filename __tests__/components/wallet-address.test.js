@@ -15,7 +15,7 @@ describe('<WalletAddress />', () => {
     const { getByText } = render(
       <ThemeProvider theme={appTheme}>
         <div style={{ width: '700px' }}>
-          <WalletAddress address='t14oHp2v54vfmdgQ3v3SNuQga8JKHTNi2a1' />
+          <WalletAddress address='t14oHp2v54vfmdgQ3v3SNuQga8JKHTNi2a1' balance={2} />
         </div>
       </ThemeProvider>,
     );
