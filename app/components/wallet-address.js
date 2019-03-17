@@ -14,6 +14,8 @@ import ScanIconDark from '../assets/images/scan_icon_dark.svg';
 import ScanIconLight from '../assets/images/scan_icon_light.svg';
 import { DARK } from '../constants/themes';
 
+import { formatNumber } from '../utils/format-number';
+
 const AddressWrapper = styled.div`
   align-items: center;
   display: flex;
@@ -107,7 +109,7 @@ const TooltipText = styled(TextComponent)`
 `;
 
 const ActionsWrapper = styled.div`
-  width: 8%;
+  width: 10%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -117,6 +119,7 @@ const ActionsWrapper = styled.div`
 type Props = {
   address: string,
   theme: AppTheme,
+  balance: number,
 };
 
 type State = {
@@ -144,7 +147,7 @@ class Component extends PureComponent<Props, State> {
   );
 
   render() {
-    const { address, theme } = this.props;
+    const { address, balance, theme } = this.props;
     const { showQRCode, showCopiedTooltip } = this.state;
 
     const qrCodeIcon = theme.mode === DARK ? ScanIconDark : ScanIconLight;
@@ -160,6 +163,7 @@ class Component extends PureComponent<Props, State> {
             onDoubleClick={this.showMoreInfo}
           />
           <ActionsWrapper>
+            <TextComponent value={formatNumber({ append: 'ZEC ', value: balance })} />
             <CopyToClipboard text={address} onCopy={this.copyAddress}>
               <IconButton onClick={() => {}}>
                 {!showCopiedTooltip ? null : (
