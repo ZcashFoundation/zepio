@@ -21,6 +21,7 @@ import {
 } from '../redux/modules/send';
 
 import { filterObjectNullKeys } from '../utils/filter-object-null-keys';
+import { asyncMap } from '../utils/async-map';
 import { saveShieldedTransaction } from '../../services/shielded-transactions';
 
 import type { AppState } from '../types/app-state';
@@ -39,7 +40,7 @@ export type SendTransactionInput = {
 export type MapStateToProps = {|
   balance: number,
   zecPrice: number,
-  addresses: string[],
+  addresses: { address: string, balance: number }[],
   error: string | null,
   isSending: boolean,
   operationId: string | null,
@@ -162,9 +163,34 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
 
     if (zAddressesErr || tAddressesErr) return dispatch(loadAddressesError({ error: 'Something went wrong!' }));
 
+    const latestzAdress = zAddresses[0]
+      ? {
+        address: zAddresses[0],
+        balance: await rpc.z_getbalance(zAddresses[0]),
+      }
+      : null;
+
+    const latesttAdress = transparentAddresses[0]
+      ? {
+        address: transparentAddresses[0],
+        balance: await rpc.z_getbalance(transparentAddresses[0]),
+      }
+      : null;
+
+    const allAddresses = await asyncMap(
+      [...zAddresses.slice(1), ...transparentAddresses.slice(1)],
+      async (address) => {
+        const [err, response] = await eres(rpc.z_getbalance(address));
+
+        if (!err && new BigNumber(response).isGreaterThan(0)) return { address, balance: response };
+
+        return null;
+      },
+    );
+
     return dispatch(
       loadAddressesSuccess({
-        addresses: [...zAddresses, ...transparentAddresses],
+        addresses: [latesttAdress, latestzAdress, ...allAddresses].filter(Boolean),
       }),
     );
   },
