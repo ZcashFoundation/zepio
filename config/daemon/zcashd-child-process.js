@@ -20,6 +20,13 @@ import fetchParams from './run-fetch-params';
 import log from './logger';
 import store from '../electron-store';
 import { parseZcashConf, parseCmdArgs, generateArgsFromConf } from './parse-zcash-conf';
+import { isTestnet } from '../is-testnet';
+import {
+  EMBEDDED_DAEMON,
+  ZCASH_NETWORK,
+  TESTNET,
+  MAINNET,
+} from '../../app/constants/zcash-network';
 
 const getDaemonOptions = ({ username, password, optionsFromZcashConf }) => {
   /*
@@ -37,14 +44,12 @@ const getDaemonOptions = ({ username, password, optionsFromZcashConf }) => {
     '-metricsrefreshtime=1',
     `-rpcuser=${username}`,
     `-rpcpassword=${password}`,
-    // TODO: For test purposes only
-    '-testnet',
-    '-addnode=testnet.z.cash',
+    ...(isTestnet ? ['-testnet', '-addnode=testnet.z.cash'] : ['-addnode=mainnet.z.cash']),
     // Overwriting the settings with values taken from "zcash.conf"
     ...optionsFromZcashConf,
   ];
 
-  return isDev ? defaultOptions.concat(['-testnet', '-addnode=testnet.z.cash']) : defaultOptions;
+  return Array.from(new Set([...defaultOptions, ...optionsFromZcashConf]));
 };
 
 let resolved = false;
@@ -77,11 +82,19 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
 
   if (isRunning) {
     log('Already is running!');
+
+    store.set(EMBEDDED_DAEMON, false);
     // We need grab the rpcuser and rpcpassword from either process args or zcash.conf
 
     // Command line args override zcash.conf
     const [{ cmd }] = await findProcess('name', ZCASHD_PROCESS_NAME);
-    const { user, password } = parseCmdArgs(cmd);
+    const { user, password, isTestnet: isTestnetFromCmd } = parseCmdArgs(cmd);
+
+    store.set(
+      ZCASH_NETWORK,
+      isTestnetFromCmd || optionsFromZcashConf.testnet === '1' ? TESTNET : MAINNET,
+    );
+
     if (user) store.set('rpcuser', user);
     if (password) store.set('rpcpassword', password);
 

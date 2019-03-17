@@ -1,18 +1,16 @@
 // @flow
 
 import got from 'got';
-/* eslint-disable-next-line */
-import isDev from 'electron-is-dev';
 
 import { METHODS, type APIMethods } from './utils';
 import store from '../config/electron-store';
+import { isTestnet } from '../config/is-testnet';
 
 const RPC = {
   host: '127.0.0.1',
-  // port: isDev ? 18232 : 8232,
-  port: 18232, // TODO: Test purposes only
-  user: store.get('rpcuser') || '',
-  password: store.get('rpcpassword') || '',
+  port: isTestnet ? 18232 : 8232,
+  user: store.get('rpcuser'),
+  password: store.get('rpcpassword'),
 };
 
 const client = got.extend({
@@ -43,12 +41,11 @@ const api: APIMethods = METHODS.reduce(
         },
       })
       .then(data => Promise.resolve(data.body && data.body.result))
-      .catch(payload =>
-      // eslint-disable-next-line
-          Promise.reject({
-          message: payload.body?.error?.message || getMessage(payload.statusCode),
-          statusCode: payload.statusCode,
-        })),
+    // eslint-disable-next-line
+        .catch(payload => Promise.reject({
+        message: payload.body?.error?.message || getMessage(payload.statusCode),
+        statusCode: payload.statusCode,
+      })),
   }),
   {},
 );

@@ -8,7 +8,6 @@ import { promisify } from 'util';
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import electron from 'electron';
-import isDev from 'electron-is-dev';
 import dateFns from 'date-fns';
 import eres from 'eres';
 
@@ -22,8 +21,10 @@ import { SelectComponent } from '../components/select';
 
 import rpc from '../../services/api';
 import { DARK, LIGHT, THEME_MODE } from '../constants/themes';
+import { MAINNET, TESTNET } from '../constants/zcash-network';
 import electronStore from '../../config/electron-store';
 import { openExternal } from '../utils/open-external';
+import { isTestnet } from '../../config/is-testnet';
 
 import type { MapDispatchToProps, MapStateToProps } from '../containers/settings';
 
@@ -38,6 +39,8 @@ const EXPORT_PRIV_KEYS_TITLE = 'Export Private Keys';
 const EXPORT_PRIV_KEYS_CONTENT = 'Beware: exporting your private keys will allow anyone controlling them to spend your coins. Only perform this action on a trusted machine.';
 const BACKUP_WALLET_TITLE = 'Backup Wallet';
 const BACKUP_WALLET_CONTENT = 'It is recommended that you backup your wallet often to avoid possible issues arising from data corruption.';
+const CONFIRM_RELAUNCH_CONTENT = "You'll need to restart the application and the internal full node. Are you sure you want to do this?";
+const RUNNING_NON_EMBEDDED_DAEMON_WARNING = 'You are using a separate zcashd process, in order to change the network, you need to restart the process yourself';
 
 const Wrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
@@ -235,14 +238,14 @@ export class SettingsView extends PureComponent<Props, State> {
   exportViewKeys = () => {
     const { addresses } = this.props;
 
-    const zAddresses = addresses.filter(addr => addr.startsWith('z'));
+    const zAddresses = addresses.filter(({ address }) => address.startsWith('z'));
 
     this.setState({ isLoading: true });
 
     Promise.all(
-      zAddresses.map(async (zAddr) => {
-        const viewKey = await rpc.z_exportviewingkey(zAddr);
-        return { zAddress: zAddr, key: viewKey };
+      zAddresses.map(async ({ address }) => {
+        const viewKey = await rpc.z_exportviewingkey(address);
+        return { zAddress: address, key: viewKey };
       }),
     ).then((viewKeys) => {
       this.setState({
@@ -256,14 +259,14 @@ export class SettingsView extends PureComponent<Props, State> {
   exportPrivateKeys = () => {
     const { addresses } = this.props;
 
-    const zAddresses = addresses.filter(addr => addr.startsWith('z'));
+    const zAddresses = addresses.filter(({ address }) => address.startsWith('z'));
 
     this.setState({ isLoading: true });
 
     Promise.all(
-      zAddresses.map(async (zAddr) => {
-        const privateKey = await rpc.z_exportkey(zAddr);
-        return { zAddress: zAddr, key: privateKey };
+      zAddresses.map(async ({ address }) => {
+        const privateKey = await rpc.z_exportkey(address);
+        return { zAddress: address, key: privateKey };
       }),
     ).then((privateKeys) => {
       this.setState({
@@ -312,7 +315,7 @@ export class SettingsView extends PureComponent<Props, State> {
 
         const WALLET_DIR = this.getWalletFolderPath();
 
-        const zcashDir = isDev ? path.join(WALLET_DIR, 'testnet3') : WALLET_DIR;
+        const zcashDir = isTestnet ? path.join(WALLET_DIR, 'testnet3') : WALLET_DIR;
         const walletDatPath = `${zcashDir}/wallet.dat`;
 
         const [cannotAccess] = await eres(promisify(fs.access)(walletDatPath));
@@ -344,13 +347,43 @@ export class SettingsView extends PureComponent<Props, State> {
       error,
     } = this.state;
 
-    const themeOptions = [
-      { label: 'Dark', value: DARK },
-      { label: 'Light', value: LIGHT },
+    const { zcashNetwork, updateZcashNetwork, embeddedDaemon } = this.props;
+
+    const themeOptions = [{ label: 'Dark', value: DARK }, { label: 'Light', value: LIGHT }];
+
+    const networkOptions = [
+      { label: 'Mainnet', value: MAINNET },
+      { label: 'Testnet', value: TESTNET },
     ];
 
     return (
       <Wrapper>
+        <ConfirmDialogComponent
+          title='Confirm'
+          onConfirm={() => updateZcashNetwork(zcashNetwork === MAINNET ? TESTNET : MAINNET)}
+          showButtons={embeddedDaemon}
+          renderTrigger={toggleVisibility => (
+            <ThemeSelectWrapper>
+              <SettingsTitle value='Zcash net' />
+              <SelectComponent
+                onChange={value => (zcashNetwork !== value ? toggleVisibility() : undefined)}
+                value={zcashNetwork}
+                options={networkOptions}
+              />
+            </ThemeSelectWrapper>
+          )}
+        >
+          {() => (
+            <ModalContent>
+              <TextComponent
+                value={
+                  embeddedDaemon ? CONFIRM_RELAUNCH_CONTENT : RUNNING_NON_EMBEDDED_DAEMON_WARNING
+                }
+              />
+            </ModalContent>
+          )}
+        </ConfirmDialogComponent>
+
         <ThemeSelectWrapper>
           <SettingsTitle value='Theme' />
           <SelectComponent
@@ -359,6 +392,7 @@ export class SettingsView extends PureComponent<Props, State> {
             options={themeOptions}
           />
         </ThemeSelectWrapper>
+
         <ConfirmDialogComponent
           title={EXPORT_VIEW_KEYS_TITLE}
           renderTrigger={toggleVisibility => (
@@ -457,10 +491,7 @@ export class SettingsView extends PureComponent<Props, State> {
           >
             {() => (
               <ModalContent>
-                <InputLabelComponent
-                  marginTop='0'
-                  value={IMPORT_PRIV_KEYS_CONTENT_MODAL}
-                />
+                <InputLabelComponent marginTop='0' value={IMPORT_PRIV_KEYS_CONTENT_MODAL} />
                 <InputComponent
                   value={importedPrivateKeys}
                   onChange={value => this.setState({ importedPrivateKeys: value })}

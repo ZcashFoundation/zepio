@@ -10,12 +10,16 @@ import type { AppState } from '../types/app-state';
 
 export type MapStateToProps = {|
   isErrorModalVisible: boolean,
+  zcashNetwork: string,
   error: string | null,
+  embeddedDaemon: boolean,
 |};
 
 const mapStateToProps = ({ app }: AppState): MapStateToProps => ({
   isErrorModalVisible: app.isErrorModalVisible,
   error: app.error,
+  zcashNetwork: app.zcashNetwork,
+  embeddedDaemon: app.embeddedDaemon,
 });
 
 export type MapDispatchToProps = {|
