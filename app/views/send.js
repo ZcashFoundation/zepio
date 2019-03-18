@@ -449,6 +449,15 @@ class Component extends PureComponent<Props, State> {
     return new BigNumber(amount).plus(feeValue).toNumber();
   };
 
+  getMaxAmountWithoutFee = () => {
+    const { balance } = this.props;
+    const { fee } = this.state;
+
+    const max = new BigNumber(balance).minus(fee || 0);
+
+    return max.isNegative() ? 0 : max.toNumber();
+  };
+
   handleChange = (field: string) => (value: string | number) => {
     const { validateAddress, getAddressBalance, balance } = this.props;
     const { amount } = this.state;
@@ -752,7 +761,7 @@ class Component extends PureComponent<Props, State> {
             <AmountInput
               renderRight={() => (
                 <MaxAvailableAmount
-                  onClick={() => this.handleChange('amount')(balance - (Number(fee) || 0))}
+                  onClick={() => this.handleChange('amount')(this.getMaxAmountWithoutFee())}
                   disabled={!from}
                 >
                   <MaxAvailableAmountImg src={arrowUpIcon} />
