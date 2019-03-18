@@ -5,6 +5,7 @@ import React, { type ComponentType, Component } from 'react';
 import { LoadingScreen } from './loading-screen';
 
 import rpc from '../../services/api';
+import electronStore from '../../config/electron-store';
 
 type Props = {};
 
@@ -40,6 +41,13 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
     }
 
     runTest = () => {
+      if (electronStore.get('DAEMON_FETCHING_PARAMS')) {
+        return this.setState({
+          message:
+            'Downloading network params, this may take some time depending on your connection speed',
+        });
+      }
+
       rpc
         .getinfo()
         .then((response) => {

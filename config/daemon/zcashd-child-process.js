@@ -62,6 +62,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
 
   if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', 'Fetching params...');
 
+  store.set('DAEMON_FETCHING_PARAMS', true);
   const [err] = await eres(fetchParams());
 
   if (err) {
@@ -71,6 +72,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
 
   if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', 'ZEC Wallet Starting');
   log('Fetch Params finished!');
+  store.set('DAEMON_FETCHING_PARAMS', false);
 
   const [, isRunning] = await eres(processExists(ZCASHD_PROCESS_NAME));
 
