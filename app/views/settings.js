@@ -364,7 +364,7 @@ export class SettingsView extends PureComponent<Props, State> {
           showButtons={embeddedDaemon}
           renderTrigger={toggleVisibility => (
             <ThemeSelectWrapper>
-              <SettingsTitle value='Zcash net' />
+              <SettingsTitle value='Zcash Network' />
               <SelectComponent
                 onChange={value => (zcashNetwork !== value ? toggleVisibility() : undefined)}
                 value={zcashNetwork}
