@@ -163,14 +163,14 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
 
     if (zAddressesErr || tAddressesErr) return dispatch(loadAddressesError({ error: 'Something went wrong!' }));
 
-    const latestzAdress = zAddresses[0]
+    const latestzAddress = zAddresses[0]
       ? {
         address: zAddresses[0],
         balance: await rpc.z_getbalance(zAddresses[0]),
       }
       : null;
 
-    const latesttAdress = transparentAddresses[0]
+    const latesttAddress = transparentAddresses[0]
       ? {
         address: transparentAddresses[0],
         balance: await rpc.z_getbalance(transparentAddresses[0]),
@@ -190,7 +190,7 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
 
     return dispatch(
       loadAddressesSuccess({
-        addresses: [latesttAdress, latestzAdress, ...allAddresses].filter(Boolean),
+        addresses: [latesttAddress, latestzAddress, ...allAddresses].filter(Boolean),
       }),
     );
   },
