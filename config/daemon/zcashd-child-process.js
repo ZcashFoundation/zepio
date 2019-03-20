@@ -38,13 +38,14 @@ const getDaemonOptions = ({ username, password, optionsFromZcashConf }) => {
     -metricsrefreshtime
         Number of seconds between metrics refreshes
   */
+
   const defaultOptions = [
     '-showmetrics',
     '--metricsui=0',
     '-metricsrefreshtime=1',
     `-rpcuser=${username}`,
     `-rpcpassword=${password}`,
-    ...(isTestnet ? ['-testnet', '-addnode=testnet.z.cash'] : ['-addnode=mainnet.z.cash']),
+    ...(isTestnet() ? ['-testnet', '-addnode=testnet.z.cash'] : ['-addnode=mainnet.z.cash']),
     // Overwriting the settings with values taken from "zcash.conf"
     ...optionsFromZcashConf,
   ];
@@ -101,6 +102,13 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     if (password) store.set('rpcpassword', password);
 
     return resolve();
+  }
+
+  store.set(EMBEDDED_DAEMON, true);
+
+  // Default to mainnet
+  if (!store.get(ZCASH_NETWORK)) {
+    store.set(ZCASH_NETWORK, MAINNET);
   }
 
   if (!optionsFromZcashConf.rpcuser) store.set('rpcuser', uuid());
