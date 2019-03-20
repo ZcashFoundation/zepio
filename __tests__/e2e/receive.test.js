@@ -4,13 +4,13 @@ import { getApp } from '../setup/utils';
 
 const app = getApp();
 
-beforeAll(async () => {
+beforeEach(async () => {
   await app.start();
   await app.client.waitUntilWindowLoaded();
   await app.client.waitUntilTextExists('#sidebar', 'Receive');
 });
 
-afterAll(() => app.stop());
+afterEach(() => app.stop());
 
 describe('Receive', () => {
   test('should load "Receive Page"', async () => {
@@ -95,7 +95,7 @@ describe('Receive', () => {
     expect(
       await app.client
         .element('#receive-wrapper #receive-transparent-addresses-wrapper')
-        .isVisible(),
+        .isExisting(),
     ).toEqual(true);
   });
 
