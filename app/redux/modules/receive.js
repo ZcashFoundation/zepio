@@ -66,7 +66,7 @@ export default (state: State = initialState, action: Action) => {
     case GET_NEW_ADDRESS_SUCCESS:
       return {
         error: null,
-        addresses: [...state.addresses, action.payload.address],
+        addresses: [...state.addresses, { address: action.payload.address, balance: 0 }],
       };
     case GET_NEW_ADDRESS_ERROR:
       return {
