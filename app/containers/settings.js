@@ -1,4 +1,5 @@
 // @flow
+
 import eres from 'eres';
 import { connect } from 'react-redux';
 import electron from 'electron'; // eslint-disable-line
