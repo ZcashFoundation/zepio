@@ -155,32 +155,36 @@ class Component extends PureComponent<Props, State> {
     const copyIcon = theme.mode === DARK ? CopyIconDark : CopyIconLight;
 
     return (
-      <ColumnComponent width='100%'>
+      <ColumnComponent id='wallet-address' width='100%'>
         <AddressWrapper>
           <Address
+            id='wallet-address-text'
             value={address}
             onClick={this.toggleMoreInfo}
             onDoubleClick={this.showMoreInfo}
           />
           <ActionsWrapper>
-            <TextComponent value={formatNumber({ append: 'ZEC ', value: balance })} />
+            <TextComponent
+              id='wallet-address-balance'
+              value={formatNumber({ append: 'ZEC ', value: balance })}
+            />
             <CopyToClipboard text={address} onCopy={this.copyAddress}>
-              <IconButton onClick={() => {}}>
+              <IconButton id='wallet-address-copy' onClick={() => {}}>
                 {!showCopiedTooltip ? null : (
-                  <CopyTooltip>
+                  <CopyTooltip id='wallet-address-copy-tooltip'>
                     <TooltipText value='Copied!' />
                   </CopyTooltip>
                 )}
                 <IconImage src={copyIcon} alt='Copy Address' />
               </IconButton>
             </CopyToClipboard>
-            <IconButton onClick={this.toggleMoreInfo}>
+            <IconButton id='wallet-address-see-qrcode' onClick={this.toggleMoreInfo}>
               <IconImage src={qrCodeIcon} alt='See QRCode' />
             </IconButton>
           </ActionsWrapper>
         </AddressWrapper>
         {!showQRCode ? null : (
-          <QRCodeContainer>
+          <QRCodeContainer id='wallet-address-qr-code'>
             <QRCodeWrapper>
               <QRCode value={address} />
             </QRCodeWrapper>

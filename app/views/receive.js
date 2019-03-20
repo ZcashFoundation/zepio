@@ -118,17 +118,24 @@ class Component extends PureComponent<Props, State> {
     const plusIcon = theme.mode === DARK ? PlusIconDark : PlusIconLight;
 
     return (
-      <div>
-        <Label value='Shielded Address' />
+      <div id='receive-wrapper'>
+        <Label value='Shielded Address' id='shielded-address-label' />
         {shieldedAddresses.map(({ address, balance }) => (
           <WalletAddress key={address} address={address} balance={balance} />
         ))}
         <Row justifyContent='space-between'>
-          <ActionButton onClick={() => this.generateNewAddress('shielded')}>
+          <ActionButton
+            id='receive-get-new-shielded'
+            onClick={() => this.generateNewAddress('shielded')}
+          >
             <PlusIcon src={plusIcon} alt='New Shielded Address' />
             <ActionText value='New Shielded Address' />
           </ActionButton>
-          <ActionButton onClick={this.toggleAdditionalOptions} isActive={showAdditionalOptions}>
+          <ActionButton
+            id='receive-show-other'
+            onClick={this.toggleAdditionalOptions}
+            isActive={showAdditionalOptions}
+          >
             <ActionIcon isActive={showAdditionalOptions} src={seeMoreIcon} alt='More Options' />
             <ActionText value={buttonText} />
           </ActionButton>
@@ -149,6 +156,7 @@ class Component extends PureComponent<Props, State> {
             {(show: boolean) => show
               && ((props: Object) => (
                 <animated.div
+                  id='receive-transparent-addresses-wrapper'
                   style={{
                     ...props,
                     width: '100%',
@@ -159,7 +167,10 @@ class Component extends PureComponent<Props, State> {
                   {transparentAddresses.map(({ address, balance }) => (
                     <WalletAddress key={address} address={address} balance={balance} />
                   ))}
-                  <ActionButton onClick={() => this.generateNewAddress('transparent')}>
+                  <ActionButton
+                    id='receive-get-net-transparent'
+                    onClick={() => this.generateNewAddress('transparent')}
+                  >
                     <PlusIcon src={plusIcon} alt='New Transparent Address' />
                     <ActionText value='New Transparent Address' />
                   </ActionButton>
