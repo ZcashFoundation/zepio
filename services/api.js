@@ -8,7 +8,7 @@ import { isTestnet } from '../config/is-testnet';
 
 const RPC = {
   host: '127.0.0.1',
-  port: isTestnet ? 18232 : 8232,
+  port: isTestnet() ? 18232 : 8232,
   user: store.get('rpcuser'),
   password: store.get('rpcpassword'),
 };

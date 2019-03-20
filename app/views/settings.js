@@ -315,7 +315,7 @@ export class SettingsView extends PureComponent<Props, State> {
 
         const WALLET_DIR = this.getWalletFolderPath();
 
-        const zcashDir = isTestnet ? path.join(WALLET_DIR, 'testnet3') : WALLET_DIR;
+        const zcashDir = isTestnet() ? path.join(WALLET_DIR, 'testnet3') : WALLET_DIR;
         const walletDatPath = `${zcashDir}/wallet.dat`;
 
         const [cannotAccess] = await eres(promisify(fs.access)(walletDatPath));
