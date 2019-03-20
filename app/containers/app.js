@@ -1,8 +1,8 @@
 // @flow
 
 import { connect } from 'react-redux';
-import { closeErrorModal } from '../redux/modules/app';
 
+import { closeErrorModal } from '../redux/modules/app';
 import { LayoutComponent } from '../components/layout';
 
 import type { Dispatch } from '../types/redux';
