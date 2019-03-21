@@ -27,6 +27,9 @@ const InnerWrapperTop = styled.div`
 
 const InnerWrapperBottom = styled.div`
   background-color: ${props => props.theme.colors.sidebarItemHoveredBg};
+  padding-bottom: 3px;
+  border-top: 1px solid ${props => props.theme.colors.sidebarBorderRight};
+
 `;
 
 const DetailsItemWrapper = styled.div`

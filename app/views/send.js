@@ -679,7 +679,7 @@ class Component extends PureComponent<Props, State> {
   };
 
   shouldDisableSendButton = () => {
-    const { balance } = this.props;
+    const { balance, isToAddressValid } = this.props;
     const {
       from, amount, to, fee,
     } = this.state;
@@ -689,6 +689,7 @@ class Component extends PureComponent<Props, State> {
       || !amount
       || !to
       || !fee
+      || !isToAddressValid
       || new BigNumber(amount).gt(balance)
       || !this.isMemoContentValid()
     );
@@ -751,7 +752,7 @@ class Component extends PureComponent<Props, State> {
             value={from}
             placeholder='Select a address'
             options={addresses.map(({ address, balance: addressBalance }) => ({
-              label: `${address} (${formatNumber({ append: 'ZEC ', value: addressBalance })})`,
+              label: `[ ${formatNumber({ append: 'ZEC ', value: addressBalance })} ]  ${address}`,
               value: address,
             }))}
             capitalize={false}

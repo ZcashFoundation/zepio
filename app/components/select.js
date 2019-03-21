@@ -80,6 +80,10 @@ const Icon = styled.img`
   height: 10px;
 `;
 
+const Value = styled(TextComponent)`
+  white-space: nowrap;
+`;
+
 const OptionsWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -225,7 +229,7 @@ class Component extends PureComponent<Props, State> {
                 bgColor={bgColor}
                 capitalize={capitalize}
               >
-                <TextComponent value={label} />
+                <Value value={label} />
               </Option>
             ))}
           </OptionsWrapper>

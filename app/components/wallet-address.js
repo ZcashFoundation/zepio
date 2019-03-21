@@ -31,8 +31,10 @@ const Address = styled(TextComponent)`
   border-radius: ${props => props.theme.boxBorderRadius};
   border: none;
   background-color: ${props => props.theme.colors.inputBg};
-  padding: 15px;
-  width: 92%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  width: 90%;
   outline: none;
   font-family: ${props => props.theme.fontFamily};
   font-size: 13px;
@@ -47,7 +49,6 @@ const Address = styled(TextComponent)`
     display: none;
   }
 
-  /* // todo: make this theme supported */
   ${AddressWrapper}:hover & {
     color: ${props => props.theme.colors.walletAddressInputHovered};
   }
@@ -55,6 +56,27 @@ const Address = styled(TextComponent)`
   ::placeholder {
     opacity: 0.5;
   }
+`;
+
+const AddressBalance = styled(TextComponent)`
+  font-weight: 700;
+  padding-left: 12px;
+  font-size: 12px;
+  color: ${props => props.theme.colors.walletAddressInput};
+  width: 10%;
+
+  ${AddressWrapper}:hover & {
+    color: ${props => props.theme.colors.walletAddressInputHovered};
+  }
+`;
+
+const InnerWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 90%;
+  padding: 10px 0;
 `;
 
 const QRCodeContainer = styled.div`
@@ -109,11 +131,39 @@ const TooltipText = styled(TextComponent)`
 `;
 
 const ActionsWrapper = styled.div`
-  width: 10%;
+  width: 8%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+`;
+
+const AddressDetailsValue = styled(TextComponent)`
+  margin-bottom: 25px;
+  font-size: 15px;
+  word-break: break-all;
+  user-select: text;
+  letter-spacing: 0.5px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+const AddressDetailsLabel = styled.div`
+  font-weight: 700;
+  text-transform: uppercase;
+  color: ${props => props.theme.colors.transactionLabelText};
+  font-size: 0.759375em;
+  font-weight: 700;
+  font-family: Roboto;
+  margin-bottom: 8px;
+`;
+
+const AddressDetailsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
 `;
 
 type Props = {
@@ -157,17 +207,19 @@ class Component extends PureComponent<Props, State> {
     return (
       <ColumnComponent id='wallet-address' width='100%'>
         <AddressWrapper>
-          <Address
-            id='wallet-address-text'
-            value={address}
-            onClick={this.toggleMoreInfo}
-            onDoubleClick={this.showMoreInfo}
-          />
-          <ActionsWrapper>
-            <TextComponent
+          <InnerWrapper>
+            <AddressBalance
               id='wallet-address-balance'
               value={formatNumber({ append: 'ZEC ', value: balance })}
             />
+            <Address
+              id='wallet-address-text'
+              value={address}
+              onClick={this.toggleMoreInfo}
+              onDoubleClick={this.showMoreInfo}
+            />
+          </InnerWrapper>
+          <ActionsWrapper>
             <CopyToClipboard text={address} onCopy={this.copyAddress}>
               <IconButton id='wallet-address-copy' onClick={() => {}}>
                 {!showCopiedTooltip ? null : (
@@ -188,6 +240,16 @@ class Component extends PureComponent<Props, State> {
             <QRCodeWrapper>
               <QRCode value={address} />
             </QRCodeWrapper>
+            <AddressDetailsWrapper>
+              <AddressDetailsLabel>
+                Address
+              </AddressDetailsLabel>
+              <AddressDetailsValue value={address} />
+              <AddressDetailsLabel>
+                Funds
+              </AddressDetailsLabel>
+              <AddressDetailsValue value={formatNumber({ append: 'ZEC ', value: balance })} />
+            </AddressDetailsWrapper>
           </QRCodeContainer>
         )}
       </ColumnComponent>
