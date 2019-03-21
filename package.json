@@ -1,6 +1,6 @@
 {
   "name": "zec-react-wallet",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "Zcash Reference Wallet",
   "main": "config/main.js",
   "license": "MIT",
