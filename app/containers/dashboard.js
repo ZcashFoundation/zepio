@@ -6,16 +6,19 @@ import flow from 'lodash.flow';
 import groupBy from 'lodash.groupby';
 import dateFns from 'date-fns';
 import { BigNumber } from 'bignumber.js';
+
 import { DashboardView } from '../views/dashboard';
+
 import rpc from '../../services/api';
-import { listShieldedTransactions } from '../../services/shielded-transactions';
 import store from '../../config/electron-store';
+import { listShieldedTransactions } from '../../services/shielded-transactions';
+import { sortByDescend } from '../utils/sort-by-descend';
+
 import {
   loadWalletSummary,
   loadWalletSummarySuccess,
   loadWalletSummaryError,
 } from '../redux/modules/wallet';
-import { sortByDescend } from '../utils/sort-by-descend';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';

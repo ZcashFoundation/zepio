@@ -17,8 +17,8 @@ describe('Receive Actions', () => {
   test('should create an action to load addresses with success', () => {
     const payload = {
       addresses: [
-        'tm0a9si0ds09gj02jj',
-        'smas098gk02jf0kskk',
+        { address: 'tm0a9si0ds09gj02jj', balance: 10 },
+        { address: 'smas098gk02jf0kskk', balance: 20 },
       ],
     };
 

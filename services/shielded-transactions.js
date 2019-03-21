@@ -1,7 +1,9 @@
 // @flow
 import electronStore from '../config/electron-store';
+import { MAINNET, TESTNET } from '../app/constants/zcash-network';
+import { isTestnet } from '../config/is-testnet';
 
-const STORE_KEY = 'SHIELDED_TRANSACTIONS';
+const getStoreKey = () => `SHIELDED_TRANSACTIONS_${isTestnet() ? TESTNET : MAINNET}`;
 
 type ShieldedTransaction = {|
   txid: string,
@@ -19,6 +21,8 @@ export const listShieldedTransactions = (
     count: number,
   },
 ): Array<ShieldedTransaction> => {
+  const STORE_KEY = getStoreKey();
+
   const transactions = electronStore.has(STORE_KEY) ? electronStore.get(STORE_KEY) : [];
 
   if (!pagination) return transactions;
@@ -37,7 +41,7 @@ export const saveShieldedTransaction = ({
   memo,
 }: ShieldedTransaction): void => {
   electronStore.set(
-    STORE_KEY,
+    getStoreKey(),
     listShieldedTransactions().concat({
       txid,
       category,

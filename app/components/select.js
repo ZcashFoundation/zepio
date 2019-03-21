@@ -70,11 +70,9 @@ const SelectMenuButton = styled.button`
   border-radius: 100%;
   cursor: pointer;
   border: 1px solid
-    ${(props: PropsWithTheme<{ isOpen: boolean }>) => (
-    props.isOpen
-      ? props.theme.colors.dropdownOpenedIconBorder
-      : props.theme.colors.dropdownIconBorder
-  )};
+    ${(props: PropsWithTheme<{ isOpen: boolean }>) => (props.isOpen
+    ? props.theme.colors.dropdownOpenedIconBorder
+    : props.theme.colors.dropdownIconBorder)};
 `;
 
 const Icon = styled.img`
@@ -82,25 +80,31 @@ const Icon = styled.img`
   height: 10px;
 `;
 
+const Value = styled(TextComponent)`
+  white-space: nowrap;
+`;
+
 const OptionsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
+  top: 55px;
   z-index: 99;
   width: 100.5%;
   margin-left: -0.25%;
   background-color: ${props => props.theme.colors.dropdownBg};
   border-radius: ${props => props.theme.colors.boxBorderRadius};
   border: 1px solid ${props => props.theme.colors.inputBorder};
-  ${(props: PropsWithTheme<{ placement: string, optionsAmount: number }>) => `${String(props.placement)}: ${`-${String(((props.optionsAmount || 0) * 40) + 10)}px`}`};
+  ${(props: PropsWithTheme<{ placement: string, optionsAmount: number }>) => `${String(props.placement)}: ${`-${String((props.optionsAmount || 0) * 40 + 10)}px`}`};
   overflow-y: auto;
   box-shadow: 1px 3px 20px rgba(16, 19, 20, 0.1);
+  max-height: 65vh;
 `;
 
 const Option = styled.button`
   border: none;
   background: none;
-  height: 40px;
+  min-height: 40px;
   background-color: ${props => props.theme.colors.dropdownBg};
   cursor: pointer;
   z-index: 99;
@@ -203,10 +207,7 @@ class Component extends PureComponent<Props, State> {
         onClick={() => this.setState(() => ({ isOpen: !isOpen }))}
         bgColor={bgColor}
       >
-        <ValueWrapper
-          hasValue={Boolean(value)}
-          capitalize={capitalize}
-        >
+        <ValueWrapper hasValue={Boolean(value)} capitalize={capitalize}>
           {this.getSelectedLabel(value) || placeholder}
         </ValueWrapper>
         <SelectMenuButtonWrapper>
@@ -228,7 +229,7 @@ class Component extends PureComponent<Props, State> {
                 bgColor={bgColor}
                 capitalize={capitalize}
               >
-                <TextComponent value={label} />
+                <Value value={label} />
               </Option>
             ))}
           </OptionsWrapper>

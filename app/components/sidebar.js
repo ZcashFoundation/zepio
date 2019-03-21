@@ -10,6 +10,7 @@ import { MENU_OPTIONS } from '../constants/sidebar';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: ${props => props.theme.sidebarWidth};
   height: ${props => `calc(100vh - ${props.theme.headerHeight})`};
   font-family: ${props => props.theme.fontFamily};
@@ -17,6 +18,49 @@ const Wrapper = styled.div`
   border-right: 1px solid ${props => props.theme.colors.sidebarBorderRight};
   padding-top: 15px;
   position: relative;
+`;
+
+const InnerWrapperTop = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const InnerWrapperBottom = styled.div`
+  background-color: ${props => props.theme.colors.sidebarItemHoveredBg};
+  padding-bottom: 3px;
+  border-top: 1px solid ${props => props.theme.colors.sidebarBorderRight};
+
+`;
+
+const DetailsItemWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 10px 15px;
+  justify-content: space-between;
+  border-top: 2px solid ${props => props.theme.colors.sidebarBg};
+`;
+
+const DetailsItemLabel = styled.div`
+  color: ${props => props.theme.colors.sidebarItem};
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+
+  ${DetailsItemWrapper}:hover & {
+    color: ${props => props.theme.colors.sidebarItemHovered};
+  }
+`;
+
+const DetailsItemValue = styled.div`
+  color: ${props => props.theme.colors.sidebarItem};
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 700;
+
+  ${DetailsItemWrapper}:hover & {
+    color: ${props => props.theme.colors.sidebarItemHovered};
+  }
 `;
 
 /* eslint-disable max-len */
@@ -79,32 +123,54 @@ type Props = {
   options?: MenuItem[],
   location: Location,
   theme: AppTheme,
+  zcashNetwork: string,
+  embeddedDaemon: boolean,
 };
 
 export const Component = ({
-  options, location, history, theme,
+  options, location, history, theme, zcashNetwork, embeddedDaemon,
 }: Props) => (
   <Wrapper id='sidebar'>
-    {(options || []).map((item) => {
-      const isActive = item.route === '/'
-        ? location.pathname === item.route
-        : location.pathname.startsWith(item.route);
+    <InnerWrapperTop>
+      {(options || []).map((item) => {
+        const isActive = item.route === '/'
+          ? location.pathname === item.route
+          : location.pathname.startsWith(item.route);
 
-      return (
-        <StyledLink
-          isActive={isActive}
-          key={item.route}
-          onClick={() => (isActive ? {} : history.push(item.route))}
-        >
-          <Icon
+        return (
+          <StyledLink
             isActive={isActive}
-            src={item.icon(isActive, theme.mode)}
-            alt={`${item.route}`}
-          />
-          {item.label}
-        </StyledLink>
-      );
-    })}
+            key={item.route}
+            onClick={() => (isActive ? {} : history.push(item.route))}
+          >
+            <Icon
+              isActive={isActive}
+              src={item.icon(isActive, theme.mode)}
+              alt={`${item.route}`}
+            />
+            {item.label}
+          </StyledLink>
+        );
+      })}
+    </InnerWrapperTop>
+    <InnerWrapperBottom>
+      <DetailsItemWrapper>
+        <DetailsItemLabel>
+          Daemon
+        </DetailsItemLabel>
+        <DetailsItemValue>
+          {embeddedDaemon ? 'Built-in' : 'Custom'}
+        </DetailsItemValue>
+      </DetailsItemWrapper>
+      <DetailsItemWrapper>
+        <DetailsItemLabel>
+          Network
+        </DetailsItemLabel>
+        <DetailsItemValue>
+          {zcashNetwork}
+        </DetailsItemValue>
+      </DetailsItemWrapper>
+    </InnerWrapperBottom>
   </Wrapper>
 );
 

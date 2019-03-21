@@ -1,4 +1,7 @@
 // @flow
+import electronStore from '../../../config/electron-store';
+
+import { ZCASH_NETWORK, EMBEDDED_DAEMON } from '../../constants/zcash-network';
 
 import type { Action } from '../../types/redux';
 
@@ -7,6 +10,8 @@ export type State = {|
   error: string | null,
   nodeSyncProgress: number,
   nodeSyncType: 'ready' | 'syncing' | 'error',
+  zcashNetwork: string,
+  embeddedDaemon: boolean,
 |};
 
 // Actions
@@ -45,6 +50,8 @@ const initialState: State = {
   error: null,
   nodeSyncProgress: 0,
   nodeSyncType: 'syncing',
+  zcashNetwork: electronStore.get(ZCASH_NETWORK),
+  embeddedDaemon: electronStore.get(EMBEDDED_DAEMON),
 };
 
 // eslint-disable-next-line

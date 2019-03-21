@@ -21,6 +21,7 @@ import { ConfirmDialogComponent } from '../components/confirm-dialog';
 
 import { formatNumber } from '../utils/format-number';
 import { ascii2hex } from '../utils/ascii-to-hexadecimal';
+import { isHex } from '../utils/is-hex';
 
 import SentIcon from '../assets/images/transaction_sent_icon_dark.svg';
 import MenuIconDark from '../assets/images/menu_icon_dark.svg';
@@ -434,9 +435,7 @@ class Component extends PureComponent<Props, State> {
     const feeValue = fee || 0;
 
     this.setState({
-      showBalanceTooltip: (!from || !to)
-        ? false
-        : new BigNumber(amount).plus(feeValue).gt(balance),
+      showBalanceTooltip: !from || !to ? false : new BigNumber(amount).plus(feeValue).gt(balance),
     });
   };
 
@@ -448,6 +447,15 @@ class Component extends PureComponent<Props, State> {
     if (!amount) return feeValue;
 
     return new BigNumber(amount).plus(feeValue).toNumber();
+  };
+
+  getMaxAmountWithoutFee = () => {
+    const { balance } = this.props;
+    const { fee } = this.state;
+
+    const max = new BigNumber(balance).minus(fee || 0);
+
+    return max.isNegative() ? 0 : max.toNumber();
   };
 
   handleChange = (field: string) => (value: string | number) => {
@@ -584,9 +592,7 @@ class Component extends PureComponent<Props, State> {
     } = this.props;
     const { from, to } = this.state;
 
-    const loadingIcon = theme.mode === DARK
-      ? LoadingIconDark
-      : LoadingIconLight;
+    const loadingIcon = theme.mode === DARK ? LoadingIconDark : LoadingIconLight;
 
     if (isSending) {
       return (
@@ -621,10 +627,7 @@ class Component extends PureComponent<Props, State> {
       return (
         <ErrorWrapper>
           <ErrorLabel value='Error' />
-          <ErrorMessage
-            id='send-error-message'
-            value={error}
-          />
+          <ErrorMessage id='send-error-message' value={error} />
           <FormButton
             label='Try Again'
             variant='primary'
@@ -676,12 +679,28 @@ class Component extends PureComponent<Props, State> {
   };
 
   shouldDisableSendButton = () => {
-    const { balance } = this.props;
+    const { balance, isToAddressValid } = this.props;
     const {
       from, amount, to, fee,
     } = this.state;
 
-    return !from || !amount || !to || !fee || new BigNumber(amount).gt(balance);
+    return (
+      !from
+      || !amount
+      || !to
+      || !fee
+      || !isToAddressValid
+      || new BigNumber(amount).gt(balance)
+      || !this.isMemoContentValid()
+    );
+  };
+
+  isMemoContentValid = () => {
+    const { isHexMemo, memo } = this.state;
+
+    if (!memo || !isHexMemo) return true;
+
+    return isHex(memo);
   };
 
   render() {
@@ -722,6 +741,8 @@ class Component extends PureComponent<Props, State> {
 
     const arrowUpIcon = theme.mode === DARK ? ArrowUpIconDark : ArrowUpIconLight;
 
+    const isValidMemo = this.isMemoContentValid();
+
     return (
       <RowComponent id='send-wrapper' justifyContent='space-between'>
         <FormWrapper>
@@ -730,7 +751,10 @@ class Component extends PureComponent<Props, State> {
             onChange={this.handleChange('from')}
             value={from}
             placeholder='Select a address'
-            options={addresses.map(addr => ({ value: addr, label: addr }))}
+            options={addresses.map(({ address, balance: addressBalance }) => ({
+              label: `[ ${formatNumber({ append: 'ZEC ', value: addressBalance })} ]  ${address}`,
+              value: address,
+            }))}
             capitalize={false}
           />
           <Label value='Amount' />
@@ -738,7 +762,7 @@ class Component extends PureComponent<Props, State> {
             <AmountInput
               renderRight={() => (
                 <MaxAvailableAmount
-                  onClick={() => this.handleChange('amount')(balance - (Number(fee) || 0))}
+                  onClick={() => this.handleChange('amount')(this.getMaxAmountWithoutFee())}
                   disabled={!from}
                 >
                   <MaxAvailableAmountImg src={arrowUpIcon} />
@@ -769,6 +793,7 @@ class Component extends PureComponent<Props, State> {
             placeholder='Enter a text here'
             name='memo'
           />
+          {!isValidMemo && <TextComponent value='Please enter a valid hexadecimal memo' />}
           <ActionsWrapper>
             <ShowFeeButton
               id='send-show-additional-options-button'
@@ -899,11 +924,7 @@ class Component extends PureComponent<Props, State> {
               </ModalContent>
             )}
           </ConfirmDialogComponent>
-          <FormButton
-            label='Clear Form'
-            variant='secondary'
-            onClick={this.reset}
-          />
+          <FormButton label='Clear Form' variant='secondary' onClick={this.reset} />
         </SendWrapper>
       </RowComponent>
     );

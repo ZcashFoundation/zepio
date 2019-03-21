@@ -99,6 +99,14 @@ createTestServer({
         return res.send({
           result: 5,
         });
+      case 'z_getnewaddress':
+        return res.send({
+          result: 'zs1z7rejlpsa98s2rrrfkwmaxu53e4ue0ulcrw0h4x5g8jl04tak0d3mm47vdtahatqrlkngh9soy',
+        });
+      case 'getnewaddress':
+        return res.send({
+          result: 't1VpYecBW4UudbGcy4ufh61eWxQCoFaUrPs',
+        });
       default:
         return null;
     }
