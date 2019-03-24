@@ -15,6 +15,7 @@ import ScanIconLight from '../assets/images/scan_icon_light.svg';
 import { DARK } from '../constants/themes';
 
 import { formatNumber } from '../utils/format-number';
+import { getCoinName } from '../utils/get-coin-name';
 
 const AddressWrapper = styled.div`
   align-items: center;
@@ -204,13 +205,15 @@ class Component extends PureComponent<Props, State> {
 
     const copyIcon = theme.mode === DARK ? CopyIconDark : CopyIconLight;
 
+    const coinName = getCoinName();
+
     return (
       <ColumnComponent id='wallet-address' width='100%'>
         <AddressWrapper>
           <InnerWrapper>
             <AddressBalance
               id='wallet-address-balance'
-              value={formatNumber({ append: 'ZEC ', value: balance })}
+              value={formatNumber({ append: `${coinName} `, value: balance })}
             />
             <Address
               id='wallet-address-text'
@@ -241,14 +244,12 @@ class Component extends PureComponent<Props, State> {
               <QRCode value={address} />
             </QRCodeWrapper>
             <AddressDetailsWrapper>
-              <AddressDetailsLabel>
-                Address
-              </AddressDetailsLabel>
+              <AddressDetailsLabel>Address</AddressDetailsLabel>
               <AddressDetailsValue value={address} />
-              <AddressDetailsLabel>
-                Funds
-              </AddressDetailsLabel>
-              <AddressDetailsValue value={formatNumber({ append: 'ZEC ', value: balance })} />
+              <AddressDetailsLabel>Funds</AddressDetailsLabel>
+              <AddressDetailsValue
+                value={formatNumber({ append: `${coinName} `, value: balance })}
+              />
             </AddressDetailsWrapper>
           </QRCodeContainer>
         )}

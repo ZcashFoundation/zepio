@@ -20,6 +20,7 @@ import { ColumnComponent } from './column';
 
 import { formatNumber } from '../utils/format-number';
 import { openExternal } from '../utils/open-external';
+import { getCoinName } from '../utils/get-coin-name';
 
 const Wrapper = styled.div`
   width: 460px;
@@ -144,6 +145,7 @@ const Component = ({
   const isReceived = type === 'receive';
   const receivedIcon = theme.mode === DARK ? ReceivedIconDark : ReceivedIconLight;
   const sentIcon = theme.mode === DARK ? SentIconDark : SentIconLight;
+  const coinName = getCoinName();
 
   return (
     <Wrapper>
@@ -159,7 +161,7 @@ const Component = ({
           isBold
           size={2.625}
           value={formatNumber({
-            append: `${isReceived ? '+' : '-'}ZEC `,
+            append: `${isReceived ? '+' : '-'}${coinName} `,
             value: amount,
           })}
           color={
@@ -194,7 +196,7 @@ const Component = ({
                 ? 'N/A'
                 : formatNumber({
                   value: new BigNumber(fees).toFormat(4),
-                  append: 'ZEC ',
+                  append: `${coinName} `,
                 })
             }
           />
