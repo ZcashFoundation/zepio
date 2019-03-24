@@ -29,7 +29,6 @@ const InnerWrapperBottom = styled.div`
   background-color: ${props => props.theme.colors.sidebarItemHoveredBg};
   padding-bottom: 3px;
   border-top: 1px solid ${props => props.theme.colors.sidebarBorderRight};
-
 `;
 
 const DetailsItemWrapper = styled.div`
@@ -66,14 +65,8 @@ const DetailsItemValue = styled.div`
 /* eslint-disable max-len */
 type StyledLinkProps = PropsWithTheme<{ isActive: boolean }>;
 const StyledLink = styled.a`
-  color: ${(props: StyledLinkProps) => (props.isActive
-    ? props.theme.colors.sidebarItemActive
-    : props.theme.colors.sidebarItem
-  )};
-  background-color: ${(props: StyledLinkProps) => (props.isActive
-    ? props.theme.colors.sidebarItemHoveredBg
-    : 'transparent'
-  )};
+  color: ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarItemActive : props.theme.colors.sidebarItem)};
+  background-color: ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarItemHoveredBg : 'transparent')};
   font-size: ${(props: StyledLinkProps) => `${props.theme.fontSize.regular}em`};
   text-decoration: none;
   font-weight: ${(props: StyledLinkProps) => String(props.theme.fontWeight.bold)};
@@ -88,15 +81,19 @@ const StyledLink = styled.a`
   outline: none;
   transition: all 0.03s ${(props: StyledLinkProps) => props.theme.transitionEase};
   border-right: ${(props: StyledLinkProps) => (props.isActive ? `3px solid ${props.theme.colors.sidebarActiveItemBorder}` : 'none')};
-  border-top: 1px solid ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarBorderRight : 'transparent')};
-  border-bottom: 1px solid ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarBorderRight : 'transparent')};
+  border-top: 1px solid
+    ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarBorderRight : 'transparent')};
+  border-bottom: 1px solid
+    ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarBorderRight : 'transparent')};
 
   &:hover {
     border-top: 1px solid ${props => props.theme.colors.sidebarBorderRight};
     border-bottom: 1px solid ${props => props.theme.colors.sidebarBorderRight};
 
     background-color: ${(props: StyledLinkProps) => props.theme.colors.sidebarItemHoveredBg};
-    color: ${(props: StyledLinkProps) => (props.isActive ? props.theme.colors.sidebarItemActive : props.theme.colors.sidebarItemHovered)}
+    color: ${(props: StyledLinkProps) => (props.isActive
+    ? props.theme.colors.sidebarItemActive
+    : props.theme.colors.sidebarItemHovered)};
   }
 `;
 
@@ -128,7 +125,12 @@ type Props = {
 };
 
 export const Component = ({
-  options, location, history, theme, zcashNetwork, embeddedDaemon,
+  options,
+  location,
+  history,
+  theme,
+  zcashNetwork,
+  embeddedDaemon,
 }: Props) => (
   <Wrapper id='sidebar'>
     <InnerWrapperTop>
@@ -137,17 +139,15 @@ export const Component = ({
           ? location.pathname === item.route
           : location.pathname.startsWith(item.route);
 
+        if (!embeddedDaemon && item.route === '/console') return null;
+
         return (
           <StyledLink
             isActive={isActive}
             key={item.route}
             onClick={() => (isActive ? {} : history.push(item.route))}
           >
-            <Icon
-              isActive={isActive}
-              src={item.icon(isActive, theme.mode)}
-              alt={`${item.route}`}
-            />
+            <Icon isActive={isActive} src={item.icon(isActive, theme.mode)} alt={`${item.route}`} />
             {item.label}
           </StyledLink>
         );
@@ -155,20 +155,12 @@ export const Component = ({
     </InnerWrapperTop>
     <InnerWrapperBottom>
       <DetailsItemWrapper>
-        <DetailsItemLabel>
-          Daemon
-        </DetailsItemLabel>
-        <DetailsItemValue>
-          {embeddedDaemon ? 'Built-in' : 'Custom'}
-        </DetailsItemValue>
+        <DetailsItemLabel>Daemon</DetailsItemLabel>
+        <DetailsItemValue>{embeddedDaemon ? 'Built-in' : 'Custom'}</DetailsItemValue>
       </DetailsItemWrapper>
       <DetailsItemWrapper>
-        <DetailsItemLabel>
-          Network
-        </DetailsItemLabel>
-        <DetailsItemValue>
-          {zcashNetwork}
-        </DetailsItemValue>
+        <DetailsItemLabel>Network</DetailsItemLabel>
+        <DetailsItemValue>{zcashNetwork}</DetailsItemValue>
       </DetailsItemWrapper>
     </InnerWrapperBottom>
   </Wrapper>
