@@ -1,10 +1,10 @@
 {
-  "name": "zec-react-wallet",
+  "name": "zepio-wallet",
   "version": "0.4.6",
-  "description": "Zcash Reference Wallet",
+  "description": "Zepio Wallet",
   "main": "config/main.js",
   "license": "MIT",
-  "homepage": "https://zfnd.org/",
+  "homepage": "https://zepiowallet.com",
   "scripts": {
     "start": "yarn check --integrity && concurrently \"cross-env BROWSER=none yarn dev\" \"wait-on http://0.0.0.0:8080 && yarn electron:dev\"",
     "dev": "webpack-dev-server --config config/webpack-dev.config.js --mode development --open --hot",
@@ -140,7 +140,7 @@
   ],
   "build": {
     "appId": "com.zcashfoundation",
-    "productName": "ZEC Wallet",
+    "productName": "Zepio Wallet",
     "asar": true,
     "directories": {
       "buildResources": "build",
