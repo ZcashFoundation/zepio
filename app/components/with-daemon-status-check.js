@@ -24,7 +24,7 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
     state = {
       isRunning: false,
       progress: 0,
-      message: 'Zepio Wallet Starting',
+      message: 'Zepio Starting',
     };
 
     componentDidMount() {
@@ -64,7 +64,7 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
           }
         })
         .catch((error) => {
-          const statusMessage = error.message === 'Something went wrong' ? 'Zepio Wallet Starting' : error.message;
+          const statusMessage = error.message === 'Something went wrong' ? 'Zepio Starting' : error.message;
 
           const isRpcOff = Math.trunc(error.statusCode / 100) === 5;
 

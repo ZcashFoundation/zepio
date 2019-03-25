@@ -71,7 +71,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     return reject(new Error(err));
   }
 
-  if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', 'Zepio Wallet Starting');
+  if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', 'Zepio Starting');
   log('Fetch Params finished!');
   store.set('DAEMON_FETCHING_PARAMS', false);
 

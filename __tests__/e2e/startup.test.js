@@ -15,11 +15,11 @@ describe('Startup', () => {
   test('should open the window', () => expect(app.client.getWindowCount()).resolves.toEqual(1));
 
   test('should have the right title', () => {
-    expect(app.client.getTitle()).resolves.toEqual('Zepio Wallet');
+    expect(app.client.getTitle()).resolves.toEqual('Zepio');
   });
 
-  test('should show the text "Zepio Wallet Starting" in loading screen', async () => expect(app.client.element('#loading-screen:first-child p').getHTML()).resolves.toEqual(
-    expect.stringContaining('Zepio Wallet Starting'),
+  test('should show the text "Zepio Starting" in loading screen', async () => expect(app.client.element('#loading-screen:first-child p').getHTML()).resolves.toEqual(
+    expect.stringContaining('Zepio Starting'),
   ));
 
   test('should show the zcash logo in loading screen', () => expect(app.client.getAttribute('#loading-screen:first-child img', 'src')).resolves.toEqual(
