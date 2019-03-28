@@ -52,7 +52,9 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
   updateZcashNetwork: (newNetwork) => {
     electronStore.set(ZCASH_NETWORK, newNetwork);
 
-    electron.remote.app.relaunch();
+    electron.remote.app.relaunch({
+      args: Array.from(new Set(electron.remote.process.argv.slice(1).concat(['--relaunch']))),
+    });
     electron.remote.app.quit();
   },
 });

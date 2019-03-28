@@ -1,14 +1,13 @@
 // @flow
 
 import React from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 import { TextComponent } from './text';
 import { RowComponent } from './row';
 
 import { formatNumber } from '../utils/format-number';
-
-import { appTheme } from '../theme';
+import { getCoinName } from '../utils/get-coin-name';
 
 const Wrapper = styled.div`
   display: flex;
@@ -52,43 +51,49 @@ type Props = {
   shielded: number,
   transparent: number,
   zecPrice: number,
+  theme: AppTheme,
 };
 
-export const WalletSummaryComponent = ({
-  total, shielded, transparent, zecPrice,
-}: Props) => (
-  <Wrapper>
-    <AllAddresses value='ALL ADDRESSES' isBold />
-    <ValueBox>
-      <TextComponent
-        size={appTheme.fontSize.medium * 2.5}
-        value={`ZEC ${formatNumber({ value: total })}`}
-        isBold
-      />
-      <USDValue
-        value={`USD $${formatNumber({ value: total * zecPrice })}`}
-        size={appTheme.fontSize.medium * 2}
-      />
-    </ValueBox>
-    <RowComponent>
+export const Component = ({
+  total, shielded, transparent, zecPrice, theme,
+}: Props) => {
+  const coinName = getCoinName();
+  return (
+    <Wrapper>
+      <AllAddresses value='ALL ADDRESSES' isBold />
       <ValueBox>
-        <ShieldedValue value='&#9679; SHIELDED' isBold size={appTheme.fontSize.small} />
         <TextComponent
-          value={`ZEC ${formatNumber({ value: shielded })}`}
+          size={theme.fontSize.medium * 2.5}
+          value={`${coinName} ${formatNumber({ value: total })}`}
           isBold
-          size={appTheme.fontSize.medium}
         />
-        <USDValue value={`USD $${formatNumber({ value: shielded * zecPrice })}`} />
-      </ValueBox>
-      <ValueBox>
-        <Label value='&#9679; TRANSPARENT' isBold size={appTheme.fontSize.small} />
-        <TextComponent
-          value={`ZEC ${formatNumber({ value: transparent })}`}
-          isBold
-          size={appTheme.fontSize.medium}
+        <USDValue
+          value={`USD $${formatNumber({ value: total * zecPrice })}`}
+          size={theme.fontSize.medium * 2}
         />
-        <USDValue value={`USD $${formatNumber({ value: transparent * zecPrice })}`} />
       </ValueBox>
-    </RowComponent>
-  </Wrapper>
-);
+      <RowComponent>
+        <ValueBox>
+          <ShieldedValue value='&#9679; SHIELDED' isBold size={theme.fontSize.small} />
+          <TextComponent
+            value={`${coinName} ${formatNumber({ value: shielded })}`}
+            isBold
+            size={theme.fontSize.medium}
+          />
+          <USDValue value={`USD $${formatNumber({ value: shielded * zecPrice })}`} />
+        </ValueBox>
+        <ValueBox>
+          <Label value='&#9679; TRANSPARENT' isBold size={theme.fontSize.small} />
+          <TextComponent
+            value={`${coinName} ${formatNumber({ value: transparent })}`}
+            isBold
+            size={theme.fontSize.medium}
+          />
+          <USDValue value={`USD $${formatNumber({ value: transparent * zecPrice })}`} />
+        </ValueBox>
+      </RowComponent>
+    </Wrapper>
+  );
+};
+
+export const WalletSummaryComponent = withTheme(Component);

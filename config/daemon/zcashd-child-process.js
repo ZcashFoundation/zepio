@@ -12,7 +12,7 @@ import uuid from 'uuid/v4';
 import findProcess from 'find-process';
 /* eslint-disable-next-line import/named */
 import { mainWindow } from '../electron';
-
+import waitForDaemonClose from './wait-for-daemon-close';
 import getBinariesPath from './get-binaries-path';
 import getOsFolder from './get-os-folder';
 import getDaemonName from './get-daemon-name';
@@ -71,9 +71,15 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     return reject(new Error(err));
   }
 
-  if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', 'ZEC Wallet Starting');
+  if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', 'Zepio Starting');
   log('Fetch Params finished!');
   store.set('DAEMON_FETCHING_PARAMS', false);
+
+  // In case of --relaunch on argv, we need wait to close the old zcash daemon
+  // a workaround is use a interval to check if there is a old process running
+  if (process.argv.find(arg => arg === '--relaunch')) {
+    await waitForDaemonClose(ZCASHD_PROCESS_NAME);
+  }
 
   const [, isRunning] = await eres(processExists(ZCASHD_PROCESS_NAME));
 

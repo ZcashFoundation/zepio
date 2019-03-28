@@ -22,6 +22,7 @@ import { ConfirmDialogComponent } from '../components/confirm-dialog';
 import { formatNumber } from '../utils/format-number';
 import { ascii2hex } from '../utils/ascii-to-hexadecimal';
 import { isHex } from '../utils/is-hex';
+import { getCoinName } from '../utils/get-coin-name';
 
 import SentIcon from '../assets/images/transaction_sent_icon_dark.svg';
 import MenuIconDark from '../assets/images/menu_icon_dark.svg';
@@ -71,7 +72,7 @@ const AmountWrapper = styled.div`
   position: relative;
 
   &:before {
-    content: 'ZEC';
+    content: ${getCoinName()};
     font-family: ${props => props.theme.fontFamily};
     position: absolute;
     margin-top: 16px;
@@ -551,12 +552,13 @@ class Component extends PureComponent<Props, State> {
     if (!fee) return '0.0';
 
     const feeValue = new BigNumber(fee);
+    const coinName = getCoinName();
 
-    if (feeValue.isEqualTo(FEES.LOW)) return `Low ZEC ${feeValue.toString()}`;
-    if (feeValue.isEqualTo(FEES.MEDIUM)) return `Medium ZEC ${feeValue.toString()}`;
-    if (feeValue.isEqualTo(FEES.HIGH)) return `High ZEC ${feeValue.toString()}`;
+    if (feeValue.isEqualTo(FEES.LOW)) return `Low ${coinName} ${feeValue.toString()}`;
+    if (feeValue.isEqualTo(FEES.MEDIUM)) return `Medium ${coinName} ${feeValue.toString()}`;
+    if (feeValue.isEqualTo(FEES.HIGH)) return `High ${coinName} ${feeValue.toString()}`;
 
-    return `Custom ZEC ${feeValue.toString()}`;
+    return `Custom ${coinName} ${feeValue.toString()}`;
   };
 
   renderValidationStatus = () => {
@@ -703,6 +705,12 @@ class Component extends PureComponent<Props, State> {
     return isHex(memo);
   };
 
+  shouldShowMemoField = () => {
+    const { to } = this.state;
+
+    return to && to.startsWith('z');
+  };
+
   render() {
     const {
       addresses, balance, zecPrice, isSending, error, operationId, theme,
@@ -722,15 +730,16 @@ class Component extends PureComponent<Props, State> {
     const isEmpty = amount === '';
 
     const fixedAmount = isEmpty || new BigNumber(amount).eq(0) ? 0 : this.getAmountWithFee();
+    const coinName = getCoinName();
 
-    const zecBalance = formatNumber({ value: balance, append: 'ZEC ' });
+    const zecBalance = formatNumber({ value: balance, append: `${coinName} ` });
     const zecBalanceInUsd = formatNumber({
       value: new BigNumber(balance).times(zecPrice).toNumber(),
       append: 'USD $',
     });
     const valueSent = formatNumber({
       value: new BigNumber(fixedAmount).toFormat(4),
-      append: 'ZEC ',
+      append: `${coinName} `,
     });
     const valueSentInUsd = formatNumber({
       value: new BigNumber(fixedAmount).times(zecPrice).toNumber(),
@@ -741,6 +750,7 @@ class Component extends PureComponent<Props, State> {
 
     const arrowUpIcon = theme.mode === DARK ? ArrowUpIconDark : ArrowUpIconLight;
 
+    const shouldShowMemoField = this.shouldShowMemoField();
     const isValidMemo = this.isMemoContentValid();
 
     return (
@@ -752,7 +762,10 @@ class Component extends PureComponent<Props, State> {
             value={from}
             placeholder='Select a address'
             options={addresses.map(({ address, balance: addressBalance }) => ({
-              label: `[ ${formatNumber({ append: 'ZEC ', value: addressBalance })} ]  ${address}`,
+              label: `[ ${formatNumber({
+                append: `${coinName} `,
+                value: addressBalance,
+              })} ]  ${address}`,
               value: address,
             }))}
             capitalize={false}
@@ -772,7 +785,7 @@ class Component extends PureComponent<Props, State> {
               type='number'
               onChange={this.handleChange('amount')}
               value={String(amount)}
-              placeholder='ZEC 0.0'
+              placeholder={`${coinName} 0.0`}
               min={0.01}
               name='amount'
             />
@@ -785,14 +798,18 @@ class Component extends PureComponent<Props, State> {
             renderRight={to ? this.renderValidationStatus : () => null}
             name='to'
           />
-          <Label value='Memo' />
-          <InputComponent
-            onChange={this.handleChange('memo')}
-            value={memo}
-            inputType='textarea'
-            placeholder='Enter a text here'
-            name='memo'
-          />
+          {shouldShowMemoField && (
+            <>
+              <Label value='Memo' />
+              <InputComponent
+                onChange={this.handleChange('memo')}
+                value={memo}
+                inputType='textarea'
+                placeholder='Enter a text here'
+                name='memo'
+              />
+            </>
+          )}
           {!isValidMemo && <TextComponent value='Please enter a valid hexadecimal memo' />}
           <ActionsWrapper>
             <ShowFeeButton
@@ -805,16 +822,18 @@ class Component extends PureComponent<Props, State> {
               <SeeMoreIcon src={seeMoreIcon} alt='Show more icon' />
               <TextComponent value={`${showFee ? 'Hide' : 'Show'} Additional Options`} />
             </ShowFeeButton>
-            <HexadecimalWrapper>
-              <Checkbox
-                onChange={event => this.setState({ isHexMemo: event.target.checked })}
-                checked={isHexMemo}
-              />
-              <HexadecimalText
-                onClick={() => this.setState(prevState => ({ isHexMemo: !prevState.isHexMemo }))}
-                value='Hexadecimal Memo'
-              />
-            </HexadecimalWrapper>
+            {shouldShowMemoField && (
+              <HexadecimalWrapper>
+                <Checkbox
+                  onChange={event => this.setState({ isHexMemo: event.target.checked })}
+                  checked={isHexMemo}
+                />
+                <HexadecimalText
+                  onClick={() => this.setState(prevState => ({ isHexMemo: !prevState.isHexMemo }))}
+                  value='Hexadecimal Memo'
+                />
+              </HexadecimalWrapper>
+            )}
           </ActionsWrapper>
           <RevealsMain>
             <Transition

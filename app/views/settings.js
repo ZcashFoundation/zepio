@@ -1,5 +1,5 @@
 // @flow
-
+/* eslint-disable no-unused-vars */
 /* eslint-disable import/no-extraneous-dependencies */
 import fs from 'fs';
 import os from 'os';
@@ -392,8 +392,8 @@ export class SettingsView extends PureComponent<Props, State> {
             options={themeOptions}
           />
         </ThemeSelectWrapper>
-
-        <ConfirmDialogComponent
+        {/* Hidden due to Sapling inability to export view keys on sapling addresses yet */}
+        {/* <ConfirmDialogComponent
           title={EXPORT_VIEW_KEYS_TITLE}
           renderTrigger={toggleVisibility => (
             <SettingsWrapper>
@@ -434,7 +434,7 @@ export class SettingsView extends PureComponent<Props, State> {
               )}
             </ModalContent>
           )}
-        </ConfirmDialogComponent>
+        </ConfirmDialogComponent> */}
 
         <SettingsWrapper>
           <ConfirmDialogComponent

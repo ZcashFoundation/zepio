@@ -18,6 +18,7 @@ import { ModalComponent } from './modal';
 import { TransactionDetailsComponent } from './transaction-details';
 
 import { formatNumber } from '../utils/format-number';
+import { getCoinName } from '../utils/get-coin-name';
 
 const Wrapper = styled(RowComponent)`
   background-color: ${props => props.theme.colors.transactionItemBg};
@@ -90,11 +91,13 @@ const Component = ({
   transactionId,
   theme,
 }: Transaction) => {
+  const coinName = getCoinName();
+
   const isReceived = type === 'receive';
   const transactionTime = dateFns.format(new Date(date), 'HH:mm A');
   const transactionValueInZec = formatNumber({
     value: amount,
-    append: `${isReceived ? '+' : '-'}ZEC `,
+    append: `${isReceived ? '+' : '-'}${coinName} `,
   });
   const transactionValueInUsd = formatNumber({
     value: amount * zecPrice,
@@ -117,15 +120,8 @@ const Component = ({
             <RowComponent alignItems='center'>
               <Icon src={isReceived ? receivedIcon : sentIcon} alt='Transaction Type Icon' />
               <TransactionColumn>
-                <TransactionTypeLabel
-                  isReceived={isReceived}
-                  value={type}
-                  isBold
-                />
-                <TransactionLabel
-                  value={transactionTime}
-                  isReceived={isReceived}
-                />
+                <TransactionTypeLabel isReceived={isReceived} value={type} isBold />
+                <TransactionLabel value={transactionTime} isReceived={isReceived} />
               </TransactionColumn>
             </RowComponent>
             <TransactionAddress value={address} />
@@ -134,11 +130,7 @@ const Component = ({
             <TextComponent
               isBold
               value={transactionValueInZec}
-              color={
-                isReceived
-                  ? theme.colors.transactionReceived
-                  : theme.colors.transactionSent
-              }
+              color={isReceived ? theme.colors.transactionReceived : theme.colors.transactionSent}
             />
             <TransactionLabel value={transactionValueInUsd} />
           </ColumnComponent>
