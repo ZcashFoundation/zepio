@@ -7,6 +7,7 @@ import { ColumnComponent } from './column';
 import { TextComponent } from './text';
 import { QRCode } from './qrcode';
 import { CopyToClipboard } from './copy-to-clipboard';
+import { Button } from './button';
 
 import CopyIconDark from '../assets/images/copy_icon_dark.svg';
 import CopyIconLight from '../assets/images/copy_icon_light.svg';
@@ -164,7 +165,38 @@ const AddressDetailsLabel = styled.div`
 const AddressDetailsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px 20px;
+  padding: 10px 20px 0 20px;
+`;
+
+const FormButton = styled(Button)`
+  width: 100%;
+  margin: 5px 0;
+
+  &:first-child {
+    margin-top: 0;
+  }
+`;
+
+const Column = styled.div`
+  display: flex;
+  padding-bottom: 10px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+`;
+
+const SecondaryColumn = styled(Column)`
+  padding-bottom: 0;
+`;
+
+const Row = styled(Column)`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
+
+const ButtonWrapper = styled.div`
+  max-width: 200px;
 `;
 
 type Props = {
@@ -175,6 +207,7 @@ type Props = {
 
 type State = {
   showCopiedTooltip: boolean,
+  isSecondaryCopied: boolean,
   showQRCode: boolean,
 };
 
@@ -182,6 +215,7 @@ class Component extends PureComponent<Props, State> {
   state = {
     showQRCode: false,
     showCopiedTooltip: false,
+    isSecondaryCopied: false,
   };
 
   showMoreInfo = () => this.setState(() => ({ showQRCode: true }));
@@ -192,14 +226,21 @@ class Component extends PureComponent<Props, State> {
 
   hideTooltip = () => this.setState(() => ({ showCopiedTooltip: false }));
 
+  unCopySecondary = () => this.setState(() => ({ isSecondaryCopied: false }));
+
   copyAddress = () => this.setState(
     () => ({ showCopiedTooltip: true }),
     () => setTimeout(() => this.hideTooltip(), 1500),
   );
 
+  copySecondaryAddress = () => this.setState(
+    () => ({ isSecondaryCopied: true }),
+    () => setTimeout(() => this.unCopySecondary(), 1500),
+  );
+
   render() {
     const { address, balance, theme } = this.props;
-    const { showQRCode, showCopiedTooltip } = this.state;
+    const { showQRCode, showCopiedTooltip, isSecondaryCopied } = this.state;
 
     const qrCodeIcon = theme.mode === DARK ? ScanIconDark : ScanIconLight;
 
@@ -244,12 +285,29 @@ class Component extends PureComponent<Props, State> {
               <QRCode value={address} />
             </QRCodeWrapper>
             <AddressDetailsWrapper>
-              <AddressDetailsLabel>Address</AddressDetailsLabel>
-              <AddressDetailsValue value={address} />
-              <AddressDetailsLabel>Funds</AddressDetailsLabel>
-              <AddressDetailsValue
-                value={formatNumber({ append: `${coinName} `, value: balance })}
-              />
+              <Column>
+                <AddressDetailsLabel>Address</AddressDetailsLabel>
+                <AddressDetailsValue value={address} />
+              </Column>
+              <Row>
+                <SecondaryColumn>
+                  <AddressDetailsLabel>Funds</AddressDetailsLabel>
+                  <AddressDetailsValue
+                    value={formatNumber({ append: `${coinName} `, value: balance })}
+                  />
+                </SecondaryColumn>
+                <ButtonWrapper>
+                  <CopyToClipboard text={address} onCopy={this.copySecondaryAddress}>
+                    <FormButton
+                      id='send-submit-button'
+                      label={isSecondaryCopied ? 'Copied!' : 'Copy Address'}
+                      variant='primary'
+                      focused
+                      isFluid
+                    />
+                  </CopyToClipboard>
+                </ButtonWrapper>
+              </Row>
             </AddressDetailsWrapper>
           </QRCodeContainer>
         )}

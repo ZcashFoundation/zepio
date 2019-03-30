@@ -54,6 +54,8 @@ const createWindow = () => {
   });
 
   mainWindow = new BrowserWindow({
+    minWidth: 700,
+    minHeight: 600,
     width: 1000,
     height: 660,
     transparent: false,
@@ -61,7 +63,8 @@ const createWindow = () => {
     resizable: true,
     webPreferences: {
       devTools: true,
-      webSecurity: false,
+      // devTools: false,
+      webSecurity: true,
     },
   });
 

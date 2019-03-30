@@ -1,6 +1,6 @@
 # Development Workflow
 
-This repository follow the GitFlow paradigm. If you are unfamiliar with GitFlow, please read [Atlassian's GitFlow documentation](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) illustrating the concepts and its advantages.
+This repository aims to follow the GitFlow paradigm. If you are unfamiliar with GitFlow, please read [Atlassian's GitFlow documentation](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) illustrating the concepts and its advantages.
 
 # Branching
 
@@ -43,18 +43,8 @@ docs: commit messages doc
 
 ## Pull Requests
 
-When it comes time to open a PR, make sure that the PR covers all development in the current ticket being worked on. Do your due diligence and make sure everything is working to the best of your knowledge, on every operating system you can test on. If everything is good to go a PR may be opened.
+### Title
 
-#### Title
+The title of the PR should have the type shown (feature, hotfix, chore, etc..) as well as a brief description of the PR's purpose. Example
 
-The title of the PR should have the type shown (feature, hotfix, chore, etc..) as well as a brief description of the PR's purpose. If this PR relates directly to a ticket (as they ideally should), add the ticket number in as well. Example
-
-`[feature] [ZC-12] Add Infinite Scroll`
-
-In some cases there may be a reason that a PR should be opened for discussion among all engineers. If this is the case you should prefix your PR's with [WIP] Example
-
-`[WIP] [feature] [ZC-12] Add Infinite Scroll`
-
-## Linting
-
-All prjects containing Javascript must be linted. This helps us deliver clean and uniform code. ESLint will be the linter used on all projects, and `.eslintrc` file will provide the linting rules to follow.
+`[feature] Add Infinite Scroll`

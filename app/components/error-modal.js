@@ -36,7 +36,7 @@ const ChildrenWrapper = styled.div`
 `;
 
 const Message = styled(TextComponent)`
-  margin: 15px 0;
+  margin: 35px 0;
 `;
 
 const ErrorImage = styled.img`
@@ -86,7 +86,7 @@ export class ErrorModalComponent extends PureComponent<Props> {
           <ChildrenWrapper>
             <ErrorImage src={ErrorIcon} alt='Error Icon' />
             <Message value={message} />
-            <Button label='Ok!' onClick={onRequestClose} />
+            <Button label='Ok' onClick={onRequestClose} />
           </ChildrenWrapper>
         </ModalWrapper>,
         this.element,

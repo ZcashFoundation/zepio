@@ -1,6 +1,6 @@
-# Zcash Reference Wallet
+# Zepio | ZEC Wallet
 
-Reference Wallet for the Zcash Network
+Zepio is a modern cross-platform full-node desktop wallet for the Zcash Network.
 
 [![CircleCI](https://circleci.com/gh/andrerfneves/zec-react-wallet.svg?style=svg&circle-token=abde48de664026a5d03d4b806c904c8ce5e45aa0)](https://circleci.com/gh/andrerfneves/zec-react-wallet) ![Flow Coverage](./public/flow-coverage-badge.svg)
 
@@ -32,10 +32,6 @@ yarn start
 
 This will kickstart the webpack development server and serve the app on port 8080, as well as launch the Electron wrapper for the application, which houses the `zcashd` daemon process.
 
-## Buiding & Distribution
-
-TBD
-
 ## License
 
-© Zcash Foundation 2018
+MIT © Zcash Foundation 2019

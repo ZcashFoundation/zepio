@@ -13,8 +13,17 @@ const Wrapper = styled.div`
   padding: 30px 0;
 `;
 
+const Text = styled(TextComponent)`
+  margin: 0 8.5px 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: ${props => props.theme.colors.transactionLabelText};
+  font-size: 12px;
+  font-weight: 700;
+`;
+
 export const EmptyTransactionsComponent = () => (
   <Wrapper data-testid='NoTransactions'>
-    <TextComponent value='No transactions!' />
+    <Text value='No transactions!' />
   </Wrapper>
 );
