@@ -1,4 +1,5 @@
 // @flow
+
 import type { Action } from '../../types/redux';
 
 export const SEND_TRANSACTION = 'SEND_TRANSACTION';

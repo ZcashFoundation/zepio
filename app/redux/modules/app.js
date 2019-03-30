@@ -1,4 +1,5 @@
 // @flow
+
 import electronStore from '../../../config/electron-store';
 
 import { ZCASH_NETWORK, EMBEDDED_DAEMON } from '../../constants/zcash-network';

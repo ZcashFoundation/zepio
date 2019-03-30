@@ -72,7 +72,7 @@ const AmountWrapper = styled.div`
   position: relative;
 
   &:before {
-    content: ${getCoinName()};
+    content: '${getCoinName()}';
     font-family: ${props => props.theme.fontFamily};
     position: absolute;
     margin-top: 16px;
