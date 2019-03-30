@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { BigNumber } from 'bignumber.js';
 
 import { ReceiveView } from '../views/receive';
+import { SAPLING } from '../constants/zcash-network';
 
 import {
   loadAddressesSuccess,
@@ -74,7 +75,7 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
   },
   getNewAddress: async ({ type }) => {
     const [error, address] = await eres(
-      type === 'shielded' ? rpc.z_getnewaddress() : rpc.getnewaddress(''),
+      type === 'shielded' ? rpc.z_getnewaddress(SAPLING) : rpc.getnewaddress(''),
     );
 
     if (error || !address) return dispatch(getNewAddressError({ error: 'Unable to generate a new address' }));

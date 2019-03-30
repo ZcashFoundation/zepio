@@ -1,4 +1,5 @@
 // @flow
+
 import { typeof app as ElectronApp, type electron$BrowserWindow, remote } from 'electron'; // eslint-disable-line
 import store from './electron-store';
 

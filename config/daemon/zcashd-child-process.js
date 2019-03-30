@@ -10,6 +10,7 @@ import type { ChildProcess } from 'child_process';
 import eres from 'eres';
 import uuid from 'uuid/v4';
 import findProcess from 'find-process';
+
 /* eslint-disable-next-line import/named */
 import { mainWindow } from '../electron';
 import waitForDaemonClose from './wait-for-daemon-close';
