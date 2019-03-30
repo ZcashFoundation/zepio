@@ -11,6 +11,7 @@ import { DashboardView } from '../views/dashboard';
 
 import rpc from '../../services/api';
 import store from '../../config/electron-store';
+import { SAPLING } from '../constants/zcash-network';
 import { listShieldedTransactions } from '../../services/shielded-transactions';
 import { sortByDescend } from '../utils/sort-by-descend';
 
@@ -70,7 +71,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     ])([...transactions, ...listShieldedTransactions()]);
 
     if (!zAddresses.length) {
-      const [, newZAddress] = await eres(rpc.z_getnewaddress());
+      const [, newZAddress] = await eres(rpc.z_getnewaddress(SAPLING));
 
       if (newZAddress) zAddresses.push(newZAddress);
     }

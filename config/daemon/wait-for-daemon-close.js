@@ -1,4 +1,5 @@
 // @flow
+
 import eres from 'eres';
 import processExists from 'process-exists';
 

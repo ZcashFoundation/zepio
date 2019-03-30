@@ -1,4 +1,5 @@
 // @flow
+
 import uniqBy from 'lodash.uniqby';
 import type { Action } from '../../types/redux';
 import type { Transaction } from '../../components/transaction-item';
