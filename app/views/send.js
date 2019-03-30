@@ -286,6 +286,15 @@ const HexadecimalText = styled(TextComponent)`
   white-space: nowrap;
 `;
 
+const MemoValidationText = styled(TextComponent)`
+  padding: 10px 5px;
+  margin: 0px 0 8.5px 0;
+  text-transform: uppercase;
+  color: ${props => props.theme.colors.transactionSent};
+  font-size: 10px;
+  font-weight: 700;
+`;
+
 const SimpleTooltip = styled.div`
   background: ${props => props.theme.colors.walletAddressTooltipBg};
   position: absolute;
@@ -810,7 +819,7 @@ class Component extends PureComponent<Props, State> {
               />
             </>
           )}
-          {!isValidMemo && <TextComponent value='Please enter a valid hexadecimal memo' />}
+          {!isValidMemo && <MemoValidationText value='Please enter a valid hexadecimal memo' />}
           <ActionsWrapper>
             <ShowFeeButton
               id='send-show-additional-options-button'
