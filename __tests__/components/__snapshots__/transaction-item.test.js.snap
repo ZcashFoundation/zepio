@@ -46,7 +46,7 @@ exports[`<TransactionItem /> should render a transaction item correctly 1`] = `
       <p
         class="sc-htpNat jAbxuE"
       >
-        -ZEC 0.865
+        -TAZ 0.865
       </p>
       <p
         class="sc-kgoBCf goviHQ sc-htpNat pRhzD"
