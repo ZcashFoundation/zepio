@@ -10,7 +10,7 @@ const transactions = [];
 const sleep = (time: number) => new Promise(resolve => setTimeout(resolve, time));
 
 createTestServer({
-  httpPort: '18232',
+  httpPort: '8232',
 }).then(async (server) => {
   console.log('[MOCK RPC API]', server.url); // eslint-disable-line
 
