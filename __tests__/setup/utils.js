@@ -4,14 +4,12 @@
 import electron from 'electron';
 import { Application } from 'spectron';
 
-export const TIMEOUT = 5000;
-
 export const getApp = () => new Application({
   path: electron,
   args: ['.'],
-  startTimeout: TIMEOUT,
-  waitTimeout: TIMEOUT,
-  quitTimeout: TIMEOUT,
+  startTimeout: 20000,
+  waitTimeout: 5000,
+  quitTimeout: 5000,
   env: {
     NODE_ENV: 'test',
   },
