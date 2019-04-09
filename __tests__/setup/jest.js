@@ -5,5 +5,5 @@ import '@babel/polyfill';
 require('jest-extended');
 
 // $FlowFixMe
-jest.DEFAULT_TIMEOUT_INTERVAL = 20000;
-jest.setTimeout(20000);
+jest.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jest.setTimeout(60000);

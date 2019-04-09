@@ -5,15 +5,15 @@ import { getApp } from '../setup/utils';
 const app = getApp();
 
 beforeEach(async () => {
-  await app.start().then(() => console.log('Started App'));
+  await app.start();
   await app.client.waitUntilWindowLoaded();
   await app.client.waitUntilTextExists('#sidebar', 'Send');
   await app.client.element('#sidebar a:nth-child(2)').click();
 });
 
-afterEach(() => {
+afterEach(async () => {
   if (app.isRunning()) {
-    app.stop();
+    await app.stop();
   }
 });
 

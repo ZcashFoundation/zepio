@@ -8,8 +8,9 @@ export const getApp = () => new Application({
   path: electron,
   args: ['.'],
   startTimeout: 20000,
-  waitTimeout: 5000,
-  quitTimeout: 5000,
+  waitTimeout: 10000,
+  quitTimeout: 10000,
+  connectionRetryCount: 30,
   env: {
     NODE_ENV: 'test',
   },
