@@ -5,13 +5,17 @@ import { getApp } from '../setup/utils';
 const app = getApp();
 
 beforeEach(async () => {
-  await app.start();
+  await app.start().then(() => console.log('Started App'));
   await app.client.waitUntilWindowLoaded();
   await app.client.waitUntilTextExists('#sidebar', 'Send');
   await app.client.element('#sidebar a:nth-child(2)').click();
 });
 
-afterEach(() => app.stop());
+afterEach(() => {
+  if (app.isRunning()) {
+    app.stop();
+  }
+});
 
 describe('Send', () => {
   test('should load "Send Page"', async () => {
