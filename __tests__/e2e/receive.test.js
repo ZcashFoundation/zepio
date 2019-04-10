@@ -28,7 +28,7 @@ describe('Receive', () => {
 
     expect(
       await app.client.getText('#receive-wrapper #wallet-address #wallet-address-balance'),
-    ).toEqual('ZEC 5');
+    ).toEqual('TAZ 5');
 
     expect(
       await app.client.element('#receive-wrapper #wallet-address #wallet-address-copy').isVisible(),
