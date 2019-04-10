@@ -34,27 +34,6 @@ const signBinaries = binaries => new Promise((resolve, reject) => {
 });
 
 (async () => {
-  const [, releasesResponse] = await eres(
-    octokit.repos.listReleases({
-      owner: OWNER,
-      repo: PROJECT,
-    }),
-  );
-
-  const releases = releasesResponse?.data;
-
-  if (!releases) {
-    console.log("Error: Can't get releases");
-    return;
-  }
-
-  const releaseWithSameTag = releases.find(cur => cur.tag_name === VERSION);
-
-  if (releaseWithSameTag) {
-    console.log('Warning: Already exists a release with that same tag, skipping');
-    return;
-  }
-
   console.log(`Creating release v${VERSION}`);
 
   const [createReleaseError, createReleaseResponse] = await eres(
@@ -67,7 +46,7 @@ const signBinaries = binaries => new Promise((resolve, reject) => {
   );
 
   if (createReleaseError) {
-    console.log('Error: ', createReleaseError);
+    console.log(createReleaseError);
     return;
   }
 
@@ -80,23 +59,24 @@ const signBinaries = binaries => new Promise((resolve, reject) => {
   const [, signaturesPath] = await eres(signBinaries(binaries.map(bin => bin.path)));
 
   if (!signaturesPath) {
-    console.log("Error: Can't sign files, please verify the output");
-    return;
+    throw new Error("Error: Can't sign files, please verify the output");
   }
 
   const filesToUpload = [...binaries, { path: signaturesPath, name: 'signatures.zip' }];
 
-  filesToUpload.forEach(async ({ path: fPath, name }) => {
-    const file = fs.readFileSync(fPath);
+  await Promise.all(
+    filesToUpload.map(async ({ path: fPath, name }) => {
+      const file = fs.readFileSync(fPath);
 
-    await octokit.repos.uploadReleaseAsset({
-      headers: {
-        'content-length': file.length,
-        'content-type': mime.lookup(fPath),
-      },
-      url: createReleaseResponse.data.upload_url,
-      name,
-      file: fs.createReadStream(fPath),
-    });
-  });
+      await octokit.repos.uploadReleaseAsset({
+        headers: {
+          'content-length': file.length,
+          'content-type': mime.lookup(fPath),
+        },
+        url: createReleaseResponse.data.upload_url,
+        name,
+        file: fs.createReadStream(fPath),
+      });
+    }),
+  );
 })();
