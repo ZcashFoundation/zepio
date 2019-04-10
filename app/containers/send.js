@@ -45,9 +45,10 @@ export type MapStateToProps = {|
   isSending: boolean,
   operationId: string | null,
   isToAddressValid: boolean,
+  nodeSyncType: string,
 |};
 
-const mapStateToProps = ({ sendStatus, receive }: AppState): MapStateToProps => ({
+const mapStateToProps = ({ sendStatus, receive, app }: AppState): MapStateToProps => ({
   balance: sendStatus.addressBalance,
   zecPrice: sendStatus.zecPrice,
   addresses: receive.addresses,
@@ -55,6 +56,7 @@ const mapStateToProps = ({ sendStatus, receive }: AppState): MapStateToProps => 
   isSending: sendStatus.isSending,
   operationId: sendStatus.operationId,
   isToAddressValid: sendStatus.isToAddressValid,
+  nodeSyncType: app.nodeSyncType,
 });
 
 export type MapDispatchToProps = {|
