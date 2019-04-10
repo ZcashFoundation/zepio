@@ -74,7 +74,7 @@ const signBinaries = binaries => new Promise((resolve, reject) => {
   const files = await fs.readdirSync(DIST_FOLDER);
 
   const binaries = files
-    // .filter(name => name.endsWith('.exe') || name.endsWith('.deb') || name.endsWith('.pkg'))
+    .filter(name => name.endsWith('.exe') || name.endsWith('.deb') || name.endsWith('.pkg'))
     .map(bin => ({ path: `${DIST_FOLDER}/${bin}`, name: bin }));
 
   const [, signaturesPath] = await eres(signBinaries(binaries.map(bin => bin.path)));
