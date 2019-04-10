@@ -2,6 +2,7 @@
 
 /* eslint-disable max-len */
 import React from 'react';
+import electron from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
 import styled, { withTheme } from 'styled-components';
 import type { Location, RouterHistory } from 'react-router-dom';
 
@@ -139,7 +140,9 @@ export const Component = ({
           ? location.pathname === item.route
           : location.pathname.startsWith(item.route);
 
-        if (!embeddedDaemon && item.route === '/console') return null;
+        if (electron.remote.process.env.NODE_ENV !== 'test') {
+          if (!embeddedDaemon && item.route === '/console') return null;
+        }
 
         return (
           <StyledLink
