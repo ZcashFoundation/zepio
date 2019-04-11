@@ -934,7 +934,7 @@ class Component extends PureComponent<Props, State> {
             onClose={this.reset}
             renderTrigger={toggle => (
               <SendButtonWrapper>
-                {nodeSyncType === NODE_SYNC_TYPES.READY ? null : (
+                {nodeSyncType !== NODE_SYNC_TYPES.READY && (
                   <SimpleTooltip>
                     <TooltipText value='Cannot send transaction until data is synced.' />
                   </SimpleTooltip>
