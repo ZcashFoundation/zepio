@@ -6,6 +6,7 @@ import styled, { keyframes, withTheme } from 'styled-components';
 import { TextComponent } from './text';
 
 import { DARK } from '../constants/themes';
+import { NODE_SYNC_TYPES } from '../constants/node-sync-types';
 
 import readyIconDark from '../assets/images/green_check_dark.png';
 import readyIconLight from '../assets/images/green_check_light.png';
@@ -71,7 +72,10 @@ class Component extends PureComponent<Props> {
 
   componentDidUpdate(prevProps: Props) {
     const { getBlockchainStatus, nodeSyncType } = this.props;
-    if (prevProps.nodeSyncType === 'syncing' && nodeSyncType === 'ready') {
+    if (
+      prevProps.nodeSyncType === NODE_SYNC_TYPES.SYNCING
+      && nodeSyncType === NODE_SYNC_TYPES.READY
+    ) {
       // if the status is "ready", we can increase the interval to avoid useless rpc calls
       this.cleanUpdateInterval();
       this.timer = setInterval(() => getBlockchainStatus(), MINUTE_IN_MILI);
@@ -91,7 +95,7 @@ class Component extends PureComponent<Props> {
 
   isSyncing = () => {
     const { nodeSyncType } = this.props;
-    return nodeSyncType === 'syncing';
+    return nodeSyncType === NODE_SYNC_TYPES.SYNCING;
   };
 
   getReadyIcon = () => {
@@ -113,11 +117,11 @@ class Component extends PureComponent<Props> {
     const { nodeSyncType } = this.props;
 
     switch (nodeSyncType) {
-      case 'syncing':
+      case NODE_SYNC_TYPES.SYNCING:
         return this.getSyncingIcon();
-      case 'ready':
+      case NODE_SYNC_TYPES.READY:
         return this.getReadyIcon();
-      case 'error':
+      case NODE_SYNC_TYPES.ERROR:
         return this.getErrorIcon();
       default:
         return null;
@@ -127,8 +131,8 @@ class Component extends PureComponent<Props> {
   render() {
     const icon = this.getIcon();
     const { nodeSyncType, nodeSyncProgress } = this.props;
-    const percent = nodeSyncType === 'syncing' ? `(${nodeSyncProgress.toFixed(2)}%)` : '';
-    const typeText = nodeSyncType === 'ready' ? 'Synced' : nodeSyncType;
+    const percent = nodeSyncType === NODE_SYNC_TYPES.SYNCING ? `(${nodeSyncProgress.toFixed(2)}%)` : '';
+    const typeText = nodeSyncType === NODE_SYNC_TYPES.READY ? 'Synced' : nodeSyncType;
 
     return (
       <Wrapper id='status-pill'>

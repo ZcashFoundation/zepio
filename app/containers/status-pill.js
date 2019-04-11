@@ -3,11 +3,11 @@
 import { connect } from 'react-redux';
 import eres from 'eres';
 import { BigNumber } from 'bignumber.js';
+
 import { updateNodeSyncStatus } from '../redux/modules/app';
-
 import { StatusPill } from '../components/status-pill';
-
 import rpc from '../../services/api';
+import { NODE_SYNC_TYPES } from '../constants/node-sync-types';
 
 import type { Dispatch } from '../types/redux';
 import type { AppState } from '../types/app-state';
@@ -34,7 +34,7 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
       return dispatch(
         updateNodeSyncStatus({
           nodeSyncProgress: 0,
-          nodeSyncType: 'error',
+          nodeSyncType: NODE_SYNC_TYPES.ERROR,
         }),
       );
     }
@@ -44,7 +44,9 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
     dispatch(
       updateNodeSyncStatus({
         nodeSyncProgress: newProgress,
-        nodeSyncType: new BigNumber(newProgress).gt(99.99) ? 'ready' : 'syncing',
+        nodeSyncType: new BigNumber(newProgress).gt(99.99)
+          ? NODE_SYNC_TYPES.READY
+          : NODE_SYNC_TYPES.SYNCING,
       }),
     );
   },

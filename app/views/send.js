@@ -8,6 +8,7 @@ import { type Match } from 'react-router-dom';
 
 import { FEES } from '../constants/fees';
 import { DARK } from '../constants/themes';
+import { NODE_SYNC_TYPES } from '../constants/node-sync-types';
 
 import { InputLabelComponent } from '../components/input-label';
 import { InputComponent } from '../components/input';
@@ -690,7 +691,7 @@ class Component extends PureComponent<Props, State> {
   };
 
   shouldDisableSendButton = () => {
-    const { balance, isToAddressValid } = this.props;
+    const { balance, isToAddressValid, nodeSyncType } = this.props;
     const {
       from, amount, to, fee,
     } = this.state;
@@ -703,6 +704,7 @@ class Component extends PureComponent<Props, State> {
       || !isToAddressValid
       || new BigNumber(amount).gt(balance)
       || !this.isMemoContentValid()
+      || nodeSyncType !== NODE_SYNC_TYPES.READY
     );
   };
 
@@ -722,7 +724,14 @@ class Component extends PureComponent<Props, State> {
 
   render() {
     const {
-      addresses, balance, zecPrice, isSending, error, operationId, theme,
+      addresses,
+      balance,
+      zecPrice,
+      isSending,
+      error,
+      operationId,
+      theme,
+      nodeSyncType,
     } = this.props;
     const {
       showFee,
@@ -925,6 +934,11 @@ class Component extends PureComponent<Props, State> {
             onClose={this.reset}
             renderTrigger={toggle => (
               <SendButtonWrapper>
+                {nodeSyncType !== NODE_SYNC_TYPES.READY && (
+                  <SimpleTooltip>
+                    <TooltipText value='Cannot send transaction until data is synced.' />
+                  </SimpleTooltip>
+                )}
                 {!showBalanceTooltip ? null : (
                   <SimpleTooltip>
                     <TooltipText value='Not enough funds!' />
