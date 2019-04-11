@@ -24,7 +24,7 @@ const handler = (server) => {
         sleep(1500).then(() => res.send({ result: { version: 1.0 } }));
         break;
       case 'getblockchaininfo':
-        return res.send({ result: { verificationprogress: 0.5 } });
+        return res.send({ result: { verificationprogress: 1 } });
       case 'z_gettotalbalance':
         return res.send({
           result: { transparent: 2.5, private: 3.5, total: 6 },
