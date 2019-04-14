@@ -6,6 +6,7 @@ import styled, { keyframes, withTheme } from 'styled-components';
 import { TextComponent } from './text';
 
 import { DARK } from '../constants/themes';
+import { NODE_SYNC_TYPES } from '../constants/node-sync-types';
 
 import readyIconDark from '../assets/images/green_check_dark.png';
 import readyIconLight from '../assets/images/green_check_light.png';
@@ -32,6 +33,7 @@ const Wrapper = styled.div`
   border: 1px solid ${props => props.theme.colors.statusPillBorder}
   border-radius: 27px;
   padding: 8px 16px;
+  position: relative;
 `;
 
 const Icon = styled.img`
@@ -53,15 +55,62 @@ const StatusPillLabel = styled(TextComponent)`
   user-select: none;
 `;
 
+const Tooltip = styled.div`
+  background: ${props => props.theme.colors.walletAddressTooltipBg};
+  position: absolute;
+  bottom: -35px;
+  right: 5px;
+  padding: 6px 10px;
+  border-radius: ${props => props.theme.boxBorderRadius};
+  z-index: 100;
+  white-space: nowrap;
+
+  &:after {
+    bottom: 100%;
+    left: 90%;
+    border: solid transparent;
+    content: ' ';
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  &:after {
+    border-color: transparent;
+    border-bottom-color: ${props => props.theme.colors.walletAddressTooltipBg};
+    border-width: 5px;
+    margin-left: -5px;
+  }
+`;
+
+const TooltipText = styled(TextComponent)`
+  color: ${props => props.theme.colors.walletAddressTooltip};
+  font-size: 10px;
+  font-weight: 700;
+`;
+
 type Props = {
   theme: AppTheme,
 } & MapStateToProps &
   MapDispatchToProps;
 
+type State = {
+  showTooltip: boolean,
+};
+
 const MINUTE_IN_MILI = 60000;
 
-class Component extends PureComponent<Props> {
+class Component extends PureComponent<Props, State> {
   timer: ?IntervalID = null;
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showTooltip: false,
+    };
+  }
 
   componentDidMount() {
     const { getBlockchainStatus } = this.props;
@@ -71,7 +120,10 @@ class Component extends PureComponent<Props> {
 
   componentDidUpdate(prevProps: Props) {
     const { getBlockchainStatus, nodeSyncType } = this.props;
-    if (prevProps.nodeSyncType === 'syncing' && nodeSyncType === 'ready') {
+    if (
+      prevProps.nodeSyncType === NODE_SYNC_TYPES.SYNCING
+      && nodeSyncType === NODE_SYNC_TYPES.READY
+    ) {
       // if the status is "ready", we can increase the interval to avoid useless rpc calls
       this.cleanUpdateInterval();
       this.timer = setInterval(() => getBlockchainStatus(), MINUTE_IN_MILI);
@@ -91,7 +143,7 @@ class Component extends PureComponent<Props> {
 
   isSyncing = () => {
     const { nodeSyncType } = this.props;
-    return nodeSyncType === 'syncing';
+    return nodeSyncType === NODE_SYNC_TYPES.SYNCING;
   };
 
   getReadyIcon = () => {
@@ -113,25 +165,51 @@ class Component extends PureComponent<Props> {
     const { nodeSyncType } = this.props;
 
     switch (nodeSyncType) {
-      case 'syncing':
+      case NODE_SYNC_TYPES.SYNCING:
         return this.getSyncingIcon();
-      case 'ready':
+      case NODE_SYNC_TYPES.READY:
         return this.getReadyIcon();
-      case 'error':
+      case NODE_SYNC_TYPES.ERROR:
         return this.getErrorIcon();
       default:
         return null;
     }
   };
 
+  getStatusText = () => {
+    const { nodeSyncType } = this.props;
+
+    switch (nodeSyncType) {
+      case 'syncing':
+        return "Syncing blockchain data. You may not send funds or see latest transactions until it's synced 100%";
+      case 'ready':
+        return 'Your chain data is up to date';
+      case 'error':
+        return 'There was an error. Try restarting Zepio';
+      default:
+        return '';
+    }
+  };
+
   render() {
     const icon = this.getIcon();
     const { nodeSyncType, nodeSyncProgress } = this.props;
-    const percent = nodeSyncType === 'syncing' ? `(${nodeSyncProgress.toFixed(2)}%)` : '';
-    const typeText = nodeSyncType === 'ready' ? 'Synced' : nodeSyncType;
+    const { showTooltip } = this.state;
+    const percent = nodeSyncType === NODE_SYNC_TYPES.SYNCING ? `(${nodeSyncProgress.toFixed(2)}%)` : '';
+    const typeText = nodeSyncType === NODE_SYNC_TYPES.READY ? 'Synced' : nodeSyncType;
 
     return (
-      <Wrapper id='status-pill'>
+      // eslint-disable-next-line
+      <Wrapper
+        onMouseOver={() => this.setState({ showTooltip: true })}
+        onMouseOut={() => this.setState({ showTooltip: false })}
+        id='status-pill'
+      >
+        {showTooltip && (
+          <Tooltip>
+            <TooltipText value={this.getStatusText()} />
+          </Tooltip>
+        )}
         {icon && <Icon src={icon} animated={this.isSyncing()} />}
         <StatusPillLabel value={`${typeText} ${percent}`} />
       </Wrapper>

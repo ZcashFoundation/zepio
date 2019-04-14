@@ -3,6 +3,7 @@
 import cp from 'child_process';
 import path from 'path';
 import os from 'os';
+import fs from 'fs';
 import processExists from 'process-exists';
 /* eslint-disable import/no-extraneous-dependencies */
 import isDev from 'electron-is-dev';
@@ -18,6 +19,7 @@ import getBinariesPath from './get-binaries-path';
 import getOsFolder from './get-os-folder';
 import getDaemonName from './get-daemon-name';
 import fetchParams from './run-fetch-params';
+import { locateZcashConf } from './locate-zcash-conf';
 import log from './logger';
 import store from '../electron-store';
 import { parseZcashConf, parseCmdArgs, generateArgsFromConf } from './parse-zcash-conf';
@@ -29,7 +31,9 @@ import {
   MAINNET,
 } from '../../app/constants/zcash-network';
 
-const getDaemonOptions = ({ username, password, optionsFromZcashConf }) => {
+const getDaemonOptions = ({
+  username, password, useDefaultZcashConf, optionsFromZcashConf,
+}) => {
   /*
     -showmetrics
         Show metrics on stdout
@@ -41,6 +45,8 @@ const getDaemonOptions = ({ username, password, optionsFromZcashConf }) => {
   */
 
   const defaultOptions = [
+    '-server=1',
+    '-rest=1',
     '-showmetrics',
     '--metricsui=0',
     '-metricsrefreshtime=1',
@@ -50,6 +56,8 @@ const getDaemonOptions = ({ username, password, optionsFromZcashConf }) => {
     // Overwriting the settings with values taken from "zcash.conf"
     ...optionsFromZcashConf,
   ];
+
+  if (useDefaultZcashConf) defaultOptions.push(`-conf=${locateZcashConf()}`);
 
   return Array.from(new Set([...defaultOptions, ...optionsFromZcashConf]));
 };
@@ -85,7 +93,23 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   const [, isRunning] = await eres(processExists(ZCASHD_PROCESS_NAME));
 
   // This will parse and save rpcuser and rpcpassword in the store
-  const [, optionsFromZcashConf] = await eres(parseZcashConf());
+  let [, optionsFromZcashConf] = await eres(parseZcashConf());
+
+  // if the user has a custom datadir and doesn't have a zcash.conf in that folder,
+  // we need to use the default zcash.conf
+  let useDefaultZcashConf = false;
+
+  if (optionsFromZcashConf.datadir) {
+    const hasDatadirConf = fs.existsSync(path.join(optionsFromZcashConf.datadir, 'zcash.conf'));
+
+    if (hasDatadirConf) {
+      optionsFromZcashConf = await parseZcashConf(
+        path.join(String(optionsFromZcashConf.datadir), 'zcash.conf'),
+      );
+    } else {
+      useDefaultZcashConf = true;
+    }
+  }
 
   if (optionsFromZcashConf.rpcuser) store.set('rpcuser', optionsFromZcashConf.rpcuser);
   if (optionsFromZcashConf.rpcpassword) store.set('rpcpassword', optionsFromZcashConf.rpcpassword);
@@ -113,10 +137,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
 
   store.set(EMBEDDED_DAEMON, true);
 
-  // Default to mainnet
-  if (!store.get(ZCASH_NETWORK)) {
-    store.set(ZCASH_NETWORK, MAINNET);
-  }
+  store.set(ZCASH_NETWORK, optionsFromZcashConf.testnet === '1' ? TESTNET : MAINNET);
 
   if (!optionsFromZcashConf.rpcuser) store.set('rpcuser', uuid());
   if (!optionsFromZcashConf.rpcpassword) store.set('rpcpassword', uuid());
@@ -130,8 +151,9 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
 
   const childProcess = cp.spawn(
     processName,
-    await getDaemonOptions({
+    getDaemonOptions({
       ...rpcCredentials,
+      useDefaultZcashConf,
       optionsFromZcashConf: generateArgsFromConf(optionsFromZcashConf),
     }),
     {
