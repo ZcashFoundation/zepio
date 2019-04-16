@@ -178,7 +178,6 @@
       "category": "public.app-category.productivity",
       "type": "distribution",
       "target": [
-        "pkg",
         "dmg"
       ],
       "icon": "./build/icons/mac/icon.icns"
