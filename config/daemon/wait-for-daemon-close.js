@@ -10,7 +10,7 @@ export default (processName: string): Promise<void> => new Promise((resolve) => 
 
     if (!isRunning) {
       clearInterval(interval);
-      resolve();
+      setTimeout(resolve, 1000);
     }
   }, 500);
 });
