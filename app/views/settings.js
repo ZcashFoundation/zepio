@@ -203,23 +203,31 @@ type State = {
   error: string | null,
 };
 
+const SHIELDED_ADDRESS_PRIVATE_KEY_PREFIX = 'secret-extended-key';
+
+const initialState = {
+  viewKeys: [],
+  privateKeys: [],
+  importedPrivateKeys: '',
+  isLoading: false,
+  successExportViewKeys: false,
+  successExportPrivateKeys: false,
+  successImportPrivateKeys: false,
+  error: null,
+};
+
 export class SettingsView extends PureComponent<Props, State> {
-  state = {
-    viewKeys: [],
-    privateKeys: [],
-    importedPrivateKeys: '',
-    isLoading: false,
-    successExportViewKeys: false,
-    successExportPrivateKeys: false,
-    successImportPrivateKeys: false,
-    error: null,
-  };
+  state = initialState;
 
   componentDidMount() {
     const { loadAddresses } = this.props;
 
     loadAddresses();
   }
+
+  resetState = () => {
+    this.setState(initialState);
+  };
 
   getWalletFolderPath = () => {
     const { app } = electron.remote;
@@ -259,22 +267,24 @@ export class SettingsView extends PureComponent<Props, State> {
   exportPrivateKeys = () => {
     const { addresses } = this.props;
 
-    const zAddresses = addresses.filter(({ address }) => address.startsWith('z'));
-
     this.setState({ isLoading: true });
 
     Promise.all(
-      zAddresses.map(async ({ address }) => {
-        const privateKey = await rpc.z_exportkey(address);
+      addresses.map(async ({ address }) => {
+        const privateKey = await (address.startsWith('z')
+          ? rpc.z_exportkey(address)
+          : rpc.dumpprivkey(address));
         return { zAddress: address, key: privateKey };
       }),
-    ).then((privateKeys) => {
-      this.setState({
-        privateKeys,
-        successExportPrivateKeys: true,
-        isLoading: false,
-      });
-    });
+    )
+      .then((privateKeys) => {
+        this.setState({
+          privateKeys,
+          successExportPrivateKeys: true,
+          isLoading: false,
+        });
+      })
+      .catch(error => this.setState({ isLoading: false, error: error.message }));
   };
 
   importPrivateKeys = () => {
@@ -289,7 +299,11 @@ export class SettingsView extends PureComponent<Props, State> {
 
     this.setState({ isLoading: true, error: null });
 
-    Promise.all(keys.map(key => rpc.z_importkey(key)))
+    Promise.all(
+      keys.map(key => (key.startsWith(SHIELDED_ADDRESS_PRIVATE_KEY_PREFIX)
+        ? rpc.z_importkey(key)
+        : rpc.importprivkey(key))),
+    )
       .then(() => {
         this.setState({
           successImportPrivateKeys: true,
@@ -449,12 +463,13 @@ export class SettingsView extends PureComponent<Props, State> {
             onConfirm={this.exportPrivateKeys}
             showButtons={!successExportPrivateKeys}
             width={550}
+            onClose={this.resetState}
           >
             {() => (
               <ModalContent>
                 {successExportPrivateKeys ? (
                   privateKeys.map(({ zAddress, key }, index) => (
-                    <>
+                    <div key={zAddress}>
                       <ViewKeyHeader>
                         <ViewKeyLabel value={`Private Key for Address #${index + 1}`} />
                         <ViewKeyAddress value={`Address: ${zAddress}`} />
@@ -467,7 +482,7 @@ export class SettingsView extends PureComponent<Props, State> {
                         />
                         <ClipboardButton text={key} />
                       </ViewKeyContentWrapper>
-                    </>
+                    </div>
                   ))
                 ) : (
                   <TextComponent value={EXPORT_PRIV_KEYS_CONTENT} />
