@@ -46,7 +46,6 @@ const getDaemonOptions = ({
 
   const defaultOptions = [
     '-server=1',
-    '-rest=1',
     '-showmetrics',
     '--metricsui=0',
     '-metricsrefreshtime=1',
@@ -69,6 +68,7 @@ const ZCASHD_PROCESS_NAME = getDaemonName();
 // eslint-disable-next-line
 const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve, reject) => {
   const processName = path.join(getBinariesPath(), getOsFolder(), ZCASHD_PROCESS_NAME);
+  const isRelaunch = Boolean(process.argv.find(arg => arg === '--relaunch'));
 
   if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', 'Fetching params...');
 
@@ -86,7 +86,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
 
   // In case of --relaunch on argv, we need wait to close the old zcash daemon
   // a workaround is use a interval to check if there is a old process running
-  if (process.argv.find(arg => arg === '--relaunch')) {
+  if (isRelaunch) {
     await waitForDaemonClose(ZCASHD_PROCESS_NAME);
   }
 
@@ -137,7 +137,9 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
 
   store.set(EMBEDDED_DAEMON, true);
 
-  store.set(ZCASH_NETWORK, optionsFromZcashConf.testnet === '1' ? TESTNET : MAINNET);
+  if (!isRelaunch) {
+    store.set(ZCASH_NETWORK, optionsFromZcashConf.testnet === '1' ? TESTNET : MAINNET);
+  }
 
   if (!optionsFromZcashConf.rpcuser) store.set('rpcuser', uuid());
   if (!optionsFromZcashConf.rpcpassword) store.set('rpcpassword', uuid());

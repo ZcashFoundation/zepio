@@ -181,11 +181,11 @@ class Component extends PureComponent<Props, State> {
 
     switch (nodeSyncType) {
       case 'syncing':
-        return "Syncing blockchain data. You may not send funds or see latest transactions until it's synced 100%";
+        return 'Syncing blockchain data. You may not send funds or see latest transactions until it\'s synced.';
       case 'ready':
-        return 'Your chain data is up to date';
+        return 'Your node is synced.';
       case 'error':
-        return 'There was an error. Try restarting Zepio';
+        return 'There was an error. Try restarting Zepio.';
       default:
         return '';
     }
