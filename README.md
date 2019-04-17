@@ -2,7 +2,6 @@
 
 Zepio is a modern cross-platform full-node desktop wallet for the Zcash Network.
 
-[![Build Status](https://app.bitrise.io/app/e3e2de9d817688f9/status.svg?token=JsSLjbxa6yt6-oy5MgU9uQ)](https://app.bitrise.io/app/e3e2de9d817688f9)
 ![Flow Coverage](./public/flow-coverage-badge.svg)
 
 ## Stack Information
