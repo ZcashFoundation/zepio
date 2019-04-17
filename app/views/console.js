@@ -72,7 +72,9 @@ class Component extends PureComponent<Props, State> {
 
   componentDidMount() {
     ipcRenderer.on('zcashd-log', (event: empty, message: string) => {
-      this.setState(() => ({ log: initialLog + message }));
+      if (message.indexOf('Downloading') !== -1) {
+        this.setState(() => ({ log: initialLog + message }));
+      }
     });
   }
 
@@ -84,9 +86,7 @@ class Component extends PureComponent<Props, State> {
     const { log } = this.state;
     const { theme } = this.props;
 
-    const ConsoleSymbol = theme.mode === DARK
-      ? ConsoleSymbolDark
-      : ConsoleSymbolLight;
+    const ConsoleSymbol = theme.mode === DARK ? ConsoleSymbolDark : ConsoleSymbolLight;
 
     return (
       <Wrapper id='console-wrapper'>

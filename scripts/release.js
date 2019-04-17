@@ -33,6 +33,23 @@ const signBinaries = binaries => new Promise((resolve, reject) => {
   });
 });
 
+const getFileName = (name) => {
+  const extension = name.substr(name.length - 3);
+
+  switch (extension) {
+    case 'dmg':
+      return `Zepio-macOS-v${VERSION}.dmg`;
+    case 'deb':
+      return `zepio-linux-v${VERSION}.deb`;
+    case 'exe':
+      return `Zepio-Windows-v${VERSION}.exe`;
+    case 'zip':
+      return `signatures-v${VERSION}.zip`;
+    default:
+      return 'Zepio';
+  }
+};
+
 (async () => {
   console.log(`Creating release v${VERSION}`);
 
@@ -74,7 +91,7 @@ const signBinaries = binaries => new Promise((resolve, reject) => {
           'content-type': mime.lookup(fPath),
         },
         url: createReleaseResponse.data.upload_url,
-        name,
+        name: getFileName(name),
         file: fs.createReadStream(fPath),
       });
     }),
