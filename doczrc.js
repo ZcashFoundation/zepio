@@ -1,9 +1,9 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable  */
 import { css } from 'docz-plugin-css';
 
 export default {
-  title: 'Zcash Foundation',
-  description: 'Zcash Foundation User Interface Styleguide',
+  title: 'Zepio',
+  description: 'Zepio Component Styleguide',
   plugins: [css()],
   htmlContext: {
     head: {

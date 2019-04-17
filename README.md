@@ -1,9 +1,11 @@
 # Zepio | ZEC Wallet
 
-Zepio is a modern cross-platform full-node desktop wallet for the Zcash Network.
+Zepio is a Sapling-enabled shielded-address first Zcash wallet, featuring cross-platform applications (macOS, Windows and Linux), built-in full node with support for `mainnet` and `testnet`, as well as `dark` and `light` themes.
 
-[![Build Status](https://app.bitrise.io/app/e3e2de9d817688f9/status.svg?token=JsSLjbxa6yt6-oy5MgU9uQ)](https://app.bitrise.io/app/e3e2de9d817688f9)
 ![Flow Coverage](./public/flow-coverage-badge.svg)
+
+### [Latest Documentation at https://zepiowallet.com](https://zepiowallet.com)
+
 
 ## Stack Information
 

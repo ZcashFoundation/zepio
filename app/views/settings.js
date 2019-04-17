@@ -1,6 +1,7 @@
 // @flow
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/no-extraneous-dependencies */
+
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
@@ -248,7 +249,7 @@ export class SettingsView extends PureComponent<Props, State> {
 
     const zAddresses = addresses.filter(({ address }) => address.startsWith('z'));
 
-    this.setState({ isLoading: true });
+    this.setState(() => ({ isLoading: true }));
 
     Promise.all(
       zAddresses.map(async ({ address }) => {
@@ -256,35 +257,36 @@ export class SettingsView extends PureComponent<Props, State> {
         return { zAddress: address, key: viewKey };
       }),
     ).then((viewKeys) => {
-      this.setState({
+      this.setState(() => ({
         viewKeys,
         successExportViewKeys: true,
         isLoading: false,
-      });
+      }));
     });
   };
 
   exportPrivateKeys = () => {
     const { addresses } = this.props;
 
-    this.setState({ isLoading: true });
+    this.setState(() => ({ isLoading: true }));
 
     Promise.all(
       addresses.map(async ({ address }) => {
         const privateKey = await (address.startsWith('z')
           ? rpc.z_exportkey(address)
           : rpc.dumpprivkey(address));
+
         return { zAddress: address, key: privateKey };
       }),
     )
       .then((privateKeys) => {
-        this.setState({
+        this.setState(() => ({
           privateKeys,
           successExportPrivateKeys: true,
           isLoading: false,
-        });
+        }));
       })
-      .catch(error => this.setState({ isLoading: false, error: error.message }));
+      .catch(error => this.setState(() => ({ isLoading: false, error: error.message })));
   };
 
   importPrivateKeys = () => {
