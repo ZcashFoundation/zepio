@@ -1,6 +1,6 @@
 # Development Workflow
 
-This repository aims to follow the GitFlow paradigm. If you are unfamiliar with GitFlow, please read [Atlassian's GitFlow documentation](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) illustrating the concepts and its advantages.
+This repository aims to follow the GitFlow paradigm. If you are unfamiliar with GitFlow, please read [Atlassian's GitFlow documentation](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) which illustrates the concepts and its advantages.
 
 # Branching
 
@@ -11,7 +11,7 @@ The following lists the branching semantics to follow:
   * refactor: describes the refactoring of a portion of the application
     * `example: refactor/data-fetch-action`
 
-  * hotfix: describes a bugfix
+  * hotfix: describes a bugfix/hotfix
     * `example: hotfix/header-scroll-bug`
 
 ## Commit Messages
@@ -31,7 +31,7 @@ Commit messages should have semantic meanings to make it more easily possible to
 * **revert**: Commits which revert another commit
 * **type**: Changes specific to static * types (TypeScript, Flow, etc...)
 
-Commits should be isolated to one type. Make sure to keep commits small. This Will help to easily change or revert back to past commits. Additionally, commits can have multi-line messages to better express the commit.
+Commits should be isolated to one type. Make sure to keep commits small. This will help to easily change or revert back to past commits. Additionally, commits can have multi-line messages to better express the commit.
 
 ```
 docs: commit messages doc

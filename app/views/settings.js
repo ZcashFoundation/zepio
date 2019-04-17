@@ -275,6 +275,7 @@ export class SettingsView extends PureComponent<Props, State> {
         const privateKey = await (address.startsWith('z')
           ? rpc.z_exportkey(address)
           : rpc.dumpprivkey(address));
+
         return { zAddress: address, key: privateKey };
       }),
     )
