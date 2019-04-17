@@ -9,9 +9,14 @@ beforeEach(async () => {
   await app.client.waitUntilWindowLoaded();
   await app.client.waitUntilTextExists('#sidebar', 'Send');
   await app.client.element('#sidebar a:nth-child(2)').click();
+  await app.client.waitUntilTextExists('#status-pill', 'SYNCED');
 });
 
-afterEach(() => app.stop());
+afterEach(async () => {
+  if (app.isRunning()) {
+    await app.stop();
+  }
+});
 
 describe('Send', () => {
   test('should load "Send Page"', async () => {

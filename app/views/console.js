@@ -84,9 +84,7 @@ class Component extends PureComponent<Props, State> {
     const { log } = this.state;
     const { theme } = this.props;
 
-    const ConsoleSymbol = theme.mode === DARK
-      ? ConsoleSymbolDark
-      : ConsoleSymbolLight;
+    const ConsoleSymbol = theme.mode === DARK ? ConsoleSymbolDark : ConsoleSymbolLight;
 
     return (
       <Wrapper id='console-wrapper'>

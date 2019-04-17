@@ -9,9 +9,7 @@ const transactions = [];
 
 const sleep = (time: number) => new Promise(resolve => setTimeout(resolve, time));
 
-createTestServer({
-  httpPort: '18232',
-}).then(async (server) => {
+const handler = (server) => {
   console.log('[MOCK RPC API]', server.url); // eslint-disable-line
 
   server.get('/', (req, res) => {
@@ -26,7 +24,7 @@ createTestServer({
         sleep(1500).then(() => res.send({ result: { version: 1.0 } }));
         break;
       case 'getblockchaininfo':
-        return res.send({ result: { verificationprogress: 0.5 } });
+        return res.send({ result: { verificationprogress: 1 } });
       case 'z_gettotalbalance':
         return res.send({
           result: { transparent: 2.5, private: 3.5, total: 6 },
@@ -111,4 +109,12 @@ createTestServer({
         return null;
     }
   });
-});
+};
+
+createTestServer({
+  httpPort: '8232',
+}).then(handler);
+
+createTestServer({
+  httpPort: '18232',
+}).then(handler);

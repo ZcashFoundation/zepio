@@ -29,10 +29,13 @@ type ZcashConfFile = {
   genproclimit: ?string,
   keypool: ?string,
   paytxfee: ?string,
+  datadir?: string,
+  conf?: string,
 };
 
-export const parseZcashConf = (): Promise<ZcashConfFile> => new Promise((resolve, reject) => {
-  fs.readFile(locateZcashConf(), (err, file) => {
+// eslint-disable-next-line
+export const parseZcashConf = (customDir: ?string): Promise<ZcashConfFile> => new Promise((resolve, reject) => {
+  fs.readFile(customDir || locateZcashConf(), (err, file) => {
     if (err) return reject(err);
 
     const fileString = file.toString();

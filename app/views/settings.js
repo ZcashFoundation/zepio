@@ -42,6 +42,8 @@ const BACKUP_WALLET_CONTENT = 'It is recommended that you backup your wallet oft
 const CONFIRM_RELAUNCH_CONTENT = "You'll need to restart the application and the internal full node. Are you sure you want to do this?";
 const RUNNING_NON_EMBEDDED_DAEMON_WARNING = 'You are using a separate zcashd process, in order to change the network, you need to restart the process yourself';
 
+const SHIELDED_ADDRESS_PRIVATE_KEY_PREFIX = isTestnet() ? 'secret-extended-key' : 'SK';
+
 const Wrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
 `;
@@ -203,23 +205,29 @@ type State = {
   error: string | null,
 };
 
+const initialState = {
+  viewKeys: [],
+  privateKeys: [],
+  importedPrivateKeys: '',
+  isLoading: false,
+  successExportViewKeys: false,
+  successExportPrivateKeys: false,
+  successImportPrivateKeys: false,
+  error: null,
+};
+
 export class SettingsView extends PureComponent<Props, State> {
-  state = {
-    viewKeys: [],
-    privateKeys: [],
-    importedPrivateKeys: '',
-    isLoading: false,
-    successExportViewKeys: false,
-    successExportPrivateKeys: false,
-    successImportPrivateKeys: false,
-    error: null,
-  };
+  state = initialState;
 
   componentDidMount() {
     const { loadAddresses } = this.props;
 
     loadAddresses();
   }
+
+  resetState = () => {
+    this.setState(initialState);
+  };
 
   getWalletFolderPath = () => {
     const { app } = electron.remote;
@@ -256,24 +264,28 @@ export class SettingsView extends PureComponent<Props, State> {
     });
   };
 
-  exportPrivateKeys = () => {
+  exportPrivateKeys = async () => {
     const { addresses } = this.props;
-
-    const zAddresses = addresses.filter(({ address }) => address.startsWith('z'));
 
     this.setState({ isLoading: true });
 
-    Promise.all(
-      zAddresses.map(async ({ address }) => {
-        const privateKey = await rpc.z_exportkey(address);
+    const privateKeys = await Promise.all(
+      addresses.map(async ({ address }) => {
+        const [error, privateKey] = await eres(
+          address.startsWith('z') ? rpc.z_exportkey(address) : rpc.dumpprivkey(address),
+        );
+
+        if (error || !privateKey) return null;
+
         return { zAddress: address, key: privateKey };
       }),
-    ).then((privateKeys) => {
-      this.setState({
-        privateKeys,
-        successExportPrivateKeys: true,
-        isLoading: false,
-      });
+    );
+
+    this.setState({
+      // $FlowFixMe
+      privateKeys: privateKeys.filter(Boolean),
+      successExportPrivateKeys: true,
+      isLoading: false,
     });
   };
 
@@ -289,7 +301,11 @@ export class SettingsView extends PureComponent<Props, State> {
 
     this.setState({ isLoading: true, error: null });
 
-    Promise.all(keys.map(key => rpc.z_importkey(key)))
+    Promise.all(
+      keys.map(key => (key.startsWith(SHIELDED_ADDRESS_PRIVATE_KEY_PREFIX)
+        ? rpc.z_importkey(key)
+        : rpc.importprivkey(key))),
+    )
       .then(() => {
         this.setState({
           successImportPrivateKeys: true,
@@ -446,15 +462,18 @@ export class SettingsView extends PureComponent<Props, State> {
                 <Btn label={EXPORT_PRIV_KEYS_TITLE} onClick={toggleVisibility} />
               </SettingsInnerWrapper>
             )}
-            onConfirm={this.exportPrivateKeys}
+            onConfirm={() => {
+              this.exportPrivateKeys();
+            }}
             showButtons={!successExportPrivateKeys}
             width={550}
+            onClose={this.resetState}
           >
             {() => (
               <ModalContent>
                 {successExportPrivateKeys ? (
                   privateKeys.map(({ zAddress, key }, index) => (
-                    <>
+                    <div key={zAddress}>
                       <ViewKeyHeader>
                         <ViewKeyLabel value={`Private Key for Address #${index + 1}`} />
                         <ViewKeyAddress value={`Address: ${zAddress}`} />
@@ -467,7 +486,7 @@ export class SettingsView extends PureComponent<Props, State> {
                         />
                         <ClipboardButton text={key} />
                       </ViewKeyContentWrapper>
-                    </>
+                    </div>
                   ))
                 ) : (
                   <TextComponent value={EXPORT_PRIV_KEYS_CONTENT} />

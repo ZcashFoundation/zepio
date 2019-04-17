@@ -16,8 +16,10 @@ import {
 } from '../redux/modules/receive';
 
 import { asyncMap } from '../utils/async-map';
+import { getLatestAddressKey } from '../utils/get-latest-address-key';
 
 import rpc from '../../services/api';
+import electronStore from '../../config/electron-store';
 
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
@@ -43,21 +45,18 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
 
     if (zAddressesErr || tAddressesErr) return dispatch(loadAddressesError({ error: 'Something went wrong!' }));
 
-    const latestZAddress = zAddresses[0]
-      ? {
-        address: zAddresses[0],
-        balance: await rpc.z_getbalance(zAddresses[0]),
-      }
-      : null;
-    const latestTAddress = transparentAddresses[0]
-      ? {
-        address: transparentAddresses[0],
-        balance: await rpc.z_getbalance(transparentAddresses[0]),
-      }
-      : null;
+    const latestZAddress = zAddresses.find(addr => addr === electronStore.get(getLatestAddressKey('shielded')))
+      || zAddresses[0];
+
+    const latestTAddress = transparentAddresses.find(
+      addr => addr === electronStore.get(getLatestAddressKey('transparent')),
+    ) || transparentAddresses[0];
 
     const allAddresses = await asyncMap(
-      [...zAddresses.slice(1), ...transparentAddresses.slice(1)],
+      [
+        ...zAddresses.filter(cur => cur !== latestZAddress),
+        ...transparentAddresses.filter(cur => cur !== latestTAddress),
+      ],
       async (address) => {
         const [err, response] = await eres(rpc.z_getbalance(address));
 
@@ -69,7 +68,18 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
 
     dispatch(
       loadAddressesSuccess({
-        addresses: [latestZAddress, latestTAddress, ...allAddresses].filter(Boolean),
+        addresses: [
+          latestZAddress
+            ? {
+              address: latestZAddress,
+              balance: await rpc.z_getbalance(latestZAddress),
+            }
+            : null,
+          latestTAddress
+            ? { address: latestTAddress, balance: await rpc.z_getbalance(latestTAddress) }
+            : null,
+          ...allAddresses,
+        ].filter(Boolean),
       }),
     );
   },
@@ -79,6 +89,10 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
     );
 
     if (error || !address) return dispatch(getNewAddressError({ error: 'Unable to generate a new address' }));
+
+    // the list addresses rpc method does not guarantee the order of creation of the addresses
+    // so we need to save the last address created in the store
+    electronStore.set(getLatestAddressKey(type), address);
 
     dispatch(getNewAddressSuccess({ address }));
   },

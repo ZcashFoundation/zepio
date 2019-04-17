@@ -1,6 +1,6 @@
 {
   "name": "zepio",
-  "version": "0.5.0",
+  "version": "0.5.2",
   "description": "Zepio",
   "main": "config/main.js",
   "license": "MIT",
@@ -9,6 +9,7 @@
     "start": "yarn check --integrity && concurrently \"cross-env BROWSER=none yarn dev\" \"wait-on http://0.0.0.0:8080 && yarn electron:dev\"",
     "dev": "webpack-dev-server --config config/webpack-dev.config.js --mode development --open --hot",
     "build": "rm -rf build && webpack --config config/webpack-prod.config.js --mode production --env.NODE_ENV=production",
+    "release": "node -r @babel/register ./scripts/release.js",
     "lint:precommit": "eslint ./app/",
     "flow:precommit": "glow",
     "flow:coverage": "flow-coverage-report --config ./coverage.json",
@@ -47,6 +48,7 @@
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@octokit/rest": "^16.23.4",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "concurrently": "^4.1.0",
@@ -78,6 +80,7 @@
     "jest": "^24.5.0",
     "jest-dom": "^2.1.1",
     "jest-extended": "^0.11.0",
+    "mime-types": "^2.1.22",
     "node-sass": "^4.8.3",
     "postcss-loader": "^3.0.0",
     "pre-commit": "^1.2.2",
@@ -175,7 +178,6 @@
       "category": "public.app-category.productivity",
       "type": "distribution",
       "target": [
-        "pkg",
         "dmg"
       ],
       "icon": "./build/icons/mac/icon.icns"

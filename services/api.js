@@ -6,17 +6,11 @@ import { METHODS, type APIMethods } from './utils';
 import store from '../config/electron-store';
 import { isTestnet } from '../config/is-testnet';
 
-const RPC = {
+const getRPCConfig = () => ({
   host: '127.0.0.1',
   port: isTestnet() ? 18232 : 8232,
   user: store.get('rpcuser'),
   password: store.get('rpcpassword'),
-};
-
-const client = got.extend({
-  method: 'POST',
-  json: true,
-  auth: `${RPC.user}:${RPC.password}`,
 });
 
 const getMessage = (statusCode) => {
@@ -31,21 +25,29 @@ const getMessage = (statusCode) => {
 const api: APIMethods = METHODS.reduce(
   (obj, method) => ({
     ...obj,
-    [method]: (...args) => client
-      .post(`http://${RPC.host}:${RPC.port}`, {
-        body: {
-          method,
-          jsonrpc: '2.0',
-          id: Date.now(),
-          params: args,
-        },
-      })
-      .then(data => Promise.resolve(data.body && data.body.result))
-    // eslint-disable-next-line
-        .catch(payload => Promise.reject({
-        message: payload.body?.error?.message || getMessage(payload.statusCode),
-        statusCode: payload.statusCode,
-      })),
+    [method]: (...args) => {
+      const RPC = getRPCConfig();
+      return (
+        got
+          .post(`http://${RPC.host}:${RPC.port}`, {
+            method: 'POST',
+            json: true,
+            auth: `${RPC.user}:${RPC.password}`,
+            body: {
+              method,
+              jsonrpc: '2.0',
+              id: Date.now(),
+              params: args,
+            },
+          })
+          .then(data => Promise.resolve(data.body && data.body.result))
+          // eslint-disable-next-line
+          .catch(payload => Promise.reject({
+            message: payload.body?.error?.message || getMessage(payload.statusCode),
+            statusCode: payload.statusCode,
+          }))
+      );
+    },
   }),
   {},
 );

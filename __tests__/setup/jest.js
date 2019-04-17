@@ -1,9 +1,9 @@
 // @flow
-import "@babel/polyfill";
+import '@babel/polyfill';
 
 // eslint-disable-next-line import/no-unresolved
-require("jest-extended");
+require('jest-extended');
 
 // $FlowFixMe
-jest.DEFAULT_TIMEOUT_INTERVAL = 120000;
-jest.setTimeout(120000);
+jest.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jest.setTimeout(60000);
