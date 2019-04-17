@@ -72,9 +72,7 @@ class Component extends PureComponent<Props, State> {
 
   componentDidMount() {
     ipcRenderer.on('zcashd-log', (event: empty, message: string) => {
-      if (message.indexOf('Downloading') !== -1) {
-        this.setState(() => ({ log: initialLog + message }));
-      }
+      this.setState(() => ({ log: initialLog + message }));
     });
   }
 
