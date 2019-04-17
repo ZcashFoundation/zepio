@@ -275,6 +275,7 @@ export class SettingsView extends PureComponent<Props, State> {
         const privateKey = await (address.startsWith('z')
           ? rpc.z_exportkey(address)
           : rpc.dumpprivkey(address));
+
         return { zAddress: address, key: privateKey };
       }),
     )
@@ -285,10 +286,7 @@ export class SettingsView extends PureComponent<Props, State> {
           isLoading: false,
         }));
       })
-      .catch((error) => {
-        console.log({ error });
-        this.setState(() => ({ isLoading: false, error: error.message }));
-      });
+      .catch(error => this.setState(() => ({ isLoading: false, error: error.message })));
   };
 
   importPrivateKeys = () => {
