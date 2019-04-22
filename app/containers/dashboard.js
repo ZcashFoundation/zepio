@@ -28,6 +28,7 @@ const mapStateToProps = ({ walletSummary }: AppState) => ({
   total: walletSummary.total,
   shielded: walletSummary.shielded,
   transparent: walletSummary.transparent,
+  unconfirmed: walletSummary.unconfirmed,
   error: walletSummary.error,
   isLoading: walletSummary.isLoading,
   zecPrice: walletSummary.zecPrice,
@@ -43,8 +44,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     const [zAddressesErr, zAddresses = []] = await eres(rpc.z_listaddresses());
     const [tAddressesErr, tAddresses = []] = await eres(rpc.getaddressesbyaccount(''));
     const [transactionsErr, transactions] = await eres(rpc.listtransactions());
+    const [unconfirmedBalanceErr, unconfirmedBalance] = await eres(rpc.getunconfirmedbalance());
 
-    if (walletErr || zAddressesErr || tAddressesErr || transactionsErr) {
+    if (walletErr || zAddressesErr || tAddressesErr || transactionsErr || unconfirmedBalanceErr) {
       return dispatch(
         loadWalletSummaryError({
           error: 'Something went wrong!',
@@ -87,6 +89,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
         transparent: walletSummary.transparent,
         total: walletSummary.total,
         shielded: walletSummary.private,
+        unconfirmed: unconfirmedBalance,
         addresses: [...zAddresses, ...tAddresses],
         transactions: formattedTransactions,
         zecPrice: new BigNumber(store.get('ZEC_DOLLAR_PRICE')).toNumber(),

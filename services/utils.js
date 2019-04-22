@@ -605,7 +605,7 @@ export type APIMethods = {
     }[],
     hex: string,
   }>,
-  getunconfirmedbalance: (account: string) => Promise<number>,
+  getunconfirmedbalance: () => Promise<number>,
   getwalletinfo: () => Promise<{
     walletversion: number,
     balance: number,

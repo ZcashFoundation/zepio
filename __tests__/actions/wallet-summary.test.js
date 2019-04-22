@@ -31,6 +31,7 @@ describe('WalletSummary Actions', () => {
       total: 5000,
       transparent: 5000,
       shielded: 5000,
+      unconfirmed: 100,
       addresses: [],
       transactions: [],
       zecPrice: 50,
