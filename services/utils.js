@@ -219,7 +219,7 @@ export type APIMethods = {
     bytes: string,
     usage: string,
   }>,
-  getrawmempool: () => Promise<string>,
+  getrawmempool: (verbose?: number) => Promise<string[]>,
   gettxout: (
     txid: string,
     n: number,

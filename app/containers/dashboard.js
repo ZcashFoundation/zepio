@@ -11,7 +11,7 @@ import { DashboardView } from '../views/dashboard';
 
 import rpc from '../../services/api';
 import store from '../../config/electron-store';
-import { SAPLING } from '../constants/zcash-network';
+import { SAPLING, MIN_CONFIRMATIONS_NUMBER } from '../constants/zcash-network';
 import { listShieldedTransactions } from '../../services/shielded-transactions';
 import { sortByDescend } from '../utils/sort-by-descend';
 
@@ -56,6 +56,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
     const formattedTransactions: Array<Object> = flow([
       arr => arr.map(transaction => ({
+        confirmed: transaction.confirmations >= MIN_CONFIRMATIONS_NUMBER,
+        confirmations: transaction.confirmations,
         transactionId: transaction.txid,
         type: transaction.category,
         date: new Date(transaction.time * 1000).toISOString(),

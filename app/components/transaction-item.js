@@ -71,6 +71,8 @@ const TransactionColumn = styled(ColumnComponent)`
 `;
 
 export type Transaction = {
+  confirmed: boolean, // eslint-disable-line
+  confirmations: number, // eslint-disable-line
   type: 'send' | 'receive',
   date: string,
   address: string,
@@ -82,6 +84,8 @@ export type Transaction = {
 };
 
 const Component = ({
+  // confirmed,
+  // confirmations,
   type,
   date,
   address,
