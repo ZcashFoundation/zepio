@@ -878,7 +878,7 @@ class Component extends PureComponent<Props, State> {
                     <FeeWrapper id='send-fee-wrapper'>
                       <RowComponent alignItems='flex-end' justifyContent='space-between'>
                         <ColumnComponent width='64%'>
-                          <Label value='Fee' />
+                          <Label value={`Fee (${getCoinName()})`} />
                           <InputComponent
                             type='number'
                             onChange={this.handleChange('fee')}
@@ -936,7 +936,7 @@ class Component extends PureComponent<Props, State> {
               <SendButtonWrapper>
                 {nodeSyncType !== NODE_SYNC_TYPES.READY && (
                   <SimpleTooltip>
-                    <TooltipText value='Cannot send transaction until data is synced.' />
+                    <TooltipText value='Cannot send until data is synced.' />
                   </SimpleTooltip>
                 )}
                 {!showBalanceTooltip ? null : (
