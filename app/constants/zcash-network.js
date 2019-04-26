@@ -8,3 +8,5 @@ export const TESTNET = 'TESTNET';
 
 export const SPROUT = 'sprout';
 export const SAPLING = 'sapling';
+
+export const MIN_CONFIRMATIONS_NUMBER = 12;

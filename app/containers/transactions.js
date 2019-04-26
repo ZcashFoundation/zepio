@@ -14,6 +14,7 @@ import {
 import rpc from '../../services/api';
 import { listShieldedTransactions } from '../../services/shielded-transactions';
 import store from '../../config/electron-store';
+import { MIN_CONFIRMATIONS_NUMBER } from '../constants/zcash-network';
 
 import { sortByDescend } from '../utils/sort-by-descend';
 
@@ -64,6 +65,11 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
         ...transactions,
         ...listShieldedTransactions({ count, offset: shieldedTransactionsCount }),
       ].map(transaction => ({
+        confirmations: transaction.confirmations !== undefined ? transaction.confirmations : 0,
+        confirmed:
+          transaction.confirmations !== undefined
+            ? transaction.confirmations >= MIN_CONFIRMATIONS_NUMBER
+            : true,
         transactionId: transaction.txid,
         type: transaction.category,
         date: new Date(transaction.time * 1000).toISOString(),

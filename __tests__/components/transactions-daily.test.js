@@ -49,6 +49,8 @@ describe('<TransactionDailyComponent />', () => {
                 date: '2019-02-20T19:31:57.117Z',
                 theme: appTheme,
                 fees: 0.001,
+                confirmations: 10,
+                confirmed: true,
               },
               {
                 type: 'send',
@@ -59,6 +61,8 @@ describe('<TransactionDailyComponent />', () => {
                 date: '2019-02-20T19:31:57.117Z',
                 theme: appTheme,
                 fees: 0.001,
+                confirmed: false,
+                confirmations: 3,
               },
             ]}
           />
