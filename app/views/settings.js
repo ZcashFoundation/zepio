@@ -1,7 +1,6 @@
 // @flow
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/no-extraneous-dependencies */
-
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
@@ -42,6 +41,8 @@ const BACKUP_WALLET_TITLE = 'Backup Wallet';
 const BACKUP_WALLET_CONTENT = 'It is recommended that you backup your wallet often to avoid possible issues arising from data corruption.';
 const CONFIRM_RELAUNCH_CONTENT = "You'll need to restart the application and the internal full node. Are you sure you want to do this?";
 const RUNNING_NON_EMBEDDED_DAEMON_WARNING = 'You are using a separate zcashd process, in order to change the network, you need to restart the process yourself';
+
+const SHIELDED_ADDRESS_PRIVATE_KEY_PREFIX = isTestnet() ? 'secret-extended-key' : 'SK';
 
 const Wrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
@@ -204,8 +205,6 @@ type State = {
   error: string | null,
 };
 
-const SHIELDED_ADDRESS_PRIVATE_KEY_PREFIX = 'secret-extended-key';
-
 const initialState = {
   viewKeys: [],
   privateKeys: [],
@@ -249,7 +248,7 @@ export class SettingsView extends PureComponent<Props, State> {
 
     const zAddresses = addresses.filter(({ address }) => address.startsWith('z'));
 
-    this.setState(() => ({ isLoading: true }));
+    this.setState({ isLoading: true });
 
     Promise.all(
       zAddresses.map(async ({ address }) => {
@@ -257,36 +256,37 @@ export class SettingsView extends PureComponent<Props, State> {
         return { zAddress: address, key: viewKey };
       }),
     ).then((viewKeys) => {
-      this.setState(() => ({
+      this.setState({
         viewKeys,
         successExportViewKeys: true,
         isLoading: false,
-      }));
+      });
     });
   };
 
-  exportPrivateKeys = () => {
+  exportPrivateKeys = async () => {
     const { addresses } = this.props;
 
-    this.setState(() => ({ isLoading: true }));
+    this.setState({ isLoading: true });
 
-    Promise.all(
+    const privateKeys = await Promise.all(
       addresses.map(async ({ address }) => {
-        const privateKey = await (address.startsWith('z')
-          ? rpc.z_exportkey(address)
-          : rpc.dumpprivkey(address));
+        const [error, privateKey] = await eres(
+          address.startsWith('z') ? rpc.z_exportkey(address) : rpc.dumpprivkey(address),
+        );
+
+        if (error || !privateKey) return null;
 
         return { zAddress: address, key: privateKey };
       }),
-    )
-      .then((privateKeys) => {
-        this.setState(() => ({
-          privateKeys,
-          successExportPrivateKeys: true,
-          isLoading: false,
-        }));
-      })
-      .catch(error => this.setState(() => ({ isLoading: false, error: error.message })));
+    );
+
+    this.setState({
+      // $FlowFixMe
+      privateKeys: privateKeys.filter(Boolean),
+      successExportPrivateKeys: true,
+      isLoading: false,
+    });
   };
 
   importPrivateKeys = () => {
@@ -462,7 +462,9 @@ export class SettingsView extends PureComponent<Props, State> {
                 <Btn label={EXPORT_PRIV_KEYS_TITLE} onClick={toggleVisibility} />
               </SettingsInnerWrapper>
             )}
-            onConfirm={this.exportPrivateKeys}
+            onConfirm={() => {
+              this.exportPrivateKeys();
+            }}
             showButtons={!successExportPrivateKeys}
             width={550}
             onClose={this.resetState}
