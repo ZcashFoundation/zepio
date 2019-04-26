@@ -50,12 +50,18 @@ type Props = {
   total: number,
   shielded: number,
   transparent: number,
+  unconfirmed: number,
   zecPrice: number,
   theme: AppTheme,
 };
 
 export const Component = ({
-  total, shielded, transparent, zecPrice, theme,
+  total,
+  shielded,
+  transparent,
+  unconfirmed,
+  zecPrice,
+  theme,
 }: Props) => {
   const coinName = getCoinName();
   return (
@@ -90,6 +96,15 @@ export const Component = ({
             size={theme.fontSize.medium}
           />
           <USDValue value={`USD $${formatNumber({ value: transparent * zecPrice })}`} />
+        </ValueBox>
+        <ValueBox>
+          <Label value='&#9679; UNCONFIRMED' isBold size={theme.fontSize.small} />
+          <TextComponent
+            value={`${coinName} ${formatNumber({ value: unconfirmed })}`}
+            isBold
+            size={theme.fontSize.medium}
+          />
+          <USDValue value={`USD $${formatNumber({ value: unconfirmed * zecPrice })}`} />
         </ValueBox>
       </RowComponent>
     </Wrapper>

@@ -36,6 +36,8 @@ describe('<TransactionItem />', () => {
     const { container } = render(
       <ThemeProvider theme={appTheme}>
         <TransactionItemComponent
+          confirmed
+          confirmations={10}
           type='send'
           address='123456789123456789123456789123456789'
           transactionId='a0s9dujo23j0'

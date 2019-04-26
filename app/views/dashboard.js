@@ -14,16 +14,27 @@ type Props = {
   total: number,
   shielded: number,
   transparent: number,
+  unconfirmed: number,
   error: string | null,
   zecPrice: number,
   addresses: string[],
   transactions: TransactionsList,
 };
 
+const UPDATE_INTERVAL = 10000;
+
 export class DashboardView extends PureComponent<Props> {
+  interval = null;
+
   componentDidMount() {
     const { getSummary } = this.props;
     getSummary();
+
+    this.interval = setInterval(() => getSummary(), UPDATE_INTERVAL);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
@@ -32,6 +43,7 @@ export class DashboardView extends PureComponent<Props> {
       total,
       shielded,
       transparent,
+      unconfirmed,
       zecPrice,
       addresses,
       transactions,
@@ -47,6 +59,7 @@ export class DashboardView extends PureComponent<Props> {
           total={total}
           shielded={shielded}
           transparent={transparent}
+          unconfirmed={unconfirmed}
           zecPrice={zecPrice}
           addresses={addresses}
         />
