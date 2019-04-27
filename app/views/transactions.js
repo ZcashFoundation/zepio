@@ -112,7 +112,6 @@ export class TransactionsView extends PureComponent<Props> {
           confirmations={transaction.confirmations}
           address={transaction.address}
           amount={transaction.amount}
-          fees={transaction.fees}
           date={transaction.date}
           transactionId={transaction.transactionId}
           type={transaction.type}

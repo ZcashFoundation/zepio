@@ -123,6 +123,9 @@ export const LIGHT_COLORS = {
   // Wallet Summary
   walletSummaryBg: white,
   walletSummaryBorder: alto,
+  walletSummaryUnconfirmed: shipGray,
+  walletSummaryShielded: black,
+  walletSummaryTransparent: black,
 
   // Wallet Address
   walletAddressBg: white,

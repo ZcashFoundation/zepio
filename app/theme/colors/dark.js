@@ -124,6 +124,9 @@ export const DARK_COLORS = {
   // Wallet Summary
   walletSummaryBg: black,
   walletSummaryBorder: black,
+  walletSummaryUnconfirmed: silver,
+  walletSummaryShielded: white,
+  walletSummaryTransparent: white,
 
   // Wallet Address
   walletAddressBg: black,

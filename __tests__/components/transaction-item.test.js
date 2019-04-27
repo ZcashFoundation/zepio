@@ -44,7 +44,6 @@ describe('<TransactionItem />', () => {
           amount={0.8652}
           date={new Date().toString()}
           zecPrice={2.94}
-          fees={0.0001}
         />
       </ThemeProvider>,
     );

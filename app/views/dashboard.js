@@ -21,7 +21,7 @@ type Props = {
   transactions: TransactionsList,
 };
 
-const UPDATE_INTERVAL = 10000;
+const UPDATE_INTERVAL = 5000;
 
 export class DashboardView extends PureComponent<Props> {
   interval = null;

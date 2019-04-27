@@ -71,26 +71,24 @@ const TransactionColumn = styled(ColumnComponent)`
 `;
 
 export type Transaction = {
-  confirmed: boolean, // eslint-disable-line
-  confirmations: number, // eslint-disable-line
+  confirmed: boolean,
+  confirmations: number,
   type: 'send' | 'receive',
   date: string,
   address: string,
   amount: number,
-  fees: number | string,
   zecPrice: number,
   transactionId: string,
   theme: AppTheme,
 };
 
 const Component = ({
-  // confirmed,
-  // confirmations,
+  confirmed,
+  confirmations,
   type,
   date,
   address,
   amount,
-  fees,
   zecPrice,
   transactionId,
   theme,
@@ -146,7 +144,8 @@ const Component = ({
           amount={amount}
           date={date}
           address={address}
-          fees={fees}
+          confirmed={confirmed}
+          confirmations={confirmations}
           transactionId={transactionId}
           handleClose={toggleVisibility}
           type={type}
