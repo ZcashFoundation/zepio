@@ -387,6 +387,13 @@ const ZSuccessTransactionId = styled(TextComponent)`
   word-break: break-all !important;
 `;
 
+const CustomFeeWarning = styled(TextComponent)`
+  padding: 15px 10px 0 0;
+  letter-spacing: 0.5px;
+  font-size: 12px;
+  color: ${props => props.theme.colors.error};
+`;
+
 type Props = {
   match: Match,
   theme: AppTheme,
@@ -902,15 +909,17 @@ class Component extends PureComponent<Props, State> {
                           />
                         </ColumnComponent>
                       </RowComponent>
+                      <RowComponent>
+                        {feeType === FEES.CUSTOM && (
+                          <CustomFeeWarning value='Custom fees may compromise your privacy since fees are transparent.' />
+                        )}
+                      </RowComponent>
                     </FeeWrapper>
                   </animated.div>
                 ))
               }
             </Transition>
           </RevealsMain>
-          {feeType === FEES.CUSTOM && (
-            <TextComponent value='Custom fees may compromise your privacy since fees are transparent' />
-          )}
         </FormWrapper>
         <SendWrapper>
           <InfoCard>

@@ -9,8 +9,8 @@ import { formatNumber } from '../utils/format-number';
 import { getCoinName } from '../utils/get-coin-name';
 import { DARK } from '../constants/themes';
 
-import shieldDarkImage from '../assets/images/shield-dark.png';
-import shieldLightImage from '../assets/images/shield-light.png';
+import ShieldDarkImage from '../assets/images/shield-dark.png';
+import ShieldLightImage from '../assets/images/shield-light.png';
 
 const OutsideWrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
@@ -63,22 +63,26 @@ const MiddleLabel = styled(TextComponent)`
 
 const ShieldedValue = styled(DefaultLabel)`
   color: ${props => props.theme.colors.activeItem};
-  padding-left: 13px;
+  padding-left: 14px;
   position: relative;
 
   &:before {
     position: absolute;
-    left: -1px;
+    left: 0;
     top: -1px;
     content: '';
-    background: url(${props => (props.theme.mode === DARK ? shieldDarkImage : shieldLightImage)});
+    background: url(${props => (props.theme.mode === DARK ? ShieldDarkImage : ShieldLightImage)});
     background-size: cover;
     height: 12px;
     width: 11px;
   }
 `;
 
-const UnconfirmedValue = styled(DefaultLabel)`
+const UnconfirmedLabel = styled(DefaultLabel)`
+  color: ${props => props.theme.colors.walletSummaryUnconfirmed};
+`;
+
+const UnconfirmedValue = styled(MiddleLabel)`
   color: ${props => props.theme.colors.walletSummaryUnconfirmed};
 `;
 
@@ -135,8 +139,8 @@ export const Component = ({
           <USDValue value={`USD $${formatNumber({ value: transparent * zecPrice })}`} />
         </DetailContainer>
         <DetailContainer>
-          <UnconfirmedValue value='UNCONFIRMED' isBold size={theme.fontSize.small} />
-          <MiddleLabel
+          <UnconfirmedLabel value='UNCONFIRMED' isBold size={theme.fontSize.small} />
+          <UnconfirmedValue
             value={`${coinName} ${formatNumber({ value: transparent })}`}
             isBold
             size='16px'

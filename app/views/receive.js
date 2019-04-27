@@ -15,6 +15,7 @@ import MenuIconDark from '../assets/images/menu_icon_dark.svg';
 import MenuIconLight from '../assets/images/menu_icon_light.svg';
 import PlusIconDark from '../assets/images/plus_icon_dark.svg';
 import PlusIconLight from '../assets/images/plus_icon_light.svg';
+import ShieldGrayImage from '../assets/images/shield-dark-gray.png';
 
 import type { addressType } from '../redux/modules/receive';
 import type { MapStateToProps, MapDispatchToProps } from '../containers/receive';
@@ -87,6 +88,22 @@ const RevealsMain = styled.div`
   justify-content: flex-start;
 `;
 
+const ShieldedLabel = styled(Label)`
+  padding-left: 14px;
+  position: relative;
+
+  &:before {
+    position: absolute;
+    left: 0;
+    top: -1px;
+    content: '';
+    background: url(${ShieldGrayImage});
+    background-size: cover;
+    height: 12px;
+    width: 11px;
+  }
+`;
+
 type Props = MapDispatchToProps &
   MapStateToProps & {
     theme: AppTheme,
@@ -131,7 +148,7 @@ class Component extends PureComponent<Props, State> {
 
     return (
       <div id='receive-wrapper'>
-        <Label value='Shielded Address' id='shielded-address-label' />
+        <ShieldedLabel value='Shielded Address' id='shielded-address-label' />
         {shieldedAddresses.map(({ address, balance }) => (
           <WalletAddress key={address} address={address} balance={balance} />
         ))}
