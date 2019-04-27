@@ -15,7 +15,7 @@ import MenuIconDark from '../assets/images/menu_icon_dark.svg';
 import MenuIconLight from '../assets/images/menu_icon_light.svg';
 import PlusIconDark from '../assets/images/plus_icon_dark.svg';
 import PlusIconLight from '../assets/images/plus_icon_light.svg';
-import ShieldGrayImage from '../assets/images/shield-dark-gray.png';
+import ShieldGrayImage from '../assets/images/shield_dark_gray.png';
 
 import type { addressType } from '../redux/modules/receive';
 import type { MapStateToProps, MapDispatchToProps } from '../containers/receive';

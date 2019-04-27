@@ -9,8 +9,8 @@ import { formatNumber } from '../utils/format-number';
 import { getCoinName } from '../utils/get-coin-name';
 import { DARK } from '../constants/themes';
 
-import ShieldDarkImage from '../assets/images/shield-dark.png';
-import ShieldLightImage from '../assets/images/shield-light.png';
+import ShieldDarkImage from '../assets/images/shield_dark.png';
+import ShieldLightImage from '../assets/images/shield_light.png';
 
 const OutsideWrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};

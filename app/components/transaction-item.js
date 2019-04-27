@@ -10,6 +10,8 @@ import SentIconDark from '../assets/images/transaction_sent_icon_dark.svg';
 import ReceivedIconDark from '../assets/images/transaction_received_icon_dark.svg';
 import SentIconLight from '../assets/images/transaction_sent_icon_light.svg';
 import ReceivedIconLight from '../assets/images/transaction_received_icon_light.svg';
+import UnconfirmedLight from '../assets/images/unconfirmed_light.svg';
+import UnconfirmedDark from '../assets/images/unconfirmed_dark.svg';
 
 import { RowComponent } from './row';
 import { ColumnComponent } from './column';
@@ -70,6 +72,25 @@ const TransactionColumn = styled(ColumnComponent)`
   min-width: 60px;
 `;
 
+const UnconfirmedStatusWrapper = styled.div`
+  right: 30px;
+  position: absolute;
+`;
+
+const UnconfirmedStatus = styled.img`
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+
+  ${String(Wrapper)}:hover & {
+    opacity: 1;
+  }
+`;
+
+const RelativeRowComponent = styled(RowComponent)`
+  position: relative;
+`;
+
 export type Transaction = {
   confirmed: boolean,
   confirmations: number,
@@ -108,6 +129,11 @@ const Component = ({
 
   const receivedIcon = theme.mode === DARK ? ReceivedIconDark : ReceivedIconLight;
   const sentIcon = theme.mode === DARK ? SentIconDark : SentIconLight;
+  const unconfirmedIcon = theme.mode === DARK ? UnconfirmedLight : UnconfirmedDark;
+
+  // TODO: style the tooltip correctly (overlay issue)
+  // const showUnconfirmed = !confirmed || confirmations < 1 || address === '(Shielded)';
+  const showUnconfirmed = false;
 
   return (
     <ModalComponent
@@ -119,13 +145,18 @@ const Component = ({
           onClick={toggleVisibility}
         >
           <RowComponent alignItems='center'>
-            <RowComponent alignItems='center'>
+            <RelativeRowComponent alignItems='center'>
               <Icon src={isReceived ? receivedIcon : sentIcon} alt='Transaction Type Icon' />
               <TransactionColumn>
                 <TransactionTypeLabel isReceived={isReceived} value={type} isBold />
                 <TransactionLabel value={transactionTime} isReceived={isReceived} />
               </TransactionColumn>
-            </RowComponent>
+              {showUnconfirmed && (
+                <UnconfirmedStatusWrapper>
+                  <UnconfirmedStatus src={unconfirmedIcon} />
+                </UnconfirmedStatusWrapper>
+              )}
+            </RelativeRowComponent>
             <TransactionAddress value={address} />
           </RowComponent>
           <ColumnComponent alignItems='flex-end'>
