@@ -4,46 +4,86 @@ import React from 'react';
 import styled, { withTheme } from 'styled-components';
 
 import { TextComponent } from './text';
-import { RowComponent } from './row';
 
 import { formatNumber } from '../utils/format-number';
 import { getCoinName } from '../utils/get-coin-name';
+import { DARK } from '../constants/themes';
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: ${props => props.theme.colors.walletSummaryBg};
-  border: 1px solid ${props => props.theme.colors.walletSummaryBorder};
-  border-radius: ${props => props.theme.boxBorderRadius};
-  padding: 37px 45px;
-  min-height: 250px;
-  position: relative;
+import ShieldDarkImage from '../assets/images/shield_dark.png';
+import ShieldLightImage from '../assets/images/shield_light.png';
+
+const OutsideWrapper = styled.div`
   margin-top: ${props => props.theme.layoutContentPaddingTop};
 `;
 
-const AllAddresses = styled(TextComponent)`
-  margin-bottom: 2.5px;
-  font-size: ${props => `${props.theme.fontSize.small}em`};
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  background-color: ${props => props.theme.colors.walletSummaryBg};
+  border: 1px solid ${props => props.theme.colors.walletSummaryBorder};
+  border-radius: ${props => props.theme.boxBorderRadius};
+  padding: 30px 30px;
+  position: relative;
 `;
 
-const ValueBox = styled.div`
-  margin-bottom: 15px;
-  margin-right: 25px;
-`;
-
-const Label = styled(TextComponent)`
-  margin-top: 10px;
+const OutsideLabel = styled(TextComponent)`
+  text-transform: uppercase;
+  color: ${props => props.theme.colors.transactionsDate};
+  font-size: ${props => `${props.theme.fontSize.regular * 0.9}em`};
+  font-weight: ${props => String(props.theme.fontWeight.bold)};
   margin-bottom: 5px;
-  margin-left: -7.5px;
+`;
+
+const TotalContainer = styled.div`
+  min-width: 270px;
+`;
+
+const DetailContainer = styled.div`
+  min-width: 130px;
+  padding-right: 20px;
 `;
 
 const USDValue = styled(TextComponent)`
   opacity: 0.5;
   font-weight: ${props => String(props.theme.fontWeight.light)};
+  font-size: 16px;
 `;
 
-const ShieldedValue = styled(Label)`
+const DefaultLabel = styled(TextComponent)`
+  margin-top: 5px;
+  margin-bottom: 0px;
+  color: ${props => props.theme.colors.walletSummaryTransparent};
+`;
+
+const MiddleLabel = styled(TextComponent)`
+  margin-top: 7px;
+  margin-bottom: 5px;
+  font-size: 18px;
+`;
+
+const ShieldedValue = styled(DefaultLabel)`
   color: ${props => props.theme.colors.activeItem};
+  padding-left: 14px;
+  position: relative;
+
+  &:before {
+    position: absolute;
+    left: 0;
+    top: -1px;
+    content: '';
+    background: url(${props => (props.theme.mode === DARK ? ShieldDarkImage : ShieldLightImage)});
+    background-size: cover;
+    height: 12px;
+    width: 11px;
+  }
+`;
+
+const UnconfirmedLabel = styled(DefaultLabel)`
+  color: ${props => props.theme.colors.walletSummaryUnconfirmed};
+`;
+
+const UnconfirmedValue = styled(MiddleLabel)`
+  color: ${props => props.theme.colors.walletSummaryUnconfirmed};
 `;
 
 type Props = {
@@ -64,50 +104,51 @@ export const Component = ({
   theme,
 }: Props) => {
   const coinName = getCoinName();
+
   return (
-    <Wrapper>
-      <AllAddresses value='ALL ADDRESSES' isBold />
-      <ValueBox>
-        <TextComponent
-          size={theme.fontSize.medium * 2.5}
-          value={`${coinName} ${formatNumber({ value: total })}`}
-          isBold
-        />
-        <USDValue
-          value={`USD $${formatNumber({ value: total * zecPrice })}`}
-          size={theme.fontSize.medium * 2}
-        />
-      </ValueBox>
-      <RowComponent>
-        <ValueBox>
-          <ShieldedValue value='&#9679; SHIELDED' isBold size={theme.fontSize.small} />
+    <OutsideWrapper>
+      <OutsideLabel value='Wallet Summary' />
+      <Wrapper>
+        <TotalContainer>
           <TextComponent
+            size={theme.fontSize.medium * 2.4}
+            value={`${coinName} ${formatNumber({ value: total })}`}
+            isBold
+          />
+          <USDValue
+            value={`USD $${formatNumber({ value: total * zecPrice })}`}
+            size={theme.fontSize.medium * 2}
+          />
+        </TotalContainer>
+        <DetailContainer>
+          <ShieldedValue value='SHIELDED' isBold size={theme.fontSize.small} />
+          <MiddleLabel
             value={`${coinName} ${formatNumber({ value: shielded })}`}
             isBold
-            size={theme.fontSize.medium}
+            size='16px'
           />
           <USDValue value={`USD $${formatNumber({ value: shielded * zecPrice })}`} />
-        </ValueBox>
-        <ValueBox>
-          <Label value='&#9679; TRANSPARENT' isBold size={theme.fontSize.small} />
-          <TextComponent
+        </DetailContainer>
+        <DetailContainer>
+          <DefaultLabel value='TRANSPARENT' isBold size={theme.fontSize.small} />
+          <MiddleLabel
             value={`${coinName} ${formatNumber({ value: transparent })}`}
             isBold
-            size={theme.fontSize.medium}
+            size='16px'
           />
           <USDValue value={`USD $${formatNumber({ value: transparent * zecPrice })}`} />
-        </ValueBox>
-        <ValueBox>
-          <Label value='&#9679; UNCONFIRMED' isBold size={theme.fontSize.small} />
-          <TextComponent
-            value={`${coinName} ${formatNumber({ value: unconfirmed })}`}
+        </DetailContainer>
+        <DetailContainer>
+          <UnconfirmedLabel value='UNCONFIRMED' isBold size={theme.fontSize.small} />
+          <UnconfirmedValue
+            value={`${coinName} ${formatNumber({ value: transparent })}`}
             isBold
-            size={theme.fontSize.medium}
+            size='16px'
           />
           <USDValue value={`USD $${formatNumber({ value: unconfirmed * zecPrice })}`} />
-        </ValueBox>
-      </RowComponent>
-    </Wrapper>
+        </DetailContainer>
+      </Wrapper>
+    </OutsideWrapper>
   );
 };
 

@@ -17,7 +17,6 @@ const TransactionsWrapper = styled.div`
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  margin-bottom: 20px;
 `;
 
 const Day = styled(TextComponent)`
@@ -40,7 +39,7 @@ export const TransactionDailyComponent = ({ transactionsDate, transactions, zecP
     <TransactionsWrapper>
       {transactions.map(
         ({
-          date, type, address, amount, transactionId, fees, confirmed, confirmations,
+          date, type, address, amount, transactionId, confirmed, confirmations,
         }) => (
           <Fragment key={`${address}-${type}-${amount}-${date}`}>
             <TransactionItemComponent
@@ -52,7 +51,6 @@ export const TransactionDailyComponent = ({ transactionsDate, transactions, zecP
               address={address || 'N/A'}
               amount={amount}
               zecPrice={zecPrice}
-              fees={fees}
             />
           </Fragment>
         ),

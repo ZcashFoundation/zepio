@@ -71,7 +71,6 @@ const ClipboardButton = styled(Clipboard)`
 `;
 
 const SettingsWrapper = styled.div`
-  margin-bottom: 20px;
   min-width: 200px;
   width: 70%;
   max-width: 600px;

@@ -14,6 +14,7 @@ const Layout = styled.div`
   padding-left: ${props => props.theme.layoutPaddingLeft};
   padding-right: ${props => props.theme.layoutPaddingRight};
   overflow: auto;
+  padding-bottom: 20px;
 
   ::-webkit-scrollbar {
     display: none;

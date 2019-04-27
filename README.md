@@ -6,6 +6,8 @@ Zepio is a Sapling-enabled shielded-address first Zcash wallet, featuring cross-
 
 ### [Latest Documentation at https://zepiowallet.com](https://zepiowallet.com)
 
+> CURRENTLY ONLY A PRE-RELEASE AVAILABLE
+
 
 ## Stack Information
 
