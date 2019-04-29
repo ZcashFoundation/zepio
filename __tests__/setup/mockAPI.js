@@ -105,6 +105,10 @@ const handler = (server) => {
         return res.send({
           result: 't1VpYecBW4UudbGcy4ufh61eWxQCoFaUrPs',
         });
+      case 'getunconfirmedbalance':
+        return res.send({
+          result: 10,
+        });
       default:
         return null;
     }
