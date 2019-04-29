@@ -2,6 +2,7 @@
 
 Zepio is a Sapling-enabled shielded-address-first Zcash wallet, featuring cross-platform applications (macOS, Windows and Linux), built-in full node with support for `mainnet` and `testnet`, as well as `dark` and `light` themes.
 
+![Build Status](https://app.bitrise.io/app/a5bc7a8391d5501b/status.svg?token=SOuGNc3Qf9rCj3Osl-eHyQ&branch=master)
 ![Flow Coverage](./public/flow-coverage-badge.svg)
 
 ### [Latest Documentation](https://zepiowallet.com)
@@ -62,7 +63,7 @@ yarn electron:distall
 # Executables and binaries available under `/dist` folder
 ```
 
-## Flow Coverage
+## Flow Coverage (Static Type Checker)
 
 For a deeper look on the static typing coverage of the application, please follow below:
 ```bash
