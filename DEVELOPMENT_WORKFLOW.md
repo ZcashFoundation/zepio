@@ -16,7 +16,7 @@ The following lists the branching semantics to follow:
 
 ## Commit Messages
 
-Commit messages should have semantic meanings to make it more easily possible to comb through commits. The following are commit types to follow.
+Commit messages should have semantic meanings, and explain the 'why' of the change performed, to make it more easily possible to comb through commits. The following are commit types to follow.
 
 * **feature**: New feature
 * **hotfix**: Bug fixes
@@ -45,6 +45,6 @@ docs: commit messages doc
 
 ### Title
 
-The title of the PR should have the type shown (feature, hotfix, chore, etc..) as well as a brief description of the PR's purpose. Example
+The title of the PR should have the type shown (feature, hotfix, chore, etc..) as well as a brief description of the PR's purpose. Example:
 
 `[feature] Add Infinite Scroll`
