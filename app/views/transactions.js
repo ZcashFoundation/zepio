@@ -37,8 +37,7 @@ const RoundedTransactionWrapper = styled.div`
     : `
       border-bottom-left-radius: ${props.theme.boxBorderRadius};
       border-bottom-right-radius: ${props.theme.boxBorderRadius};
-    `
-  )}
+    `)}
 `;
 
 const ListWrapper = styled.div`
@@ -109,9 +108,10 @@ export class TransactionsView extends PureComponent<Props> {
       nextTransactionDate: nextTransaction ? new Date(nextTransaction.date) : null,
       component: (
         <TransactionItemComponent
+          confirmed={transaction.confirmed}
+          confirmations={transaction.confirmations}
           address={transaction.address}
           amount={transaction.amount}
-          fees={transaction.fees}
           date={transaction.date}
           transactionId={transaction.transactionId}
           type={transaction.type}
@@ -136,14 +136,9 @@ export class TransactionsView extends PureComponent<Props> {
     return transactionItem;
   };
 
-  renderRow = (
-    { index, key, style }: { index: number, key: string, style: Object },
-  ) => (
+  renderRow = ({ index, key, style }: { index: number, key: string, style: Object }) => (
     <div key={key} style={style}>
-      {this.isRowLoaded({ index })
-        ? this.renderTransactions({ index })
-        : 'Loading...'
-      }
+      {this.isRowLoaded({ index }) ? this.renderTransactions({ index }) : 'Loading...'}
     </div>
   );
 

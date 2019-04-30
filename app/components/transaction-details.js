@@ -58,6 +58,10 @@ const CloseIconImg = styled.img`
   margin-top: 12px;
   margin-right: 12px;
   cursor: pointer;
+
+  &:hover {
+    filter: brightness(150%);
+  }
 `;
 
 const InfoRow = styled(RowComponent)`
@@ -126,9 +130,10 @@ type Props = {
   date: string,
   transactionId: string,
   address: string,
-  fees: number | string,
   handleClose: () => void,
   theme: AppTheme,
+  confirmed: boolean,
+  confirmations: number,
 };
 
 const Component = ({
@@ -138,14 +143,20 @@ const Component = ({
   date,
   transactionId,
   address,
-  fees,
   handleClose,
   theme,
+  confirmed,
+  confirmations,
 }: Props) => {
   const isReceived = type === 'receive';
   const receivedIcon = theme.mode === DARK ? ReceivedIconDark : ReceivedIconLight;
   const sentIcon = theme.mode === DARK ? SentIconDark : SentIconLight;
   const coinName = getCoinName();
+
+
+  let confirmationValue = 'Unconfirmed';
+  if (confirmations >= 3) confirmationValue = confirmations;
+  if (confirmed) confirmationValue = confirmations;
 
   return (
     <Wrapper>
@@ -186,20 +197,11 @@ const Component = ({
         </ColumnComponent>
         <ColumnComponent>
           <TextComponent
-            value='FEES'
+            value='Confirmations'
             isBold
             color={theme.colors.transactionDetailsLabel({ theme })}
           />
-          <TextComponent
-            value={
-              fees === 'N/A'
-                ? 'N/A'
-                : formatNumber({
-                  value: new BigNumber(fees).toFormat(4),
-                  append: `${coinName} `,
-                })
-            }
-          />
+          <TextComponent value={String(confirmationValue)} />
         </ColumnComponent>
       </InfoRow>
       <Divider />

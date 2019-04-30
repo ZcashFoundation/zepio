@@ -11,7 +11,7 @@ import { DashboardView } from '../views/dashboard';
 
 import rpc from '../../services/api';
 import store from '../../config/electron-store';
-import { SAPLING } from '../constants/zcash-network';
+import { SAPLING, MIN_CONFIRMATIONS_NUMBER } from '../constants/zcash-network';
 import { listShieldedTransactions } from '../../services/shielded-transactions';
 import { sortByDescend } from '../utils/sort-by-descend';
 
@@ -28,6 +28,7 @@ const mapStateToProps = ({ walletSummary }: AppState) => ({
   total: walletSummary.total,
   shielded: walletSummary.shielded,
   transparent: walletSummary.transparent,
+  unconfirmed: walletSummary.unconfirmed,
   error: walletSummary.error,
   isLoading: walletSummary.isLoading,
   zecPrice: walletSummary.zecPrice,
@@ -43,8 +44,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     const [zAddressesErr, zAddresses = []] = await eres(rpc.z_listaddresses());
     const [tAddressesErr, tAddresses = []] = await eres(rpc.getaddressesbyaccount(''));
     const [transactionsErr, transactions] = await eres(rpc.listtransactions());
+    const [unconfirmedBalanceErr, unconfirmedBalance] = await eres(rpc.getunconfirmedbalance());
 
-    if (walletErr || zAddressesErr || tAddressesErr || transactionsErr) {
+    if (walletErr || zAddressesErr || tAddressesErr || transactionsErr || unconfirmedBalanceErr) {
       return dispatch(
         loadWalletSummaryError({
           error: 'Something went wrong!',
@@ -54,6 +56,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
     const formattedTransactions: Array<Object> = flow([
       arr => arr.map(transaction => ({
+        confirmed: transaction.confirmations >= MIN_CONFIRMATIONS_NUMBER,
+        confirmations: transaction.confirmations,
         transactionId: transaction.txid,
         type: transaction.category,
         date: new Date(transaction.time * 1000).toISOString(),
@@ -87,6 +91,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
         transparent: walletSummary.transparent,
         total: walletSummary.total,
         shielded: walletSummary.private,
+        unconfirmed: unconfirmedBalance,
         addresses: [...zAddresses, ...tAddresses],
         transactions: formattedTransactions,
         zecPrice: new BigNumber(store.get('ZEC_DOLLAR_PRICE')).toNumber(),

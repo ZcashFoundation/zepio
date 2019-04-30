@@ -87,7 +87,7 @@ const QRCodeContainer = styled.div`
   background-color: ${props => props.theme.colors.qrCodeWrapperBg}
   border: 1px solid ${props => props.theme.colors.qrCodeWrapperBorder}
   border-radius: ${props => props.theme.boxBorderRadius};
-  padding: 20px;
+  padding: 20px 20px 20px 10px;
   margin-bottom: 10px;
   width: 100%;
 `;
@@ -164,8 +164,9 @@ const AddressDetailsLabel = styled.div`
 
 const AddressDetailsWrapper = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
-  padding: 10px 20px 0 20px;
+  padding: 15px 20px 0 20px;
 `;
 
 const FormButton = styled(Button)`
@@ -179,7 +180,7 @@ const FormButton = styled(Button)`
 
 const Column = styled.div`
   display: flex;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;

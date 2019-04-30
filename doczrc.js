@@ -2,8 +2,8 @@
 import { css } from 'docz-plugin-css';
 
 export default {
-  title: 'Zepio',
-  description: 'Zepio Component Styleguide',
+  title: 'Zepio Components',
+  description: 'Zepio Component Library',
   plugins: [css()],
   htmlContext: {
     head: {

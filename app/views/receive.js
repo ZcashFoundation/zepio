@@ -15,9 +15,12 @@ import MenuIconDark from '../assets/images/menu_icon_dark.svg';
 import MenuIconLight from '../assets/images/menu_icon_light.svg';
 import PlusIconDark from '../assets/images/plus_icon_dark.svg';
 import PlusIconLight from '../assets/images/plus_icon_light.svg';
+import ShieldGrayImage from '../assets/images/shield_dark_gray.png';
 
 import type { addressType } from '../redux/modules/receive';
 import type { MapStateToProps, MapDispatchToProps } from '../containers/receive';
+
+const TRANSPARENT_ADDRESS_SUBLABEL = 'By using transaparent addresses you are forgiving any privacy properties to your transactions.';
 
 const Row = styled(RowComponent)`
   margin-bottom: 10px;
@@ -29,6 +32,16 @@ const Label = styled(InputLabelComponent)`
   font-size: ${props => `${props.theme.fontSize.regular * 0.9}em`};
   font-weight: ${props => String(props.theme.fontWeight.bold)};
   margin-bottom: 5px;
+`;
+
+const SubLabel = styled(InputLabelComponent)`
+  color: ${props => props.theme.colors.transactionsDate};
+  font-size: ${props => `${props.theme.fontSize.regular * 0.9}em`};
+  font-weight: ${props => String(props.theme.fontWeight.light)};
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  margin-top: 0;
+  padding-top: 8px;
 `;
 
 const ActionButton = styled.button`
@@ -75,6 +88,22 @@ const RevealsMain = styled.div`
   justify-content: flex-start;
 `;
 
+const ShieldedLabel = styled(Label)`
+  padding-left: 14px;
+  position: relative;
+
+  &:before {
+    position: absolute;
+    left: 0;
+    top: -1px;
+    content: '';
+    background: url(${ShieldGrayImage});
+    background-size: cover;
+    height: 12px;
+    width: 11px;
+  }
+`;
+
 type Props = MapDispatchToProps &
   MapStateToProps & {
     theme: AppTheme,
@@ -119,7 +148,7 @@ class Component extends PureComponent<Props, State> {
 
     return (
       <div id='receive-wrapper'>
-        <Label value='Shielded Address' id='shielded-address-label' />
+        <ShieldedLabel value='Shielded Address' id='shielded-address-label' />
         {shieldedAddresses.map(({ address, balance }) => (
           <WalletAddress key={address} address={address} balance={balance} />
         ))}
@@ -164,6 +193,7 @@ class Component extends PureComponent<Props, State> {
                   }}
                 >
                   <Label value='Transparent Address (not private)' />
+                  <SubLabel value={TRANSPARENT_ADDRESS_SUBLABEL} />
                   {transparentAddresses.map(({ address, balance }) => (
                     <WalletAddress key={address} address={address} balance={balance} />
                   ))}

@@ -14,6 +14,7 @@ describe('WalletSummary Reducer', () => {
       total: 0,
       shielded: 0,
       transparent: 0,
+      unconfirmed: 0,
       error: null,
       isLoading: false,
       zecPrice: 0,
@@ -37,6 +38,7 @@ describe('WalletSummary Reducer', () => {
       total: 0,
       shielded: 0,
       transparent: 0,
+      unconfirmed: 0,
       error: null,
       isLoading: true,
       zecPrice: 0,
@@ -52,6 +54,7 @@ describe('WalletSummary Reducer', () => {
         total: 1000,
         transparent: 1000,
         shielded: 1000,
+        unconfirmed: 0,
       },
     };
     const expectedState = {
@@ -77,6 +80,7 @@ describe('WalletSummary Reducer', () => {
       total: 0,
       shielded: 0,
       transparent: 0,
+      unconfirmed: 0,
       error: action.payload.error,
       isLoading: false,
       addresses: [],

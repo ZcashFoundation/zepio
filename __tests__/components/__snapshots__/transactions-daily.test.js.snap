@@ -3,16 +3,16 @@
 exports[`<TransactionDailyComponent /> render() should render user daily transactions 1`] = `
 <div>
   <div
-    class="sc-kpOJdX inMzwo"
+    class="sc-jKJlTe gjnbgQ"
     data-testid="TransactionsDaily"
   >
     <p
-      class="sc-ckVGcZ kFpbuU sc-htpNat pRhzD"
+      class="sc-hMqMXs gnhPXm sc-htpNat pRhzD"
     >
       2019-02-20T19:31:57.117Z
     </p>
     <div
-      class="sc-dxgOiQ dHRuWE"
+      class="sc-eNQAEJ dtrSYf"
     >
       <div
         class="sc-jzJRlG bgSReS sc-bdVaJa bWRfen"
@@ -22,7 +22,7 @@ exports[`<TransactionDailyComponent /> render() should render user daily transac
           class="sc-bdVaJa eFCRqo"
         >
           <div
-            class="sc-bdVaJa eFCRqo"
+            class="sc-ckVGcZ gzxdCf sc-bdVaJa eFCRqo"
           >
             <img
               alt="Transaction Type Icon"
@@ -75,7 +75,7 @@ exports[`<TransactionDailyComponent /> render() should render user daily transac
           class="sc-bdVaJa eFCRqo"
         >
           <div
-            class="sc-bdVaJa eFCRqo"
+            class="sc-ckVGcZ gzxdCf sc-bdVaJa eFCRqo"
           >
             <img
               alt="Transaction Type Icon"
