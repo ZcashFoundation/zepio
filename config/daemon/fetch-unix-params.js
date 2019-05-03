@@ -4,7 +4,7 @@ import path from 'path';
 import cp from 'child_process';
 
 import getBinariesPath from './get-binaries-path';
-import log from './logger';
+import { log } from './logger';
 
 // eslint-disable-next-line
 export default (): Promise<*> => new Promise((resolve, reject) => {
