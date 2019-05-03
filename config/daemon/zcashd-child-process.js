@@ -20,7 +20,7 @@ import getOsFolder from './get-os-folder';
 import getDaemonName from './get-daemon-name';
 import fetchParams from './run-fetch-params';
 import { locateZcashConf } from './locate-zcash-conf';
-import log from './logger';
+import { log } from './logger';
 import store from '../electron-store';
 import { parseZcashConf, parseCmdArgs, generateArgsFromConf } from './parse-zcash-conf';
 import { isTestnet } from '../is-testnet';
