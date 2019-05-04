@@ -11,7 +11,7 @@ import { autoUpdater } from 'electron-updater';
 import isDev from 'electron-is-dev';
 import { registerDebugShortcut } from '../utils/debug-shortcut';
 import runDaemon from './daemon/zcashd-child-process';
-import zcashLog from './daemon/logger';
+import { log as zcashLog, cleanLogs } from './daemon/logger';
 import getZecPrice from '../services/zec-price';
 import store from './electron-store';
 import { handleDeeplink } from './handle-deeplink';
@@ -112,6 +112,9 @@ app.on('ready', async () => {
   createWindow();
 
   console.log('[Process Argv]', process.argv); // eslint-disable-line
+
+  // Reset old logs on startup
+  cleanLogs();
 
   if (process.env.NODE_ENV === 'test') {
     zcashLog('Not running daemon, please run the mock API');

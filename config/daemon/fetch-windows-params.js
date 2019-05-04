@@ -15,7 +15,7 @@ import Queue from 'p-queue';
 // eslint-disable-next-line
 import { app, mainWindow } from '../electron';
 import getBinariesPath from './get-binaries-path';
-import log from './logger';
+import { log } from './logger';
 
 const queue = new Queue({ concurrency: 2, autoStart: false });
 
@@ -49,10 +49,7 @@ const FILES: Array<{ name: string, hash: string }> = [
 ];
 
 // eslint-disable-next-line max-len
-const checkSha256 = (
-  pathToFile: string,
-  expectedHash: string,
-) => new Promise((resolve, reject) => {
+const checkSha256 = (pathToFile: string, expectedHash: string) => new Promise((resolve, reject) => {
   fs.readFile(pathToFile, (err, file) => {
     if (err) return reject(new Error(err));
 
@@ -63,10 +60,7 @@ const checkSha256 = (
 });
 
 // eslint-disable-next-line max-len
-const downloadFile = ({
-  file,
-  pathToSave,
-}): Promise<*> => new Promise((resolve, reject) => {
+const downloadFile = ({ file, pathToSave }): Promise<*> => new Promise((resolve, reject) => {
   if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', `Downloading ${file.name}...`);
   log(`Downloading ${file.name}...`);
 
