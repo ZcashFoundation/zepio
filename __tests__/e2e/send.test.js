@@ -9,7 +9,7 @@ beforeEach(async () => {
   await app.client.waitUntilWindowLoaded();
   await app.client.waitUntilTextExists('#sidebar', 'Send');
   await app.client.element('#sidebar a:nth-child(2)').click();
-  await app.client.waitUntilTextExists('#status-pill', 'SYNCED');
+  await app.client.waitUntilTextExists('#status-pill', 'READY');
 });
 
 afterEach(async () => {
