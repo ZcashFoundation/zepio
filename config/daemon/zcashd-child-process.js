@@ -65,24 +65,59 @@ let resolved = false;
 
 const ZCASHD_PROCESS_NAME = getDaemonName();
 
+let isWindowOpened = false;
+
+const sendToRenderer = (event: string, message: Object, shouldLog: boolean = true) => {
+  if (shouldLog) {
+    log(message);
+  }
+
+  if (isWindowOpened) {
+    if (!mainWindow.isDestroyed()) {
+      mainWindow.webContents.send(event, message);
+    }
+  } else {
+    const interval = setInterval(() => {
+      if (isWindowOpened) {
+        mainWindow.webContents.send(event, message);
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
+};
+
 // eslint-disable-next-line
 const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve, reject) => {
+  mainWindow.webContents.on('dom-ready', () => {
+    isWindowOpened = true;
+  });
+
   const processName = path.join(getBinariesPath(), getOsFolder(), ZCASHD_PROCESS_NAME);
   const isRelaunch = Boolean(process.argv.find(arg => arg === '--relaunch'));
 
   if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', 'Fetching params...');
 
-  store.set('DAEMON_FETCHING_PARAMS', true);
+  sendToRenderer('zcash-daemon-status', {
+    error: false,
+    status:
+        'Downloading network params, this may take some time depending on your connection speed',
+  });
+
   const [err] = await eres(fetchParams());
 
   if (err) {
-    log('Something went wrong fetching params: ', err);
+    sendToRenderer('zcash-daemon-status', {
+      error: true,
+      status: `Error while fetching params: ${err.message}`,
+    });
+
     return reject(new Error(err));
   }
 
-  if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-params-download', 'Zepio Starting');
-  log('Fetch Params finished!');
-  store.set('DAEMON_FETCHING_PARAMS', false);
+  sendToRenderer('zcash-daemon-status', {
+    error: false,
+    status: 'Zepio Starting',
+  });
 
   // In case of --relaunch on argv, we need wait to close the old zcash daemon
   // a workaround is use a interval to check if there is a old process running
@@ -164,7 +199,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   );
 
   childProcess.stdout.on('data', (data) => {
-    if (!mainWindow.isDestroyed()) mainWindow.webContents.send('zcashd-log', data.toString());
+    sendToRenderer('zcashd-log', data.toString(), false);
     if (!resolved) {
       resolve(childProcess);
       resolved = true;
