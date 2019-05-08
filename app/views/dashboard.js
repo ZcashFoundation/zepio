@@ -18,6 +18,7 @@ type Props = {
   error: string | null,
   zecPrice: number,
   addresses: string[],
+  isDaemonReady: boolean,
   transactions: TransactionsList,
 };
 
@@ -27,10 +28,13 @@ export class DashboardView extends PureComponent<Props> {
   interval = null;
 
   componentDidMount() {
-    const { getSummary } = this.props;
+    const { getSummary, isDaemonReady } = this.props;
+
     getSummary();
 
-    this.interval = setInterval(() => getSummary(), UPDATE_INTERVAL);
+    if (isDaemonReady) {
+      this.interval = setInterval(() => getSummary(), UPDATE_INTERVAL);
+    }
   }
 
   componentWillUnmount() {

@@ -1,11 +1,10 @@
 // @flow
-
+import electron from 'electron'; // eslint-disable-line
 import React, { type ComponentType, Component } from 'react';
 
 import { LoadingScreen } from './loading-screen';
 
 import rpc from '../../services/api';
-import electronStore from '../../config/electron-store';
 
 type Props = {};
 
@@ -21,6 +20,8 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
 ): ComponentType<$Diff<PassedProps, Props>> => class extends Component<PassedProps, State> {
     timer: ?IntervalID = null;
 
+    hasDaemonError: boolean = false;
+
     state = {
       isRunning: false,
       progress: 0,
@@ -29,8 +30,20 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
 
     componentDidMount() {
       this.runTest();
-
       this.timer = setInterval(this.runTest, 2000);
+
+      electron.ipcRenderer.on('zcash-daemon-status', (event: empty, message: Object) => {
+        this.hasDaemonError = message.error;
+
+        if (message.error) {
+          clearInterval(this.timer);
+        }
+
+        this.setState({
+          message: message.status,
+          ...(message.error ? { progress: 0, isRunning: false } : {}),
+        });
+      });
     }
 
     componentWillUnmount() {
@@ -41,16 +54,13 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
     }
 
     runTest = () => {
-      if (electronStore.get('DAEMON_FETCHING_PARAMS')) {
-        return this.setState({
-          message:
-            'Downloading network params, this may take some time depending on your connection speed',
-        });
-      }
+      if (this.hasDaemonError) return;
 
       rpc
         .getinfo()
         .then((response) => {
+          if (this.hasDaemonError) return;
+
           if (response) {
             setTimeout(() => {
               this.setState(() => ({ isRunning: true }));
@@ -64,6 +74,8 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
           }
         })
         .catch((error) => {
+          if (this.hasDaemonError) return;
+
           const statusMessage = error.message === 'Something went wrong' ? 'Zepio Starting' : error.message;
 
           const isRpcOff = Math.trunc(error.statusCode / 100) === 5;

@@ -12,6 +12,7 @@ import { DashboardView } from '../views/dashboard';
 import rpc from '../../services/api';
 import store from '../../config/electron-store';
 import { SAPLING, MIN_CONFIRMATIONS_NUMBER } from '../constants/zcash-network';
+import { NODE_SYNC_TYPES } from '../constants/node-sync-types';
 import { listShieldedTransactions } from '../../services/shielded-transactions';
 import { sortByDescend } from '../utils/sort-by-descend';
 
@@ -24,7 +25,7 @@ import {
 import type { AppState } from '../types/app-state';
 import type { Dispatch } from '../types/redux';
 
-const mapStateToProps = ({ walletSummary }: AppState) => ({
+const mapStateToProps = ({ walletSummary, app }: AppState) => ({
   total: walletSummary.total,
   shielded: walletSummary.shielded,
   transparent: walletSummary.transparent,
@@ -34,6 +35,7 @@ const mapStateToProps = ({ walletSummary }: AppState) => ({
   zecPrice: walletSummary.zecPrice,
   addresses: walletSummary.addresses,
   transactions: walletSummary.transactions,
+  isDaemonReady: app.nodeSyncType === NODE_SYNC_TYPES.READY,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
