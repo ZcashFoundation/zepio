@@ -169,10 +169,8 @@ class Component extends PureComponent<Props, State> {
         return this.getSyncingIcon();
       case NODE_SYNC_TYPES.READY:
         return this.getReadyIcon();
-      case NODE_SYNC_TYPES.ERROR:
-        return this.getErrorIcon();
       default:
-        return null;
+        return this.getErrorIcon();
     }
   };
 
@@ -180,14 +178,25 @@ class Component extends PureComponent<Props, State> {
     const { nodeSyncType } = this.props;
 
     switch (nodeSyncType) {
-      case 'syncing':
-        return 'Syncing blockchain data. You may not send funds or see latest transactions until it\'s synced.';
-      case 'ready':
+      case NODE_SYNC_TYPES.SYNCING:
+        return "Syncing blockchain data. You may not send funds or see latest transactions until it's synced.";
+      case NODE_SYNC_TYPES.READY:
         return 'Your node is synced.';
-      case 'error':
-        return 'There was an error. Try restarting Zepio.';
       default:
-        return '';
+        return 'There was an error. Try restarting Zepio.';
+    }
+  };
+
+  getLabel = () => {
+    const { nodeSyncType } = this.props;
+
+    switch (nodeSyncType) {
+      case NODE_SYNC_TYPES.SYNCING:
+        return 'syncing';
+      case NODE_SYNC_TYPES.READY:
+        return 'ready';
+      default:
+        return 'error';
     }
   };
 
@@ -195,8 +204,9 @@ class Component extends PureComponent<Props, State> {
     const icon = this.getIcon();
     const { nodeSyncType, nodeSyncProgress } = this.props;
     const { showTooltip } = this.state;
-    const percent = nodeSyncType === NODE_SYNC_TYPES.SYNCING ? `(${nodeSyncProgress.toFixed(2)}%)` : '';
-    const typeText = nodeSyncType === NODE_SYNC_TYPES.READY ? 'Synced' : nodeSyncType;
+    const percent = nodeSyncType && nodeSyncType === NODE_SYNC_TYPES.SYNCING
+      ? `(${nodeSyncProgress.toFixed(2)}%)`
+      : '';
 
     return (
       // eslint-disable-next-line
@@ -211,7 +221,7 @@ class Component extends PureComponent<Props, State> {
           </Tooltip>
         )}
         {icon && <Icon src={icon} animated={this.isSyncing()} />}
-        <StatusPillLabel value={`${typeText} ${percent}`} />
+        <StatusPillLabel value={`${this.getLabel()} ${percent}`} />
       </Wrapper>
     );
   }
