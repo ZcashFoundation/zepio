@@ -62,7 +62,7 @@ const helpMenu = {
 
 if (process.platform === 'darwin') {
   menu.unshift({
-    label: 'Zepio',
+    label: packageJson.name,
     submenu: [
       { role: 'about' },
       { type: 'separator' },
