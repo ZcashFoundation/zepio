@@ -91,6 +91,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   mainWindow.webContents.on('dom-ready', () => {
     isWindowOpened = true;
   });
+  store.delete('rpcport');
 
   const processName = path.join(getBinariesPath(), getOsFolder(), ZCASHD_PROCESS_NAME);
   const isRelaunch = Boolean(process.argv.find(arg => arg === '--relaunch'));
@@ -146,6 +147,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     }
   }
 
+  if (optionsFromZcashConf.rpcport) store.set('rpcport', optionsFromZcashConf.rpcport);
   if (optionsFromZcashConf.rpcuser) store.set('rpcuser', optionsFromZcashConf.rpcuser);
   if (optionsFromZcashConf.rpcpassword) store.set('rpcpassword', optionsFromZcashConf.rpcpassword);
 
@@ -157,7 +159,9 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
 
     // Command line args override zcash.conf
     const [{ cmd }] = await findProcess('name', ZCASHD_PROCESS_NAME);
-    const { user, password, isTestnet: isTestnetFromCmd } = parseCmdArgs(cmd);
+    const {
+      user, password, port, isTestnet: isTestnetFromCmd,
+    } = parseCmdArgs(cmd);
 
     store.set(
       ZCASH_NETWORK,
@@ -166,6 +170,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
 
     if (user) store.set('rpcuser', user);
     if (password) store.set('rpcpassword', password);
+    if (port) store.set('rpcport', port);
 
     return resolve();
   }

@@ -7,12 +7,16 @@ import { METHODS, type APIMethods } from './utils';
 import store from '../config/electron-store';
 import { isTestnet } from '../config/is-testnet';
 
-const getRPCConfig = () => ({
-  host: '127.0.0.1',
-  port: isTestnet() ? 18232 : 8232,
-  user: store.get('rpcuser'),
-  password: store.get('rpcpassword'),
-});
+const getRPCConfig = () => {
+  const rpcport = store.get('rpcport');
+
+  return {
+    host: '127.0.0.1',
+    port: rpcport || (isTestnet() ? 18232 : 8232),
+    user: store.get('rpcuser'),
+    password: store.get('rpcpassword'),
+  };
+};
 
 const getMessage = (statusCode, isECONNREFUSED) => {
   if (isECONNREFUSED) {

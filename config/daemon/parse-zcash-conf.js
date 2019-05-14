@@ -67,17 +67,24 @@ export const generateArgsFromConf = (obj: ZcashConfFile): Array<string> => Objec
   return acc.concat(`-${key}=${String(obj[key])}`);
 }, []);
 
-export const parseCmdArgs = (
-  cmd: string,
-): { user: string, password: string, isTestnet: boolean } => {
+type ParseCmdArgsPayload = { user: string, password: string, port: string, isTestnet: boolean };
+
+export const parseCmdArgs = (cmd: string): ParseCmdArgsPayload => {
   const splitArgs = cmd.split(' ');
 
   const rpcUserInArgs = splitArgs.find(x => x.startsWith('-rpcuser'));
   const rpcPasswordInArgs = splitArgs.find(x => x.startsWith('-rpcpassword'));
   const testnetInArgs = splitArgs.find(x => x.startsWith('-testnet'));
+  const rpcPortInArgs = splitArgs.find(x => x.startsWith('-rpcport'));
 
   const rpcUser = rpcUserInArgs ? rpcUserInArgs.replace('-rpcuser=', '') : '';
   const rpcPassword = rpcPasswordInArgs ? rpcPasswordInArgs.replace('-rpcpassword=', '') : '';
+  const rpcPort = rpcPortInArgs ? rpcPortInArgs.replace('-rpcport=', '') : '';
 
-  return { user: rpcUser, password: rpcPassword, isTestnet: Boolean(testnetInArgs) };
+  return {
+    user: rpcUser,
+    password: rpcPassword,
+    port: rpcPort,
+    isTestnet: Boolean(testnetInArgs),
+  };
 };
