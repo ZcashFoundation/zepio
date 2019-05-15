@@ -9,9 +9,10 @@ import { isTestnet } from '../config/is-testnet';
 
 const getRPCConfig = () => {
   const rpcport = store.get('rpcport');
+  const rpcconnect = store.get('rpcconnect');
 
   return {
-    host: '127.0.0.1',
+    host: rpcconnect || '127.0.0.1',
     port: rpcport || (isTestnet() ? 18232 : 8232),
     user: store.get('rpcuser'),
     password: store.get('rpcpassword'),
