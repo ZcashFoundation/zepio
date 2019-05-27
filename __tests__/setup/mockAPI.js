@@ -3,7 +3,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'babel-polyfill';
 
-import createTestServer from 'create-test-server';
+import createTestServer from '@astrocoders/create-test-server';
 
 const transactions = [];
 
