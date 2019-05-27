@@ -1,7 +1,7 @@
 {
   "name": "zepio",
   "productName": "Zepio",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Zepio | Cross-platform sapling-enabled full-node Zcash wallet",
   "main": "config/main.js",
   "homepage": "https://zepiowallet.com",
