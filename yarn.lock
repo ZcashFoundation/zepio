@@ -6,6 +6,16 @@
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/7zip-bin/-/7zip-bin-4.1.0.tgz#33eff662a5c39c0c2061170cc003c5120743fff0"
 
+"@astrocoders/create-test-server@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@astrocoders/create-test-server/-/create-test-server-3.0.2.tgz#d849279d0e63e2c293e32c3db70eac4799cfeb9d"
+  integrity sha512-I11U6GJzF2U3akSOrE5uR+Woqfm33x9U4iiT1N71RXcb3UyaYzXH5eD2LcLCCcMCtwlMyFdJBt2WWnGjkvd/aw==
+  dependencies:
+    body-parser "^1.18.2"
+    create-cert "^1.0.2"
+    express "^4.15.3"
+    pify "^3.0.0"
+
 "@babel/cli@^7.0.0":
   version "7.1.5"
   resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.1.5.tgz#4ccf0a8cdabeefdd8ce955384530f050935bc4d7"
@@ -4501,15 +4511,6 @@ create-react-context@^0.2.2, create-react-context@^0.2.3:
   dependencies:
     fbjs "^0.8.0"
     gud "^1.0.0"
-
-create-test-server@georgelima/create-test-server:
-  version "2.4.0"
-  resolved "https://codeload.github.com/georgelima/create-test-server/tar.gz/0f4133ca2d53f7084f34e77ca72536890614c96a"
-  dependencies:
-    body-parser "^1.18.2"
-    create-cert "^1.0.2"
-    express "^4.15.3"
-    pify "^3.0.0"
 
 cross-env@^5.2.0:
   version "5.2.0"
