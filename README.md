@@ -122,4 +122,4 @@ In order to contribute and submit PRs to improve the **Zepio** codebase, please 
 
 ## License
 
-MIT © Zcash Foundation 2019 zfnd.org
+MIT © Zcash Foundation 2019 [zfnd.org](zfnd.org)

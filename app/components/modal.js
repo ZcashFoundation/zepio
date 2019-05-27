@@ -3,6 +3,7 @@
 import React, { PureComponent, Fragment, type Element } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
+import { tsImportEqualsDeclaration } from '@babel/types';
 
 const ModalWrapper = styled.div`
   width: 100vw;
@@ -26,6 +27,7 @@ type Props = {
   children: (() => void) => Element<*>,
   closeOnBackdropClick?: boolean,
   closeOnEsc?: boolean,
+  isVisible?: boolean,
 };
 
 type State = {
@@ -40,14 +42,24 @@ export class ModalComponent extends PureComponent<Props, State> {
   static defaultProps = {
     closeOnBackdropClick: true,
     closeOnEsc: true,
-  };
-
-  state = {
     isVisible: false,
   };
 
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      isVisible: props.isVisible || false,
+    };
+  }
+
   componentDidMount() {
     const { closeOnEsc } = this.props;
+    const { isVisible } = this.state;
+
+    if (isVisible) {
+      if (modalRoot) modalRoot.appendChild(this.element);
+    }
 
     if (closeOnEsc) {
       window.addEventListener('keydown', this.handleEscPress);

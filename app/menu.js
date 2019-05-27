@@ -32,12 +32,12 @@ const helpMenu = {
   role: 'help',
   submenu: [
     {
-      label: `v${packageJson.version}`,
+      label: `Zepio Version v${packageJson.version}`,
       enabled: false,
     },
     { type: 'separator' },
     {
-      label: 'Help & FAQ',
+      label: 'Help / FAQ',
       click() {
         openExternal(DOCS_URL);
       },

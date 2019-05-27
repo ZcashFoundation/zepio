@@ -65,7 +65,7 @@ const createWindow = () => {
     frame: true,
     resizable: true,
     webPreferences: {
-      devTools: false,
+      devTools: true,
       webSecurity: true,
     },
   });

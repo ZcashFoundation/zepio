@@ -69,8 +69,11 @@ type Props = {
   onConfirm: () => void,
   onClose?: () => void,
   showButtons?: boolean,
+  showSingleConfirmButton?: boolean,
+  singleConfirmButtonText?: string,
   width?: number,
   isLoading?: boolean,
+  isVisible?: boolean,
   children: (() => void) => Element<*>,
 };
 
@@ -81,7 +84,10 @@ export const ConfirmDialogComponent = ({
   onClose,
   renderTrigger,
   showButtons,
+  showSingleConfirmButton,
+  singleConfirmButtonText,
   isLoading,
+  isVisible,
   width,
 }: Props) => {
   const handleClose = toggle => () => {
@@ -95,6 +101,7 @@ export const ConfirmDialogComponent = ({
       renderTrigger={renderTrigger}
       closeOnBackdropClick={false}
       closeOnEsc={false}
+      isVisible={isVisible}
     >
       {toggle => (
         <Wrapper width={Number(width)}>
@@ -122,6 +129,16 @@ export const ConfirmDialogComponent = ({
               />
             </ButtonWrapper>
           )}
+          {showSingleConfirmButton && (
+            <ButtonWrapper>
+              <Btn
+                id='confirm-modal-button'
+                label={String(singleConfirmButtonText)}
+                onClick={onConfirm}
+                isLoading={isLoading}
+              />
+            </ButtonWrapper>
+          )}
         </Wrapper>
       )}
     </ModalComponent>
@@ -130,7 +147,10 @@ export const ConfirmDialogComponent = ({
 
 ConfirmDialogComponent.defaultProps = {
   showButtons: true,
+  showSingleConfirmButton: false,
+  singleConfirmButtonText: 'Ok!',
   width: 460,
   isLoading: false,
+  isVisible: false,
   onClose: () => {},
 };
