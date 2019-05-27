@@ -113,7 +113,7 @@ export const ConfirmDialogComponent = ({
           </TitleWrapper>
           <Divider opacity={0.3} />
           {children(handleClose(toggle))}
-          {showButtons && (
+          {(showButtons && !showSingleConfirmButton) && (
             <ButtonWrapper>
               <Btn
                 id='confirm-modal-button'

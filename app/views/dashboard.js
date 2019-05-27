@@ -101,7 +101,8 @@ export class DashboardView extends PureComponent<Props> {
         <ConfirmDialogComponent
           title='Ok. Let me in!'
           onConfirm={() => store.set('DISPLAY_WELCOME_MODAL', false)}
-          showButtons
+          showSingleConfirmButton
+          singleConfirmButtonText={'Ok! Let\'s go!'}
           isVisible={store.get('DISPLAY_WELCOME_MODAL')}
           renderTrigger={toggleVisibility => (
             <div onClick={toggleVisibility}>hey</div>

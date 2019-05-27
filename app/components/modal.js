@@ -3,7 +3,6 @@
 import React, { PureComponent, Fragment, type Element } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
-import { tsImportEqualsDeclaration } from '@babel/types';
 
 const ModalWrapper = styled.div`
   width: 100vw;
@@ -23,7 +22,7 @@ const ChildrenWrapper = styled.div`
 `;
 
 type Props = {
-  renderTrigger: (() => void) => Element<*>,
+  renderTrigger?: (() => void) => Element<*>,
   children: (() => void) => Element<*>,
   closeOnBackdropClick?: boolean,
   closeOnEsc?: boolean,
@@ -43,6 +42,7 @@ export class ModalComponent extends PureComponent<Props, State> {
     closeOnBackdropClick: true,
     closeOnEsc: true,
     isVisible: false,
+    renderTrigger: () => null,
   };
 
   constructor(props: Props) {
@@ -101,9 +101,12 @@ export class ModalComponent extends PureComponent<Props, State> {
     const { isVisible } = this.state;
     const toggleVisibility = isVisible ? this.close : this.open;
 
+    // $FlowFixMe
+    const renderTriggerProps = () => renderTrigger(toggleVisibility);
+
     return (
       <Fragment>
-        {renderTrigger(toggleVisibility)}
+        {renderTriggerProps()}
         {!isVisible ? null : createPortal(
           <ModalWrapper
             id='modal-portal-wrapper'
