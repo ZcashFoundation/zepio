@@ -20,8 +20,19 @@ type State = {
 
 const getInitialTheme = () => {
   const themeInStore = String(electronStore.get(THEME_MODE));
+
   if (themeInStore === DARK || themeInStore === LIGHT) return themeInStore;
   return DARK;
+};
+
+const getWelcomeModal = () => {
+  const welcomeModalInStore = electronStore.get('DISPLAY_WELCOME_MODAL');
+
+  if (welcomeModalInStore !== null || welcomeModalInStore !== undefined) {
+    return welcomeModalInStore || false;
+  }
+
+  return true;
 };
 
 export class App extends Component<Props, State> {
@@ -31,6 +42,7 @@ export class App extends Component<Props, State> {
 
   componentDidMount() {
     electronStore.set(THEME_MODE, getInitialTheme());
+    electronStore.set(THEME_MODE, getWelcomeModal());
 
     electronStore.onDidChange(THEME_MODE, newValue => this.setState({ themeMode: newValue }));
   }

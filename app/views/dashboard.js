@@ -1,13 +1,28 @@
 // @flow
 
 import React, { PureComponent, Fragment } from 'react';
+import styled from 'styled-components';
 
 import { WalletSummaryComponent } from '../components/wallet-summary';
 import { TransactionDailyComponent } from '../components/transaction-daily';
 import { TextComponent } from '../components/text';
 import { EmptyTransactionsComponent } from '../components/empty-transactions';
+import { ConfirmDialogComponent } from '../components/confirm-dialog';
+import { ColumnComponent } from '../components/column';
+
+import store from '../../config/electron-store';
 
 import type { TransactionsList } from '../redux/modules/transactions';
+
+const ModalContent = styled(ColumnComponent)`
+  min-height: 400px;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    word-break: break-word;
+  }
+`;
 
 type Props = {
   getSummary: () => void,
@@ -34,6 +49,10 @@ export class DashboardView extends PureComponent<Props> {
 
     if (isDaemonReady) {
       this.interval = setInterval(() => getSummary(), UPDATE_INTERVAL);
+    }
+
+    if (store.get('DISPLAY_WELCOME_MODAL')) {
+      // SHOW MODAL
     }
   }
 
@@ -79,6 +98,21 @@ export class DashboardView extends PureComponent<Props> {
             />
           ))
         )}
+        <ConfirmDialogComponent
+          title='Ok. Let me in!'
+          onConfirm={() => store.set('DISPLAY_WELCOME_MODAL', false)}
+          showButtons
+          isVisible={store.get('DISPLAY_WELCOME_MODAL')}
+          renderTrigger={toggleVisibility => (
+            <div onClick={toggleVisibility}>hey</div>
+          )}
+        >
+          {() => (
+            <ModalContent>
+              <TextComponent value='hey there' />
+            </ModalContent>
+          )}
+        </ConfirmDialogComponent>
       </Fragment>
     );
   }
