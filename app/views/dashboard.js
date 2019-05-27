@@ -99,7 +99,7 @@ export class DashboardView extends PureComponent<Props> {
           ))
         )}
         <ConfirmDialogComponent
-          title='Ok. Let me in!'
+          title='Welcome to Zepio'
           onConfirm={() => store.set('DISPLAY_WELCOME_MODAL', false)}
           showSingleConfirmButton
           singleConfirmButtonText={'Ok! Let\'s go!'}
