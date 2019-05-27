@@ -37,13 +37,13 @@ const helpMenu = {
     },
     { type: 'separator' },
     {
-      label: 'Help / FAQ',
+      label: 'Help & FAQ',
       click() {
         openExternal(DOCS_URL);
       },
     },
     {
-      label: 'Report a Bug',
+      label: 'Search Issues',
       click() {
         openExternal(REPOSITORY_URL);
       },
