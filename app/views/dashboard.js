@@ -24,7 +24,6 @@ const ModalContent = styled(ColumnComponent)`
   }
 `;
 
-type State = { showWelcomeModal: boolean };
 type Props = {
   getSummary: () => void,
   total: number,
@@ -38,12 +37,11 @@ type Props = {
   transactions: TransactionsList,
 };
 
-const UPDATE_INTERVAL = 5000;
+const UPDATE_INTERVAL = 10000;
+const DISPLAY_WELCOME_MODAL = 'DISPLAY_WELCOME_MODAL';
 
-export class DashboardView extends PureComponent<Props, State> {
+export class DashboardView extends PureComponent<Props> {
   interval = null;
-
-  state = { showWelcomeModal: false };
 
   componentDidMount() {
     const { getSummary, isDaemonReady } = this.props;
@@ -53,17 +51,15 @@ export class DashboardView extends PureComponent<Props, State> {
     if (isDaemonReady) {
       this.interval = setInterval(() => getSummary(), UPDATE_INTERVAL);
     }
-
-    const welcomeModalStatus = store.get('DISPLAY_WELCOME_MODAL');
-    this.setState(() => ({ showWelcomeModal: welcomeModalStatus }));
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
   }
 
+  shouldShowWelcomeModal = () => store.get(DISPLAY_WELCOME_MODAL) !== false;
+
   render() {
-    const { showWelcomeModal } = this.state;
     const {
       error,
       total,
@@ -103,19 +99,14 @@ export class DashboardView extends PureComponent<Props, State> {
         )}
         <ConfirmDialogComponent
           title='Welcome to Zepio'
-          onConfirm={() => {
-            this.setState(() => {
-              store.set('DISPLAY_WELCOME_MODAL', false);
-
-              return { showWelcomeModal: false };
-            });
+          onConfirm={(toggle) => {
+            store.set(DISPLAY_WELCOME_MODAL, false);
+            toggle();
           }}
+          onClose={() => store.set(DISPLAY_WELCOME_MODAL, false)}
           showSingleConfirmButton
-          singleConfirmButtonText={'Let\'s go!'}
-          isVisible={showWelcomeModal}
-          renderTrigger={toggleVisibility => (
-            <div onClick={toggleVisibility}>hey</div>
-          )}
+          singleConfirmButtonText={"Let's go!"}
+          isVisible={this.shouldShowWelcomeModal()}
         >
           {() => (
             <ModalContent>
