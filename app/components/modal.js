@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment, type Element } from 'react';
+import React, { PureComponent, Fragment, type Node } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 
@@ -22,8 +22,8 @@ const ChildrenWrapper = styled.div`
 `;
 
 type Props = {
-  renderTrigger?: (() => void) => Element<*>,
-  children: (() => void) => Element<*>,
+  renderTrigger?: (() => void) => Node,
+  children: (() => void) => Node,
   closeOnBackdropClick?: boolean,
   closeOnEsc?: boolean,
   isVisible?: boolean,
@@ -101,29 +101,25 @@ export class ModalComponent extends PureComponent<Props, State> {
     const { isVisible } = this.state;
     const toggleVisibility = isVisible ? this.close : this.open;
 
-    // $FlowFixMe
-    const renderTriggerProps = () => renderTrigger(toggleVisibility);
+    const renderTriggerProps = () => (renderTrigger ? renderTrigger(toggleVisibility) : null);
 
     return (
       <Fragment>
         {renderTriggerProps()}
-        {!isVisible ? null : createPortal(
-          <ModalWrapper
-            id='modal-portal-wrapper'
-            data-testid='Modal'
-            onClick={(event) => {
-              if (
-                closeOnBackdropClick
-                  && event.target.id === 'modal-portal-wrapper'
-              ) this.close();
-            }}
-          >
-            <ChildrenWrapper>
-              {children(toggleVisibility)}
-            </ChildrenWrapper>
-          </ModalWrapper>,
-          this.element,
-        )}
+        {!isVisible
+          ? null
+          : createPortal(
+            <ModalWrapper
+              id='modal-portal-wrapper'
+              data-testid='Modal'
+              onClick={(event) => {
+                if (closeOnBackdropClick && event.target.id === 'modal-portal-wrapper') this.close();
+              }}
+            >
+              <ChildrenWrapper>{children(toggleVisibility)}</ChildrenWrapper>
+            </ModalWrapper>,
+            this.element,
+          )}
       </Fragment>
     );
   }

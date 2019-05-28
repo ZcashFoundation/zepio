@@ -1,6 +1,6 @@
 // @flow
 
-import React, { type Element } from 'react';
+import React, { type Node } from 'react';
 import styled from 'styled-components';
 
 import { TextComponent } from './text';
@@ -64,9 +64,9 @@ const Btn = styled(Button)`
 `;
 
 type Props = {
-  renderTrigger: (() => void) => Element<*>,
+  renderTrigger?: (() => void) => Node,
   title: string,
-  onConfirm: () => void,
+  onConfirm: (() => void) => void,
   onClose?: () => void,
   showButtons?: boolean,
   showSingleConfirmButton?: boolean,
@@ -74,7 +74,7 @@ type Props = {
   width?: number,
   isLoading?: boolean,
   isVisible?: boolean,
-  children: (() => void) => Element<*>,
+  children: (() => void) => Node,
 };
 
 export const ConfirmDialogComponent = ({
@@ -113,12 +113,12 @@ export const ConfirmDialogComponent = ({
           </TitleWrapper>
           <Divider opacity={0.3} />
           {children(handleClose(toggle))}
-          {(showButtons && !showSingleConfirmButton) && (
+          {showButtons && !showSingleConfirmButton && (
             <ButtonWrapper>
               <Btn
                 id='confirm-modal-button'
                 label='Confirm'
-                onClick={onConfirm}
+                onClick={() => onConfirm(handleClose(toggle))}
                 isLoading={isLoading}
               />
               <Btn
@@ -134,7 +134,7 @@ export const ConfirmDialogComponent = ({
               <Btn
                 id='confirm-modal-button'
                 label={String(singleConfirmButtonText)}
-                onClick={onConfirm}
+                onClick={() => onConfirm(handleClose(toggle))}
                 isLoading={isLoading}
               />
             </ButtonWrapper>
@@ -153,4 +153,5 @@ ConfirmDialogComponent.defaultProps = {
   isLoading: false,
   isVisible: false,
   onClose: () => {},
+  renderTrigger: () => null,
 };
