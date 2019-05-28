@@ -24,6 +24,7 @@ const ModalContent = styled(ColumnComponent)`
   }
 `;
 
+type State = { showWelcomeModal: boolean };
 type Props = {
   getSummary: () => void,
   total: number,
@@ -39,8 +40,10 @@ type Props = {
 
 const UPDATE_INTERVAL = 5000;
 
-export class DashboardView extends PureComponent<Props> {
+export class DashboardView extends PureComponent<Props, State> {
   interval = null;
+
+  state = { showWelcomeModal: false };
 
   componentDidMount() {
     const { getSummary, isDaemonReady } = this.props;
@@ -51,9 +54,8 @@ export class DashboardView extends PureComponent<Props> {
       this.interval = setInterval(() => getSummary(), UPDATE_INTERVAL);
     }
 
-    if (store.get('DISPLAY_WELCOME_MODAL')) {
-      // SHOW MODAL
-    }
+    const welcomeModalStatus = store.get('DISPLAY_WELCOME_MODAL');
+    this.setState(() => ({ showWelcomeModal: welcomeModalStatus }));
   }
 
   componentWillUnmount() {
@@ -61,6 +63,7 @@ export class DashboardView extends PureComponent<Props> {
   }
 
   render() {
+    const { showWelcomeModal } = this.state;
     const {
       error,
       total,
@@ -99,10 +102,17 @@ export class DashboardView extends PureComponent<Props> {
           ))
         )}
         <ConfirmDialogComponent
-          title='Ok. Let me in!'
-          onConfirm={() => store.set('DISPLAY_WELCOME_MODAL', false)}
-          showButtons
-          isVisible={store.get('DISPLAY_WELCOME_MODAL')}
+          title='Welcome to Zepio'
+          onConfirm={() => {
+            this.setState(() => {
+              store.set('DISPLAY_WELCOME_MODAL', false);
+
+              return { showWelcomeModal: false };
+            });
+          }}
+          showSingleConfirmButton
+          singleConfirmButtonText={'Let\'s go!'}
+          isVisible={showWelcomeModal}
           renderTrigger={toggleVisibility => (
             <div onClick={toggleVisibility}>hey</div>
           )}

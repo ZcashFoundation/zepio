@@ -42,7 +42,7 @@ export class App extends Component<Props, State> {
 
   componentDidMount() {
     electronStore.set(THEME_MODE, getInitialTheme());
-    electronStore.set(THEME_MODE, getWelcomeModal());
+    electronStore.set('DISPLAY_WELCOME_MODAL', getWelcomeModal());
 
     electronStore.onDidChange(THEME_MODE, newValue => this.setState({ themeMode: newValue }));
   }
