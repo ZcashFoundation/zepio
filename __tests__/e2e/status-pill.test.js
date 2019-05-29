@@ -14,6 +14,6 @@ afterAll(() => app.stop());
 
 describe('Status Pill', () => {
   test('should show status pill in the header', async () => expect(
-    app.client.waitUntilTextExists('#status-pill', 'SYNCED').getText('#status-pill'),
-  ).resolves.toEqual(expect.stringContaining('SYNCED')));
+    app.client.waitUntilTextExists('#status-pill', 'ready').getText('#status-pill'),
+  ).resolves.toEqual(expect.stringContaining('ready')));
 });
