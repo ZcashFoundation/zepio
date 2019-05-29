@@ -2,6 +2,7 @@
 
 import React, { PureComponent, Fragment } from 'react';
 import styled from 'styled-components';
+import electron from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
 
 import { WalletSummaryComponent } from '../components/wallet-summary';
 import { TransactionDailyComponent } from '../components/transaction-daily';
@@ -129,41 +130,31 @@ export class DashboardView extends PureComponent<Props> {
             />
           ))
         )}
-        <ConfirmDialogComponent
-          title='Welcome to Zepio'
-          onConfirm={(toggle) => {
-            store.set(DISPLAY_WELCOME_MODAL, false);
-            toggle();
-          }}
-          onClose={() => store.set(DISPLAY_WELCOME_MODAL, false)}
-          showSingleConfirmButton
-          singleConfirmButtonText='Ok. Let me in!'
-          isVisible={this.shouldShowWelcomeModal()}
-        >
-          {() => (
-            <ModalContent>
-              <ContentWrapper>
-                <LogoComponent
-                  src={zepioLogo}
-                  alt='Zepio'
-                />
-                <TitleComponent
-                  value='Hello from Zepio'
-                  isBold
-                />
-                <WelcomeText
-                  value='Zepio is a cross-platform full-node Zcash wallet that allows users to easily send and receive ZEC. With first-class support for Sapling shielded addresses, users are able to create truly private transactions using a modern and intuitive interface.'
-                />
-                <WelcomeText
-                  value='Zepio aims to improve the user experience for those seeking true financial privacy online.'
-                />
-                <AdditionalText
-                  value='Zepio will need to sync the Zcash blockchain data before using all features.'
-                />
-              </ContentWrapper>
-            </ModalContent>
-          )}
-        </ConfirmDialogComponent>
+        {electron.remote.process.env.NODE_ENV !== 'test' && (
+          <ConfirmDialogComponent
+            title='Welcome to Zepio'
+            onConfirm={(toggle) => {
+              store.set(DISPLAY_WELCOME_MODAL, false);
+              toggle();
+            }}
+            onClose={() => store.set(DISPLAY_WELCOME_MODAL, false)}
+            showSingleConfirmButton
+            singleConfirmButtonText='Ok. Let me in!'
+            isVisible={this.shouldShowWelcomeModal()}
+          >
+            {() => (
+              <ModalContent>
+                <ContentWrapper>
+                  <LogoComponent src={zepioLogo} alt='Zepio' />
+                  <TitleComponent value='Hello from Zepio' isBold />
+                  <WelcomeText value='Zepio is a cross-platform full-node Zcash wallet that allows users to easily send and receive ZEC. With first-class support for Sapling shielded addresses, users are able to create truly private transactions using a modern and intuitive interface.' />
+                  <WelcomeText value='Zepio aims to improve the user experience for those seeking true financial privacy online.' />
+                  <AdditionalText value='Zepio will need to sync the Zcash blockchain data before using all features.' />
+                </ContentWrapper>
+              </ModalContent>
+            )}
+          </ConfirmDialogComponent>
+        )}
       </Fragment>
     );
   }
