@@ -6,7 +6,9 @@ import dotenv from 'dotenv';
 import path from 'path';
 
 /* eslint-disable import/no-extraneous-dependencies */
-import { app, BrowserWindow, typeof BrowserWindow as BrowserWindowType } from 'electron';
+import {
+  app, BrowserWindow, typeof BrowserWindow as BrowserWindowType, Menu,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import isDev from 'electron-is-dev';
 import { registerDebugShortcut } from '../utils/debug-shortcut';
@@ -15,6 +17,7 @@ import { log as zcashLog, cleanLogs } from './daemon/logger';
 import getZecPrice from '../services/zec-price';
 import store from './electron-store';
 import { handleDeeplink } from './handle-deeplink';
+import { MENU } from '../app/menu';
 
 dotenv.config();
 
@@ -63,7 +66,6 @@ const createWindow = () => {
     resizable: true,
     webPreferences: {
       devTools: true,
-      // devTools: false,
       webSecurity: true,
     },
   });
@@ -76,6 +78,8 @@ const createWindow = () => {
   mainWindow.loadURL(
     isDev ? 'http://localhost:8080/' : `file://${path.join(__dirname, '../build/index.html')}`,
   );
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(MENU));
 
   exports.app = app;
   exports.mainWindow = mainWindow;

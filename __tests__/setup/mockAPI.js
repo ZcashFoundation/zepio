@@ -3,7 +3,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'babel-polyfill';
 
-import createTestServer from 'create-test-server';
+import createTestServer from '@astrocoders/create-test-server';
 
 const transactions = [];
 
@@ -117,8 +117,10 @@ const handler = (server) => {
 
 createTestServer({
   httpPort: '8232',
+  bodyParser: true,
 }).then(handler);
 
 createTestServer({
   httpPort: '18232',
+  bodyParser: true,
 }).then(handler);
