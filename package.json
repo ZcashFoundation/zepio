@@ -1,7 +1,7 @@
 {
   "name": "zepio",
   "productName": "Zepio",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Zepio | Cross-platform sapling-enabled full-node Zcash wallet",
   "main": "config/main.js",
   "homepage": "https://zepiowallet.com",
@@ -81,6 +81,16 @@
       "icon": "./build/icons/png",
       "target": [
         "deb"
+      ]
+    },
+    "deb": {
+      "depends": [
+        "gconf2",
+        "gconf-service",
+        "libnotify4",
+        "libappindicator1",
+        "libxtst6",
+        "libnss3"
       ]
     },
     "mac": {

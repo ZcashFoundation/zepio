@@ -373,32 +373,33 @@ export class SettingsView extends PureComponent<Props, State> {
 
     return (
       <Wrapper>
-        <ConfirmDialogComponent
-          title='Confirm'
-          onConfirm={() => updateZcashNetwork(zcashNetwork === MAINNET ? TESTNET : MAINNET)}
-          showButtons={embeddedDaemon}
-          renderTrigger={toggleVisibility => (
-            <ThemeSelectWrapper>
-              <SettingsTitle value='Zcash Network' />
-              <SelectComponent
-                onChange={value => (zcashNetwork !== value ? toggleVisibility() : undefined)}
-                value={zcashNetwork}
-                options={networkOptions}
-              />
-            </ThemeSelectWrapper>
-          )}
-        >
-          {() => (
-            <ModalContent>
-              <TextComponent
-                value={
-                  embeddedDaemon ? CONFIRM_RELAUNCH_CONTENT : RUNNING_NON_EMBEDDED_DAEMON_WARNING
-                }
-              />
-            </ModalContent>
-          )}
-        </ConfirmDialogComponent>
-
+        {embeddedDaemon && (
+          <ConfirmDialogComponent
+            title='Confirm'
+            onConfirm={() => updateZcashNetwork(zcashNetwork === MAINNET ? TESTNET : MAINNET)}
+            showButtons={embeddedDaemon}
+            renderTrigger={toggleVisibility => (
+              <ThemeSelectWrapper>
+                <SettingsTitle value='Zcash Network' />
+                <SelectComponent
+                  onChange={value => (zcashNetwork !== value ? toggleVisibility() : undefined)}
+                  value={zcashNetwork}
+                  options={networkOptions}
+                />
+              </ThemeSelectWrapper>
+            )}
+          >
+            {() => (
+              <ModalContent>
+                <TextComponent
+                  value={
+                    embeddedDaemon ? CONFIRM_RELAUNCH_CONTENT : RUNNING_NON_EMBEDDED_DAEMON_WARNING
+                  }
+                />
+              </ModalContent>
+            )}
+          </ConfirmDialogComponent>
+        )}
         <ThemeSelectWrapper>
           <SettingsTitle value='Theme' />
           <SelectComponent
