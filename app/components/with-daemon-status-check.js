@@ -30,7 +30,7 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
 
     componentDidMount() {
       this.runTest();
-      this.timer = setInterval(this.runTest, 2000);
+      this.timer = setInterval(this.runTest, 3000);
 
       electron.ipcRenderer.on('zcash-daemon-status', (event: empty, message: Object) => {
         this.hasDaemonError = message.error;
