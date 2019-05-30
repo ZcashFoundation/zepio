@@ -25,6 +25,7 @@ List of the main open source libraries and technologies used in building **Zepio
 - [ESLint](http://eslint.org/): Code linting rules
 - [Flow](https://flow.org): JavaScript static type checker
 - [Docz](https://docz.site): Documentation builder
+- [BigNumber.js](https://github.com/MikeMcl/bignumber.js#readme): Arbitrary-precision decimal and non-decimal arithmetic with safety
 
 ## Installing and Running From Source
 
