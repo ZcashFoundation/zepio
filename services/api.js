@@ -8,18 +8,18 @@ import store from '../config/electron-store';
 import { isTestnet } from '../config/is-testnet';
 
 const getRPCConfig = () => {
-  const rpcport = store.get('rpcport');
-  const rpcconnect = store.get('rpcconnect');
+  const rpcport: string = store.get('rpcport');
+  const rpcconnect: string = store.get('rpcconnect');
 
   return {
     host: rpcconnect || '127.0.0.1',
     port: rpcport || (isTestnet() ? 18232 : 8232),
-    user: store.get('rpcuser'),
-    password: store.get('rpcpassword'),
+    user: (store.get('rpcuser'): string),
+    password: (store.get('rpcpassword'): string),
   };
 };
 
-const getMessage = (statusCode, isECONNREFUSED) => {
+const getMessage = (statusCode: number, isECONNREFUSED: boolean) => {
   if (isECONNREFUSED) {
     return 'Zepio could not find a daemon running, please check the logs!';
   }
@@ -53,7 +53,10 @@ const api: APIMethods = METHODS.reduce(
             params: args,
           },
         })
-        .then(data => Promise.resolve(data.body && data.body.result))
+        .then((data) => {
+          console.log('[RPC CALL SUCCESS] -', method, data.body.result);
+          return Promise.resolve(data.body && data.body.result);
+        })
         .catch((payload) => {
           console.log(
             '[RPC CALL ERROR] - ',
