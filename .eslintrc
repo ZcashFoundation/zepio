@@ -5,7 +5,7 @@
     "browser": true,
     "node": true,
     "mocha": true,
-    "jest/globals": true
+    "jest": true
   },
   "plugins": ["flowtype", "jest"],
   "settings": {
