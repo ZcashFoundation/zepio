@@ -45,11 +45,12 @@
     "e2e:serve": "node -r @babel/register ./__tests__/setup/mockAPI.js",
     "e2e:run": "yarn test e2e"
   },
-  "pre-commit": [
-    "flow:generate-coverage-badge",
-    "lint:precommit",
-    "flow:precommit"
-  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint:precommit && yarn flow:precommit",
+      "pre-push": "yarn flow:generate-coverage-badge && git add ./public/flow-badge.svg ./public/flow-coverage-badge.svg && git commit -m \"type(flow): update flowtype badge\" --no-verify"
+    }
+  },
   "build": {
     "appId": "com.zcashfoundation",
     "productName": "Zepio",
@@ -164,13 +165,13 @@
     "flow-typed": "^2.5.1",
     "glow": "^1.2.2",
     "html-webpack-plugin": "^3.1.0",
+    "husky": "^2.3.0",
     "jest": "^24.5.0",
     "jest-dom": "^2.1.1",
     "jest-extended": "^0.11.0",
     "mime-types": "^2.1.22",
     "node-sass": "^4.8.3",
     "postcss-loader": "^3.0.0",
-    "pre-commit": "^1.2.2",
     "react-testing-library": "^5.3.1",
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.3",
