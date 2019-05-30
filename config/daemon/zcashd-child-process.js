@@ -46,8 +46,8 @@ const getDaemonOptions = ({
 
   const defaultOptions = [
     '-server=1',
-    '-showmetrics',
-    '--metricsui=0',
+    '-showmetrics=1',
+    '-metricsui=0',
     '-metricsrefreshtime=1',
     `-rpcuser=${username}`,
     `-rpcpassword=${password}`,
@@ -64,6 +64,7 @@ const getDaemonOptions = ({
 let resolved = false;
 
 const ZCASHD_PROCESS_NAME = getDaemonName();
+const DAEMON_PROCESS_PID = 'DAEMON_PROCESS_PID';
 
 let isWindowOpened = false;
 
@@ -93,6 +94,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   });
   store.delete('rpcconnect');
   store.delete('rpcport');
+  store.delete(DAEMON_PROCESS_PID);
 
   const processName = path.join(getBinariesPath(), getOsFolder(), ZCASHD_PROCESS_NAME);
   const isRelaunch = Boolean(process.argv.find(arg => arg === '--relaunch'));
@@ -154,13 +156,13 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   if (optionsFromZcashConf.rpcpassword) store.set('rpcpassword', optionsFromZcashConf.rpcpassword);
 
   if (isRunning) {
-    log('Already is running!');
-
     store.set(EMBEDDED_DAEMON, false);
-    // We need grab the rpcuser and rpcpassword from either process args or zcash.conf
 
     // Command line args override zcash.conf
-    const [{ cmd }] = await findProcess('name', ZCASHD_PROCESS_NAME);
+    const [{ cmd, pid }] = await findProcess('name', ZCASHD_PROCESS_NAME);
+    store.set(DAEMON_PROCESS_PID, pid);
+
+    // We need grab the rpcuser and rpcpassword from either process args or zcash.conf
     const {
       rpcuser, rpcpassword, rpcconnect, rpcport, testnet: isTestnetFromCmd,
     } = parseCmdArgs(
@@ -176,6 +178,8 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     if (rpcpassword) store.set('rpcpassword', rpcpassword);
     if (rpcport) store.set('rpcport', rpcport);
     if (rpcconnect) store.set('rpcconnect', rpcconnect);
+
+    log(`A daemon was found running in PID: ${pid}. Starting Zepio in external daemon mode.`);
 
     return resolve();
   }
@@ -207,6 +211,8 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
       stdio: ['ignore', 'pipe', 'pipe'],
     },
   );
+
+  store.set(DAEMON_PROCESS_PID, childProcess.pid);
 
   childProcess.stdout.on('data', (data) => {
     sendToRenderer('zcashd-log', data.toString(), false);
