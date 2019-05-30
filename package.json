@@ -145,7 +145,7 @@
     "docz": "0.13.4",
     "docz-plugin-css": "^0.11.0",
     "docz-theme-default": "0.13.4",
-    "electron": "^4.0.1",
+    "electron": "^4.2.2",
     "electron-builder": "^20.38.4",
     "electron-compilers": "^5.9.0",
     "electron-icon-maker": "^0.0.4",
