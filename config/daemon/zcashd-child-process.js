@@ -4,7 +4,6 @@ import cp from 'child_process';
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
-import processExists from 'process-exists';
 /* eslint-disable import/no-extraneous-dependencies */
 import isDev from 'electron-is-dev';
 import type { ChildProcess } from 'child_process';
@@ -24,6 +23,7 @@ import { log } from './logger';
 import store from '../electron-store';
 import { parseZcashConf, parseCmdArgs, generateArgsFromConf } from './parse-zcash-conf';
 import { isTestnet } from '../is-testnet';
+import { getDaemonProcessId } from './get-daemon-process-id';
 import {
   EMBEDDED_DAEMON,
   ZCASH_NETWORK,
@@ -46,8 +46,8 @@ const getDaemonOptions = ({
 
   const defaultOptions = [
     '-server=1',
-    '-showmetrics',
-    '--metricsui=0',
+    '-showmetrics=1',
+    '-metricsui=0',
     '-metricsrefreshtime=1',
     `-rpcuser=${username}`,
     `-rpcpassword=${password}`,
@@ -64,6 +64,7 @@ const getDaemonOptions = ({
 let resolved = false;
 
 const ZCASHD_PROCESS_NAME = getDaemonName();
+const DAEMON_PROCESS_PID = 'DAEMON_PROCESS_PID';
 
 let isWindowOpened = false;
 
@@ -93,6 +94,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   });
   store.delete('rpcconnect');
   store.delete('rpcport');
+  store.delete(DAEMON_PROCESS_PID);
 
   const processName = path.join(getBinariesPath(), getOsFolder(), ZCASHD_PROCESS_NAME);
   const isRelaunch = Boolean(process.argv.find(arg => arg === '--relaunch'));
@@ -127,8 +129,6 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     await waitForDaemonClose(ZCASHD_PROCESS_NAME);
   }
 
-  const [, isRunning] = await eres(processExists(ZCASHD_PROCESS_NAME));
-
   // This will parse and save rpcuser and rpcpassword in the store
   let [, optionsFromZcashConf] = await eres(parseZcashConf());
 
@@ -153,14 +153,22 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   if (optionsFromZcashConf.rpcuser) store.set('rpcuser', optionsFromZcashConf.rpcuser);
   if (optionsFromZcashConf.rpcpassword) store.set('rpcpassword', optionsFromZcashConf.rpcpassword);
 
-  if (isRunning) {
-    log('Already is running!');
+  log('Searching for zcashd.pid');
+  const daemonProcessId = getDaemonProcessId(optionsFromZcashConf.datadir);
 
+  if (daemonProcessId) {
     store.set(EMBEDDED_DAEMON, false);
-    // We need grab the rpcuser and rpcpassword from either process args or zcash.conf
+    log(
+      // eslint-disable-next-line
+        `A daemon was found running in PID: ${daemonProcessId}. Starting Zepio in external daemon mode.`,
+    );
 
     // Command line args override zcash.conf
-    const [{ cmd }] = await findProcess('name', ZCASHD_PROCESS_NAME);
+    const [{ cmd, pid }] = await findProcess('pid', daemonProcessId);
+
+    store.set(DAEMON_PROCESS_PID, pid);
+
+    // We need grab the rpcuser and rpcpassword from either process args or zcash.conf
     const {
       rpcuser, rpcpassword, rpcconnect, rpcport, testnet: isTestnetFromCmd,
     } = parseCmdArgs(
@@ -179,6 +187,10 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
 
     return resolve();
   }
+
+  log(
+    "Zepio couldn't find a `zcashd.pid`, that means there is no instance of zcash running on the machine, trying start built-in daemon",
+  );
 
   store.set(EMBEDDED_DAEMON, true);
 
@@ -207,6 +219,8 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
       stdio: ['ignore', 'pipe', 'pipe'],
     },
   );
+
+  store.set(DAEMON_PROCESS_PID, childProcess.pid);
 
   childProcess.stdout.on('data', (data) => {
     sendToRenderer('zcashd-log', data.toString(), false);
