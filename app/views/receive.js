@@ -20,7 +20,7 @@ import ShieldGrayImage from '../assets/images/shield_dark_gray.png';
 import type { addressType } from '../redux/modules/receive';
 import type { MapStateToProps, MapDispatchToProps } from '../containers/receive';
 
-const TRANSPARENT_ADDRESS_SUBLABEL = 'By using transaparent addresses you are forgiving any privacy properties to your transactions.';
+const TRANSPARENT_ADDRESS_SUBLABEL = 'Using a transparent address makes your transaction details public.';
 
 const Row = styled(RowComponent)`
   margin-bottom: 10px;
