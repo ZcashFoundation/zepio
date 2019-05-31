@@ -27,6 +27,7 @@ beforeAll(() => {
 });
 afterAll(() => {
   global.Date = originalDate;
+  // $FlowFixMe
   dateFns.format.mockRestore();
   cleanup();
 });
@@ -48,7 +49,7 @@ describe('<TransactionDailyComponent />', () => {
                 zecPrice: 1.345,
                 date: '2019-02-20T19:31:57.117Z',
                 theme: appTheme,
-                fees: 0.001,
+                fees: 0.0001,
                 confirmations: 10,
                 confirmed: true,
               },
@@ -60,7 +61,7 @@ describe('<TransactionDailyComponent />', () => {
                 zecPrice: 1.344,
                 date: '2019-02-20T19:31:57.117Z',
                 theme: appTheme,
-                fees: 0.001,
+                fees: 0.0001,
                 confirmed: false,
                 confirmations: 3,
               },

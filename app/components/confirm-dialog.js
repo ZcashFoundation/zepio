@@ -1,6 +1,6 @@
 // @flow
 
-import React, { type Element } from 'react';
+import React, { type Node } from 'react';
 import styled from 'styled-components';
 
 import { TextComponent } from './text';
@@ -64,14 +64,17 @@ const Btn = styled(Button)`
 `;
 
 type Props = {
-  renderTrigger: (() => void) => Element<*>,
+  renderTrigger?: (() => void) => Node,
   title: string,
-  onConfirm: () => void,
+  onConfirm: (() => void) => void,
   onClose?: () => void,
   showButtons?: boolean,
+  showSingleConfirmButton?: boolean,
+  singleConfirmButtonText?: string,
   width?: number,
   isLoading?: boolean,
-  children: (() => void) => Element<*>,
+  isVisible?: boolean,
+  children: (() => void) => Node,
 };
 
 export const ConfirmDialogComponent = ({
@@ -81,7 +84,10 @@ export const ConfirmDialogComponent = ({
   onClose,
   renderTrigger,
   showButtons,
+  showSingleConfirmButton,
+  singleConfirmButtonText,
   isLoading,
+  isVisible,
   width,
 }: Props) => {
   const handleClose = toggle => () => {
@@ -95,6 +101,7 @@ export const ConfirmDialogComponent = ({
       renderTrigger={renderTrigger}
       closeOnBackdropClick={false}
       closeOnEsc={false}
+      isVisible={isVisible}
     >
       {toggle => (
         <Wrapper width={Number(width)}>
@@ -106,12 +113,12 @@ export const ConfirmDialogComponent = ({
           </TitleWrapper>
           <Divider opacity={0.3} />
           {children(handleClose(toggle))}
-          {showButtons && (
+          {showButtons && !showSingleConfirmButton && (
             <ButtonWrapper>
               <Btn
                 id='confirm-modal-button'
                 label='Confirm'
-                onClick={onConfirm}
+                onClick={() => onConfirm(handleClose(toggle))}
                 isLoading={isLoading}
               />
               <Btn
@@ -119,6 +126,16 @@ export const ConfirmDialogComponent = ({
                 onClick={handleClose(toggle)}
                 variant='secondary'
                 disabled={isLoading}
+              />
+            </ButtonWrapper>
+          )}
+          {showSingleConfirmButton && (
+            <ButtonWrapper>
+              <Btn
+                id='confirm-modal-button'
+                label={String(singleConfirmButtonText)}
+                onClick={() => onConfirm(handleClose(toggle))}
+                isLoading={isLoading}
               />
             </ButtonWrapper>
           )}
@@ -130,7 +147,11 @@ export const ConfirmDialogComponent = ({
 
 ConfirmDialogComponent.defaultProps = {
   showButtons: true,
+  showSingleConfirmButton: false,
+  singleConfirmButtonText: 'Ok!',
   width: 460,
   isLoading: false,
+  isVisible: false,
   onClose: () => {},
+  renderTrigger: () => null,
 };

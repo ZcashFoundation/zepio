@@ -1,10 +1,23 @@
 {
   "name": "zepio",
-  "version": "0.6.2",
-  "description": "Zepio",
+  "productName": "Zepio",
+  "version": "0.7.2",
+  "description": "Zepio | Cross-platform sapling-enabled full-node Zcash wallet",
   "main": "config/main.js",
-  "license": "MIT",
   "homepage": "https://zepiowallet.com",
+  "license": "MIT",
+  "author": {
+    "name": "André Neves",
+    "email": "andrerfneves@protonmail.com",
+    "url": "https://andrenev.es"
+  },
+  "bugs": {
+    "url": "https://github.com/ZcashFoundation/zepio/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZcashFoundation/zepio"
+  },
   "scripts": {
     "start": "yarn check --integrity && concurrently \"cross-env BROWSER=none yarn dev\" \"wait-on http://0.0.0.0:8080 && yarn electron:dev\"",
     "dev": "webpack-dev-server --config config/webpack-dev.config.js --mode development --open --hot",
@@ -32,115 +45,12 @@
     "e2e:serve": "node -r @babel/register ./__tests__/setup/mockAPI.js",
     "e2e:run": "yarn test e2e"
   },
-  "author": {
-    "name": "André Neves",
-    "email": "andrerfneves@protonmail.com",
-    "url": "https://andrenev.es"
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint:precommit && yarn flow:precommit",
+      "pre-push": "yarn flow:generate-coverage-badge && git add ./public/flow-badge.svg ./public/flow-coverage-badge.svg && git commit -m \"type(flow): update flowtype badge\" --no-verify --allow-empty"
+    }
   },
-  "private": true,
-  "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/plugin-transform-regenerator": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/preset-flow": "^7.0.0",
-    "@babel/preset-react": "^7.0.0",
-    "@octokit/rest": "^16.23.4",
-    "babel-eslint": "^10.0.1",
-    "babel-loader": "^8.0.4",
-    "concurrently": "^4.1.0",
-    "create-test-server": "georgelima/create-test-server",
-    "cross-env": "^5.2.0",
-    "css-loader": "^1.0.1",
-    "docz": "0.13.4",
-    "docz-plugin-css": "^0.11.0",
-    "docz-theme-default": "0.13.4",
-    "electron": "^4.0.1",
-    "electron-builder": "^20.38.4",
-    "electron-compilers": "^5.9.0",
-    "electron-icon-maker": "^0.0.4",
-    "electron-log": "^2.2.17",
-    "electron-positioner": "^4.1.0",
-    "eslint": "^5.8.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-flowtype": "^3.2.1",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-jest": "^22.1.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.12.4",
-    "file-loader": "^2.0.0",
-    "flow-bin": "^0.95.1",
-    "flow-coverage-report": "^0.6.1",
-    "flow-typed": "^2.5.1",
-    "glow": "^1.2.2",
-    "html-webpack-plugin": "^3.1.0",
-    "jest": "^24.5.0",
-    "jest-dom": "^2.1.1",
-    "jest-extended": "^0.11.0",
-    "mime-types": "^2.1.22",
-    "node-sass": "^4.8.3",
-    "postcss-loader": "^3.0.0",
-    "pre-commit": "^1.2.2",
-    "react-testing-library": "^5.3.1",
-    "redux-logger": "^3.0.6",
-    "redux-mock-store": "^1.5.3",
-    "sass-loader": "^7.1.0",
-    "spectron": "^5.0.0",
-    "style-loader": "^0.23.1",
-    "terser-webpack-plugin": "^1.1.0",
-    "wait-on": "^3.2.0",
-    "webpack": "^4.4.1",
-    "webpack-bundle-analyzer": "^3.0.3",
-    "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.1"
-  },
-  "dependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/polyfill": "^7.0.0",
-    "@babel/register": "^7.0.0",
-    "autoprefixer": "^9.3.1",
-    "bignumber.js": "^8.0.1",
-    "connected-react-router": "^5.0.1",
-    "copy-to-clipboard": "^3.0.8",
-    "date-fns": "^1.30.1",
-    "dotenv": "^6.2.0",
-    "electron-compile": "^6.4.4",
-    "electron-is-dev": "^1.0.1",
-    "electron-store": "^2.0.0",
-    "electron-updater": "^4.0.4",
-    "eres": "^1.0.1",
-    "find-process": "^1.2.1",
-    "got": "^9.3.2",
-    "history": "^4.7.2",
-    "lodash.flow": "^3.5.0",
-    "lodash.groupby": "^4.6.0",
-    "lodash.uniqby": "^4.7.0",
-    "p-queue": "^3.0.0",
-    "process-exists": "^3.1.0",
-    "qrcode.react": "^0.8.0",
-    "react": "^16.6.0",
-    "react-circle": "^1.1.1",
-    "react-click-outside": "tj/react-click-outside",
-    "react-dom": "^16.6.0",
-    "react-popover": "^0.5.10",
-    "react-redux": "^5.0.7",
-    "react-router-dom": "^4.2.2",
-    "react-spring": "^7.2.10",
-    "react-virtualized": "^9.21.0",
-    "redux": "^4.0.1",
-    "redux-thunk": "^2.2.0",
-    "styled-components": "^4.1.1",
-    "styled-theming": "^2.2.0",
-    "uuid": "^3.3.2"
-  },
-  "pre-commit": [
-    "flow:generate-coverage-badge",
-    "lint:precommit",
-    "flow:precommit"
-  ],
   "build": {
     "appId": "com.zcashfoundation",
     "productName": "Zepio",
@@ -159,19 +69,33 @@
       "public/",
       "build/"
     ],
-    "extraFiles": [
-      {
-        "from": "bin/",
-        "to": "resources/bin",
-        "filter": [
-          "**/*"
-        ]
-      }
-    ],
+    "deb": {
+      "depends": [
+        "gconf2",
+        "gconf-service",
+        "libnotify4",
+        "libappindicator1",
+        "libxtst6",
+        "libnss3"
+      ]
+    },
     "linux": {
       "icon": "./build/icons/png",
       "target": [
         "deb"
+      ],
+      "extraFiles": [
+        {
+          "from": "bin/linux",
+          "to": "resources/bin/linux",
+          "filter": [
+            "**/*"
+          ]
+        },
+        {
+          "from": "bin/zcash-fetch-params",
+          "to": "resources/bin/zcash-fetch-params"
+        }
       ]
     },
     "mac": {
@@ -180,11 +104,33 @@
       "target": [
         "dmg"
       ],
-      "icon": "./build/icons/mac/icon.icns"
+      "icon": "./build/icons/mac/icon.icns",
+      "extraFiles": [
+        {
+          "from": "bin/mac",
+          "to": "resources/bin/mac",
+          "filter": [
+            "**/*"
+          ]
+        },
+        {
+          "from": "bin/zcash-fetch-params",
+          "to": "resources/bin/zcash-fetch-params"
+        }
+      ]
     },
     "win": {
       "target": "nsis",
-      "icon": "./build/icons/win/icon.ico"
+      "icon": "./build/icons/win/icon.ico",
+      "extraFiles": [
+        {
+          "from": "bin/win",
+          "to": "resources/bin/win",
+          "filter": [
+            "**/*"
+          ]
+        }
+      ]
     },
     "protocols": {
       "name": "zcash",
@@ -206,5 +152,103 @@
   },
   "resolutions": {
     "babel-core": "7.0.0-bridge.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-transform-regenerator": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@octokit/rest": "^16.23.4",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.4",
+    "concurrently": "^4.1.0",
+    "cross-env": "^5.2.0",
+    "css-loader": "^1.0.1",
+    "docz": "0.13.4",
+    "docz-plugin-css": "^0.11.0",
+    "docz-theme-default": "0.13.4",
+    "electron": "^4.2.2",
+    "electron-builder": "^20.38.4",
+    "electron-compilers": "^5.9.0",
+    "electron-icon-maker": "^0.0.4",
+    "electron-log": "^2.2.17",
+    "electron-positioner": "^4.1.0",
+    "eslint": "^5.8.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-flowtype": "^3.2.1",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jest": "^22.1.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.12.4",
+    "file-loader": "^2.0.0",
+    "flow-bin": "^0.99.1",
+    "flow-coverage-report": "^0.6.1",
+    "flow-typed": "^2.5.1",
+    "glow": "^1.2.2",
+    "html-webpack-plugin": "^3.1.0",
+    "husky": "^2.3.0",
+    "jest": "^24.5.0",
+    "jest-dom": "^2.1.1",
+    "jest-extended": "^0.11.0",
+    "mime-types": "^2.1.22",
+    "node-sass": "^4.8.3",
+    "postcss-loader": "^3.0.0",
+    "react-testing-library": "^5.3.1",
+    "redux-logger": "^3.0.6",
+    "redux-mock-store": "^1.5.3",
+    "sass-loader": "^7.1.0",
+    "spectron": "^5.0.0",
+    "style-loader": "^0.23.1",
+    "terser-webpack-plugin": "^1.1.0",
+    "wait-on": "^3.2.0",
+    "webpack": "^4.4.1",
+    "webpack-bundle-analyzer": "^3.0.3",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.1"
+  },
+  "dependencies": {
+    "@astrocoders/create-test-server": "^3.0.2",
+    "@babel/core": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "autoprefixer": "^9.3.1",
+    "bignumber.js": "^8.0.1",
+    "connected-react-router": "^5.0.1",
+    "copy-to-clipboard": "^3.0.8",
+    "date-fns": "^1.30.1",
+    "dotenv": "^6.2.0",
+    "electron-compile": "^6.4.4",
+    "electron-is-dev": "^1.0.1",
+    "electron-store": "^2.0.0",
+    "electron-updater": "^4.0.4",
+    "eres": "^1.0.1",
+    "find-process": "^1.2.1",
+    "got": "^9.6.0",
+    "history": "^4.7.2",
+    "lodash.flow": "^3.5.0",
+    "lodash.groupby": "^4.6.0",
+    "lodash.uniqby": "^4.7.0",
+    "p-queue": "^3.0.0",
+    "process-exists": "^3.1.0",
+    "qrcode.react": "^0.8.0",
+    "react": "^16.6.0",
+    "react-circle": "^1.1.1",
+    "react-click-outside": "tj/react-click-outside",
+    "react-dom": "^16.6.0",
+    "react-popover": "^0.5.10",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.2.2",
+    "react-spring": "^7.2.10",
+    "react-virtualized": "^9.21.0",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.2.0",
+    "styled-components": "^4.1.1",
+    "styled-theming": "^2.2.0",
+    "uuid": "^3.3.2"
   }
 }

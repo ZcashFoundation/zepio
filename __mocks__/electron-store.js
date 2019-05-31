@@ -5,6 +5,6 @@ module.exports = class {
   }
 
   get() {
-    return 'test value';
+    return 'TESTNET';
   }
 };

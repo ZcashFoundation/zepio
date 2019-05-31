@@ -20,6 +20,7 @@ type State = {
 
 const getInitialTheme = () => {
   const themeInStore = String(electronStore.get(THEME_MODE));
+
   if (themeInStore === DARK || themeInStore === LIGHT) return themeInStore;
   return DARK;
 };

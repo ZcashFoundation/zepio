@@ -2,6 +2,8 @@
 import electron from 'electron'; // eslint-disable-line
 import React, { type ComponentType, Component } from 'react';
 
+import store from '../../config/electron-store';
+
 import { LoadingScreen } from './loading-screen';
 
 import rpc from '../../services/api';
@@ -20,7 +22,7 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
 ): ComponentType<$Diff<PassedProps, Props>> => class extends Component<PassedProps, State> {
     timer: ?IntervalID = null;
 
-    hasDaemonError: boolean = false;
+    requestOnTheFly: boolean = false;
 
     state = {
       isRunning: false,
@@ -30,20 +32,27 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
 
     componentDidMount() {
       this.runTest();
-      this.timer = setInterval(this.runTest, 2000);
+      this.timer = setInterval(this.runTest, 3000);
 
-      electron.ipcRenderer.on('zcash-daemon-status', (event: empty, message: Object) => {
-        this.hasDaemonError = message.error;
+      electron.ipcRenderer.on(
+        'zcash-daemon-status',
+        (
+          event: empty,
+          message: {
+            error: boolean,
+            status: string,
+          },
+        ) => {
+          if (message.error) {
+            clearInterval(this.timer);
+          }
 
-        if (message.error) {
-          clearInterval(this.timer);
-        }
-
-        this.setState({
-          message: message.status,
-          ...(message.error ? { progress: 0, isRunning: false } : {}),
-        });
-      });
+          this.setState({
+            message: message.status,
+            ...(message.error ? { progress: 0, isRunning: false } : {}),
+          });
+        },
+      );
     }
 
     componentWillUnmount() {
@@ -54,30 +63,31 @@ export const withDaemonStatusCheck = <PassedProps: {}>(
     }
 
     runTest = () => {
-      if (this.hasDaemonError) return;
+      const daemonPID: number = store.get('DAEMON_PROCESS_PID');
+
+      if (this.requestOnTheFly || !daemonPID) return;
+
+      this.requestOnTheFly = true;
 
       rpc
-        .getinfo()
-        .then((response) => {
-          if (this.hasDaemonError) return;
+        .ping()
+        .then(() => {
+          this.requestOnTheFly = false;
 
-          if (response) {
-            setTimeout(() => {
-              this.setState(() => ({ isRunning: true }));
-            }, 500);
-            this.setState(() => ({ progress: 100 }));
+          setTimeout(() => {
+            this.setState(() => ({ isRunning: true }));
+          }, 500);
+          this.setState(() => ({ progress: 100 }));
 
-            if (this.timer) {
-              clearInterval(this.timer);
-              this.timer = null;
-            }
+          if (this.timer) {
+            clearInterval(this.timer);
+            this.timer = null;
           }
         })
         .catch((error) => {
-          if (this.hasDaemonError) return;
+          this.requestOnTheFly = false;
 
-          const statusMessage = error.message === 'Something went wrong' ? 'Zepio Starting' : error.message;
-
+          const statusMessage: string = error.message === 'Something went wrong' ? 'Zepio Starting' : error.message;
           const isRpcOff = Math.trunc(error.statusCode / 100) === 5;
 
           this.setState({
