@@ -99,12 +99,15 @@ type State = {
   showTooltip: boolean,
 };
 
-const MINUTE_IN_MILI = 60000;
+const INTERVAL_AFTER_READY = 60000;
+const INTERVAL_BEFORE_READY = 10000;
 
 class Component extends PureComponent<Props, State> {
   timer: ?IntervalID = null;
 
-  constructor(props) {
+  requestOnTheFly: boolean = false;
+
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -113,26 +116,40 @@ class Component extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const { getBlockchainStatus } = this.props;
-
-    this.timer = setInterval(() => getBlockchainStatus(), 2000);
+    this.timer = setInterval(() => this.updateStatus(), INTERVAL_BEFORE_READY);
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { getBlockchainStatus, nodeSyncType } = this.props;
+    const { nodeSyncType } = this.props;
     if (
       prevProps.nodeSyncType === NODE_SYNC_TYPES.SYNCING
       && nodeSyncType === NODE_SYNC_TYPES.READY
     ) {
       // if the status is "ready", we can increase the interval to avoid useless rpc calls
       this.cleanUpdateInterval();
-      this.timer = setInterval(() => getBlockchainStatus(), MINUTE_IN_MILI);
+      this.timer = setInterval(() => this.updateStatus(), INTERVAL_AFTER_READY);
     }
   }
 
   componentWillUnmount() {
     this.cleanUpdateInterval();
   }
+
+  updateStatus = () => {
+    if (this.requestOnTheFly) return;
+
+    this.requestOnTheFly = true;
+
+    const { getBlockchainStatus } = this.props;
+
+    getBlockchainStatus()
+      .then(() => {
+        this.requestOnTheFly = false;
+      })
+      .catch(() => {
+        this.requestOnTheFly = false;
+      });
+  };
 
   cleanUpdateInterval = () => {
     if (this.timer) {

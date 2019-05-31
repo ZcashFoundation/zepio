@@ -45,11 +45,12 @@
     "e2e:serve": "node -r @babel/register ./__tests__/setup/mockAPI.js",
     "e2e:run": "yarn test e2e"
   },
-  "pre-commit": [
-    "flow:generate-coverage-badge",
-    "lint:precommit",
-    "flow:precommit"
-  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint:precommit && yarn flow:precommit",
+      "pre-push": "yarn flow:generate-coverage-badge && git add ./public/flow-badge.svg ./public/flow-coverage-badge.svg && git commit -m \"type(flow): update flowtype badge\" --no-verify --allow-empty"
+    }
+  },
   "build": {
     "appId": "com.zcashfoundation",
     "productName": "Zepio",
@@ -68,21 +69,6 @@
       "public/",
       "build/"
     ],
-    "extraFiles": [
-      {
-        "from": "bin/",
-        "to": "resources/bin",
-        "filter": [
-          "**/*"
-        ]
-      }
-    ],
-    "linux": {
-      "icon": "./build/icons/png",
-      "target": [
-        "deb"
-      ]
-    },
     "deb": {
       "depends": [
         "gconf2",
@@ -93,17 +79,58 @@
         "libnss3"
       ]
     },
+    "linux": {
+      "icon": "./build/icons/png",
+      "target": [
+        "deb"
+      ],
+      "extraFiles": [
+        {
+          "from": "bin/linux",
+          "to": "resources/bin/linux",
+          "filter": [
+            "**/*"
+          ]
+        },
+        {
+          "from": "bin/zcash-fetch-params",
+          "to": "resources/bin/zcash-fetch-params"
+        }
+      ]
+    },
     "mac": {
       "category": "public.app-category.productivity",
       "type": "distribution",
       "target": [
         "dmg"
       ],
-      "icon": "./build/icons/mac/icon.icns"
+      "icon": "./build/icons/mac/icon.icns",
+      "extraFiles": [
+        {
+          "from": "bin/mac",
+          "to": "resources/bin/mac",
+          "filter": [
+            "**/*"
+          ]
+        },
+        {
+          "from": "bin/zcash-fetch-params",
+          "to": "resources/bin/zcash-fetch-params"
+        }
+      ]
     },
     "win": {
       "target": "nsis",
-      "icon": "./build/icons/win/icon.ico"
+      "icon": "./build/icons/win/icon.ico",
+      "extraFiles": [
+        {
+          "from": "bin/win",
+          "to": "resources/bin/win",
+          "filter": [
+            "**/*"
+          ]
+        }
+      ]
     },
     "protocols": {
       "name": "zcash",
@@ -145,7 +172,7 @@
     "docz": "0.13.4",
     "docz-plugin-css": "^0.11.0",
     "docz-theme-default": "0.13.4",
-    "electron": "^4.0.1",
+    "electron": "^4.2.2",
     "electron-builder": "^20.38.4",
     "electron-compilers": "^5.9.0",
     "electron-icon-maker": "^0.0.4",
@@ -159,18 +186,18 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.12.4",
     "file-loader": "^2.0.0",
-    "flow-bin": "^0.95.1",
+    "flow-bin": "^0.99.1",
     "flow-coverage-report": "^0.6.1",
     "flow-typed": "^2.5.1",
     "glow": "^1.2.2",
     "html-webpack-plugin": "^3.1.0",
+    "husky": "^2.3.0",
     "jest": "^24.5.0",
     "jest-dom": "^2.1.1",
     "jest-extended": "^0.11.0",
     "mime-types": "^2.1.22",
     "node-sass": "^4.8.3",
     "postcss-loader": "^3.0.0",
-    "pre-commit": "^1.2.2",
     "react-testing-library": "^5.3.1",
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.3",

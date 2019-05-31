@@ -98,7 +98,7 @@ declare module 'styled-components' {
   declare type InjectedProps = { theme: Theme | void };
   declare export function withTheme<Props: {}, Component: React$ComponentType<Props>>(
     WrappedComponent: Component,
-  ): React$ComponentType<$Diff<React$ElementConfig<$Supertype<Component>>, InjectedProps>>;
+  ): React$ComponentType<$Diff<React$ElementConfig<Component>, InjectedProps>>;
 
   // @HACK This is a cheat to hide that the underlying type is "just a string"
   //       once we know of a better way, we should be able to update this accordingly.
@@ -350,7 +350,7 @@ declare module 'styled-components/native' {
   declare type InjectedProps = { theme: Theme | void };
   declare export function withTheme<Props: {}, Component: React$ComponentType<Props>>(
     WrappedComponent: Component,
-  ): React$ComponentType<$Diff<React$ElementConfig<$Supertype<Component>>, InjectedProps>>;
+  ): React$ComponentType<$Diff<React$ElementConfig<Component>, InjectedProps>>;
 
   // @HACK This is a cheat to hide that the underlying type is "just a string"
   //       once we know of a better way, we should be able to update this accordingly.
