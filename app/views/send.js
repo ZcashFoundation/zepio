@@ -594,6 +594,12 @@ class Component extends PureComponent<Props, State> {
     );
   };
 
+  getLoadingIcon = () => {
+    const { theme } = this.props;
+
+    return theme.mode === DARK ? LoadingIconDark : LoadingIconLight;
+  };
+
   renderModalContent = ({
     valueSent,
     valueSentInUsd,
@@ -607,11 +613,11 @@ class Component extends PureComponent<Props, State> {
   }) => {
     // eslint-disable-next-line react/prop-types
     const {
-      operationId, isSending, error, theme,
+      operationId, isSending, error,
     } = this.props;
     const { from, to } = this.state;
 
-    const loadingIcon = theme.mode === DARK ? LoadingIconDark : LoadingIconLight;
+    const loadingIcon = this.getLoadingIcon();
 
     if (isSending) {
       return (
@@ -735,6 +741,8 @@ class Component extends PureComponent<Props, State> {
       balance,
       zecPrice,
       isSending,
+      isLoading,
+      isFirstLoad,
       error,
       operationId,
       theme,
@@ -751,6 +759,14 @@ class Component extends PureComponent<Props, State> {
       isHexMemo,
       showBalanceTooltip,
     } = this.state;
+
+    if (isFirstLoad && isLoading) {
+      return (
+        <LoaderWrapper>
+          <TextComponent value='Loading...' />
+        </LoaderWrapper>
+      );
+    }
 
     const isEmpty = amount === '';
 

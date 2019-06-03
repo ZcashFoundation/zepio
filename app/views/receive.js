@@ -135,9 +135,15 @@ class Component extends PureComponent<Props, State> {
   };
 
   render() {
-    const { addresses, theme } = this.props;
+    const {
+      addresses, theme, isLoading, isFirstLoad,
+    } = this.props;
     const { showAdditionalOptions } = this.state;
     const buttonText = `${showAdditionalOptions ? 'Hide' : 'Show'} Other Address Types`;
+
+    if (isFirstLoad && isLoading) {
+      return <TextComponent value='Loading...' />;
+    }
 
     const shieldedAddresses = addresses.filter(({ address }) => address.startsWith('z'));
     const transparentAddresses = addresses.filter(({ address }) => address.startsWith('t'));
