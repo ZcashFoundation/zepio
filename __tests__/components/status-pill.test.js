@@ -18,6 +18,7 @@ describe('<StatusPill />', () => {
           getBlockchainStatus={() => Promise.resolve()}
           nodeSyncProgress={56.0}
           nodeSyncType='syncing'
+          isRefetching={false}
         />
       </ThemeProvider>,
     );
@@ -32,6 +33,7 @@ describe('<StatusPill />', () => {
           getBlockchainStatus={() => Promise.resolve()}
           nodeSyncProgress={100.0}
           nodeSyncType='ready'
+          isRefetching={false}
         />
       </ThemeProvider>,
     );
@@ -46,6 +48,7 @@ describe('<StatusPill />', () => {
           getBlockchainStatus={() => Promise.resolve()}
           nodeSyncProgress={0.0}
           nodeSyncType='error'
+          isRefetching={false}
         />
       </ThemeProvider>,
     );

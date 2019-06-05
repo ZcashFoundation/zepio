@@ -27,6 +27,14 @@ const rotate = keyframes`
 `;
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100%;
+`;
+
+const StatusWrapper = styled.div`
   align-items: center;
   display: flex;
   background: ${props => props.theme.colors.statusPillBg};
@@ -88,6 +96,15 @@ const TooltipText = styled(TextComponent)`
   color: ${props => props.theme.colors.walletAddressTooltip};
   font-size: 10px;
   font-weight: 700;
+`;
+
+const RefetchingLabel = styled.p`
+  color: ${props => props.theme.colors.sidebarItem};
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-family: ${props => props.theme.fontFamily};
+  margin-right: 10px;
 `;
 
 type Props = {
@@ -219,26 +236,31 @@ class Component extends PureComponent<Props, State> {
 
   render() {
     const icon = this.getIcon();
-    const { nodeSyncType, nodeSyncProgress } = this.props;
+    const { nodeSyncType, nodeSyncProgress, isRefetching } = this.props;
     const { showTooltip } = this.state;
     const percent = nodeSyncType && nodeSyncType === NODE_SYNC_TYPES.SYNCING
       ? `(${nodeSyncProgress.toFixed(2)}%)`
       : '';
 
     return (
-      // eslint-disable-next-line
-      <Wrapper
-        onMouseOver={() => this.setState({ showTooltip: true })}
-        onMouseOut={() => this.setState({ showTooltip: false })}
-        id='status-pill'
-      >
-        {showTooltip && (
-          <Tooltip>
-            <TooltipText value={this.getStatusText()} />
-          </Tooltip>
-        )}
-        {icon && <Icon src={icon} animated={this.isSyncing()} />}
-        <StatusPillLabel value={`${this.getLabel()} ${percent}`} />
+      <Wrapper>
+        {isRefetching && <RefetchingLabel>Refetching...</RefetchingLabel>}
+        {
+          // eslint-disable-next-line
+          <StatusWrapper
+            onMouseOver={() => this.setState({ showTooltip: true })}
+            onMouseOut={() => this.setState({ showTooltip: false })}
+            id='status-pill'
+          >
+            {showTooltip && (
+              <Tooltip>
+                <TooltipText value={this.getStatusText()} />
+              </Tooltip>
+            )}
+            {icon && <Icon src={icon} animated={this.isSyncing()} />}
+            <StatusPillLabel value={`${this.getLabel()} ${percent}`} />
+          </StatusWrapper>
+        }
       </Wrapper>
     );
   }
