@@ -5,11 +5,13 @@ import styled, { withTheme } from 'styled-components';
 import { Transition, animated } from 'react-spring';
 
 import { DARK } from '../constants/themes';
+import { FETCH_STATE } from '../constants/fetch-states';
 
 import { InputLabelComponent } from '../components/input-label';
 import { RowComponent } from '../components/row';
 import { TextComponent } from '../components/text';
 import { WalletAddress } from '../components/wallet-address';
+import { LoaderComponent } from '../components/loader';
 
 import MenuIconDark from '../assets/images/menu_icon_dark.svg';
 import MenuIconLight from '../assets/images/menu_icon_light.svg';
@@ -135,14 +137,12 @@ class Component extends PureComponent<Props, State> {
   };
 
   render() {
-    const {
-      addresses, theme, isLoading, isFirstLoad,
-    } = this.props;
+    const { addresses, theme, fetchState } = this.props;
     const { showAdditionalOptions } = this.state;
     const buttonText = `${showAdditionalOptions ? 'Hide' : 'Show'} Other Address Types`;
 
-    if (isFirstLoad && isLoading) {
-      return <TextComponent value='Loading...' />;
+    if (fetchState === FETCH_STATE.INITIALIZING) {
+      return <LoaderComponent />;
     }
 
     const shieldedAddresses = addresses.filter(({ address }) => address.startsWith('z'));

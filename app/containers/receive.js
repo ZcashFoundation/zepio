@@ -23,18 +23,16 @@ import rpc from '../../services/api';
 import electronStore from '../../config/electron-store';
 
 import type { AppState } from '../types/app-state';
-import type { Dispatch } from '../types/redux';
+import type { Dispatch, FetchState } from '../types/redux';
 
 export type MapStateToProps = {|
-  isLoading: boolean,
-  isFirstLoad: boolean,
+  fetchState: FetchState,
   addresses: { address: string, balance: number }[],
 |};
 
 const mapStateToProps = ({ receive }: AppState): MapStateToProps => ({
   addresses: receive.addresses,
-  isLoading: receive.isLoading,
-  isFirstLoad: receive.isFirstLoad,
+  fetchState: receive.fetchState,
 });
 
 export type MapDispatchToProps = {|

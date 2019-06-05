@@ -1,6 +1,7 @@
 // @flow
+import { FETCH_STATE } from '../../constants/fetch-states';
 
-import type { Action } from '../../types/redux';
+import type { Action, FetchState } from '../../types/redux';
 
 // Actions
 export const LOAD_ADDRESSES = 'LOAD_ADDRESSES';
@@ -47,17 +48,15 @@ export const getNewAddressError = ({ error }: { error: string }) => ({
 export type addressType = 'transparent' | 'shielded';
 
 export type State = {
-  isLoading: boolean,
-  isFirstLoad: boolean,
   addresses: { address: string, balance: number }[],
   error: string | null,
+  fetchState: FetchState,
 };
 
 const initialState: State = {
   addresses: [],
   error: null,
-  isFirstLoad: true,
-  isLoading: false,
+  fetchState: FETCH_STATE.INITIALIZING,
 };
 
 // eslint-disable-next-line
@@ -66,21 +65,19 @@ export default (state: State = initialState, action: Action): State => {
     case LOAD_ADDRESSES:
       return {
         ...state,
-        isLoading: true,
+        fetchState: action.fetchState,
       };
     case LOAD_ADDRESSES_SUCCESS:
       return {
         error: null,
         addresses: action.payload.addresses,
-        isLoading: false,
-        isFirstLoad: false,
+        fetchState: FETCH_STATE.SUCCESS,
       };
     case LOAD_ADDRESSES_ERROR:
       return {
         error: action.payload.error,
         addresses: [],
-        isLoading: false,
-        isFirstLoad: false,
+        fetchState: FETCH_STATE.ERROR,
       };
     case GET_NEW_ADDRESS_SUCCESS:
       return {

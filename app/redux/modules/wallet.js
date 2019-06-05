@@ -1,6 +1,7 @@
 // @flow
+import { FETCH_STATE } from '../../constants/fetch-states';
 
-import type { Action } from '../../types/redux';
+import type { Action, FetchState } from '../../types/redux';
 import type { TransactionsList } from './transactions';
 
 // Actions
@@ -54,10 +55,10 @@ export type State = {
   transparent: number,
   unconfirmed: number,
   error: string | null,
-  isLoading: boolean,
   zecPrice: number,
   addresses: string[],
   transactions: TransactionsList,
+  fetchState: FetchState,
 };
 
 const initialState = {
@@ -66,26 +67,33 @@ const initialState = {
   transparent: 0,
   unconfirmed: 0,
   error: null,
-  isLoading: false,
   zecPrice: 0,
   addresses: [],
   transactions: [],
+  fetchState: FETCH_STATE.INITIALIZING,
 };
 
 // eslint-disable-next-line
 export default (state: State = initialState, action: Action) => {
   switch (action.type) {
     case LOAD_WALLET_SUMMARY:
-      return { ...state, isLoading: true };
+      return {
+        ...state,
+        fetchState: action.fetchState,
+      };
     case LOAD_WALLET_SUMMARY_SUCCESS:
       return {
         ...state,
         ...action.payload,
-        isLoading: false,
+        fetchState: 'SUCCESS',
         error: null,
       };
     case LOAD_WALLET_SUMMARY_ERROR:
-      return { ...state, isLoading: false, error: action.payload.error };
+      return {
+        ...state,
+        fetchState: 'ERROR',
+        error: action.payload.error,
+      };
     default:
       return state;
   }

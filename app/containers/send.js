@@ -26,13 +26,9 @@ import { getLatestAddressKey } from '../utils/get-latest-address-key';
 import { saveShieldedTransaction } from '../../services/shielded-transactions';
 
 import type { AppState } from '../types/app-state';
-import type { Dispatch } from '../types/redux';
+import type { Dispatch, FetchState } from '../types/redux';
 
-import {
-  loadAddresses,
-  loadAddressesSuccess,
-  loadAddressesError,
-} from '../redux/modules/receive';
+import { loadAddresses, loadAddressesSuccess, loadAddressesError } from '../redux/modules/receive';
 
 export type SendTransactionInput = {
   from: string,
@@ -47,8 +43,7 @@ export type MapStateToProps = {|
   zecPrice: number,
   addresses: { address: string, balance: number }[],
   error: string | null,
-  isFirstLoad: boolean,
-  isLoading: boolean,
+  fetchState: FetchState,
   isSending: boolean,
   operationId: string | null,
   isToAddressValid: boolean,
@@ -60,8 +55,7 @@ const mapStateToProps = ({ sendStatus, receive, app }: AppState): MapStateToProp
   zecPrice: sendStatus.zecPrice,
   addresses: receive.addresses,
   error: sendStatus.error,
-  isFirstLoad: receive.isFirstLoad,
-  isLoading: receive.isLoading,
+  fetchState: receive.fetchState,
   isSending: sendStatus.isSending,
   operationId: sendStatus.operationId,
   isToAddressValid: sendStatus.isToAddressValid,

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import electron from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
 
@@ -10,10 +10,12 @@ import { TextComponent } from '../components/text';
 import { EmptyTransactionsComponent } from '../components/empty-transactions';
 import { ConfirmDialogComponent } from '../components/confirm-dialog';
 import { ColumnComponent } from '../components/column';
+import { LoaderComponent } from '../components/loader';
 
 import store from '../../config/electron-store';
+import { FETCH_STATE } from '../constants/fetch-states';
 
-import type { TransactionsList } from '../redux/modules/transactions';
+import type { MapDispatchToProps, MapStateToProps } from '../containers/dashboard';
 
 import zepioLogo from '../assets/images/zcash-icon.png';
 
@@ -57,18 +59,7 @@ const AdditionalText = styled(TextComponent)`
   font-size: 10px;
 `;
 
-type Props = {
-  getSummary: () => void,
-  total: number,
-  shielded: number,
-  transparent: number,
-  unconfirmed: number,
-  error: string | null,
-  zecPrice: number,
-  addresses: string[],
-  isDaemonReady: boolean,
-  transactions: TransactionsList,
-};
+type Props = MapDispatchToProps & MapStateToProps;
 
 const UPDATE_INTERVAL = 10000;
 const DISPLAY_WELCOME_MODAL = 'DISPLAY_WELCOME_MODAL';
@@ -94,7 +85,6 @@ export class DashboardView extends PureComponent<Props> {
 
   render() {
     const {
-      error,
       total,
       shielded,
       transparent,
@@ -102,14 +92,15 @@ export class DashboardView extends PureComponent<Props> {
       zecPrice,
       addresses,
       transactions,
+      fetchState,
     } = this.props;
 
-    if (error) {
-      return <TextComponent value={error} />;
+    if (fetchState === FETCH_STATE.INITIALIZING) {
+      return <LoaderComponent />;
     }
 
     return (
-      <Fragment>
+      <>
         <WalletSummaryComponent
           total={total}
           shielded={shielded}
@@ -155,7 +146,7 @@ export class DashboardView extends PureComponent<Props> {
             )}
           </ConfirmDialogComponent>
         )}
-      </Fragment>
+      </>
     );
   }
 }
