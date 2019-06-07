@@ -21,24 +21,42 @@ import {
   loadWalletSummarySuccess,
   loadWalletSummaryError,
 } from '../redux/modules/wallet';
+import type { TransactionsList } from '../redux/modules/transactions';
 
 import type { AppState } from '../types/app-state';
-import type { Dispatch } from '../types/redux';
+import type { Dispatch, FetchState } from '../types/redux';
 
-const mapStateToProps = ({ walletSummary, app }: AppState) => ({
+export type MapStateToProps = {|
+  total: number,
+  shielded: number,
+  transparent: number,
+  unconfirmed: number,
+  error: null | string,
+  fetchState: FetchState,
+  zecPrice: number,
+  addresses: string[],
+  transactions: TransactionsList,
+  isDaemonReady: boolean,
+|};
+
+const mapStateToProps: AppState => MapStateToProps = ({ walletSummary, app }) => ({
   total: walletSummary.total,
   shielded: walletSummary.shielded,
   transparent: walletSummary.transparent,
   unconfirmed: walletSummary.unconfirmed,
   error: walletSummary.error,
-  isLoading: walletSummary.isLoading,
+  fetchState: walletSummary.fetchState,
   zecPrice: walletSummary.zecPrice,
   addresses: walletSummary.addresses,
   transactions: walletSummary.transactions,
   isDaemonReady: app.nodeSyncType === NODE_SYNC_TYPES.READY,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+export type MapDispatchToProps = {|
+  getSummary: () => Promise<void>,
+|};
+
+const mapDispatchToProps: (dispatch: Dispatch) => MapDispatchToProps = (dispatch: Dispatch) => ({
   getSummary: async () => {
     dispatch(loadWalletSummary());
 

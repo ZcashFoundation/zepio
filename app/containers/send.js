@@ -26,9 +26,9 @@ import { getLatestAddressKey } from '../utils/get-latest-address-key';
 import { saveShieldedTransaction } from '../../services/shielded-transactions';
 
 import type { AppState } from '../types/app-state';
-import type { Dispatch } from '../types/redux';
+import type { Dispatch, FetchState } from '../types/redux';
 
-import { loadAddressesSuccess, loadAddressesError } from '../redux/modules/receive';
+import { loadAddresses, loadAddressesSuccess, loadAddressesError } from '../redux/modules/receive';
 
 export type SendTransactionInput = {
   from: string,
@@ -43,6 +43,7 @@ export type MapStateToProps = {|
   zecPrice: number,
   addresses: { address: string, balance: number }[],
   error: string | null,
+  fetchState: FetchState,
   isSending: boolean,
   operationId: string | null,
   isToAddressValid: boolean,
@@ -54,6 +55,7 @@ const mapStateToProps = ({ sendStatus, receive, app }: AppState): MapStateToProp
   zecPrice: sendStatus.zecPrice,
   addresses: receive.addresses,
   error: sendStatus.error,
+  fetchState: receive.fetchState,
   isSending: sendStatus.isSending,
   operationId: sendStatus.operationId,
   isToAddressValid: sendStatus.isToAddressValid,
@@ -160,6 +162,8 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
     return dispatch(validateAddressError());
   },
   loadAddresses: async () => {
+    dispatch(loadAddresses());
+
     const [zAddressesErr, zAddresses] = await eres(rpc.z_listaddresses());
 
     const [tAddressesErr, transparentAddresses] = await eres(rpc.getaddressesbyaccount(''));

@@ -5,11 +5,13 @@ import styled, { withTheme } from 'styled-components';
 import { Transition, animated } from 'react-spring';
 
 import { DARK } from '../constants/themes';
+import { FETCH_STATE } from '../constants/fetch-states';
 
 import { InputLabelComponent } from '../components/input-label';
 import { RowComponent } from '../components/row';
 import { TextComponent } from '../components/text';
 import { WalletAddress } from '../components/wallet-address';
+import { LoaderComponent } from '../components/loader';
 
 import MenuIconDark from '../assets/images/menu_icon_dark.svg';
 import MenuIconLight from '../assets/images/menu_icon_light.svg';
@@ -20,7 +22,7 @@ import ShieldGrayImage from '../assets/images/shield_dark_gray.png';
 import type { addressType } from '../redux/modules/receive';
 import type { MapStateToProps, MapDispatchToProps } from '../containers/receive';
 
-const TRANSPARENT_ADDRESS_SUBLABEL = 'By using transaparent addresses you are forgiving any privacy properties to your transactions.';
+const TRANSPARENT_ADDRESS_SUBLABEL = 'Using a transparent address makes your transaction details public.';
 
 const Row = styled(RowComponent)`
   margin-bottom: 10px;
@@ -135,9 +137,13 @@ class Component extends PureComponent<Props, State> {
   };
 
   render() {
-    const { addresses, theme } = this.props;
+    const { addresses, theme, fetchState } = this.props;
     const { showAdditionalOptions } = this.state;
     const buttonText = `${showAdditionalOptions ? 'Hide' : 'Show'} Other Address Types`;
+
+    if (fetchState === FETCH_STATE.INITIALIZING) {
+      return <LoaderComponent />;
+    }
 
     const shieldedAddresses = addresses.filter(({ address }) => address.startsWith('z'));
     const transparentAddresses = addresses.filter(({ address }) => address.startsWith('t'));
