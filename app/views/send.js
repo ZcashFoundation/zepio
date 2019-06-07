@@ -9,6 +9,7 @@ import { type Match } from 'react-router-dom';
 import { FEES } from '../constants/fees';
 import { DARK } from '../constants/themes';
 import { NODE_SYNC_TYPES } from '../constants/node-sync-types';
+import { FETCH_STATE } from '../constants/fetch-states';
 
 import { InputLabelComponent } from '../components/input-label';
 import { InputComponent } from '../components/input';
@@ -19,6 +20,7 @@ import { ColumnComponent } from '../components/column';
 import { Divider } from '../components/divider';
 import { Button } from '../components/button';
 import { ConfirmDialogComponent } from '../components/confirm-dialog';
+import { LoaderComponent } from '../components/loader';
 
 import { formatNumber } from '../utils/format-number';
 import { ascii2hex } from '../utils/ascii-to-hexadecimal';
@@ -594,6 +596,12 @@ class Component extends PureComponent<Props, State> {
     );
   };
 
+  getLoadingIcon = () => {
+    const { theme } = this.props;
+
+    return theme.mode === DARK ? LoadingIconDark : LoadingIconLight;
+  };
+
   renderModalContent = ({
     valueSent,
     valueSentInUsd,
@@ -606,12 +614,10 @@ class Component extends PureComponent<Props, State> {
     /* eslint-enable react/no-unused-prop-types */
   }) => {
     // eslint-disable-next-line react/prop-types
-    const {
-      operationId, isSending, error, theme,
-    } = this.props;
+    const { operationId, isSending, error } = this.props;
     const { from, to } = this.state;
 
-    const loadingIcon = theme.mode === DARK ? LoadingIconDark : LoadingIconLight;
+    const loadingIcon = this.getLoadingIcon();
 
     if (isSending) {
       return (
@@ -739,6 +745,7 @@ class Component extends PureComponent<Props, State> {
       operationId,
       theme,
       nodeSyncType,
+      fetchState,
     } = this.props;
     const {
       showFee,
@@ -751,6 +758,10 @@ class Component extends PureComponent<Props, State> {
       isHexMemo,
       showBalanceTooltip,
     } = this.state;
+
+    if (fetchState === FETCH_STATE.INITIALIZING) {
+      return <LoaderComponent />;
+    }
 
     const isEmpty = amount === '';
 

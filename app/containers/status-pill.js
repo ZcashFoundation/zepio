@@ -8,6 +8,7 @@ import { updateNodeSyncStatus } from '../redux/modules/app';
 import { StatusPill } from '../components/status-pill';
 import rpc from '../../services/api';
 import { NODE_SYNC_TYPES } from '../constants/node-sync-types';
+import { FETCH_STATE } from '../constants/fetch-states';
 
 import type { Dispatch } from '../types/redux';
 import type { AppState } from '../types/app-state';
@@ -15,11 +16,15 @@ import type { AppState } from '../types/app-state';
 export type MapStateToProps = {|
   nodeSyncProgress: number,
   nodeSyncType: 'ready' | 'syncing' | 'error',
+  isRefetching: boolean,
 |};
 
-const mapStateToProps = ({ app }: AppState): MapStateToProps => ({
+const mapStateToProps = ({ app, walletSummary, receive }: AppState): MapStateToProps => ({
   nodeSyncProgress: app.nodeSyncProgress,
   nodeSyncType: app.nodeSyncType,
+  isRefetching:
+    walletSummary.fetchState === FETCH_STATE.REFETCHING
+    || receive.fetchState === FETCH_STATE.REFETCHING,
 });
 
 export type MapDispatchToProps = {|

@@ -14,6 +14,7 @@ export type State = {|
   nodeSyncType: 'ready' | 'syncing' | 'error',
   zcashNetwork: string,
   embeddedDaemon: boolean,
+  isRefetching: boolean,
 |};
 
 // Actions
@@ -54,15 +55,16 @@ const initialState: State = {
   nodeSyncType: NODE_SYNC_TYPES.SYNCING,
   zcashNetwork: electronStore.get(ZCASH_NETWORK),
   embeddedDaemon: electronStore.get(EMBEDDED_DAEMON),
+  isRefetching: false,
 };
 
 // eslint-disable-next-line
-export default (state: State = initialState, action: Action) => {
+export default (state: State = initialState, action: Action): State => {
   switch (action.type) {
     case SHOW_ERROR_MODAL:
-      return { isErrorModalVisible: true, error: action.payload.error };
+      return { ...state, isErrorModalVisible: true, error: action.payload.error };
     case HIDE_ERROR_MODAL:
-      return { isErrorModalVisible: false, error: null };
+      return { ...state, isErrorModalVisible: false, error: null };
     case UPDATE_NODE_SYNC_STATUS:
       return {
         ...state,

@@ -8,6 +8,7 @@ import { ReceiveView } from '../views/receive';
 import { SAPLING } from '../constants/zcash-network';
 
 import {
+  loadAddresses,
   loadAddressesSuccess,
   loadAddressesError,
   getNewAddressSuccess,
@@ -22,14 +23,16 @@ import rpc from '../../services/api';
 import electronStore from '../../config/electron-store';
 
 import type { AppState } from '../types/app-state';
-import type { Dispatch } from '../types/redux';
+import type { Dispatch, FetchState } from '../types/redux';
 
 export type MapStateToProps = {|
+  fetchState: FetchState,
   addresses: { address: string, balance: number }[],
 |};
 
 const mapStateToProps = ({ receive }: AppState): MapStateToProps => ({
   addresses: receive.addresses,
+  fetchState: receive.fetchState,
 });
 
 export type MapDispatchToProps = {|
@@ -39,6 +42,8 @@ export type MapDispatchToProps = {|
 
 const mapDispatchToProps = (dispatch: Dispatch): MapDispatchToProps => ({
   loadAddresses: async () => {
+    dispatch(loadAddresses());
+
     const [zAddressesErr, zAddresses] = await eres(rpc.z_listaddresses());
 
     const [tAddressesErr, transparentAddresses] = await eres(rpc.getaddressesbyaccount(''));
