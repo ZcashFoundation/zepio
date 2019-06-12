@@ -26,6 +26,8 @@ import { formatNumber } from '../utils/format-number';
 import { ascii2hex } from '../utils/ascii-to-hexadecimal';
 import { isHex } from '../utils/is-hex';
 import { getCoinName } from '../utils/get-coin-name';
+import { openExternal } from '../utils/open-external';
+import { ZCASH_EXPLORER_BASE_URL } from '../constants/explorer';
 
 import SentIcon from '../assets/images/transaction_sent_icon_dark.svg';
 import MenuIconDark from '../assets/images/menu_icon_dark.svg';
@@ -387,6 +389,11 @@ const ZSuccessMessage = styled(TextComponent)`
 const ZSuccessTransactionId = styled(TextComponent)`
   text-align: center;
   word-break: break-all !important;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 `;
 
 const CustomFeeWarning = styled(TextComponent)`
@@ -634,7 +641,7 @@ class Component extends PureComponent<Props, State> {
           <ZSuccessLabel value='Success!' />
           <ZSuccessContentWrapper>
             <ZSuccessMessage value='Your transaction was sent successfully.' />
-            <ZSuccessTransactionId value={`Transaction ID: ${operationId}`} />
+            <ZSuccessTransactionId value={`Transaction ID: ${operationId}`} onClick={() => openExternal(ZCASH_EXPLORER_BASE_URL + operationId)} />
           </ZSuccessContentWrapper>
           <FormButton
             label='Done'
