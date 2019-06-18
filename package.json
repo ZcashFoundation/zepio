@@ -1,7 +1,7 @@
 {
   "name": "zepio",
   "productName": "Zepio",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "Zepio | Cross-platform sapling-enabled full-node Zcash wallet",
   "main": "config/main.js",
   "homepage": "https://zepiowallet.com",
@@ -230,6 +230,7 @@
     "find-process": "^1.2.1",
     "got": "^9.6.0",
     "history": "^4.7.2",
+    "humanize-duration": "^3.18.0",
     "lodash.flow": "^3.5.0",
     "lodash.groupby": "^4.6.0",
     "lodash.uniqby": "^4.7.0",
