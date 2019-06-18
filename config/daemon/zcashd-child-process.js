@@ -65,6 +65,7 @@ let resolved = false;
 
 const ZCASHD_PROCESS_NAME = getDaemonName();
 const DAEMON_PROCESS_PID = 'DAEMON_PROCESS_PID';
+const DAEMON_START_TIME = 'DAEMON_START_TIME';
 
 let isWindowOpened = false;
 
@@ -95,6 +96,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   store.delete('rpcconnect');
   store.delete('rpcport');
   store.delete(DAEMON_PROCESS_PID);
+  store.delete(DAEMON_START_TIME);
 
   const processName = path.join(getBinariesPath(), getOsFolder(), ZCASHD_PROCESS_NAME);
   const isRelaunch = Boolean(process.argv.find(arg => arg === '--relaunch'));
@@ -223,8 +225,8 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   store.set(DAEMON_PROCESS_PID, childProcess.pid);
 
   childProcess.stdout.on('data', (data) => {
-    sendToRenderer('zcashd-log', data.toString(), false);
     if (!resolved) {
+      store.set(DAEMON_START_TIME, Date.now());
       resolve(childProcess);
       resolved = true;
     }
