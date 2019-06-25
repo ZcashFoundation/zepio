@@ -24,6 +24,7 @@ import store from '../electron-store';
 import { parseZcashConf, parseCmdArgs, generateArgsFromConf } from './parse-zcash-conf';
 import { isTestnet } from '../is-testnet';
 import { getDaemonProcessId } from './get-daemon-process-id';
+import { readCookieFile } from './read-cookie-file';
 import {
   EMBEDDED_DAEMON,
   ZCASH_NETWORK,
@@ -93,6 +94,8 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   mainWindow.webContents.on('dom-ready', () => {
     isWindowOpened = true;
   });
+  store.delete('rpcuser');
+  store.delete('rpcpassword');
   store.delete('rpcconnect');
   store.delete('rpcport');
   store.delete(DAEMON_PROCESS_PID);
@@ -131,7 +134,6 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     await waitForDaemonClose(ZCASHD_PROCESS_NAME);
   }
 
-  // This will parse and save rpcuser and rpcpassword in the store
   let [, optionsFromZcashConf] = await eres(parseZcashConf());
 
   // if the user has a custom datadir and doesn't have a zcash.conf in that folder,
@@ -153,7 +155,20 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
   if (optionsFromZcashConf.rpcconnect) store.set('rpcconnect', optionsFromZcashConf.rpcconnect);
   if (optionsFromZcashConf.rpcport) store.set('rpcport', optionsFromZcashConf.rpcport);
   if (optionsFromZcashConf.rpcuser) store.set('rpcuser', optionsFromZcashConf.rpcuser);
-  if (optionsFromZcashConf.rpcpassword) store.set('rpcpassword', optionsFromZcashConf.rpcpassword);
+  if (optionsFromZcashConf.rpcpassword) {
+    store.set('rpcpassword', optionsFromZcashConf.rpcpassword);
+  } else {
+    // Try fall back to cookie-based authentication if no password is provided
+    // For now it only works for the .cookie file in the default zcash folder
+    const [, response] = await eres(readCookieFile());
+
+    if (response) {
+      log('Reading credentials from .cookie file');
+
+      store.set('rpcuser', response.user);
+      store.set('rpcpassword', response.password);
+    }
+  }
 
   log('Searching for zcashd.pid');
   const daemonProcessId = getDaemonProcessId(optionsFromZcashConf.datadir);
@@ -200,8 +215,8 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
     store.set(ZCASH_NETWORK, optionsFromZcashConf.testnet === '1' ? TESTNET : MAINNET);
   }
 
-  if (!optionsFromZcashConf.rpcuser) store.set('rpcuser', uuid());
-  if (!optionsFromZcashConf.rpcpassword) store.set('rpcpassword', uuid());
+  if (!store.get('rpcuser')) store.set('rpcuser', uuid());
+  if (!store.get('rpcpassword')) store.set('rpcpassword', uuid());
 
   const rpcCredentials = {
     username: store.get('rpcuser'),
@@ -224,7 +239,7 @@ const runDaemon: () => Promise<?ChildProcess> = () => new Promise(async (resolve
 
   store.set(DAEMON_PROCESS_PID, childProcess.pid);
 
-  childProcess.stdout.on('data', (data) => {
+  childProcess.stdout.on('data', () => {
     if (!resolved) {
       store.set(DAEMON_START_TIME, Date.now());
       resolve(childProcess);
