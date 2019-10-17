@@ -45,7 +45,9 @@ const api: APIMethods = METHODS.reduce(
         .post(`http://${RPC.host}:${RPC.port}`, {
           method: 'POST',
           json: true,
-          auth: `${RPC.user}:${RPC.password}`,
+          headers: {
+            Authorization: `Basic ${Buffer.from(`${RPC.user}:${RPC.password}`).toString('base64')}`,
+          },
           body: {
             method,
             jsonrpc: '2.0',
