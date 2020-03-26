@@ -1,4 +1,5 @@
-# Zepio | ZEC Wallet
+## ZEPIO IS NO LONGER ACTIVELY MAINTAINED
+*We will be archiving this repo soon. If you would like a shielded-first desktop wallet, we recommend [ZecWallet](https://www.zecwallet.co/).*
 
 Zepio is a Sapling-enabled shielded-address-first Zcash wallet, featuring cross-platform applications (macOS, Windows and Linux), built-in full node with support for `mainnet` and `testnet`, as well as `dark` and `light` themes.
 
