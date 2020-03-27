@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [macOS-latest]
+        os: [ubuntu-16.04, macos-latest, windows-latest]
 
     steps:
       - name: Context
@@ -28,14 +28,27 @@ jobs:
       - name: yarn install
         run: |
           yarn install
-      - name: Build 
+      - name: Build
         run: |
           yarn dist
-      - name: show
+      - name: Show
         run: |
           ls -l dist/*
-      - name: Upload artifacts-msi
+      - name: Upload artifacts-dmg
         uses: actions/upload-artifact@v1
+        if: contains(matrix.os, 'macos')
         with:
           name: macos
           path: dist/Zepio-0.9.1.dmg
+      - name: Upload artifacts-exe
+        uses: actions/upload-artifact@v1
+        if: contains(matrix.os, 'windows')
+        with:
+          name: macos
+          path: dist/zepio-0.9.1.exe
+      - name: Upload artifacts-deb
+        uses: actions/upload-artifact@v1
+        if: contains(matrix.os, 'ubuntu')
+        with:
+          name: macos
+          path: dist/zepio_0.9.1_amd64.deb
