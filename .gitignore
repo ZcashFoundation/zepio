@@ -8,4 +8,4 @@ build
 coverage
 flow-typed
 .env
-/node-v8.17.0-linux-x64
+/node-*
