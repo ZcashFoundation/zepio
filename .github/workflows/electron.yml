@@ -41,11 +41,11 @@ jobs:
         uses: actions/upload-artifact@v1
         if: contains(matrix.os, 'windows')
         with:
-          name: macos
-          path: dist/zepio-0.9.1.exe
+          name: win
+          path: dist/Zepio Setup 0.9.1.exe
       - name: Upload artifacts-deb
         uses: actions/upload-artifact@v1
         if: contains(matrix.os, 'ubuntu')
         with:
-          name: macos
+          name: linux
           path: dist/zepio_0.9.1_amd64.deb
