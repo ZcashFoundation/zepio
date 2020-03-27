@@ -1,0 +1,41 @@
+name: Electron CD
+
+on:
+  push:
+    branches:
+      - deprecation
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macOS-latest]
+
+    steps:
+      - name: Context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: Use Node.js 8.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 8.x
+      - name: yarn install
+        run: |
+          yarn install
+      - name: Build 
+        run: |
+          yarn dist
+      - name: show
+        run: |
+          ls -l dist/*
+      - name: Upload artifacts-msi
+        uses: actions/upload-artifact@v1
+        with:
+          name: macos
+          path: dist/Zepio-0.9.1.dmg

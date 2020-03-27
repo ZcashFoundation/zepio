@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import electron from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
+import electron, { shell } from 'electron'; // eslint-disable-line import/no-extraneous-dependencies
 
 import { WalletSummaryComponent } from '../components/wallet-summary';
 import { TransactionDailyComponent } from '../components/transaction-daily';
@@ -53,6 +53,18 @@ const WelcomeText = styled(TextComponent)`
   margin-top: 1rem;
 `;
 
+const HighlightText = styled(WelcomeText)`
+  color: ${props => props.theme.colors.activeItem};
+  background-color: ${props => props.theme.colors.walletSummaryBg};
+  border: 1px solid ${props => props.theme.colors.walletSummaryBorder};
+  border-radius: ${props => props.theme.boxBorderRadius};
+  padding: 10px; 
+  
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 const AdditionalText = styled(TextComponent)`
   margin-top: 2rem;
   font-style: italic;
@@ -83,6 +95,10 @@ export class DashboardView extends PureComponent<Props> {
 
   shouldShowWelcomeModal = () => store.get(DISPLAY_WELCOME_MODAL) !== false;
 
+  openZecwallet = () => {
+    shell.openExternal('https://www.zecwallet.co');
+  };
+
   render() {
     const {
       total,
@@ -101,6 +117,7 @@ export class DashboardView extends PureComponent<Props> {
 
     return (
       <>
+        <HighlightText value='Zepio has been deprecated. Please upgrade to Zecwallet' isBold onClick={this.openZecwallet} />
         <WalletSummaryComponent
           total={total}
           shielded={shielded}

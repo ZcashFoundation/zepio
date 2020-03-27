@@ -1,7 +1,7 @@
 {
   "name": "zepio",
   "productName": "Zepio",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Zepio | Cross-platform sapling-enabled full-node Zcash wallet",
   "main": "config/main.js",
   "homepage": "https://zepiowallet.com",
@@ -23,11 +23,10 @@
     "dev": "webpack-dev-server --config config/webpack-dev.config.js --mode development --open --hot",
     "build": "rm -rf build && webpack --config config/webpack-prod.config.js --mode production --env.NODE_ENV=production",
     "release": "node -r @babel/register ./scripts/release.js",
-    "lint:precommit": "eslint ./app/",
-    "flow:precommit": "glow",
     "flow:coverage": "flow-coverage-report --config ./coverage.json",
     "flow:report": "yarn flow:coverage && cd ./flow-coverage && open index.html",
     "flow:generate-coverage-badge": "flow-coverage-report -i \"app/**/*.js\" \"config/**/*.js\" \"services/**/*.js\" \"utils/**/*.js\" -t 'badge' -o public/ && git add public/flow-coverage-badge.svg public/flow-badge.svg",
+    "dist": "yarn electron:dist",
     "electron:dev": "electron -r @babel/register .",
     "electron:prepare": "yarn icon:build && rm -rf dist && mkdir dist",
     "electron:pack": "yarn electron:prepare && electron-builder --dir",
@@ -44,12 +43,6 @@
     "test:unit": "jest --testPathIgnorePatterns=e2e --testPathIgnorePatterns=setup",
     "e2e:serve": "node -r @babel/register ./__tests__/setup/mockAPI.js",
     "e2e:run": "yarn test e2e"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint:precommit && yarn flow:precommit",
-      "pre-push": "yarn flow:generate-coverage-badge && git add ./public/flow-badge.svg ./public/flow-coverage-badge.svg && git commit -m \"type(flow): update flowtype badge\" --no-verify --allow-empty"
-    }
   },
   "build": {
     "appId": "com.zcashfoundation",
@@ -173,7 +166,7 @@
     "docz-plugin-css": "^0.11.0",
     "docz-theme-default": "0.13.4",
     "electron": "^4.2.2",
-    "electron-builder": "^20.38.4",
+    "electron-builder": "^21.2.0",
     "electron-compilers": "^5.9.0",
     "electron-icon-maker": "^0.0.4",
     "electron-log": "^2.2.17",
