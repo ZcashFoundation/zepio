@@ -31,9 +31,6 @@ jobs:
       - name: Build
         run: |
           yarn dist
-      - name: Show
-        run: |
-          ls -l dist/*
       - name: Upload artifacts-dmg
         uses: actions/upload-artifact@v1
         if: contains(matrix.os, 'macos')
